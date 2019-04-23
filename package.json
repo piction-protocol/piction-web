@@ -1,5 +1,5 @@
 {
-  "name": "react-playground",
+  "name": "piction-beta",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,15 +11,27 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docz": "docz dev",
+    "docz:build": "docz build"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "airbnb"
+    ]
   },
   "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "> 1%",
+    "ie 11",
+    "not dead"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-styled-components": "^1.10.0",
+    "docz": "^1.0.4",
+    "docz-theme-default": "^1.0.4",
+    "eslint-config-airbnb": "^17.1.0"
+  }
 }
