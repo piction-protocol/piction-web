@@ -7,9 +7,11 @@ const Styled = {
   `,
 };
 
-function Heading({ level, ...props }) {
+function Heading({ level, children }) {
   return (
-    <Styled.Heading as={`h${level}`} {...props} />
+    <Styled.Heading as={`h${level}`}>
+      {children}
+    </Styled.Heading>
   );
 }
 
