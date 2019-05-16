@@ -14,4 +14,5 @@ export default {
     'Organisms',
   ],
   port: 4000,
+  filterComponents: files => files.filter(filepath => /[w-]*.(js|jsx)$/.test(filepath)),
 };
