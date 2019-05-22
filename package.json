@@ -27,11 +27,11 @@
   },
   "lint-staged": {
     "*.svg": [
-      "svgo",
+      "yarn svgo",
       "git add"
     ],
     "*.{js,jsx}": [
-      "lint --fix",
+      "yarn lint --fix",
       "git add"
     ]
   },
