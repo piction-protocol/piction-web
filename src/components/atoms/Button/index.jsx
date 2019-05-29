@@ -6,9 +6,10 @@ const Button = styled.button`
   position: relative;
   padding: 16px 20px;
   border: 0;
-  font: inherit;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: bold;
+  line-height: normal;
+  cursor: pointer;
 
   ${props => props.size === 'mini' && `
     padding: 8px 16px;

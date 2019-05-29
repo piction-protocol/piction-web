@@ -15,45 +15,24 @@ import DoczWrapper from 'documents/DoczWrapper';
 
 <Playground>
   <DoczWrapper>
-    <PrimaryButton
-      style={{ width: '100%' }}
-    >
-      Primary Full Width
-    </PrimaryButton>
     <PrimaryButton>
       Primary
     </PrimaryButton>
     <PrimaryButton size='mini'>
       Primary mini
     </PrimaryButton>
-    <SecondaryButton
-      style={{ width: '100%' }}
-    >
-      Secondary Full Width
-    </SecondaryButton>
     <SecondaryButton>
       Secondary
     </SecondaryButton>
     <SecondaryButton size='mini'>
       Secondary mini
     </SecondaryButton>
-    <TertiaryButton
-      style={{ width: '100%' }}
-    >
-      Tertiary Full Width
-    </TertiaryButton>
     <TertiaryButton>
       Tertiary
     </TertiaryButton>
     <TertiaryButton size='mini'>
       Tertiary mini
     </TertiaryButton>
-    <PrimaryButton
-      style={{ width: '100%' }}
-      disabled
-    >
-      DISABLED Full Width
-    </PrimaryButton>
     <SecondaryButton disabled>
       DISABLED
     </SecondaryButton>
@@ -63,5 +42,17 @@ import DoczWrapper from 'documents/DoczWrapper';
     >
       DISABLED mini
     </TertiaryButton>
+    <PrimaryButton
+      onClick={() => alert('Alert')}
+    >
+      With Click Event
+    </PrimaryButton>
+    <SecondaryButton
+      as='a'
+      href='https://piction.network'
+      target='_blank'
+    >
+      Button Style Link
+    </SecondaryButton>
   </DoczWrapper>
 </Playground>

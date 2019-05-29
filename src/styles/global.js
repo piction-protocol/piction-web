@@ -12,6 +12,13 @@ const GlobalStyle = createGlobalStyle`
     --red: #D51315;
 
     --primary-color: var(--blue);
+
+    --font-size--large: 30px;
+    --font-size--base: 18px;
+    --font-size--small: 14px;
+
+    --line-height--base: normal;
+    --line-height--contents: 1.72;
   }
 
   html {
@@ -24,10 +31,15 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     min-height: 100vh;
     box-sizing: border-box;
+    font-size: var(--font-size--base);
     font-family: 'Noto Sans KR', sans-serif;
-    line-height: normal;
+    line-height: var(--line-height--base);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    text-decoration: none;
   }
 
   *,
