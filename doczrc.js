@@ -1,12 +1,4 @@
-import { css } from 'docz-plugin-css';
-
 export default {
-  plugins: [
-    css({
-      preprocessor: 'postcss',
-      cssmodules: false,
-    }),
-  ],
   menu: [
     'Index',
     'Atoms',
@@ -26,4 +18,11 @@ export default {
   },
   wrapper: 'documents/Wrapper',
   filterComponents: files => files.filter(filepath => /[w-]*.(js|jsx)$/.test(filepath)),
+  modifyBundlerConfig: (bundlerConfig) => {
+    bundlerConfig.module.rules.push({
+      test: /.css$/,
+      use: ['style-loader', 'css-loader'],
+    });
+    return bundlerConfig;
+  },
 };
