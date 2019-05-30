@@ -48,8 +48,14 @@
           "devDependencies": true
         }
       ],
-      "import/no-unresolved": "off",
       "react/forbid-prop-types": "off"
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "moduleDirectory": ["node_modules", "src/"]
+        }
+      }
     }
   },
   "browserslist": [
