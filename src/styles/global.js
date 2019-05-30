@@ -19,13 +19,16 @@ const GlobalStyle = createGlobalStyle`
 
     --line-height--base: normal;
     --line-height--contents: 1.72;
+
+    --max-width: 1280px;
+    --gap: 20px;
   }
 
-  html {
+  html, body {
     height: 100%;
   }
 
-  body {
+  #root {
     display: flex;
     flex-flow: column;
     height: 100%;

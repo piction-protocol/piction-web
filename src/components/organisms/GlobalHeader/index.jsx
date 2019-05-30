@@ -8,14 +8,20 @@ import { ReactComponent as Logo } from 'images/piction-logo.svg';
 
 const Styled = {
   Header: styled.header`
+    height: 80px;
+    border-bottom: 1px solid var(--gray--light);
+    background-color: var(--white);
   `,
   Wrapper: styled.div`
     display: flex;
+    flex: 1;
     align-items: center;
-    height: 80px;
+    max-width: var(--max-width);
+    margin: auto;
+    padding: var(--gap);
   `,
   Logo: styled(Logo)`
-    width: 155px;
+    height: 40px;
     vertical-align: middle;
   `,
   Nav: styled.nav`
@@ -68,7 +74,7 @@ GlobalHeader.defaultProps = {
     login: '/login',
     signup: '/signup',
   },
-  user: {},
+  user: null,
 };
 
 export default GlobalHeader;
