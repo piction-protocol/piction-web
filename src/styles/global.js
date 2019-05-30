@@ -28,11 +28,7 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
-  #root {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-    min-height: 100vh;
+  body {
     box-sizing: border-box;
     font-size: var(--font-size--base);
     font-family: 'Noto Sans KR', sans-serif;
@@ -41,8 +37,21 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .root {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    min-height: 100vh;
+  }
+
   a {
     text-decoration: none;
+  }
+
+  ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   *,
