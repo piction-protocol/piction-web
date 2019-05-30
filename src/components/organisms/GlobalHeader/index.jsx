@@ -5,7 +5,6 @@ import { Link } from '@reach/router';
 
 import { ReactComponent as Logo } from 'images/piction-logo.svg';
 
-
 const Styled = {
   Header: styled.header`
     height: 80px;

@@ -6,6 +6,7 @@ import { ReactComponent as Logo } from 'images/piction-logo--mini.svg';
 const Styled = {
   Footer: styled.footer`
     height: 112px;
+    border-top: 1px solid var(--gray--light);
     background-color: var(--white);
   `,
   Wrapper: styled.div`
@@ -51,7 +52,7 @@ function GlobalFooter() {
           <Styled.List>
             <Styled.Item>
               <Styled.Link href="https://t.me/pictionnetwork">
-                Telegram Channel
+                Telegram
               </Styled.Link>
             </Styled.Item>
             <Styled.Item>
