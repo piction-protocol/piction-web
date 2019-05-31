@@ -5,12 +5,18 @@ route: /input/
 ---
 
 import { Playground } from 'docz';
+import DoczWrapper from 'documents/DoczWrapper';
+
 import Input from '/';
+import PasswordInput from './PasswordInput';
 
 # Input
 
 ## Basic Usage
 
 <Playground>
-  <Input placeholder='텍스트를 입력하세요' />
+  <DoczWrapper >
+    <Input placeholder='텍스트를 입력하세요' style={{ width: '300px' }} />
+    <PasswordInput placeholder='비밀번호를 입력하세요' style={{ width: '300px' }} />
+  </DoczWrapper>
 </Playground>
