@@ -1,0 +1,30 @@
+---
+name: InputGroup
+menu: Molecules
+route: /input-group/
+---
+
+import { Playground } from 'docz';
+import DoczWrapper from 'documents/DoczWrapper';
+
+import InputGroup from '/';
+
+# Checkbox
+
+## Basic Usage
+
+<Playground>
+  <DoczWrapper style={{ alignItems: 'stretch' }}>
+    <InputGroup
+      id='email'
+      label='이메일'
+      placeholder='이메일을 입력해주세요.'
+    />
+    <InputGroup
+      id='password'
+      label='비밀번호'
+      placeholder='비밀번호를 입력해주세요.'
+      errorMessage='에러'
+    />
+  </DoczWrapper>
+</Playground>
