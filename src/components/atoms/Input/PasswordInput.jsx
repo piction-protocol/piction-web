@@ -12,6 +12,9 @@ const Styled = {
     position: relative;
     align-items: center;
   `,
+  Input: styled(Input)`
+    flex: 1;
+  `,
   Toggle: styled.div`
     display: flex;
     position: absolute;
@@ -25,7 +28,7 @@ function PasswordInput(props) {
 
   return (
     <Styled.Wrapper>
-      <Input {...props} type={isVisible ? 'password' : 'text'} />
+      <Styled.Input {...props} type={isVisible ? 'password' : 'text'} />
       <Styled.Toggle onClick={() => setIsVisible(visibility => !visibility)}>
         {isVisible
           ? <VisibleIcon />

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Input from 'components/atoms/Input';
+import PasswordInput from 'components/atoms/Input/PasswordInput';
 
 const Styled = {
   Group: styled.div`
@@ -21,11 +22,14 @@ const Styled = {
 };
 
 const InputGroup = ({
-  id, label, errorMessage, ...props
+  id, label, errorMessage, className, type, ...props
 }) => (
-  <Styled.Group>
+  <Styled.Group className={className}>
     <Styled.Label htmlFor={id}>{label}</Styled.Label>
-    <Input id={id} {...props} />
+    {type === 'password'
+      ? <PasswordInput id={id} {...props} />
+      : <Input id={id} type={type} {...props} />
+    }
     {errorMessage && (
       <Styled.ErrorMessage>
         {errorMessage}
@@ -38,10 +42,14 @@ InputGroup.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   errorMessage: PropTypes.string,
+  className: PropTypes.string,
+  type: PropTypes.string,
 };
 
 InputGroup.defaultProps = {
   errorMessage: '',
+  className: '',
+  type: 'text',
 };
 
 export default InputGroup;
