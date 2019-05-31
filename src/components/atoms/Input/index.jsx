@@ -8,7 +8,7 @@ const Input = styled.input.attrs({
   background-color: var(--white);
   font-size: var(--font-size--small);
   line-height: normal;
-  transition: box-shadow 200ms ease-in, border-color 200ms ease-in;
+  transition: box-shadow var(--transition--form), border-color var(--transition--form);
 
   &:focus {
     border-color: var(--black);
