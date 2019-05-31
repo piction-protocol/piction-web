@@ -5,6 +5,8 @@ route: /checkbox/
 ---
 
 import { Playground } from 'docz';
+import DoczWrapper from 'documents/DoczWrapper';
+
 import Checkbox from '/';
 
 # Checkbox
@@ -12,5 +14,8 @@ import Checkbox from '/';
 ## Basic Usage
 
 <Playground>
-  <Checkbox />
+  <DoczWrapper>
+    <Checkbox />
+    <Checkbox checked />
+  </DoczWrapper>
 </Playground>

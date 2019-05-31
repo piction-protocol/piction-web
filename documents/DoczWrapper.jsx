@@ -12,8 +12,8 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const DoczWrapper = ({ children }) => (
-  <StyledWrapper>
+const DoczWrapper = ({ children, ...props }) => (
+  <StyledWrapper {...props}>
     {children}
   </StyledWrapper>
 );
