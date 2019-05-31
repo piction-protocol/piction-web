@@ -1,9 +1,11 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-
 import { StateProvider } from 'context/state';
+import { Router } from '@reach/router';
 
 import HomePage from 'pages/HomePage';
+import LoginPage from 'pages/LoginPage';
+import SignupPage from 'pages/SignupPage';
+
 
 function App() {
   const initialState = {};
@@ -14,7 +16,11 @@ function App() {
 
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <Route exact path="/" component={HomePage} />
+      <Router className="root">
+        <HomePage path="/" />
+        <LoginPage path="login" />
+        <SignupPage path="signup" />
+      </Router>
     </StateProvider>
   );
 }
