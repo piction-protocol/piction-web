@@ -13,6 +13,8 @@ const GlobalStyle = createGlobalStyle`
 
     --primary-color: var(--blue);
 
+    --shadow-color: rgba(0, 0, 0, .15);
+
     --font-size--large: 30px;
     --font-size--base: 18px;
     --font-size--small: 14px;

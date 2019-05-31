@@ -13,7 +13,7 @@ const Input = styled.input.attrs({
   &:focus {
     border-color: var(--black);
     outline: none;
-    box-shadow: 2px 4px 4px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 4px 4px 0 var(--shadow-color);
   }
 
   &::placeholder {
