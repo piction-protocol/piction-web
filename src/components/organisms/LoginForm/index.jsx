@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
+import axios from 'axios';
 
 import Heading from 'components/atoms/Heading';
 import Checkbox from 'components/atoms/Checkbox';
@@ -47,36 +48,77 @@ const Styled = {
   `,
 };
 
-const LoginForm = () => (
-  <Styled.Form>
-    <Styled.Heading>
-      로그인
-    </Styled.Heading>
-    <Styled.InputGroup
-      id="email"
-      label="이메일"
-      placeholder="이메일을 입력해주세요."
-    />
-    <Styled.InputGroup
-      id="password"
-      label="비밀번호"
-      placeholder="비밀번호를 입력해주세요."
-      type="password"
-    />
-    <Styled.RememberMe>
-      <Styled.Checkbox />
-      로그인 상태 유지
-    </Styled.RememberMe>
-    <Styled.Submit
-      value="로그인"
-    />
-    <Styled.Signup>
-      Piction에 처음 오셨다면,
-      <Styled.Link to="/signup">
-        회원가입
-      </Styled.Link>
-    </Styled.Signup>
-  </Styled.Form>
-);
+function LoginForm() {
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  const storeAccessToken = (token) => {
+    sessionStorage.setItem('access-token', token);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios({
+      method: 'post',
+      url: 'http://api-iro.piction.network/sessions',
+      data: userData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      storeAccessToken(response.data.accessToken);
+    }).catch((error) => {
+      // 에러 메시지 처리
+      console.log(error);
+    });
+  };
+
+  return (
+    <Styled.Form onSubmit={handleSubmit}>
+      <Styled.Heading>
+        로그인
+      </Styled.Heading>
+      <Styled.InputGroup
+        id="email"
+        name="email"
+        label="이메일"
+        placeholder="이메일을 입력해주세요."
+        autoComplete="email"
+        required
+        onChange={handleChange}
+      />
+      <Styled.InputGroup
+        id="password"
+        name="password"
+        label="비밀번호"
+        placeholder="비밀번호를 입력해주세요."
+        type="password"
+        autoComplete="current-password"
+        required
+        onChange={handleChange}
+      />
+      <Styled.RememberMe>
+        <Styled.Checkbox />
+        로그인 상태 유지
+      </Styled.RememberMe>
+      <Styled.Submit
+        value="로그인"
+      />
+      <Styled.Signup>
+        Piction에 처음 오셨다면,
+        <Styled.Link to="/signup">
+          회원가입
+        </Styled.Link>
+      </Styled.Signup>
+    </Styled.Form>
+  );
+}
 
 export default LoginForm;

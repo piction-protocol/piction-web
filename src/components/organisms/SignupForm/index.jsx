@@ -40,15 +40,16 @@ const Styled = {
 };
 
 function SignupForm() {
-  const [newUser, setNewUser] = useState({
+  const [userData, setUserData] = useState({
     email: '',
     password: '',
     username: '',
   });
 
-  const handleChange = (value, name) => {
-    setNewUser({ ...newUser, [name]: value });
-  };
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setUserData({ ...userData, [name]: value });
+  }
 
   const storeAccessToken = (token) => {
     sessionStorage.setItem('access-token', token);
@@ -59,9 +60,8 @@ function SignupForm() {
     axios({
       method: 'post',
       url: 'http://api-iro.piction.network/users',
-      data: newUser,
+      data: userData,
       headers: {
-        accept: '*/*',
         'Content-Type': 'application/json',
       },
     }).then((response) => {
@@ -79,30 +79,30 @@ function SignupForm() {
       </Styled.Heading>
       <Styled.InputGroup
         id="email"
+        name="email"
         label="이메일"
         placeholder="이메일을 입력해주세요."
         autoComplete="email"
-        value={newUser.email}
-        onChange={event => handleChange(event.target.value, 'email')}
+        onChange={handleChange}
         required
       />
       <Styled.InputGroup
         id="password"
+        name="password"
         label="비밀번호"
         placeholder="6자 이상의 비밀번호"
         type="password"
         autoComplete="new-password"
-        value={newUser.password}
-        onChange={event => handleChange(event.target.value, 'password')}
+        onChange={handleChange}
         required
       />
       <Styled.InputGroup
         id="username"
+        name="username"
         label="닉네임"
         placeholder="2자 이상의 닉네임"
         autoComplete="nickname"
-        value={newUser.username}
-        onChange={event => handleChange(event.target.value, 'username')}
+        onChange={handleChange}
         required
       />
       <Styled.Notice>
