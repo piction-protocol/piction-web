@@ -46,6 +46,23 @@ function SignupForm() {
     username: '',
   });
 
+  const [errorMessage, setErrorMessage] = useState({
+    message: '',
+    cause: '',
+  });
+
+  // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/SignupErrors.kt
+  const errorStatusTable = {
+    4000: 'email',
+    4001: 'email',
+    4002: 'password',
+    4003: 'nickname',
+    4004: 'nickname',
+    4005: 'nickname',
+    4006: 'email',
+    5000: 'server',
+  };
+
   function handleChange(event) {
     const { name, value } = event.target;
     setUserData({ ...userData, [name]: value });
@@ -66,9 +83,12 @@ function SignupForm() {
       },
     }).then((response) => {
       storeAccessToken(response.data.accessToken);
+      window.location.href = '/';
     }).catch((error) => {
-      // 에러 메시지 처리
-      console.log(error);
+      setErrorMessage({
+        message: error.response.data.message,
+        cause: errorStatusTable[error.response.data.code],
+      });
     });
   };
 
@@ -81,10 +101,12 @@ function SignupForm() {
         id="email"
         name="email"
         label="이메일"
-        placeholder="이메일을 입력해주세요."
+        placeholder="이메일을 입력해주세요"
         autoComplete="email"
         onChange={handleChange}
         required
+        errorMessage={errorMessage.cause === 'email' && errorMessage.message}
+        invalid={errorMessage.cause === ('email' || 'server')}
       />
       <Styled.InputGroup
         id="password"
@@ -95,6 +117,8 @@ function SignupForm() {
         autoComplete="new-password"
         onChange={handleChange}
         required
+        errorMessage={errorMessage.cause === 'password' && errorMessage.message}
+        invalid={errorMessage.cause === ('password' || 'server')}
       />
       <Styled.InputGroup
         id="username"
@@ -104,6 +128,7 @@ function SignupForm() {
         autoComplete="nickname"
         onChange={handleChange}
         required
+        errorMessage={errorMessage.cause === ('nickname' || 'server') && errorMessage.message}
       />
       <Styled.Notice>
         Piction 베타 서비스는 테스트 용도로 운영되며,

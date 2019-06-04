@@ -27,8 +27,8 @@ const InputGroup = ({
   <Styled.Group className={className}>
     <Styled.Label htmlFor={id}>{label}</Styled.Label>
     {type === 'password'
-      ? <PasswordInput id={id} {...props} />
-      : <Input id={id} type={type} {...props} />
+      ? <PasswordInput id={id} invalid={!!errorMessage} {...props} />
+      : <Input id={id} type={type} invalid={!!errorMessage} {...props} />
     }
     {errorMessage && (
       <Styled.ErrorMessage>

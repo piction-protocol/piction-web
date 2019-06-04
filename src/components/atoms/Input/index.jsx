@@ -19,6 +19,8 @@ const Input = styled.input.attrs({
   &::placeholder {
     color: var(--gray--dark);
   }
+
+  ${({ invalid }) => invalid && 'border-color: var(--red)'};
 `;
 
 export default Input;

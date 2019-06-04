@@ -17,7 +17,7 @@ const Styled = {
     font-size: var(--font-size--small);
   `,
   Heading: styled(Heading)`
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     text-align: center;
   `,
   InputGroup: styled(InputGroup)`
@@ -54,6 +54,8 @@ function LoginForm() {
     password: '',
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setUserData({ ...userData, [name]: value });
@@ -74,9 +76,9 @@ function LoginForm() {
       },
     }).then((response) => {
       storeAccessToken(response.data.accessToken);
+      window.location.href = '/';
     }).catch((error) => {
-      // 에러 메시지 처리
-      console.log(error);
+      setErrorMessage(error.response.data.message);
     });
   };
 
@@ -93,6 +95,7 @@ function LoginForm() {
         autoComplete="email"
         required
         onChange={handleChange}
+        invalid={!!errorMessage}
       />
       <Styled.InputGroup
         id="password"
@@ -103,6 +106,7 @@ function LoginForm() {
         autoComplete="current-password"
         required
         onChange={handleChange}
+        errorMessage={errorMessage}
       />
       <Styled.RememberMe>
         <Styled.Checkbox />
