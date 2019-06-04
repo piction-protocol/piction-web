@@ -1,0 +1,23 @@
+---
+name: UserMenu
+menu: Molecules
+route: /user-menu/
+---
+
+import { Playground } from 'docz';
+
+import UserMenu from '/';
+
+# Checkbox
+
+## Basic Usage
+
+<Playground>
+  <UserMenu
+    links={[
+      {text: '내 정보', to: ''},
+      {text: '크리에이터 대시보드', to: ''},
+      {text: '새 프로젝트 만들기', to: ''},
+    ]}
+  />
+</Playground>
