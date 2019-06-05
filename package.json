@@ -73,7 +73,6 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.4.3",
-    "babel-plugin-styled-components": "^1.10.0",
     "docz": "^1.2.0",
     "docz-theme-default": "^1.2.0",
     "eslint-config-airbnb": "^17.1.0",

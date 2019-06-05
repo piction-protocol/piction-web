@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: var(--font-size--base);
     font-family: 'Noto Sans KR', sans-serif;
     line-height: var(--line-height--base);
+    vertical-align: middle;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -51,6 +52,13 @@ const GlobalStyle = createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  button {
+    appearance: none;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
   }
 
   h1,
@@ -73,6 +81,7 @@ const GlobalStyle = createGlobalStyle`
   *::before,
   *::after {
     box-sizing: inherit;
+    vertical-align: inherit;
   }
 `;
 
