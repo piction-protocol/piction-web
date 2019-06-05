@@ -27,6 +27,7 @@ const Styled = {
   Link: styled(Link)`
     color: var(--black);
     font-size: var(--font-size--small);
+    cursor: pointer;
     &:not(:last-child) {
       margin-bottom: 16px;
     }
@@ -34,10 +35,10 @@ const Styled = {
 };
 
 function UserMenu({
-  links, PXL,
+  links, PXL, className,
 }) {
   return (
-    <Dropdown>
+    <Dropdown className={className}>
       <Styled.Wallet>
         <Link to="/wallet">
           내 지갑
@@ -64,8 +65,10 @@ export default UserMenu;
 UserMenu.propTypes = {
   links: PropTypes.array.isRequired,
   PXL: PropTypes.number,
+  className: PropTypes.string,
 };
 
 UserMenu.defaultProps = {
   PXL: 0,
+  className: '',
 };
