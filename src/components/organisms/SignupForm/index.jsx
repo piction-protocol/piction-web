@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import useCurrentUser from 'hooks/useCurrentUser';
+
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton } from 'components/atoms/Button';
 
@@ -40,27 +42,19 @@ const Styled = {
 };
 
 function SignupForm() {
-  const [userData, setUserData] = useState({
-    email: '',
-    password: '',
-    username: '',
-  });
-
-  const [errorMessage, setErrorMessage] = useState({
-    message: '',
-    cause: '',
-  });
+  const [userData, setUserData] = useState({});
+  const [errorMessage, setErrorMessage] = useState({});
+  const { setAccessToken } = useCurrentUser();
 
   // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/SignupErrors.kt
   const errorStatusTable = {
     4000: 'email',
     4001: 'email',
     4002: 'password',
-    4003: 'nickname',
-    4004: 'nickname',
-    4005: 'nickname',
+    4003: 'username',
+    4004: 'username',
+    4005: 'username',
     4006: 'email',
-    5000: 'server',
   };
 
   function handleChange(event) {
@@ -68,28 +62,23 @@ function SignupForm() {
     setUserData({ ...userData, [name]: value });
   }
 
-  const storeAccessToken = (token) => {
-    sessionStorage.setItem('access-token', token);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios({
-      method: 'post',
-      url: 'http://api-iro.piction.network/users',
-      data: userData,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
-      storeAccessToken(response.data.accessToken);
-      window.location.href = '/';
-    }).catch((error) => {
-      setErrorMessage({
-        message: error.response.data.message,
-        cause: errorStatusTable[error.response.data.code],
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://api-iro.piction.network/users',
+        data: userData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-    });
+      setAccessToken(response.data.accessToken);
+    } catch (error) {
+      setErrorMessage({
+        [errorStatusTable[error.response.data.code]]: error.response.data.message,
+      });
+    }
   };
 
   return (
@@ -105,8 +94,7 @@ function SignupForm() {
         autoComplete="email"
         onChange={handleChange}
         required
-        errorMessage={errorMessage.cause === 'email' && errorMessage.message}
-        invalid={errorMessage.cause === ('email' || 'server')}
+        errorMessage={errorMessage.email}
       />
       <Styled.InputGroup
         id="password"
@@ -117,8 +105,7 @@ function SignupForm() {
         autoComplete="new-password"
         onChange={handleChange}
         required
-        errorMessage={errorMessage.cause === 'password' && errorMessage.message}
-        invalid={errorMessage.cause === ('password' || 'server')}
+        errorMessage={errorMessage.password}
       />
       <Styled.InputGroup
         id="username"
@@ -128,7 +115,7 @@ function SignupForm() {
         autoComplete="nickname"
         onChange={handleChange}
         required
-        errorMessage={errorMessage.cause === ('nickname' || 'server') && errorMessage.message}
+        errorMessage={errorMessage.username}
       />
       <Styled.Notice>
         Piction 베타 서비스는 테스트 용도로 운영되며,

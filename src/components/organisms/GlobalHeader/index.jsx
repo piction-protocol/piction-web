@@ -66,7 +66,7 @@ function GlobalHeader({ paths }) {
           <Styled.Logo />
         </Link>
         <Styled.Nav>
-          {currentUser ? (
+          {currentUser.email ? (
             <Styled.User>
               <Styled.Picture
                 src={currentUser.picture || DummyPicture}

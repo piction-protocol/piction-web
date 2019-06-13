@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 const CurrentUserContext = createContext([{}, () => {}]);
 
-const CurrentUserProvider = ({ value, children }) => {
-  const [state, setState] = useState({});
+const CurrentUserProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState({});
   return (
-    <CurrentUserContext.Provider value={[{ ...value, ...state }, setState]}>
+    <CurrentUserContext.Provider value={[currentUser, setCurrentUser]}>
       {children}
     </CurrentUserContext.Provider>
   );
@@ -15,10 +15,5 @@ const CurrentUserProvider = ({ value, children }) => {
 export { CurrentUserContext, CurrentUserProvider };
 
 CurrentUserProvider.propTypes = {
-  value: PropTypes.object,
   children: PropTypes.node.isRequired,
-};
-
-CurrentUserProvider.defaultProps = {
-  value: {},
 };

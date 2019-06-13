@@ -1,33 +1,41 @@
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 import { CurrentUserContext } from 'context/CurrentUserContext';
 
 function useCurrentUser() {
-  const [state, setState] = useContext(CurrentUserContext);
-
-  const getUser = async (token) => {
-    await axios.get('http://api-iro.piction.network/users/me', {
+  const [currentUser, setCurrentUser] = useContext(CurrentUserContext);
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+  const accessToken = cookies.access_token;
+  const getCurrentUser = useCallback(async () => {
+    const { data } = await axios.get('http://api-iro.piction.network/users/me', {
       headers: {
-        'X-Auth-Token': token,
+        'X-Auth-Token': accessToken,
       },
-    }).then((result) => {
-      setState(prevState => ({ ...prevState, currentUser: result.data.user }));
-    }).catch((error) => {
-      sessionStorage.removeItem('access-token');
-      console.log(error);
     });
-  };
+    try {
+      setCurrentUser({ ...data });
+    } catch (error) {
+      removeCookie('access_token');
+    }
+  }, [accessToken, removeCookie, setCurrentUser]);
 
   const logout = () => {
-    sessionStorage.removeItem('access-token');
-    setState(prevState => ({ ...prevState, currentUser: null }));
+    removeCookie('access_token');
+    setCurrentUser({});
+  };
+
+  const setAccessToken = (token) => {
+    setCookie('access_token', token);
   };
 
   return {
-    currentUser: state.currentUser,
-    getUser,
+    currentUser,
+    getCurrentUser,
     logout,
+    accessToken,
+    setAccessToken,
   };
 }
 

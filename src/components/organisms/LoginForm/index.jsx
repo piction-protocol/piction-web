@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Link } from '@reach/router';
 import axios from 'axios';
 
+import useCurrentUser from 'hooks/useCurrentUser';
+
 import Heading from 'components/atoms/Heading';
 import Checkbox from 'components/atoms/Checkbox';
 import { PrimaryButton } from 'components/atoms/Button';
@@ -49,37 +51,35 @@ const Styled = {
 };
 
 function LoginForm() {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState(() => ({
     email: '',
     password: '',
-  });
-
+  }));
   const [errorMessage, setErrorMessage] = useState('');
+  const { setAccessToken } = useCurrentUser();
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUserData({ ...userData, [name]: value });
+    const { target } = event;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const { name } = target;
+    setUserData(prevUserData => ({ ...prevUserData, [name]: value }));
   };
 
-  const storeAccessToken = (token) => {
-    sessionStorage.setItem('access-token', token);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios({
-      method: 'post',
-      url: 'http://api-iro.piction.network/sessions',
-      data: userData,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
-      storeAccessToken(response.data.accessToken);
-      window.location.href = '/';
-    }).catch((error) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://api-iro.piction.network/sessions',
+        data: userData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setAccessToken(response.data.accessToken);
+    } catch (error) {
       setErrorMessage(error.response.data.message);
-    });
+    }
   };
 
   return (
@@ -95,6 +95,7 @@ function LoginForm() {
         autoComplete="email"
         required
         onChange={handleChange}
+        value={userData.email}
         invalid={!!errorMessage}
       />
       <Styled.InputGroup
@@ -106,10 +107,15 @@ function LoginForm() {
         autoComplete="current-password"
         required
         onChange={handleChange}
+        value={userData.password}
         errorMessage={errorMessage}
       />
       <Styled.RememberMe>
-        <Styled.Checkbox />
+        <Styled.Checkbox
+          name="rememberme"
+          onChange={handleChange}
+          checked={userData.rememberme}
+        />
         로그인 상태 유지
       </Styled.RememberMe>
       <Styled.Submit
