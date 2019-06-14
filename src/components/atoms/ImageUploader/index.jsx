@@ -51,8 +51,8 @@ const Styled = {
   `,
 };
 
-function ImageUploader({ onChange, className }) {
-  const [image, setImage] = useState('');
+function ImageUploader({ onChange, className, defaultImage }) {
+  const [image, setImage] = useState(defaultImage);
   const { accessToken } = useCurrentUser();
 
   const handleChange = (event) => {
@@ -96,10 +96,12 @@ function ImageUploader({ onChange, className }) {
 ImageUploader.propTypes = {
   className: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  defaultImage: PropTypes.string,
 };
 
 ImageUploader.defaultProps = {
   className: '',
+  defaultImage: '',
 };
 
 export default ImageUploader;
