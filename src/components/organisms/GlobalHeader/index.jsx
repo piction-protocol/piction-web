@@ -5,6 +5,7 @@ import { Link } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
+import { PrimaryButton } from 'components/atoms/Button';
 import UserMenu from 'components/molecules/UserMenu';
 
 import { ReactComponent as Logo } from 'images/piction-logo.svg';
@@ -32,19 +33,25 @@ const Styled = {
     > *:not(:last-child) {
       margin-right: 32px;
     }
+    display: flex;
+    align-items: center;
     margin-left: auto;
   `,
-  Link: styled(Link)`
-    color: var(--gray--dark);
+  Login: styled(Link)`
+    color: var(--black);
+    font-size: var(--font-size--small);
   `,
   User: styled.div`
     display: flex;
     position: relative;
   `,
-  Picture: styled.img`
+  Picture: styled.div`
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    background-image: url(${({ src }) => src});
+    background-position: center;
+    background-size: cover;
     cursor: pointer;
   `,
   UserMenu: styled(UserMenu)`
@@ -75,7 +82,7 @@ function GlobalHeader({ paths }) {
               {isMenuOpened && (
                 <Styled.UserMenu
                   links={[
-                    { text: '내 정보', to: '' },
+                    { text: '내 정보', to: '/my' },
                     { text: '크리에이터 대시보드', to: '' },
                     { text: '새 프로젝트 만들기', to: '' },
                     { text: '로그아웃', as: 'button', onClick: () => (logout()) },
@@ -85,12 +92,14 @@ function GlobalHeader({ paths }) {
             </Styled.User>
           ) : (
             <>
-              <Styled.Link to={paths.login}>
+              <Styled.Login to={paths.login}>
                 로그인
-              </Styled.Link>
-              <Styled.Link to={paths.signup}>
-                회원가입
-              </Styled.Link>
+              </Styled.Login>
+              <Link to={paths.signup}>
+                <PrimaryButton size="mini">
+                  회원가입
+                </PrimaryButton>
+              </Link>
             </>
           )}
         </Styled.Nav>
