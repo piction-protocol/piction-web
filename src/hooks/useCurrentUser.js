@@ -2,6 +2,8 @@ import { useContext, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
+import DefaultPicture from 'images/img-user-profile.svg';
+
 import { CurrentUserContext } from 'context/CurrentUserContext';
 
 function useCurrentUser() {
@@ -15,25 +17,37 @@ function useCurrentUser() {
       },
     });
     try {
-      setCurrentUser({ ...data });
+      setCurrentUser({
+        ...data,
+        picture: data.picture || DefaultPicture,
+      });
     } catch (error) {
+      setCurrentUser({});
       removeCookie('access_token');
     }
   }, [accessToken, removeCookie, setCurrentUser]);
 
-  const logout = () => {
-    removeCookie('access_token');
+  const deleteSession = useCallback(async () => {
+    await axios.delete('http://api-iro.piction.network/sessions', {
+      headers: {
+        'X-Auth-Token': accessToken,
+      },
+    });
     setCurrentUser({});
-  };
+    removeCookie('access_token');
+  }, [accessToken, removeCookie, setCurrentUser]);
 
   const setAccessToken = (token, options = {}) => {
-    setCookie('access_token', token, options);
+    setCookie('access_token', token, {
+      path: '/',
+      ...options,
+    });
   };
 
   return {
     currentUser,
     getCurrentUser,
-    logout,
+    deleteSession,
     accessToken,
     setAccessToken,
   };

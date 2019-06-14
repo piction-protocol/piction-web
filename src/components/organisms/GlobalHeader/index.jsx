@@ -9,7 +9,6 @@ import { PrimaryButton } from 'components/atoms/Button';
 import UserMenu from 'components/molecules/UserMenu';
 
 import { ReactComponent as Logo } from 'images/piction-logo.svg';
-import DummyPicture from 'images/img-picture-dummy.png';
 
 const Styled = {
   Header: styled.header`
@@ -64,7 +63,7 @@ const Styled = {
 
 function GlobalHeader({ paths }) {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
-  const { currentUser, logout } = useCurrentUser();
+  const { currentUser, deleteSession } = useCurrentUser();
 
   return (
     <Styled.Header>
@@ -76,16 +75,16 @@ function GlobalHeader({ paths }) {
           {currentUser.email ? (
             <Styled.User>
               <Styled.Picture
-                src={currentUser.picture || DummyPicture}
+                src={currentUser.picture}
                 onClick={() => setIsMenuOpened(prevState => !prevState)}
               />
               {isMenuOpened && (
                 <Styled.UserMenu
                   links={[
-                    { text: '내 정보', to: '/my' },
+                    { text: '내 정보', to: '/my/info' },
                     { text: '크리에이터 대시보드', to: '' },
                     { text: '새 프로젝트 만들기', to: '' },
-                    { text: '로그아웃', as: 'button', onClick: () => (logout()) },
+                    { text: '로그아웃', as: 'button', onClick: () => (deleteSession()) },
                   ]}
                 />
               )}

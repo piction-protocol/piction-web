@@ -7,7 +7,6 @@ const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({
     email: '',
     username: '',
-    picture: null,
     createdAt: '',
   });
   return (
