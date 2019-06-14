@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import GlobalHeader from 'components/organisms/GlobalHeader';
-import GlobalFooter from 'components/organisms/GlobalFooter';
-
 const Main = styled.main.attrs({
   role: 'main',
 })`
@@ -28,15 +25,11 @@ const Container = styled.div`
 const CompactTemplate = ({
   children,
 }) => (
-  <>
-    <GlobalHeader />
-    <Main>
-      <Container>
-        {children}
-      </Container>
-    </Main>
-    <GlobalFooter />
-  </>
+  <Main>
+    <Container>
+      {children}
+    </Container>
+  </Main>
 );
 
 CompactTemplate.propTypes = {
