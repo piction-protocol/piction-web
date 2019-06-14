@@ -54,14 +54,15 @@ function LoginForm() {
   const [userData, setUserData] = useState(() => ({
     email: '',
     password: '',
+    rememberme: false,
   }));
   const [errorMessage, setErrorMessage] = useState('');
   const { setAccessToken } = useCurrentUser();
 
   const handleChange = (event) => {
     const { target } = event;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
     const { name } = target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     setUserData(prevUserData => ({ ...prevUserData, [name]: value }));
   };
 
@@ -76,7 +77,9 @@ function LoginForm() {
           'Content-Type': 'application/json',
         },
       });
-      setAccessToken(response.data.accessToken);
+      setAccessToken(response.data.accessToken, userData.rememberme && {
+        expires: new Date('2099-12-31T23:59:59'),
+      });
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }

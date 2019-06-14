@@ -26,8 +26,8 @@ function useCurrentUser() {
     setCurrentUser({});
   };
 
-  const setAccessToken = (token) => {
-    setCookie('access_token', token);
+  const setAccessToken = (token, options = {}) => {
+    setCookie('access_token', token, options);
   };
 
   return {
