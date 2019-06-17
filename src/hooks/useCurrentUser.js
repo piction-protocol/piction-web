@@ -11,12 +11,12 @@ function useCurrentUser() {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const accessToken = cookies.access_token;
   const getCurrentUser = useCallback(async () => {
-    const { data } = await axios.get('http://api-iro.piction.network/users/me', {
-      headers: {
-        'X-Auth-Token': accessToken,
-      },
-    });
     try {
+      const { data } = await axios.get('http://api-iro.piction.network/users/me', {
+        headers: {
+          'X-Auth-Token': accessToken,
+        },
+      });
       setCurrentUser({
         ...data,
         picture: data.picture || DefaultPicture,
