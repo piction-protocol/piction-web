@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import useCurrentUser from 'hooks/useCurrentUser';
-
 const Styled = {
   Section: styled.section`
     display: flex;
@@ -38,16 +36,19 @@ const Styled = {
   `,
 };
 
-function UserInfo({ description, children }) {
-  const { currentUser } = useCurrentUser();
-
+function UserInfo({
+  picture,
+  username,
+  description,
+  children,
+}) {
   return (
     <Styled.Section>
       <Styled.Wrapper>
-        <Styled.Picture src={currentUser.picture} />
+        <Styled.Picture src={picture} />
         <div>
           <Styled.Name>
-            {currentUser.username}
+            {username}
           </Styled.Name>
           <Styled.Description>
             {description}
@@ -64,12 +65,15 @@ function UserInfo({ description, children }) {
 }
 
 UserInfo.propTypes = {
+  picture: PropTypes.string,
+  username: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   children: PropTypes.node,
 };
 
 UserInfo.defaultProps = {
-  children: '',
+  picture: '',
+  children: null,
 };
 
 export default UserInfo;

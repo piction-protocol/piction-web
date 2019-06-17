@@ -2,6 +2,8 @@ import React from 'react';
 import { Router } from '@reach/router';
 import styled from 'styled-components';
 
+import useCurrentUser from 'hooks/useCurrentUser';
+
 import GridTemplate from 'components/templates/GridTemplate';
 import UpdateUserForm from 'components/organisms/UpdateUserForm';
 import UpdatePasswordForm from 'components/organisms/UpdatePasswordForm';
@@ -16,11 +18,16 @@ const Styled = {
 };
 
 function MyPage() {
+  const { currentUser } = useCurrentUser();
+  const createdDate = new Date(currentUser.createdAt);
+
   return (
     <GridTemplate
       hero={(
         <UserInfo
-          description="가입일: ~~~"
+          username={currentUser.username}
+          picture={currentUser.picture}
+          description={`가입일: ${createdDate.getFullYear()}년 ${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`}
         />
       )}
     >

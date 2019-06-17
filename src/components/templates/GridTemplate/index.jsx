@@ -14,17 +14,16 @@ const Container = styled.div`
   padding: var(--gap);
 `;
 
-const GridTemplate = ({
-  hero,
-  children,
-}) => (
-  <Main>
-    {hero}
-    <Container>
-      {children}
-    </Container>
-  </Main>
-);
+function GridTemplate({ hero, children }) {
+  return (
+    <Main>
+      {hero}
+      <Container>
+        {children}
+      </Container>
+    </Main>
+  );
+}
 
 GridTemplate.propTypes = {
   children: PropTypes.node.isRequired,
