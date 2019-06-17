@@ -5,15 +5,16 @@ import styled from 'styled-components';
 const Styled = {
   Section: styled.section`
     display: flex;
-    align-items: center;
-    padding: 40px var(--gap);
     background-color: var(--gray--light);
   `,
   Wrapper: styled.div`
     display: flex;
     flex: 1;
     flex-flow: row wrap;
+    align-items: center;
     max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 40px var(--gap);
   `,
   Picture: styled.div`
     width: 85px;
@@ -67,12 +68,13 @@ function UserInfo({
 UserInfo.propTypes = {
   picture: PropTypes.string,
   username: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   children: PropTypes.node,
 };
 
 UserInfo.defaultProps = {
   picture: '',
+  description: '',
   children: null,
 };
 

@@ -8,7 +8,7 @@ const Main = styled.main.attrs({
   flex: 1;
 `;
 
-const Container = styled.div`
+const Container = styled.section`
   max-width: var(--max-width);
   margin: 0 auto;
   padding: var(--gap);

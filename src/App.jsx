@@ -11,6 +11,7 @@ import HomePage from 'pages/HomePage';
 import LoginPage from 'pages/LoginPage';
 import SignupPage from 'pages/SignupPage';
 import MyPage from 'pages/MyPage';
+import WalletPage from 'pages/WalletPage';
 
 const NotFound = () => (
   <div style={{
@@ -42,6 +43,7 @@ function App() {
         <LoginPage path="login" />
         <SignupPage path="signup" />
         <MyPage path="my/*" />
+        <WalletPage path="wallet" />
         <NotFound default />
       </StyledRouter>
       <GlobalFooter />
