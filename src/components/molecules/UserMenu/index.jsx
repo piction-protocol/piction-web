@@ -44,7 +44,7 @@ function UserMenu({
           내 지갑
         </Link>
         <Styled.PXL>
-          {`${PXL} PXL`}
+          {`${PXL.toLocaleString()} PXL`}
         </Styled.PXL>
       </Styled.Wallet>
       <Styled.Links>

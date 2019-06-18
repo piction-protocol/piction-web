@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
+import useWallet from 'hooks/useWallet';
 
 import { PrimaryButton } from 'components/atoms/Button';
 import UserMenu from 'components/molecules/UserMenu';
@@ -64,6 +65,7 @@ const Styled = {
 function GlobalHeader({ paths }) {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
+  const [wallet] = useWallet();
 
   return (
     <Styled.Header>
@@ -72,7 +74,7 @@ function GlobalHeader({ paths }) {
           <Styled.Logo />
         </Link>
         <Styled.Nav>
-          {currentUser.email ? (
+          {currentUser ? (
             <Styled.User>
               <Styled.Picture
                 src={currentUser.picture}
@@ -80,6 +82,7 @@ function GlobalHeader({ paths }) {
               />
               {isMenuOpened && (
                 <Styled.UserMenu
+                  PXL={wallet.amount}
                   links={[
                     { text: '내 정보', to: '/my/info' },
                     { text: '크리에이터 대시보드', to: '' },
