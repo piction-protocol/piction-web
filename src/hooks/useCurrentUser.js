@@ -22,7 +22,7 @@ function useCurrentUser() {
         picture: data.picture || DefaultPicture,
       });
     } catch (error) {
-      setCurrentUser({});
+      setCurrentUser(null);
       removeCookie('access_token');
     }
   }, [accessToken, removeCookie, setCurrentUser]);
