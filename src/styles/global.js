@@ -28,6 +28,13 @@ const GlobalStyle = createGlobalStyle`
     --transition--form: 200ms ease;
   }
 
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+    vertical-align: inherit;
+  }
+
   html, body {
     height: 100%;
   }
@@ -40,13 +47,6 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: middle;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  .root {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-    min-height: 100vh;
   }
 
   a {
@@ -77,11 +77,16 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-    vertical-align: inherit;
+  .root {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    min-height: 100vh;
+  }
+
+  [role="group"] {
+    display: flex;
+    flex: 1;
   }
 `;
 
