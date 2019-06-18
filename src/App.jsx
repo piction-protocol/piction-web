@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Router } from '@reach/router';
-import styled from 'styled-components';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
 
-import HomePage from 'pages/HomePage';
-import LoginPage from 'pages/LoginPage';
-import SignupPage from 'pages/SignupPage';
-import MyPage from 'pages/MyPage';
-import WalletPage from 'pages/WalletPage';
+const HomePage = React.lazy(() => import('pages/HomePage'));
+const LoginPage = React.lazy(() => import('pages/LoginPage'));
+const SignupPage = React.lazy(() => import('pages/SignupPage'));
+const MyPage = React.lazy(() => import('pages/MyPage'));
+const WalletPage = React.lazy(() => import('pages/WalletPage'));
 
 const NotFound = () => (
   <div style={{
@@ -24,11 +23,6 @@ const NotFound = () => (
   </div>
 );
 
-const StyledRouter = styled(Router)`
-  display: flex;
-  flex: 1;
-`;
-
 function App() {
   const { getCurrentUser } = useCurrentUser();
   useEffect(() => {
@@ -38,14 +32,16 @@ function App() {
   return (
     <div className="root">
       <GlobalHeader />
-      <StyledRouter>
-        <HomePage path="/" />
-        <LoginPage path="login" />
-        <SignupPage path="signup" />
-        <MyPage path="my/*" />
-        <WalletPage path="wallet" />
-        <NotFound default />
-      </StyledRouter>
+      <Router>
+        <Suspense path="/" fallback={<div>Loading</div>}>
+          <HomePage path="/" />
+          <LoginPage path="login" />
+          <SignupPage path="signup" />
+          <MyPage path="my/*" />
+          <WalletPage path="wallet" />
+          <NotFound default />
+        </Suspense>
+      </Router>
       <GlobalFooter />
     </div>
   );
