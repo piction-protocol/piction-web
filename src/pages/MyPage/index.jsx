@@ -36,8 +36,8 @@ function MyPage() {
       </Styled.Heading>
       <Tabs
         links={[
-          { text: '기본 정보', to: '/my/info' },
-          { text: '비밀번호 변경', to: '/my/password' },
+          { text: '기본 정보', to: 'info' },
+          { text: '비밀번호 변경', to: 'password' },
         ]}
       />
       <Router primary={false}>
