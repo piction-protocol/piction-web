@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import GridTemplate from 'components/templates/GridTemplate';
-import UpdateUserForm from 'components/organisms/UpdateUserForm';
-import UpdatePasswordForm from 'components/organisms/UpdatePasswordForm';
 import UserInfo from 'components/organisms/UserInfo';
 import Tabs from 'components/molecules/Tabs';
 import Heading from 'components/atoms/Heading';
+
+const UpdateUserForm = React.lazy(() => import('components/organisms/UpdateUserForm'));
+const UpdatePasswordForm = React.lazy(() => import('components/organisms/UpdatePasswordForm'));
 
 const Styled = {
   Heading: styled(Heading)`
