@@ -12,7 +12,6 @@ const Checkbox = styled.input.attrs({
   background-color: var(--white);
   background-image: url(${CheckIcon});
   background-size: cover;
-  outline: none;
   transition: background-color var(--transition--form);
 
   &:checked {

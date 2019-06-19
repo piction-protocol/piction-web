@@ -40,7 +40,6 @@ function Tabs({
         text, ...link
       }) => (
         <Styled.Tab
-          getProps={({ isCurrent }) => (isCurrent ? { 'aria-current': 'active' } : null)}
           key={text}
           {...link}
         >

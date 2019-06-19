@@ -45,7 +45,7 @@ const Styled = {
     display: flex;
     position: relative;
   `,
-  Picture: styled.div`
+  Toggle: styled.button`
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -76,7 +76,7 @@ function GlobalHeader({ paths }) {
         <Styled.Nav>
           {currentUser ? (
             <Styled.User>
-              <Styled.Picture
+              <Styled.Toggle
                 src={currentUser.picture}
                 onClick={() => setIsMenuOpened(prevState => !prevState)}
               />
@@ -85,8 +85,8 @@ function GlobalHeader({ paths }) {
                   PXL={wallet.amount}
                   links={[
                     { text: '내 정보', to: '/my/info' },
-                    { text: '크리에이터 대시보드', to: '' },
-                    { text: '새 프로젝트 만들기', to: '' },
+                    { text: '크리에이터 대시보드', to: '/dashboard' },
+                    { text: '새 프로젝트 만들기', to: '/dashboard/new-project' },
                     { text: '로그아웃', as: 'button', onClick: () => (deleteSession()) },
                   ]}
                 />
