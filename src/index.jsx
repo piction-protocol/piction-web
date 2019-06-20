@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 import { CurrentUserProvider } from 'context/CurrentUserContext';
 
-import GlobalStyle from 'styles/global';
+import GlobalStyle from 'styles/GlobalStyle';
 
 import App from './App';
 

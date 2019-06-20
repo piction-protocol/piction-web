@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import GlobalStyle from 'styles/global';
+import GlobalStyle from 'styles/GlobalStyle';
 
 const Wrapper = ({ children }) => (
-  <React.Fragment>
+  <>
     <GlobalStyle />
     {children}
-  </React.Fragment>
+  </>
 );
 
 export default Wrapper;
