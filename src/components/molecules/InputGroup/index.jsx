@@ -13,6 +13,7 @@ const Styled = {
   Label: styled.label`
     margin-bottom: 8px;
     font-size: var(--font-size--small);
+    font-weight: bold;
   `,
   ErrorMessage: styled.p`
     margin: 8px 0 0;
@@ -22,14 +23,14 @@ const Styled = {
 };
 
 function InputGroup({
-  id, label, errorMessage, className, type, ...props
+  name, label, errorMessage, className, type, ...props
 }) {
   return (
     <Styled.Group className={className}>
-      <Styled.Label htmlFor={id}>{label}</Styled.Label>
+      <Styled.Label htmlFor={name}>{label}</Styled.Label>
       {type === 'password'
-        ? <PasswordInput id={id} invalid={!!errorMessage} {...props} />
-        : <Input id={id} type={type} invalid={!!errorMessage} {...props} />
+        ? <PasswordInput id={name} name={name} invalid={!!errorMessage} {...props} />
+        : <Input id={name} name={name} type={type} invalid={!!errorMessage} {...props} />
       }
       {errorMessage && (
         <Styled.ErrorMessage>
@@ -41,14 +42,15 @@ function InputGroup({
 }
 
 InputGroup.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.node.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.node,
   errorMessage: PropTypes.string,
   className: PropTypes.string,
   type: PropTypes.string,
 };
 
 InputGroup.defaultProps = {
+  label: '',
   errorMessage: '',
   className: '',
   type: 'text',

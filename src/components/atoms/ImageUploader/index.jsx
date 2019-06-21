@@ -5,7 +5,6 @@ import axios from 'axios';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
-import DefaultImage from 'images/img-user-profile.svg';
 import AddIcon from 'images/ic-add.svg';
 import DeleteIcon from 'images/ic-delete.svg';
 
@@ -14,10 +13,13 @@ const Styled = {
     display: flex;
     position: relative;
     width: 190px;
-    height: 190px;
-    background-image: url(${({ image }) => image || DefaultImage});
+    background-image: url(${({ image }) => image});
     background-size: cover;
     background-position: center;
+    &::after {
+      content: '';
+      padding-top: ${({ ratio }) => 1 / ratio * 100}%;
+    }
   `,
   Input: styled.input`
     display: none;
@@ -51,57 +53,72 @@ const Styled = {
   `,
 };
 
-function ImageUploader({ onChange, className, defaultImage }) {
+function ImageUploader({
+  name,
+  onChange,
+  url,
+  backgroundImage,
+  defaultImage,
+  ratio,
+  className,
+  ...props
+}) {
   const [image, setImage] = useState(defaultImage);
   const { accessToken } = useCurrentUser();
 
-  const handleChange = (event) => {
-    const formData = new FormData();
-    formData.append('file', event.target.files[0]);
-    axios({
-      method: 'patch',
-      url: 'http://api-iro.piction.network/users/me/picture',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'X-Auth-Token': accessToken,
-      },
-    }).then((response) => {
+  const handleChange = async (event) => {
+    const data = new FormData();
+    try {
+      await data.append('file', event.target.files[0]);
+      const response = await axios.patch(url, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'X-Auth-Token': accessToken,
+        },
+      });
       setImage(response.data.url);
-      onChange({ target: { name: 'picture', value: response.data.id } });
-    }).catch((error) => {
+      onChange({ target: { name, value: response.data.id } });
+    } catch (error) {
       console.log(error);
-    });
+    }
   };
 
   return (
     <Styled.Wrapper
-      image={image}
+      image={image || backgroundImage}
+      ratio={ratio}
       className={className}
     >
       <Styled.Input
-        id="user-picture"
+        id={name}
         type="file"
         onChange={handleChange}
         accept="image/jpeg, image/png"
+        {...props}
       />
       {image
         ? <Styled.Delete onClick={() => setImage()} />
-        : <Styled.Add htmlFor="user-picture" />
+        : <Styled.Add htmlFor={name} />
       }
     </Styled.Wrapper>
   );
 }
 
 ImageUploader.propTypes = {
-  className: PropTypes.string,
+  name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  url: PropTypes.string.isRequired,
   defaultImage: PropTypes.string,
+  backgroundImage: PropTypes.string,
+  ratio: PropTypes.number,
+  className: PropTypes.string,
 };
 
 ImageUploader.defaultProps = {
-  className: '',
   defaultImage: '',
+  backgroundImage: '',
+  ratio: 1,
+  className: '',
 };
 
 export default ImageUploader;
