@@ -88,13 +88,13 @@ function ImageUploader({
       image={image || backgroundImage}
       ratio={ratio}
       className={className}
+      {...props}
     >
       <Styled.Input
         id={name}
         type="file"
         onChange={handleChange}
         accept="image/jpeg, image/png"
-        {...props}
       />
       {image
         ? <Styled.Delete onClick={() => setImage()} />

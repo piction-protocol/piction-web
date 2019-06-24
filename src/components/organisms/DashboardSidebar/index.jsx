@@ -56,7 +56,7 @@ const Styled = {
   `,
 };
 
-function DashboardSidebar() {
+function DashboardSidebar(props) {
   const { currentUser, accessToken } = useCurrentUser();
   const [projects, setProjects] = useState([]);
   const [selected, setSelected] = useState('');
@@ -79,7 +79,7 @@ function DashboardSidebar() {
   }, [accessToken]);
 
   return (
-    <Styled.Sidebar>
+    <Styled.Sidebar {...props}>
       <Styled.Header>
         <Styled.Title>크리에이터 대시보드</Styled.Title>
         <Styled.Name>{currentUser.username}</Styled.Name>
@@ -104,7 +104,7 @@ function DashboardSidebar() {
           )}
         </React.Fragment>
       ))}
-      <Styled.Button as={Link} to="dashboard/new-project">
+      <Styled.Button as={Link} to="new-project">
         새 프로젝트 만들기
       </Styled.Button>
     </Styled.Sidebar>

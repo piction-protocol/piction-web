@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Router } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -11,6 +11,7 @@ const LoginPage = React.lazy(() => import('pages/LoginPage'));
 const SignupPage = React.lazy(() => import('pages/SignupPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const WalletPage = React.lazy(() => import('pages/WalletPage'));
+const Dashboard = React.lazy(() => import('pages/Dashboard'));
 
 const NotFound = () => (
   <div style={{
@@ -25,24 +26,38 @@ const NotFound = () => (
 
 function App() {
   const { getCurrentUser } = useCurrentUser();
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
-    getCurrentUser();
+    async function loading() {
+      await getCurrentUser();
+      await setIsLoaded(true);
+    }
+
+    loading();
   }, [getCurrentUser]);
 
   return (
     <div className="root">
-      <GlobalHeader />
-      <Router>
-        <Suspense path="/" fallback={<div>Loading</div>}>
-          <HomePage path="/" />
-          <LoginPage path="login" />
-          <SignupPage path="signup" />
-          <MyPage path="my/*" />
-          <WalletPage path="wallet" />
-          <NotFound default />
-        </Suspense>
-      </Router>
-      <GlobalFooter />
+      {isLoaded && (
+        <>
+          <GlobalHeader />
+          <Router>
+            <Suspense path="/" fallback={<div>Loading</div>}>
+              <HomePage path="/" />
+              <LoginPage path="login" />
+              <SignupPage path="signup" />
+              <WalletPage path="wallet" />
+
+              <MyPage path="my/*" />
+              <Dashboard path="dashboard/*" />
+
+              <NotFound default />
+            </Suspense>
+          </Router>
+          <GlobalFooter />
+        </>
+      )}
     </div>
   );
 }
