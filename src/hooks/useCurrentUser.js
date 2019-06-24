@@ -33,7 +33,7 @@ function useCurrentUser() {
         'X-Auth-Token': accessToken,
       },
     });
-    setCurrentUser({});
+    setCurrentUser(null);
     removeCookie('access_token');
   }, [accessToken, removeCookie, setCurrentUser]);
 

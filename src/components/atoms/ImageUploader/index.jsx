@@ -32,7 +32,7 @@ const Styled = {
     left: 0;
     background-color: rgba(0, 0, 0, .1);
     background-image: url(${AddIcon});
-    background-size: 72px;
+    background-size: 48px;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
