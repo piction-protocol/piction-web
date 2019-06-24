@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
 
     --max-width: 1280px;
     --gap: 20px;
+    --row-gap: 24px;
 
     --transition--form: 200ms ease;
   }
