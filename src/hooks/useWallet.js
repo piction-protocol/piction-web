@@ -9,7 +9,7 @@ function useWallet() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get('http://api-iro.piction.network/my-wallet', {
+        const { data } = await axios.get('http://api-iro.piction.network/my/wallet', {
           headers: {
             'X-Auth-Token': accessToken,
           },
