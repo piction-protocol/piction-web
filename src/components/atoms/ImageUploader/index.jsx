@@ -6,7 +6,7 @@ import axios from 'axios';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import AddIcon from 'images/ic-add.svg';
-import DeleteIcon from 'images/ic-delete.svg';
+import CancelIcon from 'images/ic-cancel.svg';
 
 const Styled = {
   Wrapper: styled.div`
@@ -37,7 +37,7 @@ const Styled = {
     background-repeat: no-repeat;
     cursor: pointer;
   `,
-  Delete: styled.button`
+  Cancel: styled.button`
     position: absolute;
     z-index: 1;
     top: 0;
@@ -45,7 +45,7 @@ const Styled = {
     width: 40px;
     height: 40px;
     background-color: var(--black);
-    background-image: url(${DeleteIcon});
+    background-image: url(${CancelIcon});
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -97,7 +97,7 @@ function ImageUploader({
         accept="image/jpeg, image/png"
       />
       {image
-        ? <Styled.Delete onClick={() => setImage()} />
+        ? <Styled.Cancel onClick={() => setImage()} />
         : <Styled.Add htmlFor={name} />
       }
     </Styled.Wrapper>
