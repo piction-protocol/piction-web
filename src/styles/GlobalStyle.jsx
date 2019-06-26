@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
     --font-size--small: 14px;
 
     --line-height--base: normal;
-    --line-height--contents: 1.72;
+    --line-height--contents: 1.75;
 
     --max-width: 1280px;
     --gap: 20px;
@@ -33,7 +33,6 @@ const GlobalStyle = createGlobalStyle`
   *::before,
   *::after {
     box-sizing: inherit;
-    vertical-align: inherit;
   }
 
   html, body {
@@ -45,7 +44,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: var(--font-size--base);
     font-family: 'Noto Sans KR', sans-serif;
     line-height: var(--line-height--base);
-    vertical-align: middle;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
