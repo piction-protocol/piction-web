@@ -18,11 +18,6 @@ const Styled = {
     font-size: var(--font-size--large);
     font-weight: bold;
   `,
-  ELE: styled.p`
-    color: var(--gray--dark);
-    font-weight: bold;
-    text-align: right;
-  `,
 };
 
 function WalletPage() {
@@ -41,9 +36,6 @@ function WalletPage() {
             <Styled.PXL>
               {wallet.amount && `${wallet.amount.toLocaleString()} PXL`}
             </Styled.PXL>
-            <Styled.ELE>
-              123.4 ELE
-            </Styled.ELE>
           </div>
         </UserInfo>
       )}
