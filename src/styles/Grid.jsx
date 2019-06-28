@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
@@ -11,10 +11,18 @@ const Container = styled.div`
   row-gap: var(--row-gap);
 `;
 
+const Item = styled(({ children, className }) => cloneElement(React.Children.only(children), {
+  className: `${children.props.className || ''} ${className}`,
+}))`
+  grid-column: span ${({ columns }) => columns};
+`;
+
 const Grid = ({ columns, children }) => (
   <Container columns={columns}>
-    {children.map(child => (
-      child
+    {Children.map(children, child => (
+      <Item columns={child.props.columns || columns}>
+        {child}
+      </Item>
     ))}
   </Container>
 );

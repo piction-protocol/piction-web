@@ -17,11 +17,16 @@ function useAPI() {
   const post = projectId => ({
     getAll: params => API.get(`/projects/${projectId}/posts`, params),
     create: params => API.post(`/projects/${projectId}/posts`, params),
+    getPost: params => API.get(`/projects/${projectId}/posts/${params.postId}`),
     uploadContentImage: params => API.patch(`/projects/${projectId}/posts/content`, params, patchConfig),
     uploadCoverImage: params => API.patch(`/projects/${projectId}/posts/cover`, params, patchConfig),
   });
 
-  return [{ post }];
+  const series = projectId => ({
+    getAll: () => API.get(`/projects/${projectId}/series`),
+  });
+
+  return [{ post, series }];
 }
 
 export default useAPI;

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import axios from 'axios';
-
-import useCurrentUser from 'hooks/useCurrentUser';
 
 import AddIcon from 'images/ic-add.svg';
 import CancelIcon from 'images/ic-cancel.svg';
@@ -12,7 +9,6 @@ const Styled = {
   Wrapper: styled.div`
     display: flex;
     position: relative;
-    width: 190px;
     background-image: url(${({ image }) => image});
     background-size: cover;
     background-position: center;
@@ -56,7 +52,7 @@ const Styled = {
 function ImageUploader({
   name,
   onChange,
-  url,
+  uploadAPI,
   backgroundImage,
   defaultImage,
   ratio,
@@ -64,18 +60,12 @@ function ImageUploader({
   ...props
 }) {
   const [image, setImage] = useState(defaultImage);
-  const { accessToken } = useCurrentUser();
 
   const handleChange = async (event) => {
     const data = new FormData();
+    data.append('file', event.target.files[0]);
     try {
-      await data.append('file', event.target.files[0]);
-      const response = await axios.patch(url, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-Auth-Token': accessToken,
-        },
-      });
+      const response = await uploadAPI(data);
       setImage(response.data.url);
       onChange({ target: { name, value: response.data.id } });
     } catch (error) {
@@ -107,7 +97,7 @@ function ImageUploader({
 ImageUploader.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  url: PropTypes.string.isRequired,
+  uploadAPI: PropTypes.func.isRequired,
   defaultImage: PropTypes.string,
   backgroundImage: PropTypes.string,
   ratio: PropTypes.number,

@@ -27,7 +27,9 @@ function InputGroup({
 }) {
   return (
     <Styled.Group className={className}>
-      <Styled.Label htmlFor={name}>{label}</Styled.Label>
+      {label && (
+        <Styled.Label htmlFor={name}>{label}</Styled.Label>
+      )}
       {type === 'password'
         ? <PasswordInput id={name} name={name} invalid={!!errorMessage} {...props} />
         : <Input id={name} name={name} type={type} invalid={!!errorMessage} {...props} />
@@ -50,9 +52,9 @@ InputGroup.propTypes = {
 };
 
 InputGroup.defaultProps = {
-  label: '',
-  errorMessage: '',
-  className: '',
+  label: null,
+  errorMessage: null,
+  className: null,
   type: 'text',
 };
 

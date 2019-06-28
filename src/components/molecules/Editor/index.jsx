@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components';
@@ -52,7 +52,11 @@ const Styled = {
     ${ContentStyle}
 
     .ql-editor {
+      min-height: 320px;
+      max-height: 80vh;
       padding: 24px;
+      background-color: var(--white);
+      overflow-y: scroll;
 
       &.ql-blank::before {
         content: attr(data-placeholder);
@@ -64,6 +68,7 @@ const Styled = {
 
     .ql-clipboard {
       left: -100%;
+      width: 1px;
       height: 1px;
       overflow-y: hidden;
       position: absolute;
@@ -72,7 +77,12 @@ const Styled = {
   `,
 };
 
-function Editor({ projectId }) {
+function Editor({
+  projectId,
+  value,
+  onChange,
+  ...props
+}) {
   const quillRef = useRef(null);
   const [API] = useAPI();
 
@@ -101,17 +111,19 @@ function Editor({ projectId }) {
       toolbar: {
         container: '#toolbar',
         handlers: {
-          image: imageHandler,
+          image: useCallback(imageHandler, []),
         },
       },
     },
     formats: ['bold', 'italic', 'underline', 'link', 'align', 'image'],
     theme: null,
     placeholder: '포스트 내용을 입력해주세요.',
+    value,
+    onChange,
   };
 
   return (
-    <Styled.Editor>
+    <Styled.Editor {...props}>
       <Styled.Toolbar id="toolbar">
         <Styled.Button className="ql-bold">
           <BoldIcon />
@@ -151,6 +163,12 @@ function Editor({ projectId }) {
 
 Editor.propTypes = {
   projectId: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+};
+
+Editor.defaultProps = {
+  value: '',
 };
 
 export default Editor;
