@@ -10,7 +10,6 @@ const HomePage = React.lazy(() => import('pages/HomePage'));
 const LoginPage = React.lazy(() => import('pages/LoginPage'));
 const SignupPage = React.lazy(() => import('pages/SignupPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
-const WalletPage = React.lazy(() => import('pages/WalletPage'));
 const Dashboard = React.lazy(() => import('pages/Dashboard'));
 
 const NotFound = () => (
@@ -47,7 +46,6 @@ function App() {
               <HomePage path="/" />
               <LoginPage path="login" />
               <SignupPage path="signup" />
-              <WalletPage path="wallet" />
 
               <MyPage path="my/*" />
               <Dashboard path="dashboard/*" />

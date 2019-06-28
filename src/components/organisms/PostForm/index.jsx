@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
@@ -11,7 +11,6 @@ import Grid from 'styles/Grid';
 import Editor from 'components/molecules/Editor';
 import InputGroup from 'components/molecules/InputGroup';
 import Heading from 'components/atoms/Heading';
-import Select from 'components/atoms/Select';
 import Radio from 'components/atoms/Radio';
 import ImageUploader from 'components/atoms/ImageUploader';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
@@ -54,26 +53,15 @@ const Styled = {
 };
 
 function PostForm({ title, projectId, postId }) {
-  const [series, setSeries] = useState([]);
   const [formData, setFormData, { handleChange }] = useForm({
     title: '',
     content: '',
     cover: '',
     requiredSubscription: false,
-    seriesId: 0,
   });
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
-    const getSeries = async () => {
-      try {
-        const response = await API.series(projectId).getAll();
-        setSeries(response.data.map(option => ({ value: option.id, text: option.name })));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     const getFormData = async () => {
       try {
         const response = await API.post(projectId).getPost({ postId });
@@ -84,7 +72,6 @@ function PostForm({ title, projectId, postId }) {
       }
     };
 
-    getSeries();
     if (postId) getFormData();
   }, [API, projectId, postId, setFormData]);
 
@@ -106,21 +93,6 @@ function PostForm({ title, projectId, postId }) {
     <Styled.Form onSubmit={handleSubmit}>
       <Grid columns={9}>
         <Heading>{title}</Heading>
-        <Select
-          name="seriesId"
-          options={[
-            { value: '', text: '시리즈 선택' },
-            ...series,
-          ]}
-          value={formData.seriesId}
-          onChange={handleChange}
-          columns={2}
-        />
-        <div columns={7}>
-          <PrimaryButton size="mini">
-            + 새 시리즈
-          </PrimaryButton>
-        </div>
         <InputGroup
           name="title"
           placeholder="프로젝트 제목을 입력해주세요."
@@ -147,27 +119,6 @@ function PostForm({ title, projectId, postId }) {
             onChange={handleChange}
             uploadAPI={API.post(projectId).uploadCoverImage}
           />
-        </Styled.Group>
-        <Styled.Group>
-          <Styled.Label>
-            공개 설정
-          </Styled.Label>
-          <Styled.Radio
-            name="requiredSubscription"
-            value="false"
-            onChange={handleChange}
-            required
-          >
-            전체 공개
-          </Styled.Radio>
-          <Styled.Radio
-            name="requiredSubscription"
-            value="true"
-            onChange={handleChange}
-            required
-          >
-          멤버십 구독자 공개
-          </Styled.Radio>
         </Styled.Group>
         <div>
           <Styled.Submit

@@ -57,6 +57,13 @@ const Styled = {
       padding: 24px;
       background-color: var(--white);
       overflow-y: scroll;
+      outline: none;
+      transition: box-shadow var(--transition--form);
+
+      &:focus {
+        outline: none;
+        box-shadow: 2px 4px 4px 0 var(--shadow-color);
+      }
 
       &.ql-blank::before {
         content: attr(data-placeholder);
@@ -115,7 +122,7 @@ function Editor({
         },
       },
     },
-    formats: ['bold', 'italic', 'underline', 'link', 'align', 'image'],
+    formats: ['bold', 'italic', 'underline', 'link', 'align', 'image', 'video'],
     theme: null,
     placeholder: '포스트 내용을 입력해주세요.',
     value,
@@ -149,7 +156,7 @@ function Editor({
         <Styled.Button className="ql-image">
           <ImageIcon />
         </Styled.Button>
-        <Styled.Button className="ql-image">
+        <Styled.Button className="ql-video">
           <ImagegroupIcon />
         </Styled.Button>
       </Styled.Toolbar>

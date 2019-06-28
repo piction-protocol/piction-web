@@ -40,9 +40,7 @@ function UserMenu({
   return (
     <Dropdown className={className}>
       <Styled.Wallet>
-        <Link to="/wallet">
-          내 지갑
-        </Link>
+        내 지갑
         <Styled.PXL>
           {`${PXL.toLocaleString()} PXL`}
         </Styled.PXL>

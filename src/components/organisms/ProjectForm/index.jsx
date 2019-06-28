@@ -49,7 +49,7 @@ function ProjectForm({ title, projectId }) {
     synopsis: '',
     thumbnail: '',
     wideThumbnail: '',
-    subscriptionPrice: '',
+    subscriptionPrice: 0,
   });
   const { accessToken } = useCurrentUser();
 
@@ -149,13 +149,6 @@ function ProjectForm({ title, projectId }) {
           placeholder="프로젝트와 작품에 대한 설명 텍스트를 한 줄로 출력합니다."
           onChange={handleChange}
           value={formData.synopsis}
-        />
-        <InputGroup
-          name="subscriptionPrice"
-          label="유료 멤버십 가격"
-          placeholder="0"
-          onChange={handleChange}
-          value={formData.subscriptionPrice}
         />
         <PrimaryButton
           as="input"

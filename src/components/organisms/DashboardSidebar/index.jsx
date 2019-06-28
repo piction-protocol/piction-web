@@ -13,6 +13,7 @@ const Styled = {
   Sidebar: styled.section`
     display: flex;
     flex-flow: column;
+    height: 100%;
     background-color: var(--gray--light);
   `,
   Header: styled.header`
@@ -69,7 +70,8 @@ function DashboardSidebar(props) {
             'X-Auth-Token': accessToken,
           },
         });
-        setProjects(data);
+        await setProjects(data);
+        await setSelected(data[0].uri);
       } catch (error) {
         console.log(error);
       }
@@ -96,8 +98,6 @@ function DashboardSidebar(props) {
           {project.uri === selected && (
             <>
               <Styled.Link to={`/dashboard/${project.uri}/posts`}>포스트 관리</Styled.Link>
-              <Styled.Link to={`/dashboard/${project.uri}/series`}>시리즈 관리</Styled.Link>
-              <Styled.Link to={`/dashboard/${project.uri}/sales`}>매출관리</Styled.Link>
               <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
               <Styled.Link to={`/project/${project.uri}`}>프로젝트로 이동</Styled.Link>
             </>

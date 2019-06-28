@@ -17,22 +17,16 @@ const Styled = {
     margin: 0 auto;
     padding: 0 var(--gap);
   `,
-  Sidebar: styled(DashboardSidebar)`
-    grid-column: span 3;
-  `,
-  Container: styled.section`
-    grid-column: span 9;
-  `,
 };
 
 function DashboardTemplate({ children }) {
   return (
     <Styled.Main>
       <Grid>
-        <Styled.Sidebar />
-        <Styled.Container>
+        <DashboardSidebar columns={3} />
+        <div columns={9}>
           {children}
-        </Styled.Container>
+        </div>
       </Grid>
     </Styled.Main>
   );
