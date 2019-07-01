@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
-import Dropdown from 'components/atoms/Dropdown';
-
 const Styled = {
   Wallet: styled.div`
     display: flex;
@@ -35,10 +33,10 @@ const Styled = {
 };
 
 function UserMenu({
-  links, PXL, className,
+  links, PXL,
 }) {
   return (
-    <Dropdown className={className}>
+    <>
       <Styled.Wallet>
         내 지갑
         <Styled.PXL>
@@ -54,7 +52,7 @@ function UserMenu({
           </Styled.Link>
         ))}
       </Styled.Links>
-    </Dropdown>
+    </>
   );
 }
 
@@ -63,10 +61,8 @@ export default UserMenu;
 UserMenu.propTypes = {
   links: PropTypes.array.isRequired,
   PXL: PropTypes.number,
-  className: PropTypes.string,
 };
 
 UserMenu.defaultProps = {
   PXL: 0,
-  className: '',
 };
