@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import { navigate } from '@reach/router';
+
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import Heading from 'components/atoms/Heading';
@@ -13,7 +15,6 @@ const Styled = {
   Form: styled.form`
     display: flex;
     flex-flow: column;
-    padding: 24px;
     font-size: var(--font-size--small);
   `,
   Heading: styled(Heading)`
@@ -29,15 +30,6 @@ const Styled = {
   })`
     width: 100%;
     margin-bottom: 24px;
-  `,
-  Notice: styled.p`
-    margin-bottom: 24px;
-    color: var(--gray--dark);
-  `,
-  Em: styled.em`
-    margin: 0 4px;
-    color: var(--red);
-    font-style: normal;
   `,
 };
 
@@ -74,6 +66,7 @@ function SignupForm() {
         },
       });
       setAccessToken(response.data.accessToken);
+      navigate('welcome', { replace: true });
     } catch (error) {
       setErrorMessage({
         [errorStatusTable[error.response.data.code]]: error.response.data.message,
@@ -117,13 +110,6 @@ function SignupForm() {
         required
         errorMessage={errorMessage.username}
       />
-      <Styled.Notice>
-        Piction 베타 서비스는 테스트 용도로 운영되며,
-        <Styled.Em>
-          실제 메인넷 환경의 토큰을 사용하는 것이 아닙니다.
-        </Styled.Em>
-        테스트 목적에 따라 데이터가 초기화되거나 롤백될 수 있으며, 테스터가 등록한 데이터 손실에 대한 책임은 Piction에서 지지 않습니다.
-      </Styled.Notice>
       <Styled.Submit
         value="동의 및 회원가입"
       />

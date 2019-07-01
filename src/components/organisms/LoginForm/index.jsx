@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
-import axios from 'axios';
 
+import useForm from 'hooks/useForm';
+import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import Heading from 'components/atoms/Heading';
@@ -15,11 +16,10 @@ const Styled = {
   Form: styled.form`
     display: flex;
     flex-flow: column;
-    padding: 24px;
     font-size: var(--font-size--small);
   `,
   Heading: styled(Heading)`
-    margin-bottom: 12px;
+    margin-bottom: 24px;
     text-align: center;
   `,
   InputGroup: styled(InputGroup)`
@@ -51,35 +51,20 @@ const Styled = {
 };
 
 function LoginForm() {
-  const [userData, setUserData] = useState(() => ({
+  const [formData, { handleChange }] = useForm({
     email: '',
     password: '',
     rememberme: false,
-  }));
+  });
   const [errorMessage, setErrorMessage] = useState('');
+  const [API] = useAPI();
   const { setAccessToken } = useCurrentUser();
-
-  const handleChange = (event) => {
-    const { target } = event;
-    const { name } = target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    setUserData(prevUserData => ({ ...prevUserData, [name]: value }));
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://api-iro.piction.network/sessions',
-        data: userData,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      setAccessToken(response.data.accessToken, userData.rememberme && {
-        expires: new Date('2099-12-31T23:59:59'),
-      });
+      const response = await API.session.create(formData);
+      setAccessToken(response.data.accessToken);
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }
@@ -91,18 +76,16 @@ function LoginForm() {
         로그인
       </Styled.Heading>
       <Styled.InputGroup
-        id="email"
         name="email"
         label="이메일"
         placeholder="이메일을 입력해주세요."
         autoComplete="email"
         required
         onChange={handleChange}
-        value={userData.email}
+        value={formData.email}
         invalid={!!errorMessage}
       />
       <Styled.InputGroup
-        id="password"
         name="password"
         label="비밀번호"
         placeholder="비밀번호를 입력해주세요."
@@ -110,14 +93,14 @@ function LoginForm() {
         autoComplete="current-password"
         required
         onChange={handleChange}
-        value={userData.password}
+        value={formData.password}
         errorMessage={errorMessage}
       />
       <Styled.RememberMe>
         <Styled.Checkbox
           name="rememberme"
           onChange={handleChange}
-          checked={userData.rememberme}
+          checked={formData.rememberme}
         />
         로그인 상태 유지
       </Styled.RememberMe>

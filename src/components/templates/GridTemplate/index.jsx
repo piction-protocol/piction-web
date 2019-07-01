@@ -11,7 +11,7 @@ const Main = styled.main.attrs({
 const Container = styled.section`
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: var(--gap);
+  padding: var(--column-gap);
 `;
 
 function GridTemplate({ hero, children }) {

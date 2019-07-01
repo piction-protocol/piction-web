@@ -1,39 +1,25 @@
-import React, { cloneElement, Children } from 'react';
-import PropTypes from 'prop-types';
-
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Grid = styled.div`
   display: grid;
-  grid-column: span ${({ columns }) => columns};
   grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
-  column-gap: var(--gap);
+  column-gap: var(--column-gap);
   row-gap: var(--row-gap);
 `;
 
-const Item = styled(({ children, className }) => cloneElement(React.Children.only(children), {
-  className: `${children.props.className || ''} ${className}`,
-}))`
-  grid-column: span ${({ columns }) => columns};
+export default Grid;
+
+export const MainGrid = styled(Grid).attrs({
+  columns: 'var(--grid-columns)',
+})`
+  flex: 1;
+  max-width: var(--max-width);
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--outer-gap);
+  padding-left: var(--outer-gap);
 `;
 
-const Grid = ({ columns, children }) => (
-  <Container columns={columns}>
-    {Children.map(children, child => (
-      <Item columns={child.props.columns || columns}>
-        {child}
-      </Item>
-    ))}
-  </Container>
-);
+export const SubGrid = styled(Grid)`
 
-Grid.propTypes = {
-  children: PropTypes.node.isRequired,
-  columns: PropTypes.number,
-};
-
-Grid.defaultProps = {
-  columns: 12,
-};
-
-export default Grid;
+`;

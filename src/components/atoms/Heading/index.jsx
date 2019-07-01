@@ -3,10 +3,15 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import media from 'styles/media';
+
 const Styled = {
   Heading: styled.h1`
-    font-size: var(--font-size--large);
+    font-size: var(--font-size--base);
     font-weight: bold;
+    ${media.desktop`
+      font-size: var(--font-size--large);
+    `}
   `,
 };
 

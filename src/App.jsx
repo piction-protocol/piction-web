@@ -45,7 +45,7 @@ function App() {
             <Suspense path="/" fallback={<div>Loading</div>}>
               <HomePage path="/" />
               <LoginPage path="login" />
-              <SignupPage path="signup" />
+              <SignupPage path="signup/*" />
 
               <MyPage path="my/*" />
               <Dashboard path="dashboard/*" />

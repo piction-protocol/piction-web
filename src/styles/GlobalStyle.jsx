@@ -1,6 +1,8 @@
 import 'normalize.css';
 import { createGlobalStyle } from 'styled-components';
 
+import media from 'styles/media';
+
 const GlobalStyle = createGlobalStyle`
   :root {
     --black: #000000;
@@ -23,10 +25,18 @@ const GlobalStyle = createGlobalStyle`
     --line-height--contents: 1.75;
 
     --max-width: 1280px;
-    --gap: 20px;
+
+    --outer-gap: 16px;
+    --column-gap: 8px;
     --row-gap: 24px;
+    --grid-columns: 6;
 
     --transition--form: 200ms ease;
+    ${media.desktop`
+      --outer-gap: 20px;
+      --column-gap: 20px;
+      --grid-columns: 12;
+    `}
   }
 
   *,
@@ -79,7 +89,6 @@ const GlobalStyle = createGlobalStyle`
   .root {
     display: flex;
     flex-flow: column;
-    height: 100%;
     min-height: 100vh;
   }
 
