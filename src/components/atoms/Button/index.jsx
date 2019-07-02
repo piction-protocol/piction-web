@@ -11,6 +11,7 @@ const Button = styled.button`
   text-align: center;
   line-height: normal;
   cursor: pointer;
+  transition: var(--transition--form);
 
   ${props => props.size === 'mini' && `
     padding: 8px 16px;
@@ -54,6 +55,7 @@ export const SecondaryButton = styled(Button)`
     bottom: 0;
     left: 0;
     border: 3px solid var(--gray--light);
+    transition: inherit;
   }
 
   &:hover {
