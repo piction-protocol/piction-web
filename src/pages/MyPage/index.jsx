@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
+import media from 'styles/media';
+
 import GridTemplate from 'components/templates/GridTemplate';
 import UserInfo from 'components/organisms/UserInfo';
 import Tabs from 'components/molecules/Tabs';
@@ -15,6 +17,14 @@ const UpdatePasswordForm = React.lazy(() => import('components/organisms/UpdateP
 const Styled = {
   Heading: styled(Heading)`
     margin-bottom: 24px;
+    ${media.mobile`
+      display: none;
+    `}
+  `,
+  Tabs: styled(Tabs)`
+    ${media.mobile`
+      margin: -24px calc(var(--outer-gap) * -1) 16px;
+    `}
   `,
 };
 
@@ -35,9 +45,9 @@ function MyPage() {
       <Styled.Heading>
         내 정보
       </Styled.Heading>
-      <Tabs
+      <Styled.Tabs
         links={[
-          { text: '기본 정보', to: 'info' },
+          { text: '기본정보', to: 'info' },
           { text: '비밀번호 변경', to: 'password' },
         ]}
       />

@@ -73,6 +73,11 @@ function ImageUploader({
     }
   };
 
+  const handleDelete = () => {
+    setImage(null);
+    onChange({ target: { name, value: null } });
+  };
+
   return (
     <Styled.Wrapper
       image={image || backgroundImage}
@@ -87,7 +92,7 @@ function ImageUploader({
         accept="image/jpeg, image/png"
       />
       {image
-        ? <Styled.Cancel onClick={() => setImage()} />
+        ? <Styled.Cancel onClick={handleDelete} />
         : <Styled.Add htmlFor={name} />
       }
     </Styled.Wrapper>

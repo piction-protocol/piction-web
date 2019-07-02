@@ -34,6 +34,9 @@ function useAPI() {
   const user = {
     me: () => API.get('/users/me'),
     create: params => API.post('/users', params),
+    update: params => API.put('/users/me', params),
+    updatePassword: params => API.patch('/users/me/password', params),
+    uploadPicture: params => API.patch('/users/me/picture', params, patchConfig),
   };
 
   const my = {

@@ -19,7 +19,3 @@ export const MainGrid = styled(Grid).attrs({
   padding-right: var(--outer-gap);
   padding-left: var(--outer-gap);
 `;
-
-export const SubGrid = styled(Grid)`
-
-`;

@@ -1,64 +1,59 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
-import useCurrentUser from 'hooks/useCurrentUser';
+import useAPI from 'hooks/useAPI';
+import useForm from 'hooks/useForm';
+
+import Grid from 'styles/Grid';
+import media from 'styles/media';
 
 import { PrimaryButton } from 'components/atoms/Button';
 
 import InputGroup from 'components/molecules/InputGroup';
 
 const Styled = {
-  Form: styled.form`
-    display: flex;
-    flex-flow: column;
+  Form: styled(Grid).attrs({
+    as: 'form',
+    columns: 'var(--grid-columns)',
+  })`
     font-size: var(--font-size--small);
   `,
   InputGroup: styled(InputGroup)`
-    margin-bottom: 24px;
+    grid-column: 1 / -1;
+    ${media.desktop`
+      grid-column: 1 / span 3;
+      white-space: nowrap;
+    `}
   `,
   Submit: styled(PrimaryButton).attrs({
     as: 'input',
     type: 'submit',
   })`
-    width: 100%;
-    margin-bottom: 24px;
+    grid-column: 1 / -1;
   `,
 };
 
 function UpdatePasswordForm() {
-  const [userData, setUserData] = useState(() => ({
+  const [formData, { handleChange }] = useForm({
     password: '',
     newPassword: '',
-  }));
+    passwordCheck: '',
+  });
   const [errorMessage, setErrorMessage] = useState('');
-  const { accessToken } = useCurrentUser();
+  const [API] = useAPI();
 
   // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/UpdatePasswordErrors.kt
   const errorStatusTable = {
     4000: 'password',
     4001: 'newPassword',
     4002: 'newPassword',
-  };
-
-  const handleChange = (event) => {
-    const { target } = event;
-    const { name, value } = target;
-    setUserData(prevUserData => ({ ...prevUserData, [name]: value }));
+    4003: 'passwordCheck',
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios({
-        method: 'patch',
-        url: 'http://api-iro.piction.network/users/me/password',
-        data: userData,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Auth-Token': accessToken,
-        },
-      });
+      await API.user.updatePassword(formData);
     } catch (error) {
       setErrorMessage({
         [errorStatusTable[error.response.data.code]]: error.response.data.message,
@@ -77,7 +72,6 @@ function UpdatePasswordForm() {
         }}
       />
       <Styled.InputGroup
-        id="password"
         name="password"
         label="현재 비밀번호"
         placeholder="비밀번호를 입력해주세요"
@@ -85,11 +79,10 @@ function UpdatePasswordForm() {
         autoComplete="current-password"
         required
         onChange={handleChange}
-        value={userData.password}
+        value={formData.password}
         errorMessage={errorMessage.password}
       />
       <Styled.InputGroup
-        id="newPassword"
         name="newPassword"
         label="새 비밀번호"
         placeholder="6자 이상의 비밀번호"
@@ -97,8 +90,19 @@ function UpdatePasswordForm() {
         autoComplete="new-password"
         required
         onChange={handleChange}
-        value={userData.newPassword}
+        value={formData.newPassword}
         errorMessage={errorMessage.newPassword}
+      />
+      <Styled.InputGroup
+        name="passwordCheck"
+        label="비밀번호 확인"
+        placeholder="비밀번호 재입력"
+        type="password"
+        autoComplete="new-password"
+        required
+        onChange={handleChange}
+        value={formData.passwordCheck}
+        errorMessage={errorMessage.passwordCheck}
       />
       <Styled.Submit
         value="로그인"

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
+import media from 'styles/media';
+
 const Styled = {
   Tabs: styled.div`
     display: flex;
@@ -11,11 +13,19 @@ const Styled = {
   `,
   Tab: styled(Link)`
     position: relative;
-    padding: 24px 0;
+    flex: 1;
+    padding: 16px;
     color: var(--gray--dark);
-    :not(:last-child) {
-      margin-right: 48px;
-    }
+    font-size: var(--font-size--small);
+    text-align: center;
+    ${media.desktop`
+      flex: 0 auto;
+      padding: 24px 0;
+      font-size: var(--font-size--base);
+      :not(:last-child) {
+        margin-right: 48px;
+      }
+    `}
     &[aria-current] {
       color: var(--black);
       font-weight: bold;
@@ -31,11 +41,9 @@ const Styled = {
   `,
 };
 
-function Tabs({
-  links, className,
-}) {
+function Tabs({ links, ...props }) {
   return (
-    <Styled.Tabs className={className}>
+    <Styled.Tabs {...props}>
       {links.map(({
         text, ...link
       }) => (
@@ -53,10 +61,5 @@ function Tabs({
 export default Tabs;
 
 Tabs.propTypes = {
-  className: PropTypes.string,
   links: PropTypes.array.isRequired,
-};
-
-Tabs.defaultProps = {
-  className: '',
 };

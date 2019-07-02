@@ -2,26 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Main = styled.main.attrs({
-  role: 'main',
-})`
-  flex: 1;
-`;
+import { MainGrid } from 'styles/Grid';
 
-const Container = styled.section`
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--column-gap);
-`;
+const Styled = {
+  Main: styled.main.attrs({
+    role: 'main',
+  })`
+    display: flex;
+    flex: 1;
+    flex-flow: column;
+  `,
+
+  Container: styled.div`
+    display: flex;
+    flex-flow: column;
+    grid-column: 1 / -1;
+    background-color: var(--white);
+    margin: 24px 0;
+  `,
+};
 
 function GridTemplate({ hero, children }) {
   return (
-    <Main>
+    <Styled.Main>
       {hero}
-      <Container>
-        {children}
-      </Container>
-    </Main>
+      <MainGrid>
+        <Styled.Container>
+          {children}
+        </Styled.Container>
+      </MainGrid>
+    </Styled.Main>
   );
 }
 
