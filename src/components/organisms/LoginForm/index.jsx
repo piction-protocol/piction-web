@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';
@@ -50,9 +51,9 @@ const Styled = {
   `,
 };
 
-function LoginForm() {
+function LoginForm({ redirectTo }) {
   const [formData, { handleChange }] = useForm({
-    email: '',
+    loginId: '',
     password: '',
     rememberme: false,
   });
@@ -64,7 +65,10 @@ function LoginForm() {
     event.preventDefault();
     try {
       const response = await API.session.create(formData);
-      setAccessToken(response.data.accessToken);
+      setAccessToken(response.data.accessToken, formData.rememberme && {
+        expires: new Date('2099-12-31T23:59:59'),
+      });
+      navigate(redirectTo);
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }
@@ -76,13 +80,13 @@ function LoginForm() {
         로그인
       </Styled.Heading>
       <Styled.InputGroup
-        name="email"
-        label="이메일"
-        placeholder="이메일을 입력해주세요."
-        autoComplete="email"
+        name="loginId"
+        label="아이디"
+        placeholder="아이디를 입력해주세요."
+        autoComplete="loginId"
         required
         onChange={handleChange}
-        value={formData.email}
+        value={formData.loginId}
         invalid={!!errorMessage}
       />
       <Styled.InputGroup
@@ -116,5 +120,13 @@ function LoginForm() {
     </Styled.Form>
   );
 }
+
+LoginForm.propTypes = {
+  redirectTo: PropTypes.string,
+};
+
+LoginForm.defaultProps = {
+  redirectTo: '/',
+};
 
 export default LoginForm;

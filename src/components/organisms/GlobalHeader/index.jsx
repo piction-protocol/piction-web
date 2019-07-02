@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from '@reach/router';
+import { Link, Location } from '@reach/router';
 
 import media, { mediaQuery } from 'styles/media';
 
@@ -116,11 +116,25 @@ function GlobalHeader({ paths }) {
     { text: '내 정보', to: '/my/info' },
     { text: '크리에이터 대시보드', to: '/dashboard' },
     { text: '새 프로젝트 만들기', to: '/dashboard/new-project' },
-    { text: '로그아웃', as: 'button', onClick: () => (deleteSession()) },
+    {
+      text: '로그아웃',
+      as: 'button',
+      onClick: () => {
+        setIsMenuOpened(false);
+        deleteSession();
+      },
+    },
   ] : [
     { text: '구독중인 프로젝트', to: '/subscriptions' },
     { text: '내 정보', to: '/my/info' },
-    { text: '로그아웃', as: 'button', onClick: () => (deleteSession()) },
+    {
+      text: '로그아웃',
+      as: 'button',
+      onClick: () => {
+        setIsMenuOpened(false);
+        deleteSession();
+      },
+    },
   ];
 
   return (
@@ -145,14 +159,23 @@ function GlobalHeader({ paths }) {
               )}
             </Styled.User>
           ) : (
-            <>
-              <Styled.Login to={paths.login}>
-                로그인
-              </Styled.Login>
-              <Styled.Signup to={paths.signup}>
-                회원가입
-              </Styled.Signup>
-            </>
+            <Location>
+              {({ location }) => (
+                <>
+                  <Styled.Login
+                    to={paths.login}
+                    state={{
+                      redirectTo: encodeURIComponent(location.pathname),
+                    }}
+                  >
+                    로그인
+                  </Styled.Login>
+                  <Styled.Signup to={paths.signup}>
+                    회원가입
+                  </Styled.Signup>
+                </>
+              )}
+            </Location>
           )}
         </Styled.Nav>
       </Styled.Wrapper>
