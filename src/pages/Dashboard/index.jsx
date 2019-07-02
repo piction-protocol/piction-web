@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Router, Redirect } from '@reach/router';
 
+import withLoginChecker from 'components/LoginChecker';
+
 import DashboardTemplate from 'components/templates/DashboardTemplate';
 
 const ProjectForm = React.lazy(() => import('components/organisms/ProjectForm'));
@@ -34,4 +36,4 @@ function Dashboard() {
 }
 
 
-export default Dashboard;
+export default withLoginChecker(Dashboard);

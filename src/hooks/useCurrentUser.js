@@ -27,10 +27,10 @@ function useCurrentUser() {
 
   const deleteSession = useCallback(async () => {
     try {
+      navigate('/');
       await API.session.delete();
     } finally {
-      await API.token.delete();
-      navigate('/');
+      API.token.delete();
       setCurrentUser(null);
     }
   }, [API, setCurrentUser]);

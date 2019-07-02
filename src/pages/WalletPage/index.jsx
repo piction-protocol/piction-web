@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useWallet from 'hooks/useWallet';
 
+import withLoginChecker from 'components/LoginChecker';
+
 import GridTemplate from 'components/templates/GridTemplate';
 import UserInfo from 'components/organisms/UserInfo';
 import Transactions from 'components/organisms/Transactions';
@@ -49,4 +51,4 @@ function WalletPage() {
 }
 
 
-export default WalletPage;
+export default withLoginChecker(WalletPage);

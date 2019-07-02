@@ -114,8 +114,8 @@ const NavigateListner = ({ location, event }) => {
 function GlobalHeader({ paths }) {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
-  const [wallet] = useWallet();
   const isDesktop = useMedia(mediaQuery.desktop);
+  const [wallet] = useWallet();
 
   const links = isDesktop ? [
     { text: '내 정보', to: '/my/info' },

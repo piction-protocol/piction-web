@@ -2,10 +2,10 @@ import React, { Suspense, useState, useEffect } from 'react';
 import { Router } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
-import useAPI from 'hooks/useAPI';
 
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
+import Spinner from 'components/atoms/Spinner';
 
 const HomePage = React.lazy(() => import('pages/HomePage'));
 const LoginPage = React.lazy(() => import('pages/LoginPage'));
@@ -27,19 +27,17 @@ const NotFound = () => (
 function App() {
   const { getCurrentUser } = useCurrentUser();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [API] = useAPI();
-  const accessToken = API.token.get();
-
   useEffect(() => {
     async function loading() {
-      if (accessToken) {
+      try {
         await getCurrentUser();
+      } finally {
+        setIsLoaded(true);
       }
-      setIsLoaded(true);
     }
 
     loading();
-  }, [accessToken, getCurrentUser]);
+  }, [getCurrentUser]);
 
   return (
     <div className="root">
@@ -47,7 +45,7 @@ function App() {
         <>
           <GlobalHeader />
           <Router>
-            <Suspense path="/" fallback={<div>Loading</div>}>
+            <Suspense path="/" fallback={<Spinner />}>
               <HomePage path="/" />
               <LoginPage path="login" />
               <SignupPage path="signup/*" />
