@@ -59,8 +59,7 @@ function ImageUploader({
   className,
   ...props
 }) {
-  const [image, setImage] = useState(defaultImage);
-
+  const [image, setImage] = useState(/^(?!\/static\/).*$/.exec(defaultImage)); // 에셋 이미지인 경우 null로 처리
   const handleChange = async (event) => {
     const data = new FormData();
     data.append('file', event.target.files[0]);

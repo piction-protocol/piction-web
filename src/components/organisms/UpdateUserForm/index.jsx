@@ -8,10 +8,12 @@ import useForm from 'hooks/useForm';
 import Grid from 'styles/Grid';
 import media from 'styles/media';
 
+import DefaultPicture from 'images/img-user-profile.svg';
+
+import InputGroup from 'components/molecules/InputGroup';
 import { PrimaryButton } from 'components/atoms/Button';
 import ImageUploader from 'components/atoms/ImageUploader';
 
-import InputGroup from 'components/molecules/InputGroup';
 
 const Styled = {
   Form: styled(Grid).attrs({
@@ -78,7 +80,7 @@ function UpdateUserForm() {
   const [formData, { handleChange }] = useForm({
     username: currentUser.username,
     password: '',
-    picture: currentUser.picture,
+    picture: '',
   });
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
@@ -131,7 +133,8 @@ function UpdateUserForm() {
           name="picture"
           uploadAPI={API.user.uploadPicture}
           onChange={handleChange}
-          defaultImage={formData.picture}
+          defaultImage={currentUser.picture}
+          backgroundImage={DefaultPicture}
         />
       </Styled.ImageGroup>
       <Styled.InputGroup
