@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, Location } from '@reach/router';
@@ -106,6 +106,11 @@ UserMenuWithWrapper.propTypes = {
   close: PropTypes.func.isRequired,
 };
 
+const NavigateListner = ({ location, event }) => {
+  useEffect(event, [location]);
+  return null;
+};
+
 function GlobalHeader({ paths }) {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
@@ -139,28 +144,29 @@ function GlobalHeader({ paths }) {
 
   return (
     <Styled.Header>
-      <Styled.Wrapper>
-        <Styled.Link to={paths.home}>
-          <Styled.Logo />
-        </Styled.Link>
-        <Styled.Nav>
-          {currentUser ? (
-            <Styled.User>
-              <Styled.Toggle
-                src={currentUser.picture}
-                onClick={() => setIsMenuOpened(prevState => !prevState)}
-              />
-              {isMenuOpened && (
-                <UserMenuWithWrapper
-                  PXL={wallet.amount}
-                  links={links}
-                  close={() => setIsMenuOpened(false)}
-                />
-              )}
-            </Styled.User>
-          ) : (
-            <Location>
-              {({ location }) => (
+      <Location>
+        {({ location }) => (
+          <Styled.Wrapper>
+            <NavigateListner location={location} event={() => setIsMenuOpened(false)} />
+            <Styled.Link to={paths.home}>
+              <Styled.Logo />
+            </Styled.Link>
+            <Styled.Nav>
+              {currentUser ? (
+                <Styled.User>
+                  <Styled.Toggle
+                    src={currentUser.picture}
+                    onClick={() => setIsMenuOpened(prevState => !prevState)}
+                  />
+                  {isMenuOpened && (
+                    <UserMenuWithWrapper
+                      PXL={wallet.amount}
+                      links={links}
+                      close={() => setIsMenuOpened(false)}
+                    />
+                  )}
+                </Styled.User>
+              ) : (
                 <>
                   <Styled.Login
                     to={paths.login}
@@ -175,10 +181,10 @@ function GlobalHeader({ paths }) {
                   </Styled.Signup>
                 </>
               )}
-            </Location>
-          )}
-        </Styled.Nav>
-      </Styled.Wrapper>
+            </Styled.Nav>
+          </Styled.Wrapper>
+        )}
+      </Location>
     </Styled.Header>
   );
 }
