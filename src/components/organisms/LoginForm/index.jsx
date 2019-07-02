@@ -5,7 +5,6 @@ import { Link, navigate } from '@reach/router';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';
-import useCurrentUser from 'hooks/useCurrentUser';
 
 import Heading from 'components/atoms/Heading';
 import Checkbox from 'components/atoms/Checkbox';
@@ -59,13 +58,12 @@ function LoginForm({ redirectTo }) {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [API] = useAPI();
-  const { setAccessToken } = useCurrentUser();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await API.session.create(formData);
-      setAccessToken(response.data.accessToken, formData.rememberme && {
+      API.token.create(response.data.accessToken, formData.rememberme && {
         expires: new Date('2099-12-31T23:59:59'),
       });
       navigate(redirectTo);

@@ -10,7 +10,7 @@ function useForm(initial) {
     setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
   }, []);
 
-  return [formData, setFormData, { handleChange }];
+  return [formData, { setFormData, handleChange }];
 }
 
 export default useForm;

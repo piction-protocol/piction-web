@@ -1,14 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import CompactTemplate from 'components/templates/CompactTemplate';
 import LoginForm from 'components/organisms/LoginForm';
 
-function LoginPage() {
+function LoginPage({ location }) {
   return (
     <CompactTemplate>
-      <LoginForm />
+      <LoginForm redirectTo={decodeURIComponent(location.state.redirectTo)} />
     </CompactTemplate>
   );
 }
+
+LoginPage.propTypes = {
+  location: PropTypes.object.isRequired,
+};
 
 export default LoginPage;

@@ -12,7 +12,7 @@ export default Grid;
 export const MainGrid = styled(Grid).attrs({
   columns: 'var(--grid-columns)',
 })`
-  flex: 1;
+  width: 100%;
   max-width: var(--max-width);
   margin-right: auto;
   margin-left: auto;

@@ -2,6 +2,7 @@ import React, { Suspense, useState, useEffect } from 'react';
 import { Router } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
+import useAPI from 'hooks/useAPI';
 
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
@@ -26,15 +27,19 @@ const NotFound = () => (
 function App() {
   const { getCurrentUser } = useCurrentUser();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [API] = useAPI();
+  const accessToken = API.token.get();
 
   useEffect(() => {
     async function loading() {
-      await getCurrentUser();
-      await setIsLoaded(true);
+      if (accessToken) {
+        await getCurrentUser();
+      }
+      setIsLoaded(true);
     }
 
     loading();
-  }, [getCurrentUser]);
+  }, [accessToken, getCurrentUser]);
 
   return (
     <div className="root">

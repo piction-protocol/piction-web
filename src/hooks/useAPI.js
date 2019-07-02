@@ -2,7 +2,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 function useAPI() {
-  const [cookies] = useCookies(['access_token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const accessToken = cookies.access_token;
   const API = axios.create({
     baseURL: 'http://api-iro.piction.network/',
@@ -12,6 +12,11 @@ function useAPI() {
   });
   const patchConfig = {
     headers: { 'Content-Type': 'multipart/form-data' },
+  };
+
+  const session = {
+    create: params => API.post('/sessions', params),
+    delete: () => API.delete('/sessions'),
   };
 
   const post = projectId => ({
@@ -26,7 +31,29 @@ function useAPI() {
     getAll: () => API.get(`/projects/${projectId}/series`),
   });
 
-  return [{ post, series }];
+  const user = {
+    me: () => API.get('/users/me'),
+    create: params => API.post('/users', params),
+  };
+
+  const my = {
+    wallet: () => API.get('my/wallet'),
+  };
+
+  const token = {
+    get: () => accessToken,
+    create: (value, params) => setCookie('access_token', value, { ...params }),
+    delete: () => removeCookie('access_token'),
+  };
+
+  return [{
+    session,
+    post,
+    series,
+    user,
+    my,
+    token,
+  }];
 }
 
 export default useAPI;

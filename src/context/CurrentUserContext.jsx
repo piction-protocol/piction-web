@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 const CurrentUserContext = createContext([{}, () => {}]);
 
 const CurrentUserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState({
-    email: '',
-    username: '',
-    createdAt: '',
-  });
+  const [currentUser, setCurrentUser] = useState(null);
   return (
     <CurrentUserContext.Provider value={[currentUser, setCurrentUser]}>
       {children}

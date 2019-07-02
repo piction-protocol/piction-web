@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
-import useCurrentUser from 'hooks/useCurrentUser';
+import useForm from 'hooks/useForm';
+import useAPI from 'hooks/useAPI';
 
 import Heading from 'components/atoms/Heading';
+import Checkbox from 'components/atoms/Checkbox';
 import { PrimaryButton } from 'components/atoms/Button';
+import Spinner from 'components/atoms/Spinner';
 
 import InputGroup from 'components/molecules/InputGroup';
 
@@ -24,6 +26,20 @@ const Styled = {
   InputGroup: styled(InputGroup)`
     margin-bottom: 24px;
   `,
+  Checkbox: styled(Checkbox)`
+    margin-right: 8px;
+  `,
+  Terms: styled.label`
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    margin-bottom: 16px;
+    color: var(--gray--dark);
+    white-space: pre-wrap;
+  `,
+  Link: styled(Link)`
+    color: var(--blue);
+  `,
   Submit: styled(PrimaryButton).attrs({
     as: 'input',
     type: 'submit',
@@ -34,43 +50,44 @@ const Styled = {
 };
 
 function SignupForm() {
-  const [userData, setUserData] = useState({});
+  const [formData, { handleChange }] = useForm({
+    loginId: '',
+    email: '',
+    password: '',
+    passwordCheck: '',
+    username: '',
+    agree: false,
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
-  const { setAccessToken } = useCurrentUser();
+  const [API] = useAPI();
 
   // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/SignupErrors.kt
   const errorStatusTable = {
-    4000: 'email',
-    4001: 'email',
-    4002: 'password',
-    4003: 'username',
-    4004: 'username',
+    4000: 'loginId',
+    4001: 'loginId',
+    4002: 'email',
+    4003: 'email',
+    4004: 'password',
     4005: 'username',
-    4006: 'email',
+    4006: 'username',
+    4007: 'username',
+    4008: 'passwordCheck',
   };
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setUserData({ ...userData, [name]: value });
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://api-iro.piction.network/users',
-        data: userData,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      setAccessToken(response.data.accessToken);
-      navigate('welcome', { replace: true });
+      setIsLoading(true);
+      const response = await API.user.create(formData);
+      API.token.create(response.data.accessToken);
+      navigate('/signup/welcome', { replace: true });
     } catch (error) {
       setErrorMessage({
         [errorStatusTable[error.response.data.code]]: error.response.data.message,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -80,17 +97,24 @@ function SignupForm() {
         회원가입
       </Styled.Heading>
       <Styled.InputGroup
-        id="email"
+        name="loginId"
+        label="아이디"
+        placeholder="5자 이상 15자 미만"
+        autoComplete="username"
+        onChange={handleChange}
+        required
+        errorMessage={errorMessage.loginId}
+      />
+      <Styled.InputGroup
         name="email"
         label="이메일"
-        placeholder="이메일을 입력해주세요"
+        placeholder="example@gmail.com"
         autoComplete="email"
         onChange={handleChange}
         required
         errorMessage={errorMessage.email}
       />
       <Styled.InputGroup
-        id="password"
         name="password"
         label="비밀번호"
         placeholder="6자 이상의 비밀번호"
@@ -101,18 +125,41 @@ function SignupForm() {
         errorMessage={errorMessage.password}
       />
       <Styled.InputGroup
-        id="username"
+        name="passwordCheck"
+        label="비밀번호 재입력"
+        placeholder="비밀번호 재입력"
+        type="password"
+        autoComplete="new-password"
+        onChange={handleChange}
+        required
+        errorMessage={errorMessage.passwordCheck}
+      />
+      <Styled.InputGroup
         name="username"
         label="닉네임"
         placeholder="2자 이상의 닉네임"
-        autoComplete="nickname"
+        autoComplete="username"
         onChange={handleChange}
         required
         errorMessage={errorMessage.username}
       />
+      <Styled.Terms>
+        <Styled.Checkbox
+          name="agree"
+          onChange={handleChange}
+          checked={formData.agree}
+          required
+        />
+        <Styled.Link to="">서비스 이용약관</Styled.Link>
+        {' 및 '}
+        <Styled.Link to="">개인정보 처리방침</Styled.Link>
+        에 동의합니다.
+      </Styled.Terms>
       <Styled.Submit
         value="동의 및 회원가입"
+        disabled={!(Object.values(formData).every(value => value))}
       />
+      {isLoading && <Spinner />}
     </Styled.Form>
   );
 }

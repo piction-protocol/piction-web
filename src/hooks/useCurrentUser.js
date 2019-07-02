@@ -1,6 +1,7 @@
 import { useContext, useCallback } from 'react';
-import { useCookies } from 'react-cookie';
-import axios from 'axios';
+import { navigate } from '@reach/router';
+
+import useAPI from 'hooks/useAPI';
 
 import DefaultPicture from 'images/img-user-profile.svg';
 
@@ -8,48 +9,36 @@ import { CurrentUserContext } from 'context/CurrentUserContext';
 
 function useCurrentUser() {
   const [currentUser, setCurrentUser] = useContext(CurrentUserContext);
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
-  const accessToken = cookies.access_token;
+  const [API] = useAPI();
+  const accessToken = API.token.get();
   const getCurrentUser = useCallback(async () => {
     try {
-      const { data } = await axios.get('http://api-iro.piction.network/users/me', {
-        headers: {
-          'X-Auth-Token': accessToken,
-        },
-      });
+      const { data } = await API.user.me();
       setCurrentUser({
         ...data,
         picture: data.picture || DefaultPicture,
       });
     } catch (error) {
       setCurrentUser(null);
-      removeCookie('access_token');
+      API.token.delete();
     }
-  }, [accessToken, removeCookie, setCurrentUser]);
+    // eslint-disable-next-line
+  }, [accessToken, setCurrentUser]);
 
   const deleteSession = useCallback(async () => {
-    await axios.delete('http://api-iro.piction.network/sessions', {
-      headers: {
-        'X-Auth-Token': accessToken,
-      },
-    });
-    setCurrentUser(null);
-    removeCookie('access_token');
-  }, [accessToken, removeCookie, setCurrentUser]);
-
-  const setAccessToken = (token, options = {}) => {
-    setCookie('access_token', token, {
-      path: '/',
-      ...options,
-    });
-  };
+    try {
+      await API.session.delete();
+    } finally {
+      await API.token.delete();
+      navigate('/');
+      setCurrentUser(null);
+    }
+  }, [API, setCurrentUser]);
 
   return {
     currentUser,
     getCurrentUser,
     deleteSession,
-    accessToken,
-    setAccessToken,
   };
 }
 

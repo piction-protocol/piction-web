@@ -11,7 +11,7 @@ const Styled = {
   })`
     display: flex;
     flex: 1;
-    align-items: flex-start;
+    flex-flow: column;
     ${media.desktop`
       background-color: var(--gray--light);
     `}

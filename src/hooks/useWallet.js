@@ -1,26 +1,25 @@
 import { useState, useEffect } from 'react';
-import useCurrentUser from 'hooks/useCurrentUser';
-import axios from 'axios';
+import useAPI from 'hooks/useAPI';
 
 function useWallet() {
   const [wallet, setWallet] = useState({});
-  const { accessToken } = useCurrentUser();
+  const [API] = useAPI();
+  const accessToken = API.token.get();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get('http://api-iro.piction.network/my/wallet', {
-          headers: {
-            'X-Auth-Token': accessToken,
-          },
-        });
+        const { data } = await API.my.wallet();
         setWallet(data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    getData();
+    if (accessToken) {
+      getData();
+    }
+    // eslint-disable-next-line
   }, [accessToken]);
 
   return [wallet];

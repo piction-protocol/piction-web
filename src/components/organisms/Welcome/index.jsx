@@ -20,9 +20,7 @@ const Styled = {
 function Welcome() {
   return (
     <Styled.Container>
-      <Heading>회원가입 축하</Heading>
-      1000PXL 주는 내용 대신 뭐가 들어가나용
-      암튼 ㅎㅇㅎㅇ
+      <Heading>회원가입이 완료되었습니다.</Heading>
       <Styled.Button to="/">확인</Styled.Button>
     </Styled.Container>
   );
