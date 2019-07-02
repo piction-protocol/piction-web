@@ -25,11 +25,18 @@ const Styled = {
       white-space: nowrap;
     `}
   `,
+  SubmitGroup: styled.div`
+    grid-column: 1 / -1;
+    padding-top: var(--row-gap);
+    border-top: 1px solid var(--gray--light);
+  `,
   Submit: styled(PrimaryButton).attrs({
     as: 'input',
     type: 'submit',
   })`
-    grid-column: 1 / -1;
+    ${media.mobile`
+      width: 100%;
+    `}
   `,
 };
 
@@ -105,9 +112,11 @@ function UpdatePasswordForm() {
         value={formData.passwordCheck}
         errorMessage={errorMessage.passwordCheck}
       />
-      <Styled.Submit
-        value="로그인"
-      />
+      <Styled.SubmitGroup>
+        <Styled.Submit
+          value="변경 내용 저장"
+        />
+      </Styled.SubmitGroup>
     </Styled.Form>
   );
 }
