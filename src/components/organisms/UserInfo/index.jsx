@@ -11,7 +11,7 @@ const Styled = {
     background-color: var(--gray--light);
   `,
   Wrapper: styled(MainGrid)`
-    align-items: center;
+    align-items: flex-start;
     max-width: var(--max-width);
     margin: 0 auto;
     padding-top: 24px;
@@ -35,8 +35,20 @@ const Styled = {
   Name: styled.h1`
     font-size: var(--font-size--base);
     ${media.desktop`
-      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
       font-size: var(--font-size--large);
+    `}
+  `,
+  ID: styled.p`
+    margin: 2px 0;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+    font-weight: bold;
+    ${media.desktop`
+      margin-left: 8px;
+      font-size: var(--font-size--base);
     `}
   `,
   Description: styled.p`
@@ -54,6 +66,7 @@ const Styled = {
 function UserInfo({
   picture,
   username,
+  loginId,
   description,
   children,
 }) {
@@ -64,6 +77,9 @@ function UserInfo({
         <Styled.User>
           <Styled.Name>
             {username}
+            <Styled.ID>
+              {loginId}
+            </Styled.ID>
           </Styled.Name>
           <Styled.Description>
             {description}
@@ -82,6 +98,7 @@ function UserInfo({
 UserInfo.propTypes = {
   picture: PropTypes.string,
   username: PropTypes.string.isRequired,
+  loginId: PropTypes.string.isRequired,
   description: PropTypes.string,
   children: PropTypes.node,
 };

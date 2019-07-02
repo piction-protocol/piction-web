@@ -36,6 +36,7 @@ function MyPage() {
     <GridTemplate
       hero={(
         <UserInfo
+          loginId={currentUser.loginId}
           username={currentUser.username}
           picture={currentUser.picture}
           description={`가입일: ${createdDate.getFullYear()}년 ${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`}
