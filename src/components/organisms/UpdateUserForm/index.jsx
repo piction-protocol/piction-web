@@ -86,10 +86,9 @@ function UpdateUserForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
     try {
-      const { response } = await API.user.update(formData);
-      console.log(response);
+      await API.user.update(formData);
+      window.location.reload(true);
     } catch (error) {
       setErrorMessage({
         [errorStatusTable[error.response.data.code]]: error.response.data.message,

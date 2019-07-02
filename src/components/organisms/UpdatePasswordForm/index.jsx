@@ -54,6 +54,7 @@ function UpdatePasswordForm() {
     event.preventDefault();
     try {
       await API.user.updatePassword(formData);
+      window.location.reload(true);
     } catch (error) {
       setErrorMessage({
         [errorStatusTable[error.response.data.code]]: error.response.data.message,
