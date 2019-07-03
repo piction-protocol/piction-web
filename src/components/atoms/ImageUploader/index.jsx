@@ -68,8 +68,10 @@ function ImageUploader({
   }, [defaultImage]);
 
   const handleChange = async (event) => {
+    const { target } = event;
     const data = new FormData();
-    data.append('file', event.target.files[0]);
+    data.append('file', target.files[0]);
+    target.value = '';
     try {
       const response = await uploadAPI(data);
       setImage(response.data.url);
