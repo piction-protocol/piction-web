@@ -17,7 +17,7 @@ import Radio from 'components/atoms/Radio';
 import ImageUploader from 'components/atoms/ImageUploader';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
-import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
+import dummyCoverImage from 'images/img-dummy-960x360.jpg';
 
 const Styled = {
   Form: styled(Grid).attrs({
@@ -142,7 +142,7 @@ function PostForm({ title, projectId, postId }) {
           name="cover"
           ratio={960 / 360}
           defaultImage={formData.cover}
-          backgroundImage={dummyWideThumbnailImage}
+          backgroundImage={dummyCoverImage}
           onChange={handleChange}
           uploadAPI={API.post(projectId).uploadCoverImage}
           columns={3}
