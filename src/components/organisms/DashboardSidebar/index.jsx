@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
-import axios from 'axios';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -57,28 +57,9 @@ const Styled = {
   `,
 };
 
-function DashboardSidebar(props) {
-  const { currentUser, accessToken } = useCurrentUser();
-  const [projects, setProjects] = useState([]);
+function DashboardSidebar({ projects, ...props }) {
+  const { currentUser } = useCurrentUser();
   const [selected, setSelected] = useState('');
-
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const { data } = await axios.get('http://api-iro.piction.network/my/projects', {
-          headers: {
-            'X-Auth-Token': accessToken,
-          },
-        });
-        await setProjects(data);
-        await setSelected(data[0].uri);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getProjects();
-  }, [accessToken]);
 
   return (
     <Styled.Sidebar {...props}>
@@ -86,7 +67,7 @@ function DashboardSidebar(props) {
         <Styled.Title>크리에이터 대시보드</Styled.Title>
         <Styled.Name>{currentUser.username}</Styled.Name>
       </Styled.Header>
-      {projects && projects.map(project => (
+      {projects.map(project => (
         <React.Fragment key={project.uri}>
           <Styled.Project
             isSelected={project.uri === selected}
@@ -112,9 +93,7 @@ function DashboardSidebar(props) {
 }
 
 DashboardSidebar.propTypes = {
-};
-
-DashboardSidebar.defaultProps = {
+  projects: PropTypes.array.isRequired,
 };
 
 export default DashboardSidebar;

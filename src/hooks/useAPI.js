@@ -14,9 +14,9 @@ function useAPI() {
     headers: { 'Content-Type': 'multipart/form-data' },
   };
 
-  const session = {
-    create: params => API.post('/sessions', params),
-    delete: () => API.delete('/sessions'),
+  const my = {
+    wallet: () => API.get('my/wallet'),
+    projects: () => API.get('my/projects'),
   };
 
   const post = projectId => ({
@@ -27,9 +27,22 @@ function useAPI() {
     uploadCoverImage: params => API.patch(`/projects/${projectId}/posts/cover`, params, patchConfig),
   });
 
+  const project = {
+    create: params => API.post('/projects', params),
+    get: params => API.get(`/projects/${params.projectId}`),
+    update: params => API.put(`/projects/${params.projectId}`, params),
+    uploadThumbnail: params => API.patch('/projects/thumbnail', params, patchConfig),
+    uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
+  };
+
   const series = projectId => ({
     getAll: () => API.get(`/projects/${projectId}/series`),
   });
+
+  const session = {
+    create: params => API.post('/sessions', params),
+    delete: () => API.delete('/sessions'),
+  };
 
   const user = {
     me: () => API.get('/users/me'),
@@ -39,22 +52,19 @@ function useAPI() {
     uploadPicture: params => API.patch('/users/me/picture', params, patchConfig),
   };
 
-  const my = {
-    wallet: () => API.get('my/wallet'),
-  };
-
   const token = {
     get: () => accessToken,
-    create: (value, params) => setCookie('access_token', value, { ...params }),
+    create: (value, params) => setCookie('access_token', value, { ...params, path: '/' }),
     delete: () => removeCookie('access_token'),
   };
 
   return [{
-    session,
-    post,
-    series,
-    user,
     my,
+    post,
+    project,
+    series,
+    session,
+    user,
     token,
   }];
 }

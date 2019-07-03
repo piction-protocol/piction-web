@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Redirect } from '@reach/router';
+
+import useAPI from 'hooks/useAPI';
 
 import withLoginChecker from 'components/LoginChecker';
 
@@ -21,13 +23,30 @@ Project.propTypes = {
 };
 
 function Dashboard() {
+  const [projects, setProjects] = useState([]);
+  const [API] = useAPI();
+
+  useEffect(() => {
+    const getProjects = async () => {
+      try {
+        const { data } = await API.my.projects();
+        await setProjects(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getProjects();
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <DashboardTemplate>
+    <DashboardTemplate projects={projects}>
       <Router primary={false}>
-        <Redirect from="/" to={[].length ? 'dashboard/1' : 'dashboard/new-project'} />
-        <ProjectForm title="새 프로젝트" path="new-project" />
+        <Redirect from="/" to={[].length ? 'dashboard/1' : 'dashboard/new-project'} noThrow />
+        <ProjectForm title="새 프로젝트" path="new-project" setProjects={setProjects} />
         <Project path=":projectId">
-          <ProjectForm title="프로젝트 정보 수정" path="info" />
+          <ProjectForm title="프로젝트 정보 수정" path="info" setProjects={setProjects} />
           <NotFound default />
         </Project>
       </Router>

@@ -2,38 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Grid from 'styles/Grid';
+import { MainGrid } from 'styles/Grid';
 
 import DashboardSidebar from 'components/organisms/DashboardSidebar';
 
 const Styled = {
-  Main: styled.main.attrs({
-    role: 'main',
-  })`
-    display: flex;
-    flex-flow: column;
-    flex: 1;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 var(--gap);
+  Sidebar: styled(DashboardSidebar)`
+    grid-column: 1 / span 3;
+  `,
+  Content: styled.section`
+    grid-column: span 9;
   `,
 };
 
-function DashboardTemplate({ children }) {
+function DashboardTemplate({ projects, children }) {
   return (
-    <Styled.Main>
-      <Grid>
-        <DashboardSidebar columns={3} />
-        <div columns={9}>
-          {children}
-        </div>
-      </Grid>
-    </Styled.Main>
+    <MainGrid as="main" role="main">
+      <Styled.Sidebar projects={projects} />
+      <Styled.Content>
+        {children}
+      </Styled.Content>
+    </MainGrid>
   );
 }
 
 DashboardTemplate.propTypes = {
   children: PropTypes.node.isRequired,
+  projects: PropTypes.array.isRequired,
 };
 
 export default DashboardTemplate;

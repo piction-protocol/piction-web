@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -59,7 +59,14 @@ function ImageUploader({
   className,
   ...props
 }) {
-  const [image, setImage] = useState(/^(?!\/static\/).*$/.exec(defaultImage)); // 에셋 이미지인 경우 null로 처리
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    if (defaultImage) {
+      setImage(/^(?!\/static\/).*$/.exec(defaultImage));
+    }
+  }, [defaultImage]);
+
   const handleChange = async (event) => {
     const data = new FormData();
     data.append('file', event.target.files[0]);
