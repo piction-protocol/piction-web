@@ -22,7 +22,8 @@ function useAPI() {
   const post = projectId => ({
     getAll: params => API.get(`/projects/${projectId}/posts`, params),
     create: params => API.post(`/projects/${projectId}/posts`, params),
-    getPost: params => API.get(`/projects/${projectId}/posts/${params.postId}`),
+    get: params => API.get(`/projects/${projectId}/posts/${params.postId}`),
+    update: params => API.put(`/projects/${projectId}/posts/${params.postId}`, params),
     uploadContentImage: params => API.patch(`/projects/${projectId}/posts/content`, params, patchConfig),
     uploadCoverImage: params => API.patch(`/projects/${projectId}/posts/cover`, params, patchConfig),
   });

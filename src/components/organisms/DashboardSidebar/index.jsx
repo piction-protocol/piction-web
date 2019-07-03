@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
@@ -60,6 +60,12 @@ const Styled = {
 function DashboardSidebar({ projects, ...props }) {
   const { currentUser } = useCurrentUser();
   const [selected, setSelected] = useState('');
+
+  useEffect(() => {
+    if (projects.length) {
+      setSelected(projects[0].uri);
+    }
+  }, [projects]);
 
   return (
     <Styled.Sidebar {...props}>
