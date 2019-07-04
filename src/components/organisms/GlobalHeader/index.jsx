@@ -157,19 +157,17 @@ function GlobalHeader({ paths }) {
             </Styled.Link>
             <Styled.Nav>
               {currentUser ? (
-                <Styled.User>
+                <Styled.User ref={menuRef}>
                   <Styled.Toggle
                     src={currentUser.picture}
                     onClick={() => setIsMenuOpened(prevState => !prevState)}
                   />
                   {isMenuOpened && (
-                    <div ref={menuRef}>
-                      <UserMenuWithWrapper
-                        PXL={wallet.amount}
-                        links={links}
-                        close={() => setIsMenuOpened(false)}
-                      />
-                    </div>
+                    <UserMenuWithWrapper
+                      PXL={wallet.amount}
+                      links={links}
+                      close={() => setIsMenuOpened(false)}
+                    />
                   )}
                 </Styled.User>
               ) : (
