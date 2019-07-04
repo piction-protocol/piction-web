@@ -43,7 +43,11 @@ const Styled = {
 };
 
 function dateConverter(time) {
-  const date = new Date(time);
+  const parsedTimeString = time.replace(
+    /([+-])([0-9]{2})([0-9]{2})\b/,
+    (params, p1, p2, p3) => `${p1}${p2}:${p3}`,
+  );
+  const date = new Date(parsedTimeString);
 
   return [
     `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`,
