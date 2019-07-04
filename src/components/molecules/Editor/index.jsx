@@ -15,7 +15,7 @@ import { ReactComponent as AlignLeftIcon } from 'images/ic-align-left.svg';
 import { ReactComponent as AlignCenterIcon } from 'images/ic-align-center.svg';
 import { ReactComponent as AlignRightIcon } from 'images/ic-align-right.svg';
 import { ReactComponent as ImageIcon } from 'images/ic-image.svg';
-import { ReactComponent as ImagegroupIcon } from 'images/ic-imagegroup.svg';
+import { ReactComponent as VideoIcon } from 'images/ic-video.svg';
 
 import './formats';
 
@@ -157,7 +157,7 @@ function Editor({
           <ImageIcon />
         </Styled.Button>
         <Styled.Button className="ql-video">
-          <ImagegroupIcon />
+          <VideoIcon />
         </Styled.Button>
       </Styled.Toolbar>
       <Styled.ReactQuill
