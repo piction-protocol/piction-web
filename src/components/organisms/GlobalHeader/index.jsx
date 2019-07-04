@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, Location } from '@reach/router';
@@ -8,6 +8,7 @@ import media, { mediaQuery } from 'styles/media';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
 import useWallet from 'hooks/useWallet';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import UserMenu from 'components/molecules/UserMenu';
 import Dropdown from 'components/atoms/Dropdown';
@@ -117,6 +118,9 @@ function GlobalHeader({ paths }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [wallet] = useWallet();
 
+  const menuRef = useRef();
+  useOnClickOutside(menuRef, () => setIsMenuOpened(false));
+
   const links = isDesktop ? [
     { text: '내 정보', to: '/my/info' },
     { text: '크리에이터 대시보드', to: '/dashboard' },
@@ -153,7 +157,7 @@ function GlobalHeader({ paths }) {
             </Styled.Link>
             <Styled.Nav>
               {currentUser ? (
-                <Styled.User>
+                <Styled.User ref={menuRef}>
                   <Styled.Toggle
                     src={currentUser.picture}
                     onClick={() => setIsMenuOpened(prevState => !prevState)}
