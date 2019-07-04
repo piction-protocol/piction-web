@@ -11,6 +11,8 @@ const Styled = {
     grid-column: 1 / span 3;
   `,
   Content: styled.section`
+    display: flex;
+    flex-flow: column;
     grid-column: span 9;
   `,
 };

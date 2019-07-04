@@ -24,6 +24,8 @@ const Styled = {
     as: 'form',
     columns: 9,
   })`
+    flex: 1;
+    align-self: flex-start;
     padding: 24px 0 48px;
     font-size: var(--font-size--small);
     > * {

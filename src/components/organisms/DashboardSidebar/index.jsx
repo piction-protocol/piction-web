@@ -57,6 +57,12 @@ const Styled = {
   `,
 };
 
+const isPartiallyActive = ({
+  isPartiallyCurrent,
+}) => (isPartiallyCurrent
+  ? { 'aria-current': true } : null
+);
+
 function DashboardSidebar({ projects, ...props }) {
   const { currentUser } = useCurrentUser();
   const [selected, setSelected] = useState('');
@@ -84,7 +90,12 @@ function DashboardSidebar({ projects, ...props }) {
           </Styled.Project>
           {project.uri === selected && (
             <>
-              <Styled.Link to={`/dashboard/${project.uri}/posts`}>포스트 관리</Styled.Link>
+              <Styled.Link
+                getProps={isPartiallyActive}
+                to={`/dashboard/${project.uri}/posts`}
+              >
+                포스트 관리
+              </Styled.Link>
               <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
               <Styled.Link to={`/project/${project.uri}`}>프로젝트로 이동</Styled.Link>
             </>
