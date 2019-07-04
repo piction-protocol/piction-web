@@ -5,7 +5,7 @@ function useAPI() {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const accessToken = cookies.access_token;
   const API = axios.create({
-    baseURL: 'http://api-iro.piction.network/',
+    baseURL: 'https://api-stg.piction.network/',
     headers: {
       'X-Auth-Token': accessToken,
     },
