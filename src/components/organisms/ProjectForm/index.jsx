@@ -74,6 +74,7 @@ function ProjectForm({ title, projectId, setProjects }) {
     wideThumbnail: '',
     subscriptionPrice: 0,
   });
+  const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
 
@@ -92,8 +93,13 @@ function ProjectForm({ title, projectId, setProjects }) {
   useEffect(() => {
     const getProjectData = async () => {
       try {
-        const result = await API.project.get({ projectId });
-        setFormData(result.data);
+        const { data } = await API.project.get({ projectId });
+        const { thumbnail, wideThumbnail, ...defaultFormData } = data;
+        setFormData(defaultFormData);
+        setDefaultImage({
+          thumbnail,
+          wideThumbnail,
+        });
       } catch (error) {
         console.log(error.response.message);
       }
@@ -169,7 +175,7 @@ function ProjectForm({ title, projectId, setProjects }) {
         <Styled.ImageUploader
           name="wideThumbnail"
           ratio={1440 / 450}
-          defaultImage={formData.wideThumbnail}
+          defaultImage={defaultImage.wideThumbnail}
           backgroundImage={dummyWideThumbnailImage}
           onChange={handleChange}
           uploadAPI={API.project.uploadWideThumbnail}
@@ -183,7 +189,7 @@ function ProjectForm({ title, projectId, setProjects }) {
         <Styled.ImageUploader
           name="thumbnail"
           ratio={500 / 500}
-          defaultImage={formData.thumbnail}
+          defaultImage={defaultImage.thumbnail}
           backgroundImage={dummyThumbnailImage}
           onChange={handleChange}
           uploadAPI={API.project.uploadThumbnail}

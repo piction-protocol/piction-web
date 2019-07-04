@@ -69,6 +69,7 @@ function PostForm({ title, projectId, postId }) {
     cover: '',
     requiredSubscription: false,
   });
+  const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
 
@@ -82,8 +83,12 @@ function PostForm({ title, projectId, postId }) {
   useEffect(() => {
     const getFormData = async () => {
       try {
-        const response = await API.post(projectId).get({ postId });
-        setFormData(response.data);
+        const { data } = await API.post(projectId).get({ postId });
+        const { cover, ...defaultFormData } = data;
+        setFormData(defaultFormData);
+        setDefaultImage({
+          cover,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -143,7 +148,7 @@ function PostForm({ title, projectId, postId }) {
         <Styled.ImageUploader
           name="cover"
           ratio={960 / 360}
-          defaultImage={formData.cover}
+          defaultImage={defaultImage.cover}
           backgroundImage={dummyCoverImage}
           onChange={handleChange}
           uploadAPI={API.post(projectId).uploadCoverImage}
