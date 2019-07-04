@@ -7,15 +7,17 @@ import withLoginChecker from 'components/LoginChecker';
 import SignupForm from 'components/organisms/SignupForm';
 import Welcome from 'components/organisms/Welcome';
 
+const SignupFormWithLoginChecker = withLoginChecker(SignupForm, false, '/');
+
 function SignupPage() {
   return (
     <CompactTemplate>
       <Router primary={false} basepath="/signup">
-        <SignupForm path="/" />
+        <SignupFormWithLoginChecker path="/" />
         <Welcome path="/welcome" />
       </Router>
     </CompactTemplate>
   );
 }
 
-export default withLoginChecker(SignupPage, false, '/');
+export default SignupPage;
