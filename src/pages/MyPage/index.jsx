@@ -8,7 +8,7 @@ import media from 'styles/media';
 
 import withLoginChecker from 'components/LoginChecker';
 
-import GridTemplate from 'components/templates/GridTemplate';
+import UserTemplate from 'components/templates/UserTemplate';
 import UserInfo from 'components/organisms/UserInfo';
 import Tabs from 'components/molecules/Tabs';
 import Heading from 'components/atoms/Heading';
@@ -35,7 +35,7 @@ function MyPage() {
   const createdDate = new Date(currentUser.createdAt);
 
   return (
-    <GridTemplate
+    <UserTemplate
       hero={(
         <UserInfo
           loginId={currentUser.loginId}
@@ -58,7 +58,7 @@ function MyPage() {
         <UpdateUserForm path="info" />
         <UpdatePasswordForm path="password" />
       </Router>
-    </GridTemplate>
+    </UserTemplate>
   );
 }
 

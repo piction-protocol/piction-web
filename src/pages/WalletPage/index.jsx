@@ -6,7 +6,7 @@ import useWallet from 'hooks/useWallet';
 
 import withLoginChecker from 'components/LoginChecker';
 
-import GridTemplate from 'components/templates/GridTemplate';
+import UserTemplate from 'components/templates/UserTemplate';
 import UserInfo from 'components/organisms/UserInfo';
 import Transactions from 'components/organisms/Transactions';
 import Heading from 'components/atoms/Heading';
@@ -27,7 +27,7 @@ function WalletPage() {
   const [wallet] = useWallet();
 
   return (
-    <GridTemplate
+    <UserTemplate
       hero={(
         <UserInfo
           username={currentUser.username}
@@ -46,7 +46,7 @@ function WalletPage() {
         거래 내역
       </Styled.Heading>
       <Transactions />
-    </GridTemplate>
+    </UserTemplate>
   );
 }
 

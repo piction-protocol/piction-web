@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { MainGrid } from 'styles/Grid';
-
 const Styled = {
   Main: styled.main.attrs({
     role: 'main',
@@ -16,32 +14,32 @@ const Styled = {
   Container: styled.div`
     display: flex;
     flex-flow: column;
-    grid-column: 1 / -1;
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 24px auto;
+    padding: 0 var(--outer-gap);
     background-color: var(--white);
-    margin: 24px 0;
   `,
 };
 
-function GridTemplate({ hero, children }) {
+function UserTemplate({ hero, children }) {
   return (
     <Styled.Main>
       {hero}
-      <MainGrid>
-        <Styled.Container>
-          {children}
-        </Styled.Container>
-      </MainGrid>
+      <Styled.Container>
+        {children}
+      </Styled.Container>
     </Styled.Main>
   );
 }
 
-GridTemplate.propTypes = {
+UserTemplate.propTypes = {
   children: PropTypes.node.isRequired,
   hero: PropTypes.node,
 };
 
-GridTemplate.defaultProps = {
+UserTemplate.defaultProps = {
   hero: null,
 };
 
-export default GridTemplate;
+export default UserTemplate;
