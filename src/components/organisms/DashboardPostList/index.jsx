@@ -5,33 +5,52 @@ import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
 
-import Grid from 'styles/Grid';
+import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
 import DashboardPostItem from 'components/molecules/DashboardPostItem';
 import Heading from 'components/atoms/Heading';
-
+import Select from 'components/atoms/Select';
 import { PrimaryButton } from 'components/atoms/Button';
 
 const Styled = {
-  Grid: styled(Grid).attrs({
-    columns: 9,
-  })`
-    row-gap: 8px;
+  Container: styled.div`
+    display: flex;
+    flex-flow: column;
+    flex: 1;
     padding: 24px 0 48px;
     font-size: var(--font-size--small);
     > * {
-      grid-column: 1 / -1;
+      margin-bottom: var(--row-gap);
     }
   `,
   Tools: styled.div`
     display: flex;
-    padding: 16px 0;
+  `,
+  Select: styled(Select)`
+    width: 190px;
   `,
   New: styled(PrimaryButton).attrs({
     as: Link,
     size: 'mini',
   })`
     margin-left: auto;
+  `,
+  List: styled.div`
+    display: flex;
+    flex-flow: column;
+    > * {
+      margin-bottom: 8px;
+    }
+  `,
+  Empty: styled.div`
+    margin: auto;
+    color: var(--gray--dark);
+    font-size: var(--font-size--base);
+    text-align: center;
+  `,
+  BadMoodIcon: styled(BadMoodIcon)`
+    width: 160px;
+    height: 160px;
   `,
 };
 
@@ -42,7 +61,7 @@ function DashboardPostList({ title, projectId, page }) {
   useEffect(() => {
     const getFormData = async () => {
       try {
-        const { data } = await API.post(projectId).getAll({ size: 15, page });
+        const { data } = await API.post(projectId).getAll({ params: { size: 15, page } });
         setContentList(data.content);
       } catch (error) {
         console.log(error);
@@ -53,28 +72,44 @@ function DashboardPostList({ title, projectId, page }) {
   }, [API, projectId, page]);
 
   return (
-    <Styled.Grid>
+    <Styled.Container>
       <Heading>{title}</Heading>
       <Styled.Tools>
+        <Styled.Select
+          options={[
+            { text: '모든 포스트', value: 'false' },
+            { text: '멤버십 전용', value: 'true' },
+          ]}
+        />
         <Styled.New to="new">+ 새 포스트 등록</Styled.New>
       </Styled.Tools>
-      {contentList.map(content => (
-        <Link to={`${content.id}/edit`} key={content.id}>
-          <DashboardPostItem {...content} />
-        </Link>
-      ))}
-    </Styled.Grid>
+      {contentList.length === 0 && (
+        <Styled.Empty>
+          <Styled.BadMoodIcon />
+          <p>
+            등록된 포스트가 없습니다.
+          </p>
+        </Styled.Empty>
+      )}
+      <Styled.List>
+        {contentList.map(content => (
+          <Link to={`${content.id}/edit`} key={content.id}>
+            <DashboardPostItem {...content} />
+          </Link>
+        ))}
+      </Styled.List>
+    </Styled.Container>
   );
 }
 
 DashboardPostList.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
-  page: PropTypes.number,
+  page: PropTypes.string,
 };
 
 DashboardPostList.defaultProps = {
-  page: 1,
+  page: '1',
 };
 
 export default DashboardPostList;

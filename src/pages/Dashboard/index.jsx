@@ -46,13 +46,13 @@ function Dashboard() {
   return (
     <DashboardTemplate projects={projects}>
       {isLoaded && (
-        <Router primary={false}>
-          <Redirect from="/" to={projects.length ? `dashboard/${projects[0].uri}` : 'dashboard/new-project'} noThrow />
+        <Router>
+          <Redirect from="/" to={projects.length ? `dashboard/${projects[0].uri}/posts/1` : 'dashboard/new-project'} noThrow />
           <ProjectForm title="새 프로젝트" path="new-project" setProjects={setProjects} />
           <Project path=":projectId">
-            <Redirect from="/" to="/posts" noThrow />
             <ProjectForm title="프로젝트 정보 수정" path="info" setProjects={setProjects} />
             <DashboardPostList title="포스트 관리" path="posts" />
+            <DashboardPostList title="포스트 관리" path="posts/:page" />
             <PostForm title="새 포스트" path="posts/new" />
             <PostForm title="포스트 수정" path="posts/:postId/edit" />
           </Project>
