@@ -1,4 +1,5 @@
 export default {
+  src: 'src/',
   menu: [
     'Index',
     'Atoms',
