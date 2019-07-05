@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -55,6 +55,7 @@ function MyPage() {
         ]}
       />
       <Router primary={false}>
+        <Redirect from="/" to="my/info" noThrow />
         <UpdateUserForm path="info" />
         <UpdatePasswordForm path="password" />
       </Router>
