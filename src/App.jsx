@@ -10,6 +10,7 @@ import Spinner from 'components/atoms/Spinner';
 const HomePage = React.lazy(() => import('pages/HomePage'));
 const LoginPage = React.lazy(() => import('pages/LoginPage'));
 const SignupPage = React.lazy(() => import('pages/SignupPage'));
+const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const Dashboard = React.lazy(() => import('pages/Dashboard'));
 
@@ -49,6 +50,8 @@ function App() {
               <HomePage path="/" />
               <LoginPage path="login" />
               <SignupPage path="signup/*" />
+
+              <ProjectPage path="project/:projectId" />
 
               <MyPage path="my/*" />
               <Dashboard path="dashboard/*" />

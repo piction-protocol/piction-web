@@ -61,5 +61,9 @@ function Tabs({ links, ...props }) {
 export default Tabs;
 
 Tabs.propTypes = {
-  links: PropTypes.array.isRequired,
+  links: PropTypes.array,
+};
+
+Tabs.defaultProps = {
+  links: [],
 };

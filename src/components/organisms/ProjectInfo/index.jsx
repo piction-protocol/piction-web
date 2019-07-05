@@ -25,12 +25,16 @@ const Styled = {
     position: relative;
   `,
   WideThumbnail: styled(ContentImage)`
+    max-height: 450px;
   `,
   MainGrid: styled(MainGrid)`
     row-gap: 16px;
     padding-top: 16px;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--black);
+    ${media.desktop`
+      padding-top: 24px;
+      padding-bottom: 24px;
+    `}
   `,
   Text: styled.div`
     display: flex;
