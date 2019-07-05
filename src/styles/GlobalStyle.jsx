@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     --font-size--small: 14px;
 
     --line-height--base: normal;
-    --line-height--contents: 1.75;
+    --line-height--content: 1.75;
 
     --max-width: 1280px;
 

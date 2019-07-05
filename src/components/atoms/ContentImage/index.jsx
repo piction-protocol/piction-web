@@ -7,6 +7,7 @@ const ContentImage = styled.div.attrs({
   position: relative;
   background-image: url(${({ image }) => image});
   background-size: cover;
+  background-repeat: no-repeat;
   background-position: center;
   &::after {
     content: '';
