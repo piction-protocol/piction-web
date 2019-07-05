@@ -6,6 +6,8 @@ import Grid from 'styles/Grid';
 
 import dummyCoverImage from 'images/img-dummy-960x360.jpg';
 
+import ContentImage from 'components/atoms/ContentImage';
+
 const Styled = {
   Item: styled(Grid).attrs({
     columns: 9,
@@ -13,16 +15,8 @@ const Styled = {
     border: 1px solid var(--gray--light);
     background-color: var(--white);
   `,
-  Cover: styled.div`
-    display: flex;
+  Cover: styled(ContentImage)`
     grid-column: span 3;
-    background-image: url(${({ image }) => image});
-    background-size: cover;
-    background-position: center;
-    &::after {
-      content: '';
-      padding-top: ${360 / 960 * 100}%;
-    }
   `,
   Text: styled.div`
     display: flex;
@@ -64,6 +58,7 @@ function DashboardPostItem({
       {...props}
     >
       <Styled.Cover
+        ratio={960 / 360}
         image={cover || dummyCoverImage}
       />
       <Styled.Text>
