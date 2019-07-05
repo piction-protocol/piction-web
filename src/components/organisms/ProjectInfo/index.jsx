@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -7,11 +7,14 @@ import media, { mediaQuery } from 'styles/media';
 
 import useMedia from 'hooks/useMedia';
 
+import SynopsisPopup from 'components/molecules/SynopsisPopup';
+
 import ContentImage from 'components/atoms/ContentImage';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
+import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
 import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
 import dummyUserPicture from 'images/img-user-profile.svg';
 
@@ -19,6 +22,7 @@ const Styled = {
   Section: styled.section`
     display: flex;
     flex-flow: column;
+    position: relative;
   `,
   WideThumbnail: styled(ContentImage)`
   `,
@@ -70,6 +74,16 @@ const Styled = {
     color: var(--gray--dark);
     line-height: var(--line-height--content);
   `,
+  InfoButton: styled.button`
+    display: flex;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px 0 var(--shadow-color);
+  `,
   UserPictureWrapper: styled.div`
     grid-column: -2 / -1;
     ${media.desktop`
@@ -108,6 +122,7 @@ function ProjectInfo({
   project, ...props
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
+  const [isSynopsisVisible, setIsSynopsisVisible] = useState(false);
 
   return (
     <Styled.Section {...props}>
@@ -126,9 +141,22 @@ function ProjectInfo({
               {`@${project.user.loginId}`}
             </Styled.UserId>
           </Styled.User>
-          <Styled.Synopsis>
-            {project.synopsis}
-          </Styled.Synopsis>
+          {project.synopsis && (
+            isDesktop ? (
+              <Styled.Synopsis>
+                {project.synopsis}
+              </Styled.Synopsis>
+            ) : (
+              <>
+                <Styled.InfoButton onClick={() => setIsSynopsisVisible(true)}>
+                  <InfoIcon />
+                </Styled.InfoButton>
+                {isSynopsisVisible && (
+                  <SynopsisPopup {...project} close={() => setIsSynopsisVisible(false)} />
+                )}
+              </>
+            )
+          )}
         </Styled.Text>
         <Styled.UserPictureWrapper>
           <Styled.UserPicture
