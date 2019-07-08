@@ -53,6 +53,10 @@ function PostList({
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
+    setContentList([]);
+  }, [projectId]);
+
+  useEffect(() => {
     const getFormData = async () => {
       try {
         const { data } = await API.post(projectId).getAll({ params: { size: 10, page } });

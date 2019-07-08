@@ -41,6 +41,10 @@ function useAPI() {
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
   };
 
+  const recommendedProjects = {
+    getAll: params => API.get('/recommended-projects', params),
+  };
+
   const series = projectId => ({
     getAll: () => API.get(`/projects/${projectId}/series`),
   });
@@ -68,6 +72,7 @@ function useAPI() {
     my,
     post,
     project,
+    recommendedProjects,
     series,
     session,
     user,

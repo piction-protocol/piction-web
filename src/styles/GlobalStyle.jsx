@@ -79,6 +79,7 @@ const GlobalStyle = createGlobalStyle`
   h6,
   p {
     margin: 0;
+    font-size: inherit;
   }
 
   ul, li {
@@ -96,6 +97,17 @@ const GlobalStyle = createGlobalStyle`
   [role="group"] {
     display: flex;
     flex: 1;
+  }
+
+  .a11y {
+    position: absolute;
+    left: -5000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    font-size: 1px;
+    overflow: hidden;
+    opacity: 0;
   }
 `;
 

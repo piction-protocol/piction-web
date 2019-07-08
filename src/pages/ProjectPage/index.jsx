@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
@@ -11,6 +11,7 @@ import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import Tabs from 'components/molecules/Tabs';
+import ProjectCard from 'components/molecules/ProjectCard';
 
 const ProjectInfo = React.lazy(() => import('components/organisms/ProjectInfo'));
 const PostList = React.lazy(() => import('components/organisms/PostList'));
@@ -33,11 +34,19 @@ const Styled = {
     display: flex;
     flex-flow: column;
     grid-column: span 3;
+    > *:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  `,
+  CardText: styled.p`
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
   `,
 };
 
 function ProjectPage({ projectId }) {
-  const [project, setProject] = useState([]);
+  const [project, setProject] = useState({});
+  const [recommendedProjects, setRecommendedProjects] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), []);
@@ -46,8 +55,12 @@ function ProjectPage({ projectId }) {
   useEffect(() => {
     const getProject = async () => {
       try {
-        const { data } = await API.project.get({ projectId });
-        await setProject(data);
+        const [response1, response2] = await Promise.all([
+          API.project.get({ projectId }),
+          API.recommendedProjects.getAll({ params: { size: 3 } }),
+        ]);
+        setProject(response1.data);
+        setRecommendedProjects(response2.data.filter(({ uri }) => uri !== projectId).slice(0, 2));
         setIsLoaded(true);
       } catch (error) {
         navigate('/404', { replace: true });
@@ -75,8 +88,22 @@ function ProjectPage({ projectId }) {
         />
       </Styled.Content>
       {isDesktop && (
-        <Styled.Aside>
-        </Styled.Aside>
+        recommendedProjects.length && (
+          <Styled.Aside>
+            <h2>
+              추천 프로젝트
+            </h2>
+            {recommendedProjects.map(recommededProject => (
+              <Link to={`/project/${recommededProject.uri}`} key={recommededProject.id}>
+                <ProjectCard {...recommededProject}>
+                  <Styled.CardText>
+                    구독자 수 0
+                  </Styled.CardText>
+                </ProjectCard>
+              </Link>
+            ))}
+          </Styled.Aside>
+        )
       )}
     </GridTemplate>
   );
