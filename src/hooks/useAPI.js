@@ -18,6 +18,7 @@ function useAPI() {
   const my = {
     wallet: () => API.get('my/wallet'),
     projects: () => API.get('my/projects'),
+    subscriptions: () => API.get('my/subscriptions'),
   };
 
   const post = projectId => ({

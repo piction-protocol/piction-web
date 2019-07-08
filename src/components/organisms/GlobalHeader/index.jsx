@@ -122,6 +122,7 @@ function GlobalHeader({ paths }) {
   useOnClickOutside(menuRef, () => setIsMenuOpened(false));
 
   const links = isDesktop ? [
+    { text: '구독중인 프로젝트', to: '/subscriptions' },
     { text: '내 정보', to: '/my/info' },
     { text: '크리에이터 대시보드', to: '/dashboard' },
     { text: '새 프로젝트 만들기', to: '/dashboard/new-project' },
