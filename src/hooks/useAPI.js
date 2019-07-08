@@ -8,6 +8,7 @@ function useAPI() {
     baseURL: 'https://api-stg.piction.network/',
     headers: {
       'X-Auth-Token': accessToken,
+      accept: 'application/vnd.piction.v1+json',
     },
   });
   const patchConfig = {
@@ -23,7 +24,10 @@ function useAPI() {
     getAll: params => API.get(`/projects/${projectId}/posts`, params),
     create: params => API.post(`/projects/${projectId}/posts`, params),
     get: params => API.get(`/projects/${projectId}/posts/${params.postId}`),
+    getContent: params => API.get(`/projects/${projectId}/posts/${params.postId}/content`),
+    getIsLike: params => API.get(`/projects/${projectId}/posts/${params.postId}/isLike`),
     update: params => API.put(`/projects/${projectId}/posts/${params.postId}`, params),
+    like: params => API.post(`/projects/${projectId}/posts/${params.postId}/like`),
     uploadContentImage: params => API.patch(`/projects/${projectId}/posts/content`, params, patchConfig),
     uploadCoverImage: params => API.patch(`/projects/${projectId}/posts/cover`, params, patchConfig),
   });
@@ -32,6 +36,7 @@ function useAPI() {
     create: params => API.post('/projects', params),
     get: params => API.get(`/projects/${params.projectId}`),
     update: params => API.put(`/projects/${params.projectId}`, params),
+    subscribe: params => API.post(`/projects/${params.projectId}/subscription`, params),
     uploadThumbnail: params => API.patch('/projects/thumbnail', params, patchConfig),
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
   };

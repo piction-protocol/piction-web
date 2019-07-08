@@ -11,6 +11,8 @@ const HomePage = React.lazy(() => import('pages/HomePage'));
 const LoginPage = React.lazy(() => import('pages/LoginPage'));
 const SignupPage = React.lazy(() => import('pages/SignupPage'));
 const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
+const PostPage = React.lazy(() => import('pages/PostPage'));
+const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const Dashboard = React.lazy(() => import('pages/Dashboard'));
 
@@ -51,7 +53,9 @@ function App() {
               <LoginPage path="login" />
               <SignupPage path="signup/*" />
 
-              <ProjectPage path="project/:projectId" />
+              <ProjectPage path="project/:projectId/*" />
+              <PostPage path="project/:projectId/posts/:postId" />
+              <MembershipPage path="project/:projectId/memberships/" />
 
               <MyPage path="my/*" />
               <Dashboard path="dashboard/*" />

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from '@reach/router';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import { MainGrid } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
@@ -169,12 +172,21 @@ function ProjectInfo({
           />
         </Styled.UserPictureWrapper>
         <Styled.Subscribe>
-          <Styled.SubscribeButton>
-            {`${project.subscriptionPrice} PXL로 구독하기`}
-          </Styled.SubscribeButton>
+          {project.subscription ? (
+            <Styled.SubscribeButton disabled>
+              구독중
+            </Styled.SubscribeButton>
+          ) : (
+            <Styled.SubscribeButton as={Link} to="memberships">
+              {`${project.subscriptionPrice} PXL로 구독하기`}
+            </Styled.SubscribeButton>
+          )}
           <Styled.SubscribeInfo>
             <Styled.AccessTimeIcon />
-            30일 동안 구독 가능
+            {project.subscription
+              ? `${moment().add(30, 'days').format('ll')}까지`
+              : '30일 동안 구독 가능'
+            }
           </Styled.SubscribeInfo>
         </Styled.Subscribe>
       </Styled.MainGrid>
