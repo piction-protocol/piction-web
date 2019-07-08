@@ -4,6 +4,7 @@ import { navigate } from '@reach/router';
 import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
@@ -40,6 +41,7 @@ const Styled = {
 function ProjectPage({ projectId }) {
   const [project, setProject] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
@@ -58,13 +60,19 @@ function ProjectPage({ projectId }) {
 
   return isLoaded && (
     <GridTemplate
-      hero={
-        <ProjectInfo project={project} />
-      }
+      hero={(
+        <ProjectInfo
+          isMine={currentUser.loginId === project.user.loginId}
+          project={project}
+        />
+      )}
     >
       <Styled.Tabs />
       <Styled.Content>
-        <PostList projectId={projectId} />
+        <PostList
+          isSubscribed={!!project.subscription}
+          projectId={projectId}
+        />
       </Styled.Content>
       <Styled.Aside>
       </Styled.Aside>

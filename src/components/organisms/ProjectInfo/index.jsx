@@ -126,7 +126,7 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, ...props
+  project, isMine, ...props
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isSynopsisVisible, setIsSynopsisVisible] = useState(false);
@@ -171,24 +171,32 @@ function ProjectInfo({
             image={project.user.picture || dummyUserPicture}
           />
         </Styled.UserPictureWrapper>
-        <Styled.Subscribe>
-          {project.subscription ? (
-            <Styled.SubscribeButton disabled>
-              구독중
+        {isMine ? (isDesktop && (
+          <Styled.Subscribe>
+            <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
+              새 포스트
             </Styled.SubscribeButton>
-          ) : (
-            <Styled.SubscribeButton as={Link} to="memberships">
-              {`${project.subscriptionPrice} PXL로 구독하기`}
-            </Styled.SubscribeButton>
-          )}
-          <Styled.SubscribeInfo>
-            <Styled.AccessTimeIcon />
-            {project.subscription
-              ? `${moment().add(30, 'days').format('ll')}까지`
-              : '30일 동안 구독 가능'
-            }
-          </Styled.SubscribeInfo>
-        </Styled.Subscribe>
+          </Styled.Subscribe>
+        )) : (
+          <Styled.Subscribe>
+            {project.subscription ? (
+              <Styled.SubscribeButton disabled>
+                구독중
+              </Styled.SubscribeButton>
+            ) : (
+              <Styled.SubscribeButton as={Link} to="memberships">
+                {`${project.subscriptionPrice} PXL로 구독하기`}
+              </Styled.SubscribeButton>
+            )}
+            <Styled.SubscribeInfo>
+              <Styled.AccessTimeIcon />
+              {project.subscription
+                ? `${moment().add(30, 'days').format('ll')}까지`
+                : '30일 동안 구독 가능'
+              }
+            </Styled.SubscribeInfo>
+          </Styled.Subscribe>
+        )}
       </Styled.MainGrid>
     </Styled.Section>
   );
@@ -204,6 +212,11 @@ ProjectInfo.propTypes = {
       picture: PropTypes.string,
     }),
   }).isRequired,
+  isMine: PropTypes.bool,
+};
+
+ProjectInfo.defaultProps = {
+  isMine: false,
 };
 
 export default ProjectInfo;
