@@ -84,8 +84,9 @@ function PostForm({ title, projectId, postId }) {
     const getFormData = async () => {
       try {
         const { data } = await API.post(projectId).get({ postId });
+        const content = await API.post(projectId).getContent({ postId });
         const { cover, ...defaultFormData } = data;
-        setFormData(defaultFormData);
+        setFormData({ ...defaultFormData, content: content.data.content });
         setDefaultImage({
           cover,
         });
