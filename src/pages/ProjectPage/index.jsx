@@ -5,8 +5,9 @@ import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
+import useMedia from 'hooks/useMedia';
 
-import media from 'styles/media';
+import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import Tabs from 'components/molecules/Tabs';
@@ -29,12 +30,9 @@ const Styled = {
     `}
   `,
   Aside: styled.aside`
-    display: none;
-    ${media.desktop`
-      display: flex;
-      flex-flow: column;
-      grid-column: span 3;
-    `}
+    display: flex;
+    flex-flow: column;
+    grid-column: span 3;
   `,
 };
 
@@ -43,6 +41,7 @@ function ProjectPage({ projectId }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), []);
+  const isDesktop = useMedia(mediaQuery.desktop);
 
   useEffect(() => {
     const getProject = async () => {
@@ -70,12 +69,15 @@ function ProjectPage({ projectId }) {
       <Styled.Tabs />
       <Styled.Content>
         <PostList
-          isSubscribed={!!project.subscription}
+          isSubscribed={(currentUser.loginId === project.user.loginId) || !!project.subscription}
+          subscriptionPrice={project.subscriptionPrice}
           projectId={projectId}
         />
       </Styled.Content>
-      <Styled.Aside>
-      </Styled.Aside>
+      {isDesktop && (
+        <Styled.Aside>
+        </Styled.Aside>
+      )}
     </GridTemplate>
   );
 }

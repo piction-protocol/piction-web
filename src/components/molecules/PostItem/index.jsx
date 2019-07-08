@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import media from 'styles/media';
 
 import { ReactComponent as ThumbupIcon } from 'images/ic-thumbup.svg';
+import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
 
 import ContentImage from 'components/atoms/ContentImage';
 
@@ -18,6 +19,46 @@ const Styled = {
   `,
   Cover: styled(ContentImage)`
     margin-bottom: 16px;
+  `,
+  Locked: styled.div`
+    position: relative;
+    margin-bottom: 16px;
+    overflow: hidden;
+  `,
+  LockedText: styled.p`
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .3);
+    color: var(--white);
+    font-size: var(--font-size--small);
+    text-align: center;
+    white-space: pre-line;
+    ${media.desktop`
+      font-size: var(--font-size--base);
+      line-height: var(--line-height--content);
+    `}
+  `,
+  LockedIcon: styled(LockedIcon)`
+    margin-bottom: 8px;
+    ${media.desktop`
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+    `}
+  `,
+  LockedCover: styled(ContentImage)`
+    filter: blur(16px);
+    ${media.desktop`
+      filter: blur(24px);
+    `}
   `,
   Title: styled.h2`
     margin-bottom: 4px;
@@ -60,18 +101,31 @@ function dateConverter(time) {
 }
 
 function PostItem({
-  title, cover, createdAt, likeCount, ...props
+  title, cover, createdAt, likeCount, isLocked, subscriptionPrice, ...props
 }) {
   const createdDate = dateConverter(createdAt);
   return (
     <Styled.Item
       {...props}
     >
-      {cover && (
-        <Styled.Cover
-          ratio={960 / 360}
-          image={cover}
-        />
+      {isLocked ? (
+        <Styled.Locked>
+          <Styled.LockedText>
+            <Styled.LockedIcon />
+            {`${subscriptionPrice}PXL로 멤버십 한정 콘텐츠를\n자유롭게 열람하세요.`}
+          </Styled.LockedText>
+          <Styled.LockedCover
+            ratio={960 / 360}
+            image={cover}
+          />
+        </Styled.Locked>
+      ) : (
+        cover && (
+          <Styled.Cover
+            ratio={960 / 360}
+            image={cover}
+          />
+        )
       )}
       <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
@@ -94,11 +148,15 @@ PostItem.propTypes = {
   cover: PropTypes.string,
   createdAt: PropTypes.string.isRequired,
   likeCount: PropTypes.number,
+  isLocked: PropTypes.bool,
+  subscriptionPrice: PropTypes.number,
 };
 
 PostItem.defaultProps = {
   cover: null,
   likeCount: 0,
+  isLocked: false,
+  subscriptionPrice: 0,
 };
 
 export default PostItem;

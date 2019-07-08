@@ -44,7 +44,9 @@ const Styled = {
   `,
 };
 
-function PostList({ projectId, ...props }) {
+function PostList({
+  projectId, isSubscribed, subscriptionPrice, ...props
+}) {
   const [page, setPage] = useState(1);
   const [isLast, setIsLast] = useState(true);
   const [contentList, setContentList] = useState([]);
@@ -79,8 +81,17 @@ function PostList({ projectId, ...props }) {
       )}
       <Styled.List>
         {contentList.map(content => (
-          <Link to={`posts/${content.id}`} key={content.id}>
-            <PostItem {...content} />
+          <Link
+            to={
+              (isSubscribed || !content.requiredSubscription) ? `posts/${content.id}` : 'memberships'
+            }
+            key={content.id}
+          >
+            <PostItem
+              {...content}
+              isLocked={!isSubscribed && content.requiredSubscription}
+              subscriptionPrice={subscriptionPrice}
+            />
           </Link>
         ))}
         {!isLast && (
@@ -95,6 +106,13 @@ function PostList({ projectId, ...props }) {
 
 PostList.propTypes = {
   projectId: PropTypes.string.isRequired,
+  isSubscribed: PropTypes.bool,
+  subscriptionPrice: PropTypes.number,
+};
+
+PostList.defaultProps = {
+  isSubscribed: false,
+  subscriptionPrice: 0,
 };
 
 export default PostList;
