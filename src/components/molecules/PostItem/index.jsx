@@ -78,10 +78,12 @@ function PostItem({
         <Styled.CreatedAt>
           {createdDate}
         </Styled.CreatedAt>
-        <Styled.LikeCount>
-          <Styled.ThumbupIcon />
-          {likeCount}
-        </Styled.LikeCount>
+        {likeCount > 0 && (
+          <Styled.LikeCount>
+            <Styled.ThumbupIcon />
+            {likeCount}
+          </Styled.LikeCount>
+        )}
       </Styled.Text>
     </Styled.Item>
   );
