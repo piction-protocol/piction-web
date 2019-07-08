@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
 
+import moment from 'moment';
+import 'moment/locale/ko';
+
 const Styled = {
   Section: styled.section`
     display: flex;
@@ -64,11 +67,7 @@ const Styled = {
 };
 
 function UserInfo({
-  picture,
-  username,
-  loginId,
-  description,
-  children,
+  picture, username, loginId, createdAt, children,
 }) {
   return (
     <Styled.Section>
@@ -78,11 +77,11 @@ function UserInfo({
           <Styled.Name>
             {username}
             <Styled.ID>
-              {loginId}
+              {`@${loginId}`}
             </Styled.ID>
           </Styled.Name>
           <Styled.Description>
-            {description}
+            {`가입일 : ${moment(createdAt).format('ll')} (D+${moment().diff(moment(createdAt), 'days')})`}
           </Styled.Description>
         </Styled.User>
         {children && (
@@ -99,13 +98,12 @@ UserInfo.propTypes = {
   picture: PropTypes.string,
   username: PropTypes.string.isRequired,
   loginId: PropTypes.string.isRequired,
-  description: PropTypes.string,
+  createdAt: PropTypes.string.isRequired,
   children: PropTypes.node,
 };
 
 UserInfo.defaultProps = {
   picture: '',
-  description: '',
   children: null,
 };
 
