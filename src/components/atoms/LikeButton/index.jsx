@@ -18,16 +18,16 @@ const Styled = {
     color: var(--color);
     box-shadow: 0 2px 4px 0 var(--shadow-color);
     pointer-events: ${({ isLike }) => (isLike ? 'none' : 'auto')};
-  `,
-  HeartIcon: styled(HeartIcon)`
-    width: 56px;
-    height: 56px;
     ${({ isLike }) => isLike && `
-      path {
+      svg path {
         stroke: currentColor;
         fill: currentColor;
       }
     `};
+  `,
+  HeartIcon: styled(HeartIcon)`
+    width: 56px;
+    height: 56px;
   `,
   Count: styled.p`
     font-size: var(--font-size--small);
@@ -37,7 +37,7 @@ const Styled = {
 function LikeButton({ likeCount, isLike, ...props }) {
   return (
     <Styled.Button isLike={isLike} {...props}>
-      <Styled.HeartIcon isLike={isLike} />
+      <Styled.HeartIcon />
       <Styled.Count>
         {likeCount}
       </Styled.Count>
