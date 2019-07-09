@@ -38,12 +38,13 @@ function useAPI() {
     get: params => API.get(`/projects/${params.projectId}`),
     update: params => API.put(`/projects/${params.projectId}`, params),
     subscribe: params => API.post(`/projects/${params.projectId}/subscription`, params),
+    getSubscription: params => API.get(`/projects/${params.projectId}/subscription`),
     uploadThumbnail: params => API.patch('/projects/thumbnail', params, patchConfig),
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
   };
 
-  const recommendedProjects = {
-    getAll: params => API.get('/recommended-projects', params),
+  const recommended = {
+    getProjects: params => API.get('/recommended/projects', params),
   };
 
   const series = projectId => ({
@@ -73,7 +74,7 @@ function useAPI() {
     my,
     post,
     project,
-    recommendedProjects,
+    recommended,
     series,
     session,
     user,

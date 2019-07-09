@@ -46,6 +46,7 @@ const Styled = {
 
 function ProjectPage({ projectId }) {
   const [project, setProject] = useState({});
+  const [subscription, setSubscription] = useState({});
   const [recommendedProjects, setRecommendedProjects] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { currentUser } = useCurrentUser();
@@ -55,11 +56,16 @@ function ProjectPage({ projectId }) {
   useEffect(() => {
     const getProject = async () => {
       try {
-        const [response1, response2] = await Promise.all([
+        const [response1, response2, response3] = await Promise.all([
           API.project.get({ projectId }),
-          API.recommendedProjects.getAll({ params: { size: 3 } }),
+          API.recommended.getProjects({ params: { size: 3 } }),
+          API.project.getSubscription({ projectId }),
         ]);
-        setProject(response1.data);
+        setProject({
+          ...response1.data,
+          isMine: currentUser && (currentUser.loginId === response1.data.user.loginId),
+        });
+        setSubscription(response3.data);
         setRecommendedProjects(response2.data.filter(({ uri }) => uri !== projectId).slice(0, 2));
         setIsLoaded(true);
       } catch (error) {
@@ -68,21 +74,21 @@ function ProjectPage({ projectId }) {
     };
 
     getProject();
-  }, [API, projectId]);
+  }, [currentUser, API, projectId]);
 
   return isLoaded && (
     <GridTemplate
       hero={(
         <ProjectInfo
-          isMine={currentUser.loginId === project.user.loginId}
           project={project}
+          subscription={subscription}
         />
       )}
     >
       <Styled.Tabs />
       <Styled.Content>
         <PostList
-          isSubscribed={(currentUser.loginId === project.user.loginId) || !!project.subscription}
+          isSubscribing={project.isMine || subscription.subscribing}
           subscriptionPrice={project.subscriptionPrice}
           projectId={projectId}
         />
@@ -94,10 +100,13 @@ function ProjectPage({ projectId }) {
               추천 프로젝트
             </h2>
             {recommendedProjects.map(recommededProject => (
-              <Link to={`/project/${recommededProject.uri}`} key={recommededProject.id}>
-                <ProjectCard {...recommededProject}>
+              <Link
+                to={`/project/${recommededProject.project.uri}`}
+                key={recommededProject.project.id}
+              >
+                <ProjectCard {...recommededProject.project}>
                   <Styled.CardText>
-                    구독자 수 0
+                    {`구독자 수 ${recommededProject.subscriptionCount}`}
                   </Styled.CardText>
                 </ProjectCard>
               </Link>
