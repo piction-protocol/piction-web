@@ -1,4 +1,5 @@
 import { useCookies } from 'react-cookie';
+import { navigate } from '@reach/router';
 import axios from 'axios';
 
 function useAPI() {
@@ -70,6 +71,10 @@ function useAPI() {
     delete: () => removeCookie('access_token'),
   };
 
+  const handleCommonError = code => ({
+    4001: navigate('/login'),
+  }[code]);
+
   return [{
     my,
     post,
@@ -79,7 +84,7 @@ function useAPI() {
     session,
     user,
     token,
-  }];
+  }, handleCommonError];
 }
 
 export default useAPI;

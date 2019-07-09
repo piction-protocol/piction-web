@@ -17,6 +17,7 @@ const Styled = {
     background-color: var(--white);
     color: var(--color);
     box-shadow: 0 2px 4px 0 var(--shadow-color);
+    cursor: pointer;
     pointer-events: ${({ isLike }) => (isLike ? 'none' : 'auto')};
     ${({ isLike }) => isLike && `
       svg path {

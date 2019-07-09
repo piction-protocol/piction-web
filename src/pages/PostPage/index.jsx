@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 import useAPI from 'hooks/useAPI';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 import ContentStyle from 'styles/ContentStyle';
 import media from 'styles/media';
@@ -54,31 +55,28 @@ const Styled = {
 function PostPage({ projectId, postId }) {
   const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [API] = useCallback(useAPI(), []);
+  const { currentUser } = useCurrentUser();
+  const [API, handleError] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getpost = async () => {
-      try {
-        const [project, post, content, isLike] = await Promise.all([
-          API.project.get({ projectId }),
-          API.post(projectId).get({ postId }),
-          API.post(projectId).getContent({ postId }),
-          API.post(projectId).getIsLike({ postId }),
-        ]);
-        await setData({
-          project: project.data,
-          post: post.data,
-          content: content.data.content,
-          isLike: isLike.data.like,
-        });
-        setIsLoaded(true);
-      } catch (error) {
-        console.log(error);
-      }
+      const [project, post, content, isLike] = await Promise.all([
+        API.project.get({ projectId }),
+        API.post(projectId).get({ postId }),
+        API.post(projectId).getContent({ postId }),
+        (currentUser && API.post(projectId).getIsLike({ postId })),
+      ]);
+      setData({
+        project: project.data,
+        post: post.data,
+        content: content.data.content,
+        isLike: currentUser ? isLike.data.like : false,
+      });
+      setIsLoaded(true);
     };
 
     getpost();
-  }, [API, postId, projectId]);
+  }, [currentUser, API, postId, projectId]);
 
   const handleLike = async () => {
     try {
@@ -89,7 +87,7 @@ function PostPage({ projectId, postId }) {
         isLike: true,
       }));
     } catch (error) {
-      console.log(error);
+      handleError(error.response.data);
     }
   };
 
