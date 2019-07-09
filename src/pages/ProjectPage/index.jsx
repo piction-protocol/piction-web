@@ -56,17 +56,19 @@ function ProjectPage({ projectId }) {
   useEffect(() => {
     const getProject = async () => {
       try {
-        const [response1, response2, response3] = await Promise.all([
+        const response = await Promise.all([
           API.project.get({ projectId }),
           API.recommended.getProjects({ params: { size: 3 } }),
-          API.project.getSubscription({ projectId }),
+          (currentUser && API.project.getSubscription({ projectId })),
         ]);
+        if (currentUser) {
+          setSubscription(response[2].data);
+        }
         setProject({
-          ...response1.data,
-          isMine: currentUser && (currentUser.loginId === response1.data.user.loginId),
+          ...response[0].data,
+          isMine: currentUser && (currentUser.loginId === response[0].data.user.loginId),
         });
-        setSubscription(response3.data);
-        setRecommendedProjects(response2.data.filter(({ uri }) => uri !== projectId).slice(0, 2));
+        setRecommendedProjects(response[1].data.filter(({ uri }) => uri !== projectId).slice(0, 2));
         setIsLoaded(true);
       } catch (error) {
         navigate('/404', { replace: true });
