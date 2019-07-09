@@ -33,7 +33,9 @@ const Styled = {
     background-repeat: no-repeat;
     cursor: pointer;
   `,
-  Cancel: styled.button`
+  Cancel: styled.button.attrs({
+    type: 'button',
+  })`
     position: absolute;
     z-index: 1;
     top: 0;
@@ -50,14 +52,7 @@ const Styled = {
 };
 
 function ImageUploader({
-  name,
-  onChange,
-  uploadAPI,
-  backgroundImage,
-  defaultImage,
-  ratio,
-  className,
-  ...props
+  name, onChange, uploadAPI, backgroundImage, defaultImage, ratio, className, ...props
 }) {
   const [image, setImage] = useState(null);
 
