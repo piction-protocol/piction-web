@@ -94,11 +94,6 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100vh;
   }
 
-  [role="group"] {
-    display: flex;
-    flex: 1;
-  }
-
   .a11y {
     position: absolute;
     left: -5000px;

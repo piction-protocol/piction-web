@@ -8,6 +8,7 @@ import { ReactComponent as Logo } from 'images/piction-logo--mini.svg';
 const Styled = {
   Footer: styled.footer`
     display: flex;
+    margin-top: auto;
     padding: var(--outer-gap) 0;
     border-top: 1px solid var(--gray--light);
     background-color: var(--white);

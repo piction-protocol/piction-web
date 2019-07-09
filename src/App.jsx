@@ -1,5 +1,6 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Router } from '@reach/router';
+import styled from 'styled-components';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -16,6 +17,11 @@ const PostPage = React.lazy(() => import('pages/PostPage'));
 const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const Dashboard = React.lazy(() => import('pages/Dashboard'));
+
+const StyledRouter = styled(Router)`
+  display: flex;
+  flex: 1;
+`;
 
 const NotFound = () => (
   <div style={{
@@ -48,8 +54,8 @@ function App() {
       {isLoaded && (
         <>
           <GlobalHeader />
-          <Router>
-            <Suspense path="/" fallback={<Spinner />}>
+          <Suspense fallback={<Spinner />}>
+            <StyledRouter primary={false}>
               <HomePage path="/" />
               <LoginPage path="login" />
               <SignupPage path="signup/*" />
@@ -64,8 +70,8 @@ function App() {
               <Dashboard path="dashboard/*" />
 
               <NotFound default />
-            </Suspense>
-          </Router>
+            </StyledRouter>
+          </Suspense>
           <GlobalFooter />
         </>
       )}
