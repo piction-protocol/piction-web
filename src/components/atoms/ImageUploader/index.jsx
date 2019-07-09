@@ -60,7 +60,8 @@ function ImageUploader({
     if (defaultImage) {
       setImage(/^(?!\/static\/).*$/.exec(defaultImage));
     }
-  }, [defaultImage]);
+    onChange({ target: { name, value: '' } });
+  }, [onChange, name, defaultImage]);
 
   const handleChange = async (event) => {
     const { target } = event;
