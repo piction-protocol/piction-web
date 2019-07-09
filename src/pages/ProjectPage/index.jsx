@@ -68,7 +68,9 @@ function ProjectPage({ projectId }) {
           ...response[0].data,
           isMine: currentUser && (currentUser.loginId === response[0].data.user.loginId),
         });
-        setRecommendedProjects(response[1].data.filter(({ uri }) => uri !== projectId).slice(0, 2));
+        setRecommendedProjects(
+          response[1].data.filter(recommended => recommended.project.uri !== projectId).slice(0, 2),
+        );
         setIsLoaded(true);
       } catch (error) {
         navigate('/404', { replace: true });
