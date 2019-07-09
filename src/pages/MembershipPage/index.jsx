@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { navigate } from '@reach/router';
 import styled from 'styled-components';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -209,7 +211,7 @@ function MembershipPage({ projectId }) {
         </Styled.PXL>
         <Styled.DesktopTitle>{`${project.title} 멤버십`}</Styled.DesktopTitle>
         <Styled.ExpireDate>
-          ▪ 2019년 N월 N일까지 구독 가능합니다.
+          {`▪ ${moment().add(30, 'days').format('ll')}까지 구독 가능합니다.`}
         </Styled.ExpireDate>
         <Styled.Synopsis>
           {project.synopsis}
@@ -218,9 +220,9 @@ function MembershipPage({ projectId }) {
       <Styled.Purchase>
         <Styled.Terms>
           {`
-            멤버십 상품 구매 시 네트워크 수수료 10%, 생태계 수수료 5%를 제외한
-            ${project.subscriptionPrice * 0.85}PXL의
-            금액이 ${project.user.username}님에게 즉시 송금되며, 환불은 불가능합니다.
+            멤버십 상품 구매 시 네트워크 수수료 10%, 생태계 수수료 10%, 사용자 보상 풀 2%를 제외한
+            ${project.subscriptionPrice * 0.78} PXL의
+            금액이 ${project.user.username} 님에게 즉시 송금되며, 환불은 불가능합니다.
           `}
         </Styled.Terms>
         <Styled.Label>
