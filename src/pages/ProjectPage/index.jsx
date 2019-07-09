@@ -94,7 +94,7 @@ function ProjectPage({ projectId }) {
         />
       </Styled.Content>
       {isDesktop && (
-        recommendedProjects.length && (
+        recommendedProjects.length > 0 && (
           <Styled.Aside>
             <h2>
               추천 프로젝트
