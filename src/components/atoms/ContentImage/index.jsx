@@ -5,13 +5,15 @@ const ContentImage = styled.div.attrs({
 })`
   display: flex;
   position: relative;
-  background-image: url(${({ image }) => image});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  overflow: hidden;
   &::after {
     content: '';
+    flex: 1;
     padding-top: ${({ ratio }) => 1 / ratio * 100}%;
+    background-image: url(${({ image }) => image});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 `;
 

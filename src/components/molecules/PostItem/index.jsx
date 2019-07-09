@@ -19,6 +19,14 @@ const Styled = {
   `,
   Cover: styled(ContentImage)`
     margin-bottom: 16px;
+    ::after {
+      transition: transform var(--transition--form);
+    }
+    article:hover & {
+      ::after {
+        transform: scale(1.1);
+      }
+    }
   `,
   Locked: styled.div`
     position: relative;
