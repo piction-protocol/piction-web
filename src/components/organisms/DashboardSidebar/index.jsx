@@ -35,6 +35,7 @@ const Styled = {
     justify-content: space-between;
     padding: 16px 24px;
     cursor: pointer;
+    text-align: left;
     ${({ isSelected }) => isSelected && `
       background-color: var(--white);
       font-weight: bold;
