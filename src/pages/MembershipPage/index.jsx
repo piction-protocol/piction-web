@@ -138,6 +138,10 @@ const Styled = {
     background-color: var(--gray--light);
     font-size: var(--font-size--small);
   `,
+  Bold: styled.b`
+    margin: 0 4px;
+    font-weight: bold;
+  `,
   Label: styled.label`
     display: flex;
     align-items: flex-start;
@@ -219,11 +223,11 @@ function MembershipPage({ projectId }) {
       </Styled.Membership>
       <Styled.Purchase>
         <Styled.Terms>
-          {`
-            멤버십 상품 구매 시 네트워크 수수료 10%, 생태계 수수료 10%, 사용자 보상 풀 2%를 제외한
-            ${project.subscriptionPrice * 0.78} PXL의
-            금액이 ${project.user.username} 님에게 즉시 송금되며, 환불은 불가능합니다.
-          `}
+          멤버십 상품 구매 시 네트워크 수수료 10%, 생태계 수수료 10%, 사용자 보상 풀 2%를 제외한
+          <Styled.Bold>{project.subscriptionPrice * 0.78}</Styled.Bold>
+          PXL의 금액이
+          <Styled.Bold>{`@${project.user.loginId}`}</Styled.Bold>
+          님에게 즉시 송금되며, 환불은 불가능합니다.
         </Styled.Terms>
         <Styled.Label>
           <Styled.Checkbox name="agree" onChange={handleChange} />
