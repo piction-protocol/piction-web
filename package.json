@@ -49,6 +49,7 @@
       "react-hooks"
     ],
     "rules": {
+      "no-nested-ternary": "off",
       "import/no-extraneous-dependencies": [
         "error",
         {
