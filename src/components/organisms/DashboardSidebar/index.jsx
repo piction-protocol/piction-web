@@ -103,7 +103,7 @@ function DashboardSidebar({ projects, ...props }) {
                 포스트 관리
               </Styled.Link>
               <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
-              <Styled.Link as="a" target="__blank" href={`/project/${project.uri}`}>
+              <Styled.Link as="a" target="_blank" href={`/project/${project.uri}`}>
                 프로젝트로 이동
                 <OpenInNewIcon />
               </Styled.Link>
