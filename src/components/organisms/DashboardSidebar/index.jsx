@@ -8,6 +8,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import { TertiaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as ExpandIcon } from 'images/ic-expand-more.svg';
+import { ReactComponent as OpenInNewIcon } from 'images/ic-open-in-new.svg';
 
 const Styled = {
   Sidebar: styled.section`
@@ -48,8 +49,12 @@ const Styled = {
     display: flex;
     padding: 12px 40px;
     color: var(--gray--dark);
+    align-items: center;
     &[aria-current] {
       color: var(--black);
+    }
+    svg {
+      margin-left: 4px;
     }
   `,
   Button: styled(TertiaryButton)`
@@ -98,7 +103,10 @@ function DashboardSidebar({ projects, ...props }) {
                 포스트 관리
               </Styled.Link>
               <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
-              <Styled.Link to={`/project/${project.uri}`}>프로젝트로 이동</Styled.Link>
+              <Styled.Link as="a" target="__blank" href={`/project/${project.uri}`}>
+                프로젝트로 이동
+                <OpenInNewIcon />
+              </Styled.Link>
             </>
           )}
         </React.Fragment>
