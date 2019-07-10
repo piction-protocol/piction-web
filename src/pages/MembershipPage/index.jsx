@@ -7,6 +7,7 @@ import 'moment/locale/ko';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
@@ -163,6 +164,7 @@ function MembershipPage({ projectId }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
   const [API] = useCallback(useAPI(), []);
+  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     const getMembership = async () => {
@@ -175,8 +177,12 @@ function MembershipPage({ projectId }) {
       }
     };
 
-    getMembership();
-  }, [API, projectId]);
+    if (currentUser) {
+      getMembership();
+    } else {
+      navigate('/login', { replace: true });
+    }
+  }, [API, projectId, currentUser]);
 
   const handleSubmit = async () => {
     try {

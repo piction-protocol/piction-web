@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import styled from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -60,23 +60,27 @@ function PostPage({ projectId, postId }) {
   const [API, handleError] = useCallback(useAPI(), []);
 
   useEffect(() => {
-    const getpost = async () => {
-      const [project, post, content, isLike] = await Promise.all([
-        API.project.get({ projectId }),
-        API.post(projectId).get({ postId }),
-        API.post(projectId).getContent({ postId }),
-        (currentUser && API.post(projectId).getIsLike({ postId })),
-      ]);
-      setData({
-        project: project.data,
-        post: post.data,
-        content: content.data.content,
-        isLike: currentUser ? isLike.data.like : false,
-      });
-      setIsLoaded(true);
+    const getPost = async () => {
+      try {
+        const [project, post, content, isLike] = await Promise.all([
+          API.project.get({ projectId }),
+          API.post(projectId).get({ postId }),
+          API.post(projectId).getContent({ postId }),
+          (currentUser && API.post(projectId).getIsLike({ postId })),
+        ]);
+        setData({
+          project: project.data,
+          post: post.data,
+          content: content.data.content,
+          isLike: currentUser ? isLike.data.like : false,
+        });
+        setIsLoaded(true);
+      } catch (error) {
+        navigate(`/project/${projectId}/memberships`);
+      }
     };
 
-    getpost();
+    getPost();
   }, [currentUser, API, postId, projectId]);
 
   const handleLike = async () => {
