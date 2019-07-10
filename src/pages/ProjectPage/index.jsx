@@ -58,7 +58,7 @@ function ProjectPage({ projectId }) {
       try {
         const response = await Promise.all([
           API.project.get({ projectId }),
-          API.recommended.getProjects({ params: { size: 3 } }),
+          API.recommended.getProjects({ params: { size: 5 } }),
           (currentUser && API.project.getSubscription({ projectId })),
         ]);
         if (currentUser) {
@@ -69,7 +69,7 @@ function ProjectPage({ projectId }) {
           isMine: currentUser && (currentUser.loginId === response[0].data.user.loginId),
         });
         setRecommendedProjects(
-          response[1].data.filter(recommended => recommended.project.uri !== projectId).slice(0, 2),
+          response[1].data.filter(recommended => recommended.project.uri !== projectId).slice(0, 4),
         );
         setIsLoaded(true);
       } catch (error) {
