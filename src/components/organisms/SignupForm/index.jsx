@@ -62,19 +62,6 @@ function SignupForm() {
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
 
-  // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/SignupErrors.kt
-  const errorStatusTable = {
-    4000: 'loginId',
-    4001: 'loginId',
-    4002: 'email',
-    4003: 'email',
-    4004: 'password',
-    4005: 'username',
-    4006: 'username',
-    4007: 'username',
-    4008: 'passwordCheck',
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -84,7 +71,7 @@ function SignupForm() {
       navigate('/signup/welcome', { replace: true });
     } catch (error) {
       setErrorMessage({
-        [errorStatusTable[error.response.data.code]]: error.response.data.message,
+        [error.response.data.field]: error.response.data.message,
       });
     } finally {
       setIsLoading(false);
