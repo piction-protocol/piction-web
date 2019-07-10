@@ -48,7 +48,7 @@ function SubscriptionsPage() {
         const { data } = await API.my.subscriptions({ params: { page: 1, size: 30 } });
         setProjects(data.content);
       } catch (error) {
-        navigate('/404', { replace: true });
+        navigate('/404');
       }
     };
 

@@ -73,7 +73,7 @@ function ProjectPage({ projectId }) {
         );
         setIsLoaded(true);
       } catch (error) {
-        navigate('/404', { replace: true });
+        navigate('/404');
       }
     };
 
