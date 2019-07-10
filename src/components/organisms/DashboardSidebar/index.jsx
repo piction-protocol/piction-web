@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from '@reach/router';
+import { Location, Link } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -30,20 +30,20 @@ const Styled = {
   Name: styled.p`
     font-size: var(--font-size--small);
   `,
-  Project: styled.button`
+  Project: styled(Link)`
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 16px 24px;
     cursor: pointer;
     text-align: left;
-    ${({ isSelected }) => isSelected && `
+    &[aria-current] {
       background-color: var(--white);
       font-weight: bold;
       > svg {
         transform: rotate(180deg);
       }
-    `}
+    }
   `,
   Link: styled(Link)`
     display: flex;
@@ -66,18 +66,11 @@ const Styled = {
 const isPartiallyActive = ({
   isPartiallyCurrent,
 }) => (isPartiallyCurrent
-  ? { 'aria-current': true } : null
+  ? { 'aria-current': 'page' } : null
 );
 
 function DashboardSidebar({ projects, ...props }) {
   const { currentUser } = useCurrentUser();
-  const [selected, setSelected] = useState('');
-
-  useEffect(() => {
-    if (projects.length) {
-      setSelected(projects[0].uri);
-    }
-  }, [projects]);
 
   return (
     <Styled.Sidebar {...props}>
@@ -85,32 +78,36 @@ function DashboardSidebar({ projects, ...props }) {
         <Styled.Title>크리에이터 대시보드</Styled.Title>
         <Styled.Name>{currentUser.username}</Styled.Name>
       </Styled.Header>
-      {projects.map(project => (
-        <React.Fragment key={project.uri}>
-          <Styled.Project
-            isSelected={project.uri === selected}
-            onClick={() => setSelected(project.uri)}
-          >
-            {project.title}
-            <ExpandIcon />
-          </Styled.Project>
-          {project.uri === selected && (
-            <>
-              <Styled.Link
+      <Location>
+        {({ location }) => (
+          projects.map(project => (
+            <React.Fragment key={project.uri}>
+              <Styled.Project
                 getProps={isPartiallyActive}
-                to={`/dashboard/${project.uri}/posts`}
+                to={`/dashboard/${project.uri}`}
               >
-                포스트 관리
-              </Styled.Link>
-              <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
-              <Styled.Link as="a" target="_blank" href={`/project/${project.uri}`}>
-                프로젝트로 이동
-                <OpenInNewIcon />
-              </Styled.Link>
-            </>
-          )}
-        </React.Fragment>
-      ))}
+                {project.title}
+                <ExpandIcon />
+              </Styled.Project>
+              {location.pathname.includes(project.uri) && (
+                <>
+                  <Styled.Link
+                    getProps={isPartiallyActive}
+                    to={`/dashboard/${project.uri}/posts`}
+                  >
+                    포스트 관리
+                  </Styled.Link>
+                  <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
+                  <Styled.Link as="a" target="_blank" href={`/project/${project.uri}`}>
+                    프로젝트로 이동
+                    <OpenInNewIcon />
+                  </Styled.Link>
+                </>
+              )}
+            </React.Fragment>
+          ))
+        )}
+      </Location>
       <Styled.Button as={Link} to="new-project">
         새 프로젝트 만들기
       </Styled.Button>
