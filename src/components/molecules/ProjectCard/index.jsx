@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
 import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
 
 import ContentImage from 'components/atoms/ContentImage';
@@ -24,15 +25,23 @@ const Styled = {
 };
 
 function ProjectCard({
-  title, wideThumbnail, children, ...props
+  title, type, thumbnail, wideThumbnail, children, ...props
 }) {
   return (
     <Styled.Item
       {...props}
     >
       <ContentImage
-        ratio={1440 / 450}
-        image={wideThumbnail || dummyWideThumbnailImage}
+        ratio={
+          type === 'wide'
+            ? (1440 / 450)
+            : (500 / 500)
+        }
+        image={
+          type === 'wide'
+            ? (wideThumbnail || dummyWideThumbnailImage)
+            : (thumbnail || dummyThumbnailImage)
+        }
       />
       <Styled.Text>
         <Styled.Title>{title}</Styled.Title>
@@ -44,13 +53,18 @@ function ProjectCard({
 
 ProjectCard.propTypes = {
   title: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  thumbnail: PropTypes.string,
   wideThumbnail: PropTypes.string,
   children: PropTypes.node,
 };
 
 ProjectCard.defaultProps = {
+  type: 'normal',
+  thumbnail: null,
   wideThumbnail: null,
   children: null,
 };
 
 export default ProjectCard;
+export const WideProjectCard = props => <ProjectCard type="wide" {...props} />;

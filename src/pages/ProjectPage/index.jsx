@@ -11,7 +11,7 @@ import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import Tabs from 'components/molecules/Tabs';
-import ProjectCard from 'components/molecules/ProjectCard';
+import { WideProjectCard } from 'components/molecules/ProjectCard';
 
 const ProjectInfo = React.lazy(() => import('components/organisms/ProjectInfo'));
 const PostList = React.lazy(() => import('components/organisms/PostList'));
@@ -108,11 +108,13 @@ function ProjectPage({ projectId }) {
                 to={`/project/${recommededProject.project.uri}`}
                 key={recommededProject.project.id}
               >
-                <ProjectCard {...recommededProject.project}>
+                <WideProjectCard
+                  {...recommededProject.project}
+                >
                   <Styled.CardText>
                     {`구독자 수 ${recommededProject.subscriptionCount}`}
                   </Styled.CardText>
-                </ProjectCard>
+                </WideProjectCard>
               </Link>
             ))}
           </Styled.Aside>

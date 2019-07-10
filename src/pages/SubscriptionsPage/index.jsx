@@ -26,10 +26,7 @@ const Styled = {
     `}
   `,
   Link: styled(Link)`
-    grid-column: 1 / -1;
-    ${media.desktop`
-      grid-column: span 3;
-    `}
+    grid-column: span 3;
   `,
   CardText: styled.p`
     color: var(--gray--dark);
