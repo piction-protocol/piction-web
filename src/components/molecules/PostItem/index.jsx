@@ -145,7 +145,7 @@ function PostItem({
 PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
-  createdAt: PropTypes.string.isRequired,
+  createdAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,
   subscriptionPrice: PropTypes.number,

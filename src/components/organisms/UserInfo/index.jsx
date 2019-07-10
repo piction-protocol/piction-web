@@ -98,7 +98,7 @@ UserInfo.propTypes = {
   picture: PropTypes.string,
   username: PropTypes.string.isRequired,
   loginId: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
+  createdAt: PropTypes.number.isRequired,
   children: PropTypes.node,
 };
 
