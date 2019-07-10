@@ -14,4 +14,4 @@ render((
       <App />
     </CurrentUserProvider>
   </>
-), document.getElementById('root'));
+), document.getElementById('app-root'));
