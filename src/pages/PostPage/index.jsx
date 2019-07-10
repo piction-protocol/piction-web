@@ -12,6 +12,7 @@ import ContentStyle from 'styles/ContentStyle';
 import media from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
+import Spinner from 'components/atoms/Spinner';
 import Heading from 'components/atoms/Heading';
 import LikeButton from 'components/atoms/LikeButton';
 
@@ -91,7 +92,7 @@ function PostPage({ projectId, postId }) {
     }
   };
 
-  return isLoaded && (
+  return isLoaded ? (
     <GridTemplate>
       <Styled.Container>
         <Styled.Info>
@@ -119,11 +120,12 @@ function PostPage({ projectId, postId }) {
         />
       </Styled.Container>
     </GridTemplate>
-  );
+  ) : (<Spinner />);
 }
 
 export default PostPage;
 
 PostPage.propTypes = {
+  projectId: PropTypes.string.isRequired,
   postId: PropTypes.string.isRequired,
 };
