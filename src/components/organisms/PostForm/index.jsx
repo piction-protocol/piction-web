@@ -73,13 +73,6 @@ function PostForm({ title, projectId, postId }) {
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
 
-  // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/CreatePostErrors.kt
-  const errorStatusTable = {
-    4000: 'title',
-    4001: 'title',
-    4002: 'content',
-  };
-
   useEffect(() => {
     const getFormData = async () => {
       try {
@@ -113,7 +106,7 @@ function PostForm({ title, projectId, postId }) {
       navigate(`/dashboard/${projectId}/posts`);
     } catch (error) {
       setErrorMessage({
-        [errorStatusTable[error.response.data.code]]: error.response.data.message,
+        [error.response.data.field]: error.response.data.message,
       });
     }
   };

@@ -78,18 +78,6 @@ function ProjectForm({ title, projectId, setProjects }) {
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
 
-  // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/CreateProjectErrors.kt
-  const errorStatusTable = {
-    4000: 'uri',
-    4001: 'title',
-    4002: 'uri',
-    4003: 'title',
-    4004: 'synopsis',
-    4005: 'uri',
-    4006: 'subscriptionPrice',
-    4007: 'subscriptionPrice',
-  };
-
   useEffect(() => {
     const getProjectData = async () => {
       try {
@@ -127,7 +115,7 @@ function ProjectForm({ title, projectId, setProjects }) {
       }
     } catch (error) {
       setErrorMessage({
-        [errorStatusTable[error.response.data.code]]: error.response.data.message,
+        [error.response.data.field]: error.response.data.message,
       });
     }
   };

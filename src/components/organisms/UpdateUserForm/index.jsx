@@ -85,14 +85,6 @@ function UpdateUserForm() {
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
 
-  // 에러 메시지 내용: https://github.com/battleent/piction-api/blob/master/src/main/kotlin/network/piction/api/exceptions/errors/UpdateUserErrors.kt
-  const errorStatusTable = {
-    4000: 'username',
-    4001: 'username',
-    4002: 'username',
-    4003: 'password',
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -100,7 +92,7 @@ function UpdateUserForm() {
       window.location.reload(true);
     } catch (error) {
       setErrorMessage({
-        [errorStatusTable[error.response.data.code]]: error.response.data.message,
+        [error.response.data.field]: error.response.data.message,
       });
     }
   };
