@@ -56,31 +56,35 @@ const Styled = {
 };
 
 function DashboardPostList({ title, projectId, page }) {
-  const [postList, setpostList] = useState([]);
+  const [postList, setPostList] = useState([]);
   const [deletingPost, setDeletingPost] = useState(null);
+  const [isRequiredSubscription, setIsRequiredSubscription] = useState(null);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getFormData = async () => {
       try {
-        const { data } = await API.post(projectId).getAll({ params: { size: 15, page } });
-        setpostList(data.content);
+        const { data } = await API.post(projectId).getAll({
+          params: { size: 15, page, isRequiredSubscription },
+        });
+        setPostList(data.content);
       } catch (error) {
         console.log(error);
       }
     };
 
     getFormData();
-  }, [API, projectId, page]);
+  }, [API, projectId, page, isRequiredSubscription]);
 
   return (
     <Styled.Container>
       <Heading>{title}</Heading>
       <Styled.Tools>
         <Styled.Select
+          onChange={event => setIsRequiredSubscription(event.target.value)}
           options={[
-            { text: '모든 포스트', value: 'false' },
-            { text: '멤버십 전용', value: 'true' },
+            { text: '모든 포스트', value: '' },
+            { text: '멤버십 전용', value: 'false' },
           ]}
         />
         <Styled.New to="new">+ 새 포스트 등록</Styled.New>
