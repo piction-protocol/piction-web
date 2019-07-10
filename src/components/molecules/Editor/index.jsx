@@ -99,7 +99,6 @@ function Editor({
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
-    input.click();
     input.onchange = async () => {
       const file = input.files[0];
       const data = new FormData();
@@ -111,6 +110,7 @@ function Editor({
         console.log(error);
       }
     };
+    input.click();
   }
 
   const quillProps = {
