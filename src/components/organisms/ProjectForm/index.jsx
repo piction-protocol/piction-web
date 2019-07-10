@@ -187,7 +187,7 @@ function ProjectForm({ title, projectId, setProjects }) {
       <InputGroup
         name="synopsis"
         label="시놉시스"
-        placeholder="프로젝트와 작품에 대한 설명 텍스트를 한 줄로 출력합니다."
+        placeholder="최대 100자"
         onChange={handleChange}
         value={formData.synopsis}
         errorMessage={errorMessage.synopsis}
@@ -195,7 +195,6 @@ function ProjectForm({ title, projectId, setProjects }) {
       <InputGroup
         name="subscriptionPrice"
         label="유료 멤버십 가격"
-        placeholder="프로젝트와 작품에 대한 설명 텍스트를 한 줄로 출력합니다."
         value={0}
         disabled
         errorMessage={errorMessage.subscriptionPrice}
