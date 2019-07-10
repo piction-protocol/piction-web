@@ -7,6 +7,7 @@ import useAPI from 'hooks/useAPI';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
+import DeletePostModal from 'components/molecules/DeletePostModal';
 import DashboardPostItem from 'components/molecules/DashboardPostItem';
 import Heading from 'components/atoms/Heading';
 import Select from 'components/atoms/Select';
@@ -55,14 +56,15 @@ const Styled = {
 };
 
 function DashboardPostList({ title, projectId, page }) {
-  const [contentList, setContentList] = useState([]);
+  const [postList, setpostList] = useState([]);
+  const [deletingPost, setDeletingPost] = useState(null);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getFormData = async () => {
       try {
         const { data } = await API.post(projectId).getAll({ params: { size: 15, page } });
-        setContentList(data.content);
+        setpostList(data.content);
       } catch (error) {
         console.log(error);
       }
@@ -83,7 +85,7 @@ function DashboardPostList({ title, projectId, page }) {
         />
         <Styled.New to="new">+ 새 포스트 등록</Styled.New>
       </Styled.Tools>
-      {contentList.length === 0 && (
+      {postList.length === 0 && (
         <Styled.Empty>
           <Styled.BadMoodIcon />
           <p>
@@ -92,12 +94,22 @@ function DashboardPostList({ title, projectId, page }) {
         </Styled.Empty>
       )}
       <Styled.List>
-        {contentList.map(content => (
-          <Link to={`${content.id}/edit`} key={content.id}>
-            <DashboardPostItem {...content} />
-          </Link>
+        {postList.map(post => (
+          <DashboardPostItem
+            {...post}
+            projectId={projectId}
+            handleDelete={() => setDeletingPost(post.id)}
+            key={post.id}
+          />
         ))}
       </Styled.List>
+      {deletingPost && (
+        <DeletePostModal
+          projectId={projectId}
+          postId={deletingPost}
+          close={() => setDeletingPost(null)}
+        />
+      )}
     </Styled.Container>
   );
 }

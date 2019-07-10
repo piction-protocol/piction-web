@@ -25,6 +25,7 @@ function useAPI() {
   const post = projectId => ({
     getAll: params => API.get(`/projects/${projectId}/posts`, params),
     create: params => API.post(`/projects/${projectId}/posts`, params),
+    delete: params => API.delete(`/projects/${projectId}/posts/${params.postId}`),
     get: params => API.get(`/projects/${projectId}/posts/${params.postId}`),
     getContent: params => API.get(`/projects/${projectId}/posts/${params.postId}/content`),
     getIsLike: params => API.get(`/projects/${projectId}/posts/${params.postId}/isLike`),

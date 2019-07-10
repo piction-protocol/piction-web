@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from '@reach/router';
 import styled from 'styled-components';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import Grid from 'styles/Grid';
 
@@ -11,75 +14,96 @@ import ContentImage from 'components/atoms/ContentImage';
 const Styled = {
   Item: styled(Grid).attrs({
     columns: 9,
+    as: 'article',
   })`
     border: 1px solid var(--gray--light);
     background-color: var(--white);
+  `,
+  Link: styled(Grid).attrs({
+    columns: 7,
+    as: 'a',
+  })`
+    grid-column: span 7;
   `,
   Cover: styled(ContentImage)`
     grid-column: span 3;
   `,
   Text: styled.div`
     display: flex;
-    flex-flow: row wrap;
-    grid-column: span 6;
-    align-items: center;
-    justify-content: space-between;
+    flex-flow: column;
+    grid-column: span 4;
+    justify-content: center;
   `,
-  Title: styled.p`
+  Title: styled.h2`
+    margin-bottom: 4px;
+    overflow: hidden;
     font-size: var(--font-size--base);
+    font-weight: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   `,
   CreatedAt: styled.p`
-    margin-right: 20px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
-    text-align: right;
+  `,
+  Buttons: styled.div`
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 24px;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+  `,
+  Delete: styled.button.attrs({
+    type: 'button',
+  })`
+    margin-left: 16px;
+    color: var(--red);
+    cursor: pointer;
   `,
 };
 
-function dateConverter(time) {
-  const parsedTimeString = time.replace(
-    /([+-])([0-9]{2})([0-9]{2})\b/,
-    (params, p1, p2, p3) => `${p1}${p2}:${p3}`,
-  );
-  const date = new Date(parsedTimeString);
-
-  return [
-    `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`,
-    `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`,
-  ];
-}
-
 function DashboardPostItem({
-  title, cover, createdAt, ...props
+  id, projectId, title, cover, createdAt, handleDelete, ...props
 }) {
-  const createdDate = dateConverter(createdAt);
   return (
     <Styled.Item
       {...props}
     >
-      <Styled.Cover
-        ratio={960 / 360}
-        image={cover || dummyCoverImage}
-      />
-      <Styled.Text>
-        <Styled.Title>{title}</Styled.Title>
-        <div>
+      <Styled.Link target="_blank" href={`/project/${projectId}/posts/${id}`}>
+        <Styled.Cover
+          ratio={960 / 360}
+          image={cover || dummyCoverImage}
+        />
+        <Styled.Text>
+          <Styled.Title>
+            {title}
+          </Styled.Title>
           <Styled.CreatedAt>
-            {createdDate[0]}
+            {moment(createdAt).format('YYYY.MM.DD hh:mm')}
           </Styled.CreatedAt>
-          <Styled.CreatedAt>
-            {createdDate[1]}
-          </Styled.CreatedAt>
-        </div>
-      </Styled.Text>
+        </Styled.Text>
+      </Styled.Link>
+      <Styled.Buttons>
+        <Link to={`${id}/edit`}>
+          수정
+        </Link>
+        <Styled.Delete onClick={handleDelete}>
+          삭제
+        </Styled.Delete>
+      </Styled.Buttons>
     </Styled.Item>
   );
 }
 
 DashboardPostItem.propTypes = {
+  id: PropTypes.number.isRequired,
+  projectId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   createdAt: PropTypes.string.isRequired,
+  handleDelete: PropTypes.func.isRequired,
 };
 
 DashboardPostItem.defaultProps = {
