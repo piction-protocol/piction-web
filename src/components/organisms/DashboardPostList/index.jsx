@@ -84,7 +84,7 @@ function DashboardPostList({ title, projectId, page }) {
           onChange={event => setIsRequiredSubscription(event.target.value)}
           options={[
             { text: '모든 포스트', value: '' },
-            { text: '멤버십 전용', value: 'false' },
+            { text: '멤버십 전용', value: 'true' },
           ]}
         />
         <Styled.New to="new">+ 새 포스트 등록</Styled.New>
