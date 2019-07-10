@@ -84,12 +84,12 @@ function DashboardSidebar({ projects, ...props }) {
             <React.Fragment key={project.uri}>
               <Styled.Project
                 getProps={isPartiallyActive}
-                to={`/dashboard/${project.uri}`}
+                to={`/dashboard/${project.uri}/`}
               >
                 {project.title}
                 <ExpandIcon />
               </Styled.Project>
-              {location.pathname.includes(project.uri) && (
+              {location.pathname.includes(`/${project.uri}/`) && (
                 <>
                   <Styled.Link
                     getProps={isPartiallyActive}
