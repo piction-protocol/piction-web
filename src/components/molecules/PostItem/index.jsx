@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import media from 'styles/media';
 
@@ -98,20 +100,9 @@ const Styled = {
   `,
 };
 
-function dateConverter(time) {
-  const parsedTimeString = time.replace(
-    /([+-])([0-9]{2})([0-9]{2})\b/,
-    (params, p1, p2, p3) => `${p1}${p2}:${p3}`,
-  );
-  const date = new Date(parsedTimeString);
-
-  return `${(date.getMonth() + 1)}월 ${date.getDate()}일`;
-}
-
 function PostItem({
   title, cover, createdAt, likeCount, isLocked, subscriptionPrice, ...props
 }) {
-  const createdDate = dateConverter(createdAt);
   return (
     <Styled.Item
       {...props}
@@ -138,7 +129,7 @@ function PostItem({
       <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
         <Styled.CreatedAt>
-          {createdDate}
+          {moment(createdAt).format('MMMM Do')}
         </Styled.CreatedAt>
         {likeCount > 0 && (
           <Styled.LikeCount>
