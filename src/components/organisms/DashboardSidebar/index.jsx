@@ -19,12 +19,12 @@ const Styled = {
   `,
   Header: styled.header`
     padding: 24px;
-    background-color: var(--blue);
+    background-color: var(--primary-color);
     color: var(--white);
     font-weight: bold;
   `,
   Title: styled.h2`
-    margin-bottom: 4px;
+    margin-top: 4px;
     font-size: var(--font-size--normal);
   `,
   Name: styled.p`
@@ -35,15 +35,28 @@ const Styled = {
     align-items: center;
     justify-content: space-between;
     padding: 16px 24px;
+    border-top: 1px solid rgba(0, 0, 0, .05);
     cursor: pointer;
     text-align: left;
+     > svg {
+      margin-left: 8px;
+      flex: 0 0 auto;
+     }
     &[aria-current] {
+      padding-left: 22px;
+      border-left: 2px solid var(--primary-color);
       background-color: var(--white);
       font-weight: bold;
       > svg {
         transform: rotate(180deg);
       }
     }
+  `,
+  ProjectTitle: styled.span`
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   `,
   Link: styled(Link)`
     display: flex;
@@ -75,8 +88,8 @@ function DashboardSidebar({ projects, ...props }) {
   return (
     <Styled.Sidebar {...props}>
       <Styled.Header>
+        <Styled.Name>{`${currentUser.username}의`}</Styled.Name>
         <Styled.Title>크리에이터 대시보드</Styled.Title>
-        <Styled.Name>{currentUser.username}</Styled.Name>
       </Styled.Header>
       <Location>
         {({ location }) => (
@@ -86,7 +99,9 @@ function DashboardSidebar({ projects, ...props }) {
                 getProps={isPartiallyActive}
                 to={`/dashboard/${project.uri}/`}
               >
-                {project.title}
+                <Styled.ProjectTitle>
+                  {project.title}
+                </Styled.ProjectTitle>
                 <ExpandIcon />
               </Styled.Project>
               {location.pathname.includes(`/${project.uri}/`) && (
