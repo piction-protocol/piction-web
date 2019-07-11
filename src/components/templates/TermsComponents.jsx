@@ -42,6 +42,7 @@ const UL = styled.ul`
 `;
 const LI = styled.li`
   font-size: var(--font-size--small);
+  line-height: var(--line-height--content);
   list-style: inherit;
 `;
 
