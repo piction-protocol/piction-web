@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
+
+import useAPI from 'hooks/useAPI';
 
 import PlaceholderImage from 'images/img-dummy-960x360.jpg';
 
@@ -56,21 +57,18 @@ const ProjectListItem = styled.div`
 
 const RecommendedProjects = () => {
   const [projects, setProjects] = useState([]);
+  const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
-    const API = axios.create({
-      baseURL: 'https://api-stg.piction.network/',
-    });
-
     async function fetchProject() {
-      const response = await API.get('/recommended/projects?size=4');
+      const response = await API.recommended.getProjects({ params: { size: 4 } });
       const fetchedProjects = await response.data.map(p => ({
         ...p.project,
       }));
       setProjects(fetchedProjects.slice(0, 6));
     }
     fetchProject();
-  }, []);
+  }, [API]);
 
   return (
     <ProjectListWrapper>
