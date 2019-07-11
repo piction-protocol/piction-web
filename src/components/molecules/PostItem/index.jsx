@@ -15,7 +15,7 @@ const Styled = {
   Item: styled.article`
     display: flex;
     flex-flow: column;
-    padding-bottom: 24px;
+    padding-bottom: var(--row-gap);
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
   `,

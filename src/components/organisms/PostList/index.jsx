@@ -5,8 +5,6 @@ import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
 
-import media from 'styles/media';
-
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
 import PostItem from 'components/molecules/PostItem';
@@ -22,10 +20,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     > * {
-      margin-bottom: 24px;
-      ${media.desktop`
-        margin-bottom: 48px;
-      `}
+      margin-bottom: var(--row-gap);
     }
   `,
   Empty: styled.div`
