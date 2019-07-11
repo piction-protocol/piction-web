@@ -4,6 +4,7 @@ const Wrapper = styled.main`
   max-width: 610px;
   margin: 0 auto;
   padding: var(--outer-gap);
+  word-break: break-all;
 `;
 
 const H1 = styled.h1`
