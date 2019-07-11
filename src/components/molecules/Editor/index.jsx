@@ -113,12 +113,25 @@ function Editor({
     input.click();
   }
 
+  function linkHandler() {
+    const quill = quillRef.current.getEditor();
+    const range = quill.getSelection();
+    if (range.length > 0) {
+      let href = prompt('Enter link URL:');
+      if (!/^https?:/.test(href)) {
+        href = `http://${href}`;
+      }
+      quill.format('link', href);
+    }
+  }
+
   const quillProps = {
     modules: {
       toolbar: {
         container: '#toolbar',
         handlers: {
           image: useCallback(imageHandler, []),
+          link: useCallback(linkHandler, []),
         },
       },
     },
