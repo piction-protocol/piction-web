@@ -1,12 +1,15 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Router } from '@reach/router';
 import styled from 'styled-components';
+import { importMDX } from 'mdx.macro';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
 import Spinner from 'components/atoms/Spinner';
+
+import TermsComponents from 'components/templates/TermsComponents';
 
 const HomePage = React.lazy(() => import('pages/HomePage'));
 const LoginPage = React.lazy(() => import('pages/LoginPage'));
@@ -17,6 +20,9 @@ const PostPage = React.lazy(() => import('pages/PostPage'));
 const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const Dashboard = React.lazy(() => import('pages/Dashboard'));
+
+const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
+const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'));
 
 const StyledRouter = styled(Router)`
   display: flex;
@@ -68,6 +74,9 @@ function App() {
 
               <MyPage path="my/*" />
               <Dashboard path="dashboard/*" />
+
+              <Terms components={TermsComponents} path="terms" />
+              <Privacy components={TermsComponents} path="privacy" />
 
               <NotFound default />
             </StyledRouter>

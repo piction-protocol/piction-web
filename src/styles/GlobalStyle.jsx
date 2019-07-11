@@ -29,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
     --outer-gap: 16px;
     --column-gap: 8px;
     --row-gap: 24px;
+    --row-gap--double: 48px;
     --grid-columns: 6;
 
     --transition--form: 200ms ease;
