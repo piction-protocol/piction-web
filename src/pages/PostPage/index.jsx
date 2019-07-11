@@ -40,6 +40,27 @@ const Styled = {
     border-bottom: 1px solid var(--gray--light);
     text-align: center;
   `,
+  User: styled.p`
+    display: flex;
+    margin-top: 8px;
+    font-size: var(--font-size--small);
+    ${media.desktop`
+      margin-top: 16px;
+      align-items: center;
+      font-size: var(--font-size--base);
+      font-weight: bold;
+    `}
+  `,
+  UserPicture: styled.img`
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 8px;
+    ${media.desktop`
+      width: 27px;
+      height: 27px;
+    `}
+  `,
   Content: styled.div`
     ${ContentStyle}
   `,
@@ -108,6 +129,10 @@ function PostPage({ projectId, postId }) {
           <Heading>
             {data.post.title}
           </Heading>
+          <Styled.User>
+            <Styled.UserPicture src={data.project.user.picture} />
+            {data.project.user.username}
+          </Styled.User>
         </Styled.Info>
         <Styled.Content
           dangerouslySetInnerHTML={{
