@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
@@ -76,7 +76,7 @@ function ProjectForm({ title, projectId, setProjects }) {
   });
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
-  const [API] = useAPI();
+  const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getProjectData = async () => {
@@ -92,9 +92,25 @@ function ProjectForm({ title, projectId, setProjects }) {
         console.log(error.response.message);
       }
     };
+
+    const clearForm = () => {
+      setFormData({
+        title: '',
+        uri: '',
+        synopsis: '',
+        thumbnail: '',
+        wideThumbnail: '',
+        subscriptionPrice: 0,
+      });
+      setDefaultImage({
+        thumbnail: '',
+        wideThumbnail: '',
+      });
+    };
+
     if (projectId) getProjectData();
-    // eslint-disable-next-line
-  }, [setFormData, projectId]);
+    else clearForm();
+  }, [setFormData, projectId, API]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

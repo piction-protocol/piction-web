@@ -57,9 +57,7 @@ function ImageUploader({
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    if (defaultImage) {
-      setImage(/^(?!\/static\/).*$/.exec(defaultImage));
-    }
+    setImage(defaultImage && /^(?!\/static\/).*$/.exec(defaultImage));
     onChange({ target: { name, value: '' } });
   }, [onChange, name, defaultImage]);
 

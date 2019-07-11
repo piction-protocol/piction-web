@@ -73,6 +73,7 @@ function PostForm({ title, projectId, postId }) {
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
 
+
   useEffect(() => {
     const getFormData = async () => {
       try {
@@ -88,7 +89,20 @@ function PostForm({ title, projectId, postId }) {
       }
     };
 
+    const clearForm = () => {
+      setFormData({
+        title: '',
+        content: '',
+        cover: '',
+        requiredSubscription: false,
+      });
+      setDefaultImage({
+        cover: '',
+      });
+    };
+
     if (postId) getFormData();
+    else clearForm();
   }, [API, projectId, postId, setFormData]);
 
   const handleEditor = (value) => {
