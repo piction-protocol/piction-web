@@ -125,6 +125,22 @@ function Editor({
     }
   }
 
+  function videoHandler() {
+    const quill = quillRef.current.getEditor();
+    const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)(?:&?.*)/;
+    const hrefToEmbedLink = (href) => {
+      if (youtubeRegex.test(href)) {
+        return `http://www.youtube.com/embed/${youtubeRegex.exec(href)[1]}`;
+      }
+
+      return `http://www.youtube.com/embed/${href}`;
+    };
+
+    const href = prompt('Enter youtube URL:');
+    const embedLink = hrefToEmbedLink(href);
+    quill.format('video', embedLink);
+  }
+
   const quillProps = {
     modules: {
       toolbar: {
@@ -132,6 +148,7 @@ function Editor({
         handlers: {
           image: useCallback(imageHandler, []),
           link: useCallback(linkHandler, []),
+          video: useCallback(videoHandler, []),
         },
       },
     },
