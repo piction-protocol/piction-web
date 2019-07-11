@@ -11,7 +11,7 @@ import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import Tabs from 'components/molecules/Tabs';
-import { WideProjectCard } from 'components/molecules/ProjectCard';
+import WideProjectCard from 'components/molecules/WideProjectCard';
 
 const ProjectInfo = React.lazy(() => import('components/organisms/ProjectInfo'));
 const PostList = React.lazy(() => import('components/organisms/PostList'));
