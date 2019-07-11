@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Link, navigate } from '@reach/router';
+import { navigate } from '@reach/router';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';
@@ -37,7 +37,9 @@ const Styled = {
     color: var(--gray--dark);
     white-space: pre-wrap;
   `,
-  Link: styled(Link)`
+  Link: styled.a.attrs({
+    target: '_blank',
+  })`
     color: var(--blue);
   `,
   Submit: styled(PrimaryButton).attrs({
@@ -137,9 +139,9 @@ function SignupForm() {
           checked={formData.agree}
           required
         />
-        <Styled.Link to="">서비스 이용약관</Styled.Link>
+        <Styled.Link href="/terms">서비스 이용약관</Styled.Link>
         {' 및 '}
-        <Styled.Link to="">개인정보 처리방침</Styled.Link>
+        <Styled.Link href="/privacy">개인정보 처리방침</Styled.Link>
         에 동의합니다.
       </Styled.Terms>
       <Styled.Submit
