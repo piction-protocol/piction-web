@@ -156,7 +156,7 @@ const Styled = {
   `,
 };
 
-function MembershipPage({ projectId }) {
+function MembershipPage({ location, projectId }) {
   const [formData, { handleChange }] = useForm({
     agree: false,
   });
@@ -180,9 +180,9 @@ function MembershipPage({ projectId }) {
     if (currentUser) {
       getMembership();
     } else {
-      navigate('/login', { replace: true });
+      navigate('/login', { state: { redirectTo: location.pathname }, replace: true });
     }
-  }, [API, projectId, currentUser]);
+  }, [API, projectId, currentUser, location.pathname]);
 
   const handleSubmit = async () => {
     try {
