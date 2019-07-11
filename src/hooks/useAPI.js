@@ -6,7 +6,7 @@ function useAPI() {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const accessToken = cookies.access_token;
   const API = axios.create({
-    baseURL: 'https://api-stg.piction.network/',
+    baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
     headers: {
       'X-Auth-Token': accessToken,
       accept: 'application/vnd.piction.v1+json',
