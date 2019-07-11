@@ -105,8 +105,9 @@ function PostForm({ title, projectId, postId }) {
     else clearForm();
   }, [API, projectId, postId, setFormData]);
 
-  const handleEditor = (value) => {
+  const handleEditor = (value, a, b, c) => {
     setFormData(prevFormData => ({ ...prevFormData, content: value }));
+    console.log(c.getContents());
   };
 
   const handleSubmit = async (event) => {

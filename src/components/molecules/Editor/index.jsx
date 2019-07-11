@@ -128,16 +128,16 @@ function Editor({
   function videoHandler() {
     const quill = quillRef.current.getEditor();
     const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)(?:&?.*)/;
-    const hrefToEmbedLink = (href) => {
-      if (youtubeRegex.test(href)) {
-        return `http://www.youtube.com/embed/${youtubeRegex.exec(href)[1]}`;
+    const urlToEmbedLink = (url) => {
+      if (youtubeRegex.test(url)) {
+        return `http://www.youtube.com/embed/${youtubeRegex.exec(url)[1]}`;
       }
 
-      return `http://www.youtube.com/embed/${href}`;
+      return `http://www.youtube.com/embed/${url}`;
     };
 
-    const href = prompt('Enter youtube URL:');
-    const embedLink = hrefToEmbedLink(href);
+    const url = prompt('Enter youtube URL:');
+    const embedLink = urlToEmbedLink(url);
     quill.format('video', embedLink);
   }
 
