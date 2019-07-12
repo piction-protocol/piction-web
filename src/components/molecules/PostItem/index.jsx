@@ -19,15 +19,19 @@ const Styled = {
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
   `,
-  Cover: styled(ContentImage)`
+  CoverWrapper: styled.div`
+    position: relative;
     margin-bottom: 16px;
-    ::after {
-      transition: transform var(--transition--form);
-    }
+    padding-bottom: 37.5%;
+    overflow: hidden;
+  `,
+  Cover: styled(ContentImage)`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform var(--transition--form);
     article:hover & {
-      ::after {
-        transform: scale(1.1);
-      }
+      transform: scale(1.1);
     }
   `,
   Locked: styled.div`
@@ -120,10 +124,12 @@ function PostItem({
         </Styled.Locked>
       ) : (
         cover && (
-          <Styled.Cover
-            ratio={960 / 360}
-            image={cover}
-          />
+          <Styled.CoverWrapper>
+            <Styled.Cover
+              ratio={960 / 360}
+              image={cover}
+            />
+          </Styled.CoverWrapper>
         )
       )}
       <Styled.Title>{title}</Styled.Title>
