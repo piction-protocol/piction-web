@@ -5,26 +5,31 @@ import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
 
+import { MainGrid } from 'styles/Grid';
+import media from 'styles/media';
+
+import ContentImage from 'components/atoms/ContentImage';
+
 import PlaceholderImage from 'images/img-dummy-960x360.jpg';
 
 const ProjectWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
-const ProjectThumbnail = styled.img`
-  width: 295px;
-  height: 148px;
-  object-fit: cover;
+const ProjectThumbnail = styled(ContentImage)`
+  ${media.mobile`
+    margin: 0 -32px;
+  `}
 `;
 
 const ProjectTitle = styled.span`
   margin-top: 16px;
   font-size: 14px;
-  max-width: 295px;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
+  white-space: nowrap
 `;
 
 const Project = ({ uri, wideThumbnail, title }) => {
@@ -33,7 +38,10 @@ const Project = ({ uri, wideThumbnail, title }) => {
   return (
     <Link to={projectPath}>
       <ProjectWrapper>
-        <ProjectThumbnail src={wideThumbnail || PlaceholderImage} />
+        <ProjectThumbnail
+          ratio={360 / 180}
+          image={wideThumbnail || PlaceholderImage}
+        />
         <ProjectTitle>{title}</ProjectTitle>
       </ProjectWrapper>
     </Link>
@@ -48,25 +56,25 @@ Project.propTypes = {
 };
 
 const ProjectListWrapper = styled.div`
-  width: 100%;
-  max-width: var(--max-width);
   display: flex;
-  justify-content: space-around;
-  overflow: hidden;
-  flex-wrap: wrap;
+  flex-flow: column;
+  width: 100%;
 `;
 
 const ProjectListItem = styled.div`
-  margin-bottom: 24px;
+  grid-column: 1 / -1;
+  ${media.desktop`
+    grid-column: span 3;
+  `}
 `;
 
-const RecommendedProjects = () => {
+const RecommendedProjects = (props) => {
   const [projects, setProjects] = useState([]);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     async function fetchProject() {
-      const response = await API.recommended.getProjects({ params: { size: 8 } });
+      const response = await API.recommended.getProjects({ params: { size: 4 } });
       const fetchedProjects = await response.data.map(p => ({
         ...p.project,
       }));
@@ -76,12 +84,14 @@ const RecommendedProjects = () => {
   }, [API]);
 
   return (
-    <ProjectListWrapper>
-      {projects.map(p => (
-        <ProjectListItem key={p.id}>
-          <Project {...p} />
-        </ProjectListItem>
-      ))}
+    <ProjectListWrapper {...props}>
+      <MainGrid>
+        {projects.map(p => (
+          <ProjectListItem key={p.id}>
+            <Project {...p} />
+          </ProjectListItem>
+        ))}
+      </MainGrid>
     </ProjectListWrapper>
   );
 };
