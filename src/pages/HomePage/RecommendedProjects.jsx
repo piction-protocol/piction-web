@@ -12,7 +12,7 @@ import ContentImage from 'components/atoms/ContentImage';
 
 import PlaceholderImage from 'images/img-dummy-960x360.jpg';
 
-const ProjectWrapper = styled.div`
+const ProjectWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
 `;
@@ -36,15 +36,13 @@ const Project = ({ uri, wideThumbnail, title }) => {
   const projectPath = `/project/${uri}`;
 
   return (
-    <Link to={projectPath}>
-      <ProjectWrapper>
-        <ProjectThumbnail
-          ratio={360 / 180}
-          image={wideThumbnail || PlaceholderImage}
-        />
-        <ProjectTitle>{title}</ProjectTitle>
-      </ProjectWrapper>
-    </Link>
+    <ProjectWrapper to={projectPath}>
+      <ProjectThumbnail
+        ratio={360 / 180}
+        image={wideThumbnail || PlaceholderImage}
+      />
+      <ProjectTitle>{title}</ProjectTitle>
+    </ProjectWrapper>
   );
 };
 
@@ -63,6 +61,7 @@ const ProjectListWrapper = styled.div`
 
 const ProjectListItem = styled.div`
   grid-column: 1 / -1;
+  min-width: 0;
   ${media.desktop`
     grid-column: span 3;
   `}
