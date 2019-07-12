@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
+import media from 'styles/media';
 import RecommendedProjects from 'pages/HomePage/RecommendedProjects';
 import Hero from './Hero';
 
@@ -23,22 +24,32 @@ const Section = styled.section`
   display: flex;
   flex-flow: column;
   align-items: ${props => props.alignItems || 'center'};
-  padding: 120px 32px;
+  padding: 60px 8px;
+  ${media.desktop`
+    padding: 80px 32px;
+  `}
 `;
 
 const Introduction = styled.p`
   max-width: 620px;
-  margin: 32px;
-  text-align: center;
-  word-break: keep-all;
+  margin: 16px;
+  
+  ${media.desktop`
+    margin: 32px;
+    word-break: keep-all;
+    text-align: center;
+  `}
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 48px;
+  font-size: 32px;
   color: var(--primary-color);
   margin-bottom: 32px;
   margin-top: 32px;
-  position: relative;
+  text-align: center;
+  ${media.desktop`
+    font-size: 48px;
+  `}
 `;
 
 const Circle = styled.div`
@@ -54,14 +65,15 @@ const Circle = styled.div`
 
 const Features = styled.div`
   display: flex;
-  margin: 48px;
   flex-wrap: wrap;
   justify-content: space-around;
+  ${media.desktop`
+    margin: 48px;
+  `}
 `;
 
 const FeatureWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   width: 190px;
   text-align: center;
@@ -69,6 +81,8 @@ const FeatureWrapper = styled.div`
   color: var(--gray--dark);
   font-size: 14px;
   word-break: keep-all;
+  margin: 8px;
+  flex-direction: column;
 `;
 
 const IconImg = styled.img`

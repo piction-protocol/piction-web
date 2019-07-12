@@ -4,6 +4,7 @@ import { ReactComponent as LogoComponent } from 'images/piction-logo.svg';
 import { PrimaryButton, TertiaryButton } from 'components/atoms/Button';
 import styled from 'styled-components';
 
+import media from 'styles/media';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import BG1 from './img_introduction_bg01.jpg';
@@ -12,20 +13,30 @@ import BG3 from './img_introduction_bg03.jpg';
 
 const Introduction = styled.p`
   max-width: 620px;
-  margin: 32px;
-  text-align: center;
   word-break: keep-all;
+  ${media.desktop`
+    margin: 32px;
+    text-align: center;
+  `}
 `;
 
 const Logo = styled(LogoComponent)`
-  max-width: 612px;
-  max-height: 158px;
+  max-width: 195px;
+  max-height: 50px;
+  ${media.desktop`
+    max-width: 612px;
+    max-height: 158px;
+  `}
 `;
 
 const CTA = styled.div`
   display: flex;
   margin-top: 32px;
   margin-bottom: 32px;
+`;
+
+const CTAItem = styled.div`
+  margin: 0 4px;
 `;
 
 const HeroWrapper = styled.section`
@@ -75,18 +86,22 @@ const Hero = () => {
     <HeroWrapper background={`url(${currentBackground})`}>
       <Logo />
       <CTA>
-        {currentUser ? (
-          <Link to="/dashboard">
-            <PrimaryButton>서비스 시작</PrimaryButton>
-          </Link>
-        ) : (
-          <Link to="/signup">
-            <PrimaryButton>서비스 시작</PrimaryButton>
-          </Link>
-        )}
-        <a href="https://about.piction.network">
-          <TertiaryButton>프로젝트 소개</TertiaryButton>
-        </a>
+        <CTAItem>
+          {currentUser ? (
+            <Link to="/dashboard">
+              <PrimaryButton>서비스 시작</PrimaryButton>
+            </Link>
+          ) : (
+            <Link to="/signup">
+              <PrimaryButton>서비스 시작</PrimaryButton>
+            </Link>
+          )}
+        </CTAItem>
+        <CTAItem>
+          <a href="https://about.piction.network">
+            <TertiaryButton>프로젝트 소개</TertiaryButton>
+          </a>
+        </CTAItem>
       </CTA>
       <Introduction>
         픽션은 창작자와 소비자를 직접 연결하는 새로운 디지털 콘텐츠 생태계입니다.

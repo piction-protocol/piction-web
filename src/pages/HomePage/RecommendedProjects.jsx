@@ -22,6 +22,9 @@ const ProjectThumbnail = styled.img`
 const ProjectTitle = styled.span`
   margin-top: 16px;
   font-size: 14px;
+  max-width: 295px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Project = ({ uri, wideThumbnail, title }) => {
@@ -48,11 +51,13 @@ const ProjectListWrapper = styled.div`
   width: 100%;
   max-width: var(--max-width);
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  overflow: hidden;
   flex-wrap: wrap;
 `;
 
 const ProjectListItem = styled.div`
+  margin-bottom: 24px;
 `;
 
 const RecommendedProjects = () => {
@@ -61,11 +66,11 @@ const RecommendedProjects = () => {
 
   useEffect(() => {
     async function fetchProject() {
-      const response = await API.recommended.getProjects({ params: { size: 4 } });
+      const response = await API.recommended.getProjects({ params: { size: 8 } });
       const fetchedProjects = await response.data.map(p => ({
         ...p.project,
       }));
-      setProjects(fetchedProjects.slice(0, 6));
+      setProjects(fetchedProjects);
     }
     fetchProject();
   }, [API]);
