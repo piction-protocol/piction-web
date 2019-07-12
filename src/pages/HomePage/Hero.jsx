@@ -52,6 +52,8 @@ const CTA = styled.div`
   ${media.desktop`
     grid-column: span 2;
     margin: 0;
+    padding-right: 0;
+    padding-left: 0;
   `}
   }
 `;
