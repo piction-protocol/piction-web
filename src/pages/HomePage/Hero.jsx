@@ -29,6 +29,7 @@ const HeroWrapper = styled.section`
 
 const Logo = styled(LogoComponent)`
   grid-column: 2 / -2;
+  width: 100%;
   ${media.desktop`
     grid-column: 4 / -4;
     margin-bottom: 24px;
