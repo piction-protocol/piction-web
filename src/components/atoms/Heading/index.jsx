@@ -20,7 +20,7 @@ function Heading({ children, className }) {
     <Styled.Heading className={className}>
       {children}
       <Helmet>
-        <title>{`${children} - Piction Beta`}</title>
+        <title>{`${children} - Piction`}</title>
       </Helmet>
     </Styled.Heading>
   );
