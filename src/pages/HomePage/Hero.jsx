@@ -23,8 +23,7 @@ const HeroWrapper = styled.section`
   flex-direction: column;
   padding: 64px 16px;
   background-size: cover;
-  background-position: top center;
-  background-image: ${props => props.background};
+  background-position: center center;
   transition: background-image 1s ease;
 `;
 
@@ -114,7 +113,7 @@ const Hero = ({ projectsRef }) => {
   }, 5000);
 
   return (
-    <HeroWrapper background={`url(${currentBackground})`}>
+    <HeroWrapper style={{ backgroundImage: `url(${currentBackground})` }}>
       <MainGrid>
         <Logo />
         <CTA>
