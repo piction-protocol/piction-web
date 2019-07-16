@@ -1,5 +1,5 @@
 import React, { Suspense, useState, useEffect } from 'react';
-import { Router } from '@reach/router';
+import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components';
 import { importMDX } from 'mdx.macro';
 
@@ -77,6 +77,9 @@ function App() {
 
               <Terms components={TermsComponents} path="terms" />
               <Privacy components={TermsComponents} path="privacy" />
+
+              <Redirect from="/en" to="/" noThrow />
+              <Redirect from="/ko" to="/" noThrow />
 
               <NotFound default />
             </StyledRouter>
