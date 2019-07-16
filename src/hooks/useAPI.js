@@ -74,6 +74,7 @@ function useAPI() {
 
   const handleCommonError = code => ({
     4001: navigate('/login'),
+    4004: navigate('/404'),
   }[code]);
 
   return [{

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Link, navigate } from '@reach/router';
+import { Link } from '@reach/router';
 import styled from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -15,6 +15,11 @@ import GridTemplate from 'components/templates/GridTemplate';
 import Spinner from 'components/atoms/Spinner';
 import Heading from 'components/atoms/Heading';
 import LikeButton from 'components/atoms/LikeButton';
+import ContentImage from 'components/atoms/ContentImage';
+import { PrimaryButton } from 'components/atoms/Button';
+
+import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
+import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
 
 const Styled = {
   Container: styled.article`
@@ -51,7 +56,7 @@ const Styled = {
       font-weight: bold;
     `}
   `,
-  UserPicture: styled.img`
+  UserPicture: styled(ContentImage)`
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -60,6 +65,29 @@ const Styled = {
       width: 27px;
       height: 27px;
     `}
+  `,
+  Locked: styled.div`
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    color: var(--gray--dark);
+    line-height: var(--line-height--content);
+    text-align: center;
+    word-break: keep-all;
+  `,
+  LockedIcon: styled(LockedIcon)`
+    width: 104px;
+    height: 104px;
+    margin-bottom: 8px;
+    path {
+      fill: var(--gray--light);
+    }
+    ${media.desktop`
+      margin-bottom: 24px;
+    `}
+  `,
+  Subscription: styled(PrimaryButton)`
+    margin-top: 16px;
   `,
   Content: styled.div`
     ${ContentStyle}
@@ -76,33 +104,46 @@ const Styled = {
 
 function PostPage({ projectId, postId }) {
   const [data, setData] = useState([]);
+  const [isLocked, setIsLocked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const { currentUser } = useCurrentUser();
   const [API, handleError] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getPost = async () => {
+      setIsLocked(false);
+      setIsLoaded(false);
+
       try {
-        const [project, post, content, isLike] = await Promise.all([
+        const [project, post, isLike] = await Promise.all([
           API.project.get({ projectId }),
           API.post(projectId).get({ postId }),
-          API.post(projectId).getContent({ postId }),
           (currentUser && API.post(projectId).getIsLike({ postId })),
         ]);
         setData({
           project: project.data,
           post: post.data,
-          content: content.data.content,
           isLike: currentUser ? isLike.data.like : false,
         });
-        setIsLoaded(true);
       } catch (error) {
-        navigate(`/project/${projectId}/memberships`);
+        handleError(error.response.data);
+      }
+
+      try {
+        const content = await API.post(projectId).getContent({ postId });
+        setData(rest => ({
+          ...rest,
+          content: content.data.content,
+        }));
+      } catch (error) {
+        setIsLocked(true);
+      } finally {
+        setIsLoaded(true);
       }
     };
 
     getPost();
-  }, [currentUser, API, postId, projectId]);
+  }, [currentUser, API, handleError, postId, projectId]);
 
   const handleLike = async () => {
     try {
@@ -130,23 +171,41 @@ function PostPage({ projectId, postId }) {
             {data.post.title}
           </Heading>
           <Styled.User>
-            <Styled.UserPicture src={data.project.user.picture} />
+            <Styled.UserPicture
+              ratio={500 / 500}
+              image={data.project.user.picture || dummyThumbnailImage}
+            />
             {data.project.user.username}
           </Styled.User>
         </Styled.Info>
-        <Styled.Content
-          dangerouslySetInnerHTML={{
-            __html: data.content,
-          }}
-        />
-        <Styled.Date>
-          {`${moment(data.post.createdAt).format('ll k:m')} 등록`}
-        </Styled.Date>
-        <Styled.LikeButton
-          likeCount={data.post.likeCount}
-          isLike={data.isLike}
-          onClick={handleLike}
-        />
+        {isLocked ? (
+          <Styled.Locked>
+            <Styled.LockedIcon />
+            멤버십을 구독해야 볼 수 있는 포스트입니다.
+            <Styled.Subscription
+              as={Link}
+              to={currentUser ? '../../memberships' : '/login'}
+            >
+              {`${data.project.subscriptionPrice} PXL로 구독하기`}
+            </Styled.Subscription>
+          </Styled.Locked>
+        ) : (
+          <>
+            <Styled.Content
+              dangerouslySetInnerHTML={{
+                __html: data.content,
+              }}
+            />
+            <Styled.Date>
+              {`${moment(data.post.createdAt).format('ll HH:mm')} 등록`}
+            </Styled.Date>
+            <Styled.LikeButton
+              likeCount={data.post.likeCount}
+              isLike={data.isLike}
+              onClick={handleLike}
+            />
+          </>
+        )}
       </Styled.Container>
     </GridTemplate>
   ) : (<Spinner />);
