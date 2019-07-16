@@ -5,6 +5,7 @@
     "@reach/router": "^1.2.1",
     "axios": "^0.19.0",
     "body-scroll-lock": "^2.6.3",
+    "env-cmd": "^9.0.3",
     "mdx.macro": "0.2.8",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
@@ -19,6 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:staging": "env-cmd -f .env.staging react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "docz": "docz dev",
