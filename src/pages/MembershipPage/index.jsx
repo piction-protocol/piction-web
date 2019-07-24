@@ -63,7 +63,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     grid-column: 1 / -1;
-    border-bottom 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--light);
     text-align: center;
     ${media.desktop`
       text-align: left;
@@ -176,7 +176,6 @@ function MembershipPage({ location, projectId }) {
         setErrorMessage(error.response.data.message);
       }
     };
-
     if (currentUser) {
       getMembership();
     } else {
@@ -190,7 +189,7 @@ function MembershipPage({ location, projectId }) {
         projectId,
         subscriptionPrice: project.subscriptionPrice,
       });
-      navigate('./');
+      navigate(location.state.redirectTo || '/');
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }

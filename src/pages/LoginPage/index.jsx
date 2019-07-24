@@ -9,7 +9,7 @@ import LoginForm from 'components/organisms/LoginForm';
 function LoginPage({ location }) {
   return (
     <CompactTemplate>
-      <LoginForm redirectTo={location.state.redirectTo} />
+      <LoginForm {...location.state} />
     </CompactTemplate>
   );
 }

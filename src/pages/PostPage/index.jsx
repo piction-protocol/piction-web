@@ -74,6 +74,9 @@ const Styled = {
     line-height: var(--line-height--content);
     text-align: center;
     word-break: keep-all;
+    ${media.desktop`
+      margin: 96px 0;
+    `}
   `,
   LockedIcon: styled(LockedIcon)`
     width: 104px;
@@ -102,7 +105,7 @@ const Styled = {
   `,
 };
 
-function PostPage({ projectId, postId }) {
+function PostPage({ location, projectId, postId }) {
   const [data, setData] = useState([]);
   const [isLocked, setIsLocked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -185,6 +188,9 @@ function PostPage({ projectId, postId }) {
             <Styled.Subscription
               as={Link}
               to={currentUser ? '../../memberships' : '/login'}
+              state={{
+                redirectTo: location.pathname,
+              }}
             >
               {`${data.project.subscriptionPrice} PXL로 구독하기`}
             </Styled.Subscription>
@@ -216,4 +222,5 @@ export default PostPage;
 PostPage.propTypes = {
   projectId: PropTypes.string.isRequired,
   postId: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
 };
