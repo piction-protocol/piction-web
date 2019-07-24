@@ -49,6 +49,7 @@ function PostList({
 
   useEffect(() => {
     setContentList([]);
+    setPage(1);
   }, [projectId]);
 
   useEffect(() => {
