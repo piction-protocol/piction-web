@@ -72,10 +72,10 @@ function useAPI() {
     delete: () => removeCookie('access_token'),
   };
 
-  const handleCommonError = code => ({
-    4001: navigate('/login'),
-    4004: navigate('/404'),
-  }[code]);
+  const handleCommonError = ({ code }) => ({
+    4001: () => navigate('/login'),
+    4004: () => navigate('/404'),
+  }[code]());
 
   return [{
     my,
