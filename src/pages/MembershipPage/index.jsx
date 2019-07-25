@@ -176,8 +176,15 @@ function MembershipPage({ location, projectId }) {
         setErrorMessage(error.response.data.message);
       }
     };
+
+    const checkIsSubscribing = async () => {
+      const { data } = await API.project.getSubscription({ projectId });
+      if (data.subscribing) navigate('./');
+    };
+
     if (currentUser) {
       getMembership();
+      checkIsSubscribing();
     } else {
       navigate('/login', { state: { redirectTo: location.pathname }, replace: true });
     }
