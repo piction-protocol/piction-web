@@ -44,7 +44,6 @@ function App() {
   const { getCurrentUser } = useCurrentUser();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    setIsLoaded(false);
     async function loading() {
       try {
         await getCurrentUser();
@@ -52,8 +51,8 @@ function App() {
         setIsLoaded(true);
       }
     }
-
     loading();
+    return setIsLoaded(false);
   }, [getCurrentUser]);
 
   return (

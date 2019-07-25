@@ -47,10 +47,10 @@ function PostList({
   const [contentList, setContentList] = useState([]);
   const [API] = useCallback(useAPI(), []);
 
-  useEffect(() => {
+  useEffect(() => (() => {
     setContentList([]);
     setPage(1);
-  }, [projectId]);
+  }), [projectId]);
 
   useEffect(() => {
     const getFormData = async () => {

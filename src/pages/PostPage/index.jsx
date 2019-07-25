@@ -45,7 +45,7 @@ const Styled = {
     border-bottom: 1px solid var(--gray--light);
     text-align: center;
   `,
-  User: styled.p`
+  User: styled.div`
     display: flex;
     margin-top: 8px;
     font-size: var(--font-size--small);
@@ -114,9 +114,6 @@ function PostPage({ location, projectId, postId }) {
 
   useEffect(() => {
     const getPost = async () => {
-      setIsLocked(false);
-      setIsLoaded(false);
-
       try {
         const [project, post, isLike] = await Promise.all([
           API.project.get({ projectId }),
@@ -146,6 +143,10 @@ function PostPage({ location, projectId, postId }) {
     };
 
     getPost();
+    return (() => {
+      setIsLocked(false);
+      setIsLoaded(false);
+    });
   }, [currentUser, API, handleError, postId, projectId]);
 
   const handleLike = async () => {
