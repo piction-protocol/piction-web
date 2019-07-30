@@ -5,21 +5,58 @@ import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
 
+import ContentImage from 'components/atoms/ContentImage';
+
+import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
+
 const Styled = {
-  Wallet: styled.div`
+  Section: styled.section`
     display: flex;
     flex-flow: column;
-    align-items: flex-start;
-    padding: 16px;
+    padding: 16px 0;
     border-bottom: 1px solid var(--gray--light);
+  `,
+  Title: styled.h2`
+    margin-left: 16px;
+    margin-bottom: 4px;
     color: var(--black);
     font-size: var(--font-size--small);
     font-weight: bold;
   `,
   PXL: styled.span`
-    margin-top: 4px;
+    margin-left: 16px;
     color: var(--blue);
     font-size: var(--font-size--base);
+    font-weight: bold;
+  `,
+  Project: styled.a`
+    display: flex;
+    padding: 8px 16px;
+    transition: background-color var(--transition--form);
+
+    &:hover {
+      background-color: var(--gray--light);
+    }
+  `,
+  Thumbnail: styled(ContentImage)`
+    flex: 0 0 auto;
+    width: 40px;
+    margin-right: 12px;
+    border-radius: 50%;
+  `,
+  ProjectTexts: styled.div`
+    overflow: hidden;
+  `,
+  ProjectTitle: styled.p`
+    margin-bottom: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--font-size--small);
+    white-space: nowrap;
+  `,
+  ProjectInfo: styled.p`
+    color: var(--gray--dark);
+    font-size: var(--font-size--tiny);
   `,
   Links: styled.div`
     display: flex;
@@ -61,19 +98,36 @@ function UserMenu({
   }, [API]);
   return (
     <>
-      <Styled.Wallet>
-        내 지갑
+      <Styled.Section>
+        <Styled.Title>
+          내 지갑
+        </Styled.Title>
         <Styled.PXL>
           {`${PXL.toLocaleString()} PXL`}
         </Styled.PXL>
-      </Styled.Wallet>
+      </Styled.Section>
       {projects.length > 0 && (
-        <Styled.Wallet>
-          내 프로젝트
+        <Styled.Section>
+          <Styled.Title>
+            내 프로젝트
+          </Styled.Title>
           {projects.map(project => (
-            project.title
+            <Styled.Project href={`/project/${project.uri}`}>
+              <Styled.Thumbnail
+                ratio={500 / 500}
+                image={project.thumbnail || dummyThumbnailImage}
+              />
+              <Styled.ProjectTexts>
+                <Styled.ProjectTitle>
+                  {project.title}
+                </Styled.ProjectTitle>
+                <Styled.ProjectInfo>
+                  구독자 123
+                </Styled.ProjectInfo>
+              </Styled.ProjectTexts>
+            </Styled.Project>
           ))}
-        </Styled.Wallet>
+        </Styled.Section>
       )}
       <Styled.Links>
         {links.map(({
