@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
@@ -128,8 +128,6 @@ Feature.propTypes = {
 };
 
 function HomePage() {
-  const projectsRef = useRef(null);
-
   return (
     <>
       <Helmet>
@@ -137,7 +135,7 @@ function HomePage() {
       </Helmet>
 
       <Main>
-        <Hero projectsRef={projectsRef} />
+        <Hero />
         <Cautions>
           [안내] 픽션 서비스 안정화 기간동안 PXL 토큰 사용이 제한됩니다.
         </Cautions>
@@ -174,7 +172,7 @@ function HomePage() {
           </MainGrid>
         </FeaturesSection>
 
-        <Section ref={projectsRef}>
+        <Section>
           <SectionTitle>Recommended Projects</SectionTitle>
           <RecommendedProjects />
         </Section>

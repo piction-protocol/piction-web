@@ -17,7 +17,10 @@ const Styled = {
   Text: styled.div`
     display: flex;
     flex-flow: column;
-    padding: 16px 0;
+    padding: 16px 0 0;
+    ${media.desktop`
+      padding: 16px 0;
+    `}
   `,
   Title: styled.h3`
     margin-bottom: 4px;
