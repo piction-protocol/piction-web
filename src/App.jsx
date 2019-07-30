@@ -51,8 +51,8 @@ function App() {
         setIsLoaded(true);
       }
     }
-
     loading();
+    return setIsLoaded(false);
   }, [getCurrentUser]);
 
   return (

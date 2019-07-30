@@ -63,7 +63,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     grid-column: 1 / -1;
-    border-bottom 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--light);
     text-align: center;
     ${media.desktop`
       text-align: left;
@@ -177,8 +177,14 @@ function MembershipPage({ location, projectId }) {
       }
     };
 
+    const checkIsSubscribing = async () => {
+      const { data } = await API.project.getSubscription({ projectId });
+      if (data.subscribing) navigate('./');
+    };
+
     if (currentUser) {
       getMembership();
+      checkIsSubscribing();
     } else {
       navigate('/login', { state: { redirectTo: location.pathname }, replace: true });
     }
@@ -190,7 +196,7 @@ function MembershipPage({ location, projectId }) {
         projectId,
         subscriptionPrice: project.subscriptionPrice,
       });
-      navigate('./');
+      navigate(location.state.redirectTo || '/');
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }

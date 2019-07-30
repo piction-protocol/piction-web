@@ -63,7 +63,7 @@ function LoginForm({ redirectTo }) {
     event.preventDefault();
     try {
       const response = await API.session.create(formData);
-      API.token.create(response.data.accessToken, formData.rememberme && {
+      await API.token.create(response.data.accessToken, formData.rememberme && {
         expires: new Date('2099-12-31T23:59:59'),
       });
       navigate(decodeURIComponent(redirectTo), { replace: true });

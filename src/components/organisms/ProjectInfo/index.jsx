@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from '@reach/router';
+import { Link, Location } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';
 
@@ -9,6 +9,7 @@ import { MainGrid } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
 
 import useMedia from 'hooks/useMedia';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
@@ -53,7 +54,7 @@ const Styled = {
     margin-bottom: 4px;
     ${media.desktop`
       width: 100%;
-      margin-bottom: 8px
+      margin-bottom: 8px;
     `}
   `,
   User: styled.p`
@@ -130,6 +131,7 @@ function ProjectInfo({
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isSynopsisVisible, setIsSynopsisVisible] = useState(false);
+  const { currentUser } = useCurrentUser();
 
   return (
     <Styled.Section {...props}>
@@ -187,15 +189,25 @@ function ProjectInfo({
               </Styled.SubscribeInfo>
             </>
           ) : (
-            <>
-              <Styled.SubscribeButton as={Link} to="memberships">
-                {`${project.subscriptionPrice} PXL로 구독하기`}
-              </Styled.SubscribeButton>
-              <Styled.SubscribeInfo>
-                <Styled.AccessTimeIcon />
-                30일 동안 구독 가능
-              </Styled.SubscribeInfo>
-            </>
+            <Location>
+              {({ location }) => (
+                <>
+                  <Styled.SubscribeButton
+                    as={Link}
+                    to={currentUser ? 'memberships' : '/login'}
+                    state={{
+                      redirectTo: location.pathname,
+                    }}
+                  >
+                    {`${project.subscriptionPrice} PXL로 구독하기`}
+                  </Styled.SubscribeButton>
+                  <Styled.SubscribeInfo>
+                    <Styled.AccessTimeIcon />
+                    30일 동안 구독 가능
+                  </Styled.SubscribeInfo>
+                </>
+              )}
+            </Location>
           )}
         </Styled.Subscribe>
       </Styled.MainGrid>
