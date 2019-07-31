@@ -112,7 +112,7 @@ function UserMenu({
             내 프로젝트
           </Styled.Title>
           {projects.map(project => (
-            <Styled.Project href={`/project/${project.uri}`}>
+            <Styled.Project href={`/project/${project.uri}`} key={project.id}>
               <Styled.Thumbnail
                 ratio={500 / 500}
                 image={project.thumbnail || dummyThumbnailImage}
