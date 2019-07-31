@@ -15,6 +15,11 @@ import Dropdown from 'components/atoms/Dropdown';
 import Sidemenu from 'components/atoms/Sidemenu';
 
 import { ReactComponent as Logo } from 'images/piction-logo.svg';
+import { ReactComponent as SubscriptionsIcon } from 'images/ic-subscriptions.svg';
+import { ReactComponent as AccountIcon } from 'images/ic-account.svg';
+import { ReactComponent as DashboardIcon } from 'images/ic-dashboard.svg';
+import { ReactComponent as NewProjectIcon } from 'images/ic-newproject.svg';
+import { ReactComponent as LogoutIcon } from 'images/ic-logout.svg';
 
 const Styled = {
   Header: styled.header`
@@ -83,7 +88,7 @@ const Styled = {
     z-index: 1;
     top: 56px;
     right: 0;
-    width: 190px;
+    width: 240px;
   `,
 };
 
@@ -121,24 +126,16 @@ function GlobalHeader({ paths }) {
   const menuRef = useRef();
   useOnClickOutside(menuRef, () => setIsMenuOpened(false));
 
-  const links = isDesktop ? [
-    { text: '구독 중인 프로젝트', to: '/subscriptions' },
-    { text: '내 정보', to: '/my/info' },
-    { text: '크리에이터 대시보드', to: '/dashboard' },
-    { text: '새 프로젝트 만들기', to: '/dashboard/new-project' },
+  const links = [
+    { text: '구독 중인 프로젝트', to: '/subscriptions', icon: <SubscriptionsIcon /> },
+    { text: '내 정보', to: '/my/info', icon: <AccountIcon /> },
+    ...isDesktop ? [
+      { text: '크리에이터 대시보드', to: '/dashboard', icon: <DashboardIcon /> },
+      { text: '새 프로젝트 만들기', to: '/dashboard/new-project', icon: <NewProjectIcon /> },
+    ] : [],
     {
       text: '로그아웃',
-      as: 'button',
-      onClick: () => {
-        setIsMenuOpened(false);
-        deleteSession();
-      },
-    },
-  ] : [
-    { text: '구독 중인 프로젝트', to: '/subscriptions' },
-    { text: '내 정보', to: '/my/info' },
-    {
-      text: '로그아웃',
+      icon: <LogoutIcon />,
       as: 'button',
       onClick: () => {
         setIsMenuOpened(false);

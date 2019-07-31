@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
     --font-size--large: 30px;
     --font-size--base: 18px;
     --font-size--small: 14px;
+    --font-size--tiny: 12px;
 
     --line-height--base: normal;
     --line-height--content: 1.75;
