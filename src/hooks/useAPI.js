@@ -36,6 +36,7 @@ function useAPI() {
   });
 
   const project = {
+    getAll: () => API.get('/projects'),
     create: params => API.post('/projects', params),
     get: params => API.get(`/projects/${params.projectId}`),
     update: params => API.put(`/projects/${params.projectId}`, params),

@@ -8,6 +8,7 @@ import useAPI from 'hooks/useAPI';
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
 
+import { PrimaryButton } from 'components/atoms/Button';
 import ContentImage from 'components/atoms/ContentImage';
 
 import PlaceholderImage from 'images/img-dummy-960x360.jpg';
@@ -25,14 +26,23 @@ const ProjectThumbnail = styled(ContentImage)`
 
 const ProjectTitle = styled.span`
   margin-top: 16px;
-  font-size: 14px;
+  font-size: var(--font-size--small);
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
   white-space: nowrap
 `;
 
-const Project = ({ uri, wideThumbnail, title }) => {
+const ProjectAuthor = styled.span`
+  margin-top: 4px;
+  color: var(--gray--dark);
+  font-size: var(--font-size--small);
+  text-align: center;
+`;
+
+const Project = ({
+  uri, wideThumbnail, title, user,
+}) => {
   const projectPath = `/project/${uri}`;
 
   return (
@@ -42,6 +52,7 @@ const Project = ({ uri, wideThumbnail, title }) => {
         image={wideThumbnail || PlaceholderImage}
       />
       <ProjectTitle>{title}</ProjectTitle>
+      <ProjectAuthor>{user.username}</ProjectAuthor>
     </ProjectWrapper>
   );
 };
@@ -51,12 +62,17 @@ Project.propTypes = {
   title: PropTypes.string.isRequired,
   // eslint-disable-next-line react/require-default-props
   wideThumbnail: PropTypes.string,
+  user: PropTypes.object.isRequired,
 };
 
 const ProjectListWrapper = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
+  padding-top: 24px;
+  ${media.desktop`
+    padding-top: 16px;
+  `}
 `;
 
 const ProjectListItem = styled.div`
@@ -64,6 +80,14 @@ const ProjectListItem = styled.div`
   min-width: 0;
   ${media.desktop`
     grid-column: span 3;
+  `}
+`;
+
+const More = styled(PrimaryButton)`
+  grid-column: 3 / span 2;
+  ${media.desktop`
+    margin-top: 40px;
+    grid-column: 6 / span 2;
   `}
 `;
 
@@ -90,6 +114,12 @@ const RecommendedProjects = (props) => {
             <Project {...p} />
           </ProjectListItem>
         ))}
+        <More
+          as={Link}
+          to="/all"
+        >
+          더 보기
+        </More>
       </MainGrid>
     </ProjectListWrapper>
   );

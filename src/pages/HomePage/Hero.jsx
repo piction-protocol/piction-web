@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 
 import useMedia from 'hooks/useMedia';
-import useCurrentUser from 'hooks/useCurrentUser';
 
 import media, { mediaQuery } from 'styles/media';
 import { MainGrid } from 'styles/Grid';
@@ -102,8 +100,7 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-const Hero = ({ projectsRef }) => {
-  const { currentUser } = useCurrentUser();
+const Hero = () => {
   const isDesktop = useMedia(mediaQuery.desktop);
 
   const backgrounds = [BG1, BG2, BG3];
@@ -120,42 +117,19 @@ const Hero = ({ projectsRef }) => {
       <MainGrid>
         <Logo />
         <CTA>
-          {currentUser ? (
-            isDesktop ? (
-              <PrimaryButton
-                as={Link}
-                to="/dashboard"
-                size={isDesktop ? 'normal' : 'mini'}
-              >
-                서비스 시작
-              </PrimaryButton>
-            ) : (
-              <PrimaryButton
-                size="mini"
-                onClick={() => {
-                  projectsRef.current.scrollIntoView({
-                    behavior: 'smooth',
-                  });
-                }}
-              >
-                추천 프로젝트
-              </PrimaryButton>
-            )
-          ) : (
-            <PrimaryButton
-              as={Link}
-              to="/signup"
-              size={isDesktop ? 'normal' : 'mini'}
-            >
-              서비스 시작
-            </PrimaryButton>
-          )}
-          <TertiaryButton
+          <PrimaryButton
             as="a"
             href="https://about.piction.network"
             size={isDesktop ? 'normal' : 'mini'}
           >
             픽션 네트워크 소개
+          </PrimaryButton>
+          <TertiaryButton
+            as={Link}
+            to="/all"
+            size={isDesktop ? 'normal' : 'mini'}
+          >
+            프로젝트 탐색
           </TertiaryButton>
         </CTA>
         <Introduction>
@@ -174,10 +148,6 @@ const Hero = ({ projectsRef }) => {
       </MainGrid>
     </HeroWrapper>
   );
-};
-
-Hero.propTypes = {
-  projectsRef: PropTypes.object.isRequired,
 };
 
 export default Hero;
