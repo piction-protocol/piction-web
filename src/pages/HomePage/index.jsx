@@ -12,6 +12,9 @@ import Hero from './Hero';
 import Starter from './ic-starter.svg';
 import Boosting from './ic-boosting.svg';
 import Recommendation from './ic-recommendation.svg';
+import LiquidBackgroundImage from './img-liquid-01.png';
+import PaintBackgroundImage1 from './img-paint-01.png';
+import PaintBackgroundImage2 from './img-paint-02.png';
 
 const Main = styled.main`
   display: flex;
@@ -30,6 +33,7 @@ const Cautions = styled.div`
   text-align: center;
   ${media.desktop`
     font-size: 14px;
+    padding: 24px;
   `}
 `;
 
@@ -68,8 +72,14 @@ const Introduction = styled.p`
 `;
 
 const FeaturesSection = styled(Section)`
+  background-image: url(${LiquidBackgroundImage}), url(${LiquidBackgroundImage});
+  background-size: 288px;
+  background-repeat: no-repeat;
+  background-position: -144px -46px, calc(100% + 192px) 192px;
   ${media.desktop`
     padding: 64px 0;
+    background-size: 400px;
+    background-position: -69px -68px, calc(100% + 57px) -203px;
   `}
 `;
 
@@ -94,6 +104,19 @@ const FeatureWrapper = styled.div`
   word-break: keep-all;
   ${media.desktop`
     grid-column: span 2;
+  `}
+`;
+
+const RecommendedSection = styled(Section)`
+  background-image: url(${PaintBackgroundImage1}), url(${PaintBackgroundImage2});
+  background-size: auto 274px, auto 378px;
+  background-repeat: no-repeat;
+  background-position: -176px 0, calc(100% + 151px) calc(100% - 166px);
+  ${media.desktop`
+    padding: 64px 0;
+    background-image: url(${LiquidBackgroundImage});
+    background-size: 600px;
+    background-position: calc(100% + 97px) 32px;
   `}
 `;
 
@@ -172,10 +195,10 @@ function HomePage() {
           </MainGrid>
         </FeaturesSection>
 
-        <Section>
+        <RecommendedSection>
           <SectionTitle>Recommended Projects</SectionTitle>
           <RecommendedProjects />
-        </Section>
+        </RecommendedSection>
       </Main>
     </>
   );

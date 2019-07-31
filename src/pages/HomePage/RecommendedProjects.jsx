@@ -69,6 +69,10 @@ const ProjectListWrapper = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
+  padding-top: 24px;
+  ${media.desktop`
+    padding-top: 16px;
+  `}
 `;
 
 const ProjectListItem = styled.div`
