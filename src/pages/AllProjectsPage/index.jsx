@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, navigate } from '@reach/router';
+import { Link } from '@reach/router';
 import styled from 'styled-components';
+
 import useAPI from 'hooks/useAPI';
 
 import media from 'styles/media';
@@ -46,20 +47,19 @@ const Styled = {
 
 function AllProjectsPage() {
   const [projects, setProjects] = useState([]);
+  const [page] = useState(1);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getProjects = async () => {
-      try {
-        const { data } = await API.project.getAll();
-        setProjects(data);
-      } catch (error) {
-        navigate('/404');
-      }
+      const { data } = await API.project.getAll({
+        params: { size: 100, page },
+      });
+      setProjects(data.content);
     };
 
     getProjects();
-  }, [API]);
+  }, [API, page]);
 
   return (
     <GridTemplate
