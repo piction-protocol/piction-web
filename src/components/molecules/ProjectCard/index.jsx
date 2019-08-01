@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import media from 'styles/media';
 
@@ -11,6 +12,7 @@ import ContentImage from 'components/atoms/ContentImage';
 const Styled = {
   Item: styled.article`
     display: flex;
+    position: relative;
     flex-flow: column;
     background-color: var(--white);
   `,
@@ -33,10 +35,21 @@ const Styled = {
       font-size: var(--font-size--base);
     `}
   `,
+  Labels: styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+  `,
+  UpdateLabel: styled.div`
+    padding: 8px 12px;
+    background-color: var(--black);
+    color: var(--white);
+    font-size: var(--font-size--small);
+  `,
 };
 
 function ProjectCard({
-  title, thumbnail, children, ...props
+  title, thumbnail, lastPublishedAt, children, ...props
 }) {
   return (
     <Styled.Item
@@ -49,6 +62,13 @@ function ProjectCard({
       <Styled.Text>
         <Styled.Title>{title}</Styled.Title>
         {children}
+        <Styled.Labels>
+          {moment().diff(lastPublishedAt, 'days') < 1 && (
+            <Styled.UpdateLabel>
+              UPDATE
+            </Styled.UpdateLabel>
+          )}
+        </Styled.Labels>
       </Styled.Text>
     </Styled.Item>
   );
@@ -57,12 +77,8 @@ function ProjectCard({
 ProjectCard.propTypes = {
   title: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,
+  lastPublishedAt: PropTypes.number,
   children: PropTypes.node,
-};
-
-ProjectCard.defaultProps = {
-  thumbnail: null,
-  children: null,
 };
 
 export default ProjectCard;
