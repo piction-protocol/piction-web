@@ -122,7 +122,7 @@ function UserMenu({
                   {project.title}
                 </Styled.ProjectTitle>
                 <Styled.ProjectInfo>
-                  구독자 123
+                  {`구독자 ${project.subscriptionUserCount}`}
                 </Styled.ProjectInfo>
               </Styled.ProjectTexts>
             </Styled.Project>
