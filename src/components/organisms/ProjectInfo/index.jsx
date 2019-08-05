@@ -19,6 +19,7 @@ import { PrimaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
+import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
 import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
 import dummyUserPicture from 'images/img-user-profile.svg';
 
@@ -49,13 +50,43 @@ const Styled = {
       grid-column: 2 / 10;
     `}
   `,
-  Heading: styled(Heading)`
+  HeadingWrapper: styled.div`
     grid-column: 1 / 6;
     margin-bottom: 4px;
     ${media.desktop`
       width: 100%;
       margin-bottom: 8px;
     `}
+  `,
+  Heading: styled(Heading)`
+    display: inline;
+    margin-right: 8px;
+  `,
+  SubscriptionCount: styled.div`
+    display: inline-flex;
+    align-items: center;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+    ${media.mobile`
+      position: absolute;
+      top: 0;
+      right: var(--outer-gap);
+      margin-top: calc(50% - 16px);
+      padding: 8px 12px;
+      border-radius: 18px;
+      background-color: rgba(0, 0, 0, .3);
+      color: var(--white);
+      transform: translateY(-100%);
+    `}
+  `,
+  PeopleIcon: styled(PeopleIcon)`
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+
+    path {
+      fill: currentColor;
+    }
   `,
   User: styled.p`
     display: flex;
@@ -130,7 +161,7 @@ function ProjectInfo({
   project, subscription, ...props
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
-  const [isSynopsisVisible, setIsSynopsisVisible] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { currentUser } = useCurrentUser();
 
   return (
@@ -141,30 +172,36 @@ function ProjectInfo({
       />
       <Styled.MainGrid>
         <Styled.Text>
-          <Styled.Heading>
-            {project.title}
-          </Styled.Heading>
+          <Styled.HeadingWrapper>
+            <Styled.Heading>
+              {project.title}
+            </Styled.Heading>
+            <Styled.SubscriptionCount>
+              <Styled.PeopleIcon />
+              {`구독자 수 ${project.subscriptionUserCount}`}
+            </Styled.SubscriptionCount>
+          </Styled.HeadingWrapper>
           <Styled.User>
             {project.user.username}
             <Styled.UserId>
               {`@${project.user.loginId}`}
             </Styled.UserId>
           </Styled.User>
-          {project.synopsis && (
-            isDesktop ? (
+          {isDesktop ? (
+            project.synopsis && (
               <Styled.Synopsis>
                 {project.synopsis}
               </Styled.Synopsis>
-            ) : (
-              <>
-                <Styled.InfoButton onClick={() => setIsSynopsisVisible(true)}>
-                  <InfoIcon />
-                </Styled.InfoButton>
-                {isSynopsisVisible && (
-                  <SynopsisPopup {...project} close={() => setIsSynopsisVisible(false)} />
-                )}
-              </>
             )
+          ) : (
+            <>
+              <Styled.InfoButton onClick={() => setIsPopupVisible(true)}>
+                <InfoIcon />
+              </Styled.InfoButton>
+              {isPopupVisible && (
+                <SynopsisPopup {...project} close={() => setIsPopupVisible(false)} />
+              )}
+            </>
           )}
         </Styled.Text>
         <Styled.UserPictureWrapper>

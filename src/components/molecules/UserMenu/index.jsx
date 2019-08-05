@@ -29,7 +29,7 @@ const Styled = {
     font-size: var(--font-size--base);
     font-weight: bold;
   `,
-  Project: styled.a`
+  Project: styled(Link)`
     display: flex;
     padding: 8px 16px;
     transition: background-color var(--transition--form);
@@ -112,7 +112,7 @@ function UserMenu({
             내 프로젝트
           </Styled.Title>
           {projects.map(project => (
-            <Styled.Project href={`/project/${project.uri}`} key={project.id}>
+            <Styled.Project to={`/project/${project.uri}`} key={project.id}>
               <Styled.Thumbnail
                 ratio={500 / 500}
                 image={project.thumbnail || dummyThumbnailImage}
@@ -122,7 +122,7 @@ function UserMenu({
                   {project.title}
                 </Styled.ProjectTitle>
                 <Styled.ProjectInfo>
-                  구독자 123
+                  {`구독자 ${project.subscriptionUserCount}`}
                 </Styled.ProjectInfo>
               </Styled.ProjectTexts>
             </Styled.Project>
