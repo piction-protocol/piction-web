@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
+import TagsInput from 'react-tagsinput';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -72,6 +73,7 @@ function ProjectForm({ title, projectId, setProjects }) {
     synopsis: '',
     thumbnail: '',
     wideThumbnail: '',
+    tags: [],
     subscriptionPrice: 0,
   });
   const [defaultImage, setDefaultImage] = useState({});
@@ -100,6 +102,7 @@ function ProjectForm({ title, projectId, setProjects }) {
         synopsis: '',
         thumbnail: '',
         wideThumbnail: '',
+        tags: [],
         subscriptionPrice: 0,
       });
       setDefaultImage({
@@ -109,7 +112,7 @@ function ProjectForm({ title, projectId, setProjects }) {
     };
 
     if (projectId) getProjectData();
-    else clearForm();
+    return clearForm();
   }, [setFormData, projectId, API]);
 
   const handleSubmit = async (event) => {
@@ -219,6 +222,10 @@ function ProjectForm({ title, projectId, setProjects }) {
           PXL 토큰이 정식으로 유통된 후에 설정 가능합니다.
         </Styled.Spec>
       </InputGroup>
+      <TagsInput
+        value={formData.tags}
+        onChange={tags => setFormData(prev => ({ ...prev, tags }))}
+      />
       <Styled.SubmitGroup>
         <Styled.Submit
           value={projectId ? '저장' : '프로젝트 생성'}
