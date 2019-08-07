@@ -85,7 +85,7 @@ function DashboardPostItem({
             {title}
           </Styled.Title>
           <Styled.CreatedAt>
-            {moment(createdAt).format('YYYY.MM.DD HH:mm')}
+            {moment(createdAt).format('YYYY/MM/DD HH:mm')}
           </Styled.CreatedAt>
         </Styled.Text>
       </Styled.Link>
