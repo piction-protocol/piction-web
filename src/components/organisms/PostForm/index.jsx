@@ -73,14 +73,19 @@ function PostForm({ title, projectId, postId }) {
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
 
-
   useEffect(() => {
     const getFormData = async () => {
       try {
         const { data } = await API.post(projectId).get({ postId });
         const content = await API.post(projectId).getContent({ postId });
-        const { cover, ...defaultFormData } = data;
-        setFormData({ ...defaultFormData, content: content.data.content });
+        const fanPass = await API.fanPass.getAll({ projectId });
+        const fanPassId = fanPass.data[0].id;
+        const { cover, ...defaultFormData } = {
+          title: data.title,
+          cover: data.cover,
+          status: data.status,
+        };
+        setFormData({ ...defaultFormData, content: content.data.content, fanPassId });
         setDefaultImage({
           cover,
         });
@@ -95,6 +100,7 @@ function PostForm({ title, projectId, postId }) {
         content: '',
         cover: '',
         status: 'PUBLIC',
+        fanPassId: '',
       });
       setDefaultImage({
         cover: '',
@@ -102,7 +108,7 @@ function PostForm({ title, projectId, postId }) {
     };
 
     if (postId) getFormData();
-    else clearForm();
+    return clearForm();
   }, [API, projectId, postId, setFormData]);
 
   const handleEditor = (value) => {
@@ -113,9 +119,9 @@ function PostForm({ title, projectId, postId }) {
     event.preventDefault();
     try {
       if (postId) {
-        await API.post(projectId).update({ ...formData, postId });
+        await API.post(projectId).update({ ...formData, postId, fanPassId: formData.status === 'PUBLIC' ? null : formData.fanPassId });
       } else {
-        await API.post(projectId).create({ ...formData, publishedAt: Date.now() });
+        await API.post(projectId).create({ ...formData, publishedAt: Date.now(), fanPassId: formData.status === 'PUBLIC' ? null : formData.fanPassId });
       }
       navigate(`/dashboard/${projectId}/posts`);
     } catch (error) {

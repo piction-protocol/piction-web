@@ -58,14 +58,15 @@ const Styled = {
 function DashboardPostList({ title, projectId, page }) {
   const [postList, setPostList] = useState([]);
   const [deletingPost, setDeletingPost] = useState(null);
-  const [isRequiredFanPass, setisRequiredFanPass] = useState(null);
+  const [isRequiredFanPass, setIsRequiredFanPass] = useState(null);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getFormData = async () => {
       try {
-        const { data } = await API.post(projectId).getAll({
-          params: { size: 15, page, isRequiredFanPass },
+        const { data } = await API.my.posts({
+          projectId,
+          params: { size: 15, page, isRequiredFanPass: isRequiredFanPass === 'null' ? null : isRequiredFanPass },
         });
         setPostList(data.content);
       } catch (error) {
@@ -81,9 +82,9 @@ function DashboardPostList({ title, projectId, page }) {
       <Heading>{title}</Heading>
       <Styled.Tools>
         <Styled.Select
-          onChange={event => setisRequiredFanPass(event.target.value)}
+          onChange={event => setIsRequiredFanPass(event.target.value)}
           options={[
-            { text: '모든 포스트', value: '' },
+            { text: '모든 포스트', value: 'null' },
             { text: '멤버십 전용', value: 'true' },
           ]}
         />
