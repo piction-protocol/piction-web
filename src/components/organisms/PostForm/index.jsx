@@ -67,7 +67,7 @@ function PostForm({ title, projectId, postId }) {
     title: '',
     content: '',
     cover: '',
-    isRequiredFanPass: false,
+    status: 'PUBLIC',
   });
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
@@ -94,7 +94,7 @@ function PostForm({ title, projectId, postId }) {
         title: '',
         content: '',
         cover: '',
-        isRequiredFanPass: false,
+        status: 'PUBLIC',
       });
       setDefaultImage({
         cover: '',
@@ -115,7 +115,7 @@ function PostForm({ title, projectId, postId }) {
       if (postId) {
         await API.post(projectId).update({ ...formData, postId });
       } else {
-        await API.post(projectId).create({ ...formData });
+        await API.post(projectId).create({ ...formData, publishedAt: Date.now() });
       }
       navigate(`/dashboard/${projectId}/posts`);
     } catch (error) {
