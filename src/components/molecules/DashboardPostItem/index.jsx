@@ -18,6 +18,10 @@ const Styled = {
   })`
     border: 1px solid var(--gray--light);
     background-color: var(--white);
+    transition: box-shadow var(--transition--form);
+    &:hover {
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
   `,
   Link: styled(Grid).attrs({
     columns: 7,
