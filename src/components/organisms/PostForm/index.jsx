@@ -67,7 +67,7 @@ function PostForm({ title, projectId, postId }) {
     title: '',
     content: '',
     cover: '',
-    requiredSubscription: false,
+    isRequiredFanPass: false,
   });
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
@@ -94,7 +94,7 @@ function PostForm({ title, projectId, postId }) {
         title: '',
         content: '',
         cover: '',
-        requiredSubscription: false,
+        isRequiredFanPass: false,
       });
       setDefaultImage({
         cover: '',
@@ -115,7 +115,7 @@ function PostForm({ title, projectId, postId }) {
       if (postId) {
         await API.post(projectId).update({ ...formData, postId });
       } else {
-        await API.post(projectId).create(formData);
+        await API.post(projectId).create({ ...formData });
       }
       navigate(`/dashboard/${projectId}/posts`);
     } catch (error) {
@@ -168,20 +168,28 @@ function PostForm({ title, projectId, postId }) {
           공개 설정
         </Label>
         <Radio
-          name="requiredSubscription"
+          name="status"
           onChange={handleChange}
-          value="false"
-          checked={formData.requiredSubscription === 'false' || formData.requiredSubscription === false}
+          value="PUBLIC"
+          checked={formData.status === 'PUBLIC'}
         >
           전체 공개
         </Radio>
         <Radio
-          name="requiredSubscription"
+          name="status"
           onChange={handleChange}
-          value="true"
-          checked={formData.requiredSubscription === 'true' || formData.requiredSubscription === true}
+          value="FAN_PASS"
+          checked={formData.status === 'FAN_PASS'}
         >
-          멤버십 구독자 공개
+          구독자 공개
+        </Radio>
+        <Radio
+          name="status"
+          onChange={handleChange}
+          value="PRIVATE"
+          checked={formData.status === 'PRIVATE'}
+        >
+          비공개
         </Radio>
       </Styled.Group>
       <Styled.SubmitGroup>

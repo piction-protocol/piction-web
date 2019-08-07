@@ -99,7 +99,7 @@ const RecommendedProjects = (props) => {
     async function fetchProject() {
       const response = await API.recommended.getProjects({ params: { size: 4 } });
       const fetchedProjects = await response.data.map(p => ({
-        ...p.project,
+        ...p,
       }));
       setProjects(fetchedProjects);
     }

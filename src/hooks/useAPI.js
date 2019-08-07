@@ -46,6 +46,11 @@ function useAPI() {
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
   };
 
+  const fanPass = {
+    get: params => API.get(`/fan-pass/${params.fanPassId}`),
+    getAll: params => API.get(`/fan-pass/projects/${params.projectId}`),
+  };
+
   const recommended = {
     getProjects: params => API.get('/recommended/projects', params),
   };
@@ -82,6 +87,7 @@ function useAPI() {
     my,
     post,
     project,
+    fanPass,
     recommended,
     series,
     session,

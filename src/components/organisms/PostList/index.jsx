@@ -83,13 +83,13 @@ function PostList({
         {contentList.map(content => (
           <Link
             to={
-              (isSubscribing || !content.requiredSubscription) ? `posts/${content.id}` : 'memberships'
+              (isSubscribing || !content.isRequiredFanPass) ? `posts/${content.id}` : 'memberships'
             }
             key={content.id}
           >
             <PostItem
               {...content}
-              isLocked={!isSubscribing && content.requiredSubscription}
+              isLocked={!isSubscribing && content.isRequiredFanPass}
               subscriptionPrice={subscriptionPrice}
             />
           </Link>

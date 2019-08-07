@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link, Location } from '@reach/router';
-import moment from 'moment';
-import 'moment/locale/ko';
+import { Link } from '@reach/router';
 
 import { MainGrid } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
 
 import useMedia from 'hooks/useMedia';
-import useCurrentUser from 'hooks/useCurrentUser';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
@@ -162,7 +159,6 @@ function ProjectInfo({
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const { currentUser } = useCurrentUser();
 
   return (
     <Styled.Section {...props}>
@@ -216,35 +212,13 @@ function ProjectInfo({
               새 포스트
             </Styled.SubscribeButton>
           ) : subscription.subscribing ? (
-            <>
-              <Styled.SubscribeButton disabled>
-                구독중
-              </Styled.SubscribeButton>
-              <Styled.SubscribeInfo>
-                <Styled.AccessTimeIcon />
-                {`${moment(subscription.expireDate).format('ll')}까지`}
-              </Styled.SubscribeInfo>
-            </>
+            <Styled.SubscribeButton disabled>
+              구독중
+            </Styled.SubscribeButton>
           ) : (
-            <Location>
-              {({ location }) => (
-                <>
-                  <Styled.SubscribeButton
-                    as={Link}
-                    to={currentUser ? 'memberships' : '/login'}
-                    state={{
-                      redirectTo: location.pathname,
-                    }}
-                  >
-                    {`${project.subscriptionPrice} PXL로 구독하기`}
-                  </Styled.SubscribeButton>
-                  <Styled.SubscribeInfo>
-                    <Styled.AccessTimeIcon />
-                    30일 동안 구독 가능
-                  </Styled.SubscribeInfo>
-                </>
-              )}
-            </Location>
+            <Styled.SubscribeButton>
+              무료로 구독하기
+            </Styled.SubscribeButton>
           )}
         </Styled.Subscribe>
       </Styled.MainGrid>

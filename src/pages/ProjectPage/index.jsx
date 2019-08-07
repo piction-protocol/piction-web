@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Link, navigate } from '@reach/router';
+import { Link } from '@reach/router';
 import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
@@ -56,11 +56,14 @@ function ProjectPage({ projectId }) {
   useEffect(() => {
     const getProject = async () => {
       try {
+        const fanPass = await API.fanPass.getAll({ projectId });
+        const fanPassId = fanPass.data[0].id;
         const response = await Promise.all([
           API.project.get({ projectId }),
           API.recommended.getProjects({ params: { size: 5 } }),
-          (currentUser && API.project.getSubscription({ projectId })),
+          (currentUser && API.fanPass.get({ fanPassId })),
         ]);
+
         if (currentUser) {
           setSubscription(response[2].data);
         }
@@ -69,11 +72,11 @@ function ProjectPage({ projectId }) {
           isMine: currentUser && (currentUser.loginId === response[0].data.user.loginId),
         });
         setRecommendedProjects(
-          response[1].data.filter(recommended => recommended.project.uri !== projectId).slice(0, 4),
+          response[1].data.filter(recommended => recommended.uri !== projectId).slice(0, 4),
         );
         setIsLoaded(true);
       } catch (error) {
-        navigate('/404');
+        console.log(error);
       }
     };
 
@@ -93,7 +96,7 @@ function ProjectPage({ projectId }) {
       <Styled.Content>
         <PostList
           isSubscribing={project.isMine || subscription.subscribing}
-          subscriptionPrice={project.subscriptionPrice}
+          subscriptionPrice={subscription.subscriptionPrice}
           projectId={projectId}
         />
       </Styled.Content>
@@ -105,14 +108,14 @@ function ProjectPage({ projectId }) {
             </h2>
             {recommendedProjects.map(recommededProject => (
               <Link
-                to={`/project/${recommededProject.project.uri}`}
-                key={recommededProject.project.id}
+                to={`/project/${recommededProject.uri}`}
+                key={recommededProject.id}
               >
                 <WideProjectCard
-                  {...recommededProject.project}
+                  {...recommededProject}
                 >
                   <Styled.CardText>
-                    {`구독자 수 ${recommededProject.subscriptionCount}`}
+                    {`구독자 수 ${recommededProject.subscriptionUserCount}`}
                   </Styled.CardText>
                 </WideProjectCard>
               </Link>
