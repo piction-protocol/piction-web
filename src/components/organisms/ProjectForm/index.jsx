@@ -228,6 +228,7 @@ function ProjectForm({ title, projectId, setProjects }) {
           placeholder="#태그입력(최대 5개)"
           maxTags={5}
           invalid={!!errorMessage.tags}
+          onlyUnique
         />
         <ErrorMessage>{errorMessage.tags}</ErrorMessage>
       </Styled.ImageGroup>

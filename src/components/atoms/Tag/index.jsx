@@ -8,16 +8,19 @@ const StyledTag = styled(Link)`
   border-radius: 8px;
   background-color: var(--gray--light);
   color: var(--black);
+  font-size: var(--font-size--small);
 `;
 
-const Tag = ({ children, ...props }) => (
-  <StyledTag to={children} {...props}>
-    {`#${children}`}
+const Tag = ({ children, name = children, ...props }) => (
+  <StyledTag to={`/tag/${name}`} {...props}>
+    #
+    {children}
   </StyledTag>
 );
 
 Tag.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  name: PropTypes.string,
 };
 
 export default Tag;

@@ -12,6 +12,7 @@ import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
 import ContentImage from 'components/atoms/ContentImage';
 import Heading from 'components/atoms/Heading';
+import Tag from 'components/atoms/Tag';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
@@ -110,6 +111,13 @@ const Styled = {
     color: var(--gray--dark);
     line-height: var(--line-height--content);
   `,
+  Tags: styled.div`
+    width: 100%;
+    margin-top: 16px;
+  `,
+  Tag: styled(Tag)`
+    margin-right: 8px;
+  `,
   InfoButton: styled.button`
     display: flex;
     position: absolute;
@@ -184,11 +192,20 @@ function ProjectInfo({
             </Styled.UserId>
           </Styled.User>
           {isDesktop ? (
-            project.synopsis && (
-              <Styled.Synopsis>
-                {project.synopsis}
-              </Styled.Synopsis>
-            )
+            <>
+              {project.synopsis && (
+                <Styled.Synopsis>
+                  {project.synopsis}
+                </Styled.Synopsis>
+              )}
+              {project.tags.length && (
+                <Styled.Tags>
+                  {project.tags.map(tag => (
+                    <Styled.Tag key={tag}>{tag}</Styled.Tag>
+                  ))}
+                </Styled.Tags>
+              )}
+            </>
           ) : (
             <>
               <Styled.InfoButton onClick={() => setIsPopupVisible(true)}>
