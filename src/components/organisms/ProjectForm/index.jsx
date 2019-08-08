@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
-import TagsInput from 'react-tagsinput';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -10,8 +9,10 @@ import useForm from 'hooks/useForm';
 import Grid from 'styles/Grid';
 
 import InputGroup from 'components/molecules/InputGroup';
+import TagsInput from 'components/molecules/TagsInput';
 import Heading from 'components/atoms/Heading';
 import Label from 'components/atoms/Label';
+import ErrorMessage from 'components/atoms/ErrorMessage';
 import ImageUploader from 'components/atoms/ImageUploader';
 import Checkbox from 'components/atoms/Checkbox';
 import { PrimaryButton } from 'components/atoms/Button';
@@ -219,12 +220,17 @@ function ProjectForm({ title, projectId, setProjects }) {
         value={formData.synopsis}
         errorMessage={errorMessage.synopsis}
       />
-      <TagsInput
-        value={formData.tags}
-        onChange={tags => setFormData(prev => ({ ...prev, tags }))}
-        addKeys={[9, 13, 32]}
-        maxTags={5}
-      />
+      <Styled.ImageGroup>
+        <Label>태그</Label>
+        <TagsInput
+          value={formData.tags}
+          onChange={tags => setFormData(prev => ({ ...prev, tags }))}
+          placeholder="#태그입력(최대 5개)"
+          maxTags={5}
+          invalid={!!errorMessage.tags}
+        />
+        <ErrorMessage>{errorMessage.tags}</ErrorMessage>
+      </Styled.ImageGroup>
       <Styled.ImageGroup>
         <Label>프로젝트 숨기기</Label>
         <Styled.CheckboxGroup>
