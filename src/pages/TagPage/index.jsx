@@ -51,15 +51,21 @@ function TagPage({ tagName }) {
 
   useEffect(() => {
     const getProjects = async () => {
-      const { data } = await API.project.getAll({
-        params: { size: 100, page },
-      });
-      setProjects(data.content);
-      setCount(data.numberOfElements);
+      try {
+        const { data } = await API.project.getTaggingProjects({
+          tag: tagName,
+          params: { size: 100, page },
+        });
+        setProjects(data.content);
+        setCount(data.numberOfElements);
+      } catch (error) {
+        setProjects([]);
+        setCount(0);
+      }
     };
 
     getProjects();
-  }, [API, page]);
+  }, [API, page, tagName]);
 
   return (
     <GridTemplate
