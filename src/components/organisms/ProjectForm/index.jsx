@@ -13,6 +13,7 @@ import InputGroup from 'components/molecules/InputGroup';
 import Heading from 'components/atoms/Heading';
 import Label from 'components/atoms/Label';
 import ImageUploader from 'components/atoms/ImageUploader';
+import Checkbox from 'components/atoms/Checkbox';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
@@ -53,6 +54,13 @@ const Styled = {
   Spec: styled.p`
     font-size: var(--font-size--small);
     color: var(--gray--dark);
+  `,
+  CheckboxGroup: styled.label`
+    display: flex;
+    align-items: center;
+  `,
+  Checkbox: styled(Checkbox)`
+    margin-right: 8px;
   `,
   SubmitGroup: styled.div`
     grid-column: 1 / -1;
@@ -103,7 +111,7 @@ function ProjectForm({ title, projectId, setProjects }) {
         thumbnail: '',
         wideThumbnail: '',
         tags: [],
-        subscriptionPrice: 0,
+        status: 'PUBLIC',
       });
       setDefaultImage({
         thumbnail: '',
@@ -211,21 +219,26 @@ function ProjectForm({ title, projectId, setProjects }) {
         value={formData.synopsis}
         errorMessage={errorMessage.synopsis}
       />
-      <InputGroup
-        name="subscriptionPrice"
-        label="유료 멤버십 가격"
-        value={0}
-        disabled
-        errorMessage={errorMessage.subscriptionPrice}
-      >
-        <Styled.Spec>
-          PXL 토큰이 정식으로 유통된 후에 설정 가능합니다.
-        </Styled.Spec>
-      </InputGroup>
       <TagsInput
         value={formData.tags}
         onChange={tags => setFormData(prev => ({ ...prev, tags }))}
+        addKeys={[9, 13, 32]}
+        maxTags={5}
       />
+      <Styled.ImageGroup>
+        <Label>프로젝트 숨기기</Label>
+        <Styled.CheckboxGroup>
+          <Styled.Checkbox
+            name="status"
+            onChange={(event) => {
+              event.persist();
+              setFormData(prev => ({ ...prev, status: event.target.checked ? 'HIDDEN' : 'PUBLIC' }));
+            }}
+            checked={formData.status === 'HIDDEN'}
+          />
+          픽션에서 프로젝트가 소개되지 않도록 설정합니다.
+        </Styled.CheckboxGroup>
+      </Styled.ImageGroup>
       <Styled.SubmitGroup>
         <Styled.Submit
           value={projectId ? '저장' : '프로젝트 생성'}
