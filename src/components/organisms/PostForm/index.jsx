@@ -100,7 +100,6 @@ function PostForm({ title, projectId, postId }) {
         content: '',
         cover: '',
         status: 'PUBLIC',
-        fanPassId: '',
       });
       setDefaultImage({
         cover: '',
@@ -117,11 +116,21 @@ function PostForm({ title, projectId, postId }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const fanPass = await API.fanPass.getAll({ projectId });
+    const fanPassId = fanPass.data[0].id;
     try {
       if (postId) {
-        await API.post(projectId).update({ ...formData, postId, fanPassId: formData.status === 'PUBLIC' ? null : formData.fanPassId });
+        await API.post(projectId).update({
+          ...formData,
+          postId,
+          fanPassId: formData.status === 'PUBLIC' ? null : fanPassId,
+        });
       } else {
-        await API.post(projectId).create({ ...formData, publishedAt: Date.now(), fanPassId: formData.status === 'PUBLIC' ? null : formData.fanPassId });
+        await API.post(projectId).create({
+          ...formData,
+          publishedAt: Date.now(),
+          fanPassId: formData.status === 'PUBLIC' ? null : fanPassId,
+        });
       }
       navigate(`/dashboard/${projectId}/posts`);
     } catch (error) {
