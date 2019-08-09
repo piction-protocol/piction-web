@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Location, Link } from '@reach/router';
 import styled from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -200,9 +200,27 @@ function PostPage({ projectId, postId }) {
           <Styled.Locked>
             <Styled.LockedIcon />
             구독자 전용 포스트입니다.
-            <Styled.Subscription onClick={handleSubscribe}>
-              무료로 구독하기
-            </Styled.Subscription>
+            {currentUser ? (
+              <Styled.Subscription
+                onClick={handleSubscribe}
+              >
+                무료로 구독하기
+              </Styled.Subscription>
+            ) : (
+              <Location>
+                {({ location }) => (
+                  <Styled.Subscription
+                    as={Link}
+                    to="/login"
+                    state={{
+                      redirectTo: encodeURIComponent(location.pathname),
+                    }}
+                  >
+                    무료로 구독하기
+                  </Styled.Subscription>
+                )}
+              </Location>
+            )}
           </Styled.Locked>
         ) : (
           <>

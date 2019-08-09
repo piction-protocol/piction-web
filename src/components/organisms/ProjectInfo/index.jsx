@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from '@reach/router';
+import { Link, Location } from '@reach/router';
 
 import { MainGrid } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
 
 import useMedia from 'hooks/useMedia';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
@@ -167,6 +168,7 @@ function ProjectInfo({
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const { currentUser } = useCurrentUser();
 
   return (
     <Styled.Section {...props}>
@@ -232,11 +234,27 @@ function ProjectInfo({
             <Styled.SubscribeButton onClick={handleSubscribe}>
               구독중
             </Styled.SubscribeButton>
-          ) : (
-            <Styled.SubscribeButton onClick={handleSubscribe}>
+          ) : (currentUser ? (
+            <Styled.SubscribeButton
+              onClick={handleSubscribe}
+            >
               무료로 구독하기
             </Styled.SubscribeButton>
-          )}
+          ) : (
+            <Location>
+              {({ location }) => (
+                <Styled.SubscribeButton
+                  as={Link}
+                  to="/login"
+                  state={{
+                    redirectTo: encodeURIComponent(location.pathname),
+                  }}
+                >
+                  무료로 구독하기
+                </Styled.SubscribeButton>
+              )}
+            </Location>
+          ))}
         </Styled.Subscribe>
       </Styled.MainGrid>
     </Styled.Section>
