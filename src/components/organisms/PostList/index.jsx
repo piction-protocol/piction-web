@@ -40,7 +40,7 @@ const Styled = {
 };
 
 function PostList({
-  projectId, isSubscribing, subscriptionPrice, ...props
+  projectId, isSubscribing, ...props
 }) {
   const [page, setPage] = useState(1);
   const [isLast, setIsLast] = useState(true);
@@ -89,8 +89,7 @@ function PostList({
           >
             <PostItem
               {...content}
-              isLocked={!isSubscribing && content.isRequiredFanPass}
-              subscriptionPrice={subscriptionPrice}
+              isLocked={!isSubscribing && !!content.fanPass}
             />
           </Link>
         ))}
@@ -107,12 +106,10 @@ function PostList({
 PostList.propTypes = {
   projectId: PropTypes.string.isRequired,
   isSubscribing: PropTypes.bool,
-  subscriptionPrice: PropTypes.number,
 };
 
 PostList.defaultProps = {
   isSubscribing: false,
-  subscriptionPrice: 0,
 };
 
 export default PostList;

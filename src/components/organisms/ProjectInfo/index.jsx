@@ -163,7 +163,7 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, subscription, ...props
+  project, subscription, handleSubscribe, ...props
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -198,7 +198,7 @@ function ProjectInfo({
                   {project.synopsis}
                 </Styled.Synopsis>
               )}
-              {project.tags.length && (
+              {project.tags.length > 0 && (
                 <Styled.Tags>
                   {project.tags.map(tag => (
                     <Styled.Tag key={tag}>{tag}</Styled.Tag>
@@ -228,12 +228,12 @@ function ProjectInfo({
             <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
               새 포스트
             </Styled.SubscribeButton>
-          ) : subscription.subscribing ? (
-            <Styled.SubscribeButton disabled>
+          ) : subscription.isSubscribing ? (
+            <Styled.SubscribeButton onClick={handleSubscribe}>
               구독중
             </Styled.SubscribeButton>
           ) : (
-            <Styled.SubscribeButton>
+            <Styled.SubscribeButton onClick={handleSubscribe}>
               무료로 구독하기
             </Styled.SubscribeButton>
           )}
@@ -246,6 +246,7 @@ function ProjectInfo({
 ProjectInfo.propTypes = {
   project: PropTypes.object.isRequired,
   subscription: PropTypes.object.isRequired,
+  handleSubscribe: PropTypes.func.isRequired,
 };
 
 export default ProjectInfo;

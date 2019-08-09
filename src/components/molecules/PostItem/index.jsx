@@ -105,7 +105,7 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover, createdAt, likeCount, isLocked, subscriptionPrice, ...props
+  title, cover, createdAt, likeCount, isLocked, ...props
 }) {
   return (
     <Styled.Item
@@ -115,7 +115,7 @@ function PostItem({
         <Styled.Locked>
           <Styled.LockedText>
             <Styled.LockedIcon />
-            {`${subscriptionPrice}PXL로 멤버십 한정 콘텐츠를\n자유롭게 열람하세요.`}
+            구독자 전용 포스트입니다.
           </Styled.LockedText>
           <Styled.LockedCover
             ratio={960 / 360}
@@ -154,14 +154,12 @@ PostItem.propTypes = {
   createdAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,
-  subscriptionPrice: PropTypes.number,
 };
 
 PostItem.defaultProps = {
   cover: null,
   likeCount: 0,
   isLocked: false,
-  subscriptionPrice: 0,
 };
 
 export default PostItem;

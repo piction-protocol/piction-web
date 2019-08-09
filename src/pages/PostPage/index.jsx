@@ -105,7 +105,7 @@ const Styled = {
   `,
 };
 
-function PostPage({ location, projectId, postId }) {
+function PostPage({ projectId, postId }) {
   const [data, setData] = useState([]);
   const [isLocked, setIsLocked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -162,6 +162,20 @@ function PostPage({ location, projectId, postId }) {
     }
   };
 
+  const handleSubscribe = async () => {
+    try {
+      const response = await API.fanPass.getAll({ projectId });
+      const fanPass = response.data[0];
+      await API.fanPass.subscribe({
+        fanPassId: fanPass.id,
+        subscriptionPrice: fanPass.subscriptionPrice,
+      });
+      window.location.reload(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return isLoaded ? (
     <GridTemplate>
       <Styled.Container>
@@ -185,15 +199,9 @@ function PostPage({ location, projectId, postId }) {
         {isLocked ? (
           <Styled.Locked>
             <Styled.LockedIcon />
-            멤버십을 구독해야 볼 수 있는 포스트입니다.
-            <Styled.Subscription
-              as={Link}
-              to={currentUser ? '../../memberships' : '/login'}
-              state={{
-                redirectTo: location.pathname,
-              }}
-            >
-              {`${data.project.subscriptionPrice} PXL로 구독하기`}
+            구독자 전용 포스트입니다.
+            <Styled.Subscription onClick={handleSubscribe}>
+              무료로 구독하기
             </Styled.Subscription>
           </Styled.Locked>
         ) : (
@@ -223,5 +231,4 @@ export default PostPage;
 PostPage.propTypes = {
   projectId: PropTypes.string.isRequired,
   postId: PropTypes.string.isRequired,
-  location: PropTypes.object.isRequired,
 };

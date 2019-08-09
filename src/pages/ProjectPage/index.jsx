@@ -61,11 +61,12 @@ function ProjectPage({ projectId }) {
         const response = await Promise.all([
           API.project.get({ projectId }),
           API.recommended.getProjects({ params: { size: 5 } }),
-          (currentUser && API.fanPass.get({ fanPassId })),
+          currentUser && API.fanPass.get({ fanPassId }),
+          currentUser && API.fanPass.getSubscription({ projectId }),
         ]);
 
         if (currentUser) {
-          setSubscription(response[2].data);
+          setSubscription({ ...response[2].data, isSubscribing: !!response[3].data.fanPass });
         }
         setProject({
           ...response[0].data,
@@ -83,20 +84,43 @@ function ProjectPage({ projectId }) {
     getProject();
   }, [currentUser, API, projectId]);
 
+  const handleSubscribe = async () => {
+    if (subscription.isSubscribing) {
+      try {
+        await API.fanPass.unsubscribe({
+          fanPassId: subscription.id,
+        });
+        setSubscription(prev => ({ ...prev, isSubscribing: false }));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await API.fanPass.subscribe({
+          fanPassId: subscription.id,
+          subscriptionPrice: subscription.subscriptionPrice,
+        });
+        setSubscription(prev => ({ ...prev, isSubscribing: true }));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return isLoaded && (
     <GridTemplate
       hero={(
         <ProjectInfo
           project={project}
           subscription={subscription}
+          handleSubscribe={handleSubscribe}
         />
       )}
     >
       <Styled.Tabs />
       <Styled.Content>
         <PostList
-          isSubscribing={project.isMine || subscription.subscribing}
-          subscriptionPrice={subscription.subscriptionPrice}
+          isSubscribing={project.isMine || subscription.isSubscribing}
           projectId={projectId}
         />
       </Styled.Content>

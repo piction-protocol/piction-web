@@ -42,8 +42,6 @@ function useAPI() {
     create: params => API.post('/projects', params),
     get: params => API.get(`/projects/${params.projectId}`),
     update: params => API.put(`/projects/${params.projectId}`, params),
-    subscribe: params => API.post(`/projects/${params.projectId}/subscription`, params),
-    getSubscription: params => API.get(`/projects/${params.projectId}/subscription`),
     uploadThumbnail: params => API.patch('/projects/thumbnail', params, patchConfig),
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
   };
@@ -51,6 +49,9 @@ function useAPI() {
   const fanPass = {
     get: params => API.get(`/fan-pass/${params.fanPassId}`),
     getAll: params => API.get(`/fan-pass/projects/${params.projectId}`),
+    getSubscription: params => API.get(`/fan-pass/projects/${params.projectId}/subscription`),
+    subscribe: params => API.post(`/fan-pass/${params.fanPassId}/subscription`, params),
+    unsubscribe: params => API.delete(`/fan-pass/${params.fanPassId}/subscription`),
   };
 
   const recommended = {
