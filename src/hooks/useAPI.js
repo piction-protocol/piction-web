@@ -82,7 +82,7 @@ function useAPI() {
   };
 
   const handleCommonError = ({ code }) => ({
-    4001: () => navigate('/login'),
+    4001: () => navigate('/login', { state: { redirectTo: window.location.pathname }, replace: true }),
     4004: () => navigate('/404'),
   }[code]());
 
