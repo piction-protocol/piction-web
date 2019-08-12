@@ -230,7 +230,7 @@ function PostPage({ projectId, postId }) {
               }}
             />
             <Styled.Date>
-              {`${moment(data.post.createdAt).format('ll HH:mm')} 등록`}
+              {`${moment(data.post.publishedAt).format('ll HH:mm')} 발행`}
             </Styled.Date>
             <Styled.LikeButton
               likeCount={data.post.likeCount}

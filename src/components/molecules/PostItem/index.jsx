@@ -85,7 +85,7 @@ const Styled = {
     display: flex;
     align-items: flex-end;
   `,
-  CreatedAt: styled.p`
+  PublishedAt: styled.p`
     color: var(--gray--dark);
     font-size: var(--font-size--small);
   `,
@@ -105,7 +105,7 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover, createdAt, likeCount, isLocked, ...props
+  title, cover, publishedAt, likeCount, isLocked, ...props
 }) {
   return (
     <Styled.Item
@@ -134,9 +134,9 @@ function PostItem({
       )}
       <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
-        <Styled.CreatedAt>
-          {moment(createdAt).format('MMMM Do')}
-        </Styled.CreatedAt>
+        <Styled.PublishedAt>
+          {moment(publishedAt).format('MMMM Do')}
+        </Styled.PublishedAt>
         {likeCount > 0 && (
           <Styled.LikeCount>
             <Styled.ThumbupIcon />
@@ -151,7 +151,7 @@ function PostItem({
 PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
-  createdAt: PropTypes.number.isRequired,
+  publishedAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,
 };
