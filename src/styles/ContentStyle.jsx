@@ -3,6 +3,7 @@ import { css } from 'styled-components';
 const ContentStyle = css`
   font-size: var(--font-size--base);
   line-height: var(--line-height--content);
+  word-break: break-all;
 
   img {
     max-width: 100%;
