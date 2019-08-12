@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, navigate } from '@reach/router';
+import moment from 'moment';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -12,9 +13,11 @@ import Editor from 'components/molecules/Editor';
 import InputGroup from 'components/molecules/InputGroup';
 import Heading from 'components/atoms/Heading';
 import Label from 'components/atoms/Label';
+import Input from 'components/atoms/Input';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import Radio from 'components/atoms/Radio';
 import ImageUploader from 'components/atoms/ImageUploader';
+import Checkbox from 'components/atoms/Checkbox';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import dummyCoverImage from 'images/img-dummy-960x360.jpg';
@@ -38,19 +41,28 @@ const Styled = {
   Group: styled(Grid).attrs({
     columns: 9,
   })`
+    --row-gap: 8px;
     grid-column: 1 / -1;
-    row-gap: 8px;
     > * {
       grid-column: 1 / -1;
     }
+  `,
+  Input: styled(Input)`
+    grid-column: span ${({ columns }) => columns};
   `,
   ImageUploader: styled(ImageUploader)`
     ${({ columns }) => columns && `grid-column: span ${columns};`}
   `,
   Spec: styled.p`
-    margin-bottom: 8px;
     font-size: var(--font-size--small);
     color: var(--gray--dark);
+  `,
+  CheckboxGroup: styled.label`
+    display: flex;
+    align-items: center;
+  `,
+  Checkbox: styled(Checkbox)`
+    margin-right: 8px;
   `,
   SubmitGroup: styled.div`
     grid-column: 1 / -1;
@@ -62,13 +74,17 @@ const Styled = {
   `,
 };
 
-function PostForm({ title, projectId, postId }) {
+function PostForm({ title, projectId, postId = null }) {
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     content: '',
     cover: '',
+    publishNow: true,
+    publishingDate: moment().format('YYYY-MM-DD'),
+    publishingTime: moment().format('HH:mm:ss'),
     status: 'PUBLIC',
   });
+  const [isPublished, setIsPublished] = useState(false);
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
@@ -84,7 +100,12 @@ function PostForm({ title, projectId, postId }) {
           title: data.title,
           cover: data.cover,
           status: data.status,
+          publishedAt: data.publishedAt,
+          publishNow: false,
+          publishingDate: moment(data.publishedAt).format('YYYY-MM-DD'),
+          publishingTime: moment(data.publishedAt).format('HH:mm:ss'),
         };
+        setIsPublished(data.publishedAt < Date.now());
         setFormData({ ...defaultFormData, content: content.data.content, fanPassId });
         setDefaultImage({
           cover,
@@ -99,6 +120,9 @@ function PostForm({ title, projectId, postId }) {
         title: '',
         content: '',
         cover: '',
+        publishNow: true,
+        publishingDate: moment().format('YYYY-MM-DD'),
+        publishingTime: moment().format('HH:mm:ss'),
         status: 'PUBLIC',
       });
       setDefaultImage({
@@ -122,13 +146,20 @@ function PostForm({ title, projectId, postId }) {
       if (postId) {
         await API.post(projectId).update({
           ...formData,
+          ...isPublished ? {} : {
+            publishedAt: formData.publishNow
+              ? Date.now()
+              : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
+          },
           postId,
           fanPassId: formData.status === 'PUBLIC' ? null : fanPassId,
         });
       } else {
         await API.post(projectId).create({
           ...formData,
-          publishedAt: Date.now(),
+          publishedAt: formData.publishNow
+            ? Date.now()
+            : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
           fanPassId: formData.status === 'PUBLIC' ? null : fanPassId,
         });
       }
@@ -177,6 +208,11 @@ function PostForm({ title, projectId, postId }) {
           uploadAPI={API.post(projectId).uploadCoverImage}
           columns={3}
         />
+        {errorMessage.content && (
+          <ErrorMessage>
+            {errorMessage.content}
+          </ErrorMessage>
+        )}
       </Styled.Group>
       <Styled.Group>
         <Label>
@@ -207,6 +243,44 @@ function PostForm({ title, projectId, postId }) {
           비공개
         </Radio>
       </Styled.Group>
+      <Styled.Group>
+        <Label>
+          발행 시간 설정
+        </Label>
+        {!isPublished && (
+          <Styled.CheckboxGroup>
+            <Styled.Checkbox
+              name="publishNow"
+              onChange={handleChange}
+              checked={formData.publishNow}
+            />
+            즉시 발행
+          </Styled.CheckboxGroup>
+        )}
+        <Styled.Input
+          name="publishingDate"
+          columns={3}
+          type="date"
+          disabled={formData.publishNow || isPublished}
+          onChange={handleChange}
+          value={formData.publishingDate}
+        />
+        <Styled.Input
+          name="publishingTime"
+          columns={2}
+          step="1"
+          type="time"
+          disabled={formData.publishNow || isPublished}
+          onChange={handleChange}
+          value={formData.publishingTime}
+        />
+        <Styled.Spec>
+          공개 설정과 관계없이 설정한 시간 이전에는 포스트가 공개되지 않습니다.
+        </Styled.Spec>
+        <Styled.Spec>
+          한 번 포스트가 발행된 이후에는 발행 시간을 변경할 수 없습니다.
+        </Styled.Spec>
+      </Styled.Group>
       <Styled.SubmitGroup>
         <Styled.Submit
           as="input"
@@ -228,10 +302,6 @@ PostForm.propTypes = {
   projectId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   postId: PropTypes.string,
-};
-
-PostForm.defaultProps = {
-  postId: null,
 };
 
 export default PostForm;
