@@ -17,7 +17,7 @@ Quill.register('formats/italic', ItalicBlot);
 class VideoBlot extends BlockEmbed {
   static blotName = 'video';
 
-  static tagName = 'div';
+  static tagName = 'p';
 
   static className = 'video';
 

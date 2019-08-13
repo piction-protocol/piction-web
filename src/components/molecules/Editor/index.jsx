@@ -118,10 +118,12 @@ function Editor({
     const range = quill.getSelection();
     if (range.length > 0) {
       let href = prompt('Enter link URL:');
-      if (!/^https?:/.test(href)) {
-        href = `http://${href}`;
+      if (href) {
+        if (!/^https?:/.test(href)) {
+          href = `http://${href}`;
+        }
+        quill.format('link', href);
       }
-      quill.format('link', href);
     }
   }
 
@@ -138,8 +140,10 @@ function Editor({
     };
 
     const url = prompt('Enter youtube URL:');
-    const embedLink = urlToEmbedLink(url);
-    quill.insertEmbed(range.index, 'video', embedLink);
+    if (url) {
+      const embedLink = urlToEmbedLink(url);
+      quill.insertEmbed(range.index, 'video', embedLink);
+    }
   }
 
   const quillProps = {
