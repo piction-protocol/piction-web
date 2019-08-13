@@ -203,7 +203,7 @@ function ProjectInfo({
               {`@${project.user.loginId}`}
             </Styled.UserId>
           </Styled.User>
-          {isDesktop ? (
+          {isDesktop && project.status === 'PUBLIC' ? (
             <>
               {project.synopsis && (
                 <Styled.Synopsis>
