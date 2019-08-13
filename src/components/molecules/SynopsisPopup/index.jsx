@@ -7,12 +7,13 @@ import { MainGrid } from 'styles/Grid';
 import ContentImage from 'components/atoms/ContentImage';
 import Heading from 'components/atoms/Heading';
 import FullscreenPopup from 'components/atoms/FullscreenPopup';
+import Tag from 'components/atoms/Tag';
 
 const Styled = {
   Grid: styled(MainGrid).attrs({
     as: 'section',
   })`
-    row-gap: 16px;
+    --row-gap: 8px;
     padding-top: 52px;
     text-align: center;
     > * {
@@ -21,23 +22,37 @@ const Styled = {
   `,
   Thumbnail: styled(ContentImage)`
     grid-column: 3 / 5;
+    margin-bottom: 8px;
     border-radius: 50%;
   `,
+  Heading: styled(Heading)`
+    margin-bottom: 8px;
+  `,
   Title: styled.p`
+    margin-bottom: 8px;
     font-size: var(--font-size--small);
+  `,
+  Tags: styled.div`
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+  `,
+  Tag: styled(Tag)`
+    margin: 0 4px 8px;
   `,
   Synopsis: styled.p`
     width: 100%;
     padding-top: 16px;
     border-top: 1px solid var(--black);
     text-align: left;
-    color: var(--gray--dark);
-    line-height: var(--line-height--content);
+    color: var(--black);
+    font-size: var(--font-size--small);
+    text-align: center;
   `,
 };
 
 function SynopsisPopup({
-  close, thumbnail, title, synopsis, ...props
+  close, thumbnail, title, user, synopsis, tags, ...props
 }) {
   return (
     <FullscreenPopup close={close} {...props}>
@@ -46,8 +61,13 @@ function SynopsisPopup({
           ratio={500 / 500}
           image={thumbnail}
         />
-        <Heading>프로젝트 시놉시스</Heading>
-        <Styled.Title>{title}</Styled.Title>
+        <div>
+          <Styled.Heading>{title}</Styled.Heading>
+          <Styled.Title>{user.username}</Styled.Title>
+        </div>
+        <Styled.Tags>
+          {tags.map(tag => <Styled.Tag key={tag}>{tag}</Styled.Tag>)}
+        </Styled.Tags>
         <Styled.Synopsis>
           {synopsis}
         </Styled.Synopsis>
@@ -62,5 +82,7 @@ SynopsisPopup.propTypes = {
   close: PropTypes.func.isRequired,
   thumbnail: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+  tags: PropTypes.array.isRequired,
   synopsis: PropTypes.string.isRequired,
 };
