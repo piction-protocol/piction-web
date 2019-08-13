@@ -203,14 +203,14 @@ function ProjectInfo({
               {`@${project.user.loginId}`}
             </Styled.UserId>
           </Styled.User>
-          {isDesktop && project.status === 'PUBLIC' ? (
+          {isDesktop ? (
             <>
               {project.synopsis && (
                 <Styled.Synopsis>
                   {project.synopsis}
                 </Styled.Synopsis>
               )}
-              {project.tags.length > 0 && (
+              {(project.tags.length > 0 && project.status === 'PUBLIC') && (
                 <Styled.Tags>
                   {project.tags.map(tag => (
                     <Styled.Tag key={tag}>{tag}</Styled.Tag>
