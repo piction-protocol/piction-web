@@ -18,6 +18,7 @@ import { PrimaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
+import { ReactComponent as SettingIcon } from 'images/ic-setting.svg';
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
 import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
 import dummyUserPicture from 'images/img-user-profile.svg';
@@ -29,7 +30,9 @@ const Styled = {
     position: relative;
   `,
   WideThumbnail: styled(ContentImage)`
-    max-height: 450px;
+    ${media.desktop`
+      max-height: 450px;
+    `}
   `,
   MainGrid: styled(MainGrid)`
     row-gap: 16px;
@@ -142,13 +145,20 @@ const Styled = {
   Subscribe: styled.div`
     display: flex;
     grid-column: 1 / -1;
-    flex-flow: column;
+    align-items: flex-start;
     ${media.desktop`
       grid-column: span 3 / -1;
     `}
   `,
   SubscribeButton: styled(PrimaryButton)`
+    flex: 1 0;
     margin-bottom: 16px;
+  `,
+  SettingButton: styled(PrimaryButton)`
+    display: flex;
+    flex: 0;
+    padding: 14px;
+    border-left: 1px solid var(--white);
   `,
   SubscribeInfo: styled.p`
     display: flex;
@@ -227,9 +237,14 @@ function ProjectInfo({
         </Styled.UserPictureWrapper>
         <Styled.Subscribe>
           {project.isMine ? isDesktop && (
-            <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
-              새 포스트
-            </Styled.SubscribeButton>
+            <>
+              <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
+                새 포스트 작성
+              </Styled.SubscribeButton>
+              <Styled.SettingButton as={Link} to={`/dashboard/${project.uri}/info`}>
+                <SettingIcon />
+              </Styled.SettingButton>
+            </>
           ) : subscription.isSubscribing ? (
             <Styled.SubscribeButton onClick={handleSubscribe}>
               구독중
