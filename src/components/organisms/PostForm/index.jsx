@@ -152,7 +152,7 @@ function PostForm({ title, projectId, postId = null }) {
               : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
           },
           postId,
-          fanPassId: formData.status === 'PUBLIC' ? null : fanPassId,
+          fanPassId: formData.status === 'FAN_PASS' ? fanPassId : null,
         });
       } else {
         await API.post(projectId).create({
@@ -160,7 +160,7 @@ function PostForm({ title, projectId, postId = null }) {
           publishedAt: formData.publishNow
             ? Date.now()
             : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
-          fanPassId: formData.status === 'PUBLIC' ? null : fanPassId,
+          fanPassId: formData.status === 'FAN_PASS' ? fanPassId : null,
         });
       }
       navigate(`/dashboard/${projectId}/posts`);
