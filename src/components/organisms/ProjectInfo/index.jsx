@@ -14,7 +14,7 @@ import SynopsisPopup from 'components/molecules/SynopsisPopup';
 import ContentImage from 'components/atoms/ContentImage';
 import Heading from 'components/atoms/Heading';
 import Tag from 'components/atoms/Tag';
-import { PrimaryButton } from 'components/atoms/Button';
+import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
@@ -154,6 +154,10 @@ const Styled = {
     flex: 1 0;
     margin-bottom: 16px;
   `,
+  UnsubscribeButton: styled(SecondaryButton)`
+    flex: 1 0;
+    margin-bottom: 16px;
+  `,
   SettingButton: styled(PrimaryButton)`
     display: flex;
     flex: 0;
@@ -246,9 +250,9 @@ function ProjectInfo({
               </Styled.SettingButton>
             </>
           ) : subscription.isSubscribing ? (
-            <Styled.SubscribeButton onClick={handleSubscribe}>
-              구독중
-            </Styled.SubscribeButton>
+            <Styled.UnsubscribeButton onClick={handleSubscribe}>
+              구독 중
+            </Styled.UnsubscribeButton>
           ) : (currentUser ? (
             <Styled.SubscribeButton
               onClick={handleSubscribe}

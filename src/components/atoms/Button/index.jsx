@@ -21,6 +21,9 @@ const Button = styled.button`
     pointer-events: none;
     background-color: var(--gray--light);
     color: var(--gray--dark);
+    &::after {
+      border: 0;
+    }
   }
 `;
 
@@ -54,7 +57,7 @@ export const SecondaryButton = styled(Button)`
     right: 0;
     bottom: 0;
     left: 0;
-    border: 3px solid var(--gray--light);
+    border: 3px solid var(--black);
     transition: inherit;
   }
 
