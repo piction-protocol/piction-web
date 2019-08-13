@@ -8,19 +8,43 @@ import 'moment/locale/ko';
 import Grid from 'styles/Grid';
 
 import dummyCoverImage from 'images/img-dummy-960x360.jpg';
+import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
+import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 
 import ContentImage from 'components/atoms/ContentImage';
+
 
 const Styled = {
   Item: styled(Grid).attrs({
     columns: 9,
     as: 'article',
   })`
+    position: relative;
     border: 1px solid var(--gray--light);
     background-color: var(--white);
     transition: box-shadow var(--transition--form);
     &:hover {
       box-shadow: 0 4px 8px var(--shadow-color);
+    }
+  `,
+  Labels: styled.div`
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  `,
+  Label: styled.span`
+    display: flex;
+    padding: 8px 12px;
+    color: var(--white);
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+      path {
+        fill: currentColor
+      }
     }
   `,
   Link: styled(Grid).attrs({
@@ -69,13 +93,28 @@ const Styled = {
 };
 
 function DashboardPostItem({
-  id, projectId, title, cover, createdAt, handleDelete, ...props
+  id, projectId, title, cover = dummyCoverImage,
+  createdAt, publishedAt, status, handleDelete, ...props
 }) {
   return (
     <Styled.Item
       {...props}
     >
       <Styled.Link target="_blank" href={`/project/${projectId}/posts/${id}`}>
+        <Styled.Labels>
+          {publishedAt > Date.now() && (
+            <Styled.Label style={{ backgroundColor: 'var(--blue)' }}>
+              <AccessTimeIcon />
+              예약
+            </Styled.Label>
+          )}
+          {status === 'PRIVATE' && (
+            <Styled.Label style={{ backgroundColor: 'var(--black)' }}>
+              <LockedIcon />
+              비공개
+            </Styled.Label>
+          )}
+        </Styled.Labels>
         <Styled.Cover
           ratio={960 / 360}
           image={cover || dummyCoverImage}
@@ -107,11 +146,9 @@ DashboardPostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   createdAt: PropTypes.number.isRequired,
+  publishedAt: PropTypes.string,
+  status: PropTypes.string.isRequired,
   handleDelete: PropTypes.func.isRequired,
-};
-
-DashboardPostItem.defaultProps = {
-  cover: dummyCoverImage,
 };
 
 export default DashboardPostItem;
