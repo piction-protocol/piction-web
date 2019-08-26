@@ -56,29 +56,39 @@ const Styled = {
 
 function UserList({ title, projectId, page = 1 }) {
   const [subscribers, setSubscribers] = useState([]);
+  const [pageData, setPageData] = useState({});
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getFormData = async () => {
       const { data } = await API.my.projectSubscriptions({
         projectId,
-        params: { size: 15, page },
+        params: { size: 20, page },
       });
-      setSubscribers(data.content);
+      const { content, ...args } = data;
+      setSubscribers(content);
+      setPageData(args);
     };
 
     getFormData();
+
+    return () => {
+      setSubscribers([]);
+    };
   }, [API, projectId, page]);
 
   return (
     <Styled.Container>
       <Heading>
-        {`${title}(${subscribers.length})`}
+        {`${title}(${pageData.totalElements})`}
       </Heading>
       <Styled.List>
         {subscribers.map(subscriber => (
           <Styled.Item key={subscriber.user.username}>
-            <Styled.UserPicture image={subscriber.user.picture || dummyThumbnailImage} ratio={1} />
+            <Styled.UserPicture
+              image={subscriber.user.picture || dummyThumbnailImage}
+              ratio={500 / 500}
+            />
             <Styled.UserName>
               {subscriber.user.username}
             </Styled.UserName>
