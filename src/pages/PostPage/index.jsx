@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Location, Link } from '@reach/router';
 import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';
 
@@ -20,6 +21,8 @@ import { PrimaryButton } from 'components/atoms/Button';
 
 import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
+
+const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
   Container: styled.article`
@@ -109,6 +112,7 @@ function PostPage({ projectId, postId }) {
   const [data, setData] = useState([]);
   const [isLocked, setIsLocked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const { currentUser } = useCurrentUser();
   const [API, handleError] = useCallback(useAPI(), []);
 
@@ -162,6 +166,10 @@ function PostPage({ projectId, postId }) {
     }
   };
 
+  const handleCookie = () => {
+    setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
+  };
+
   const handleSubscribe = async () => {
     try {
       const response = await API.fanPass.getAll({ projectId });
@@ -178,6 +186,9 @@ function PostPage({ projectId, postId }) {
 
   return isLoaded ? (
     <GridTemplate>
+      {(data.project.adult && !cookies[`no-warning-${projectId}`]) && (
+        <AdultPopup close={handleCookie} />
+      )}
       <Styled.Container>
         <Styled.Info>
           <Styled.ProjectName
