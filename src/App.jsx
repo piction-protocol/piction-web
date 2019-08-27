@@ -21,7 +21,7 @@ const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
 const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
-const Dashboard = React.lazy(() => import('pages/Dashboard'));
+const Dashboard = React.lazy(() => import('Dashboard'));
 
 const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
 const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'));

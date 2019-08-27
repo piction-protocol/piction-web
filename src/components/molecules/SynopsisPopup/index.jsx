@@ -9,6 +9,8 @@ import Heading from 'components/atoms/Heading';
 import FullscreenPopup from 'components/atoms/FullscreenPopup';
 import Tag from 'components/atoms/Tag';
 
+import { ReactComponent as CloseIcon } from 'images/ic-close.svg';
+
 const Styled = {
   Grid: styled(MainGrid).attrs({
     as: 'section',
@@ -19,6 +21,12 @@ const Styled = {
     > * {
       grid-column: 1 / -1;
     }
+  `,
+  Button: styled.button`
+    display: flex;
+    position: absolute;
+    top: 16px;
+    right: 16px;
   `,
   Thumbnail: styled(ContentImage)`
     grid-column: 3 / 5;
@@ -55,7 +63,10 @@ function SynopsisPopup({
   close, thumbnail, title, user, synopsis, tags, ...props
 }) {
   return (
-    <FullscreenPopup close={close} {...props}>
+    <FullscreenPopup {...props}>
+      <Styled.Button onClick={close}>
+        <CloseIcon />
+      </Styled.Button>
       <Styled.Grid>
         <Styled.Thumbnail
           ratio={500 / 500}
