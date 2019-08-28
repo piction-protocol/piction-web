@@ -4,62 +4,90 @@ import { Link } from '@reach/router';
 import styled from 'styled-components';
 
 import media from 'styles/media';
+import { MainGrid } from 'styles/Grid';
+
+import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import RecommendedProjects from './RecommendedProjects';
 
-import LiquidBackgroundImage from './img-liquid-01.png';
-import PaintBackgroundImage1 from './img-paint-01.png';
-import PaintBackgroundImage2 from './img-paint-02.png';
+import IntroImage from './img-landingpage-intro.png';
+import PXLImage from './img-landingpage-pxl.png';
+import ExchangeImage from './img-landingpage-exchange.png';
+import PiegraphImage from './img-landingpage-piegraph.png';
 
 const Main = styled.main`
-  max-width: var(--max-width);
-  margin: 0 auto;
   display: flex;
   flex: 1;
   flex-flow: column;
+  max-width: var(--max-width);
+  margin: 0 auto;
   font-size: 12px;
   ${media.desktop`
     font-size: 18px;
   `}
 `;
 
-const Section = styled.section`
-  display: flex;
-  flex-flow: column;
+const Section = styled(MainGrid).attrs({
+  as: 'section',
+})`
+  --row-gap: 16px;
   width: 100%;
   margin: 0 auto;
-  padding: 48px 16px;
+  padding: 60px 32px;
+  text-align: center;
+  > * {
+    grid-column: 1 / -1;
+  }
   ${media.desktop`
     padding: 120px 16px;
   `}
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.5em;
-  margin-bottom: 1em;
-`;
-
-const RecommendedSection = styled(Section)`
-  background-image: url(${PaintBackgroundImage1}), url(${PaintBackgroundImage2});
-  background-size: auto 274px, auto 378px;
-  background-repeat: no-repeat;
-  background-position: -176px 0, calc(100% + 151px) calc(100% - 166px);
+  font-size: var(--font-size--base);
   ${media.desktop`
-    padding: 64px 0;
-    background-image: url(${LiquidBackgroundImage});
-    background-size: 600px;
-    background-position: calc(100% + 97px) 32px;
+    font-size: var(--font-size--large);
   `}
 `;
 
-const h3Style = {
-  fontSize: '1.2em',
-  marginTop: '1.1em',
-  marginBottom: '1em',
-};
+const Image = styled.img`
+  width: 100%;
+`;
+
+const Article = styled.article`
+`;
+
+const ArticleTitle = styled.h3`
+  color: var(--blue);
+  font-weight: normal;
+`;
+
+const EnglishIntroduction = styled.div`
+  padding: 24px;
+  background-color: var(--gray--light);
+  color: var(--gray--dark);
+  text-align: center;
+  a {
+    color: var(--blue);
+  }
+  ${media.desktop`
+    font-size: 14px;
+    br {
+      display: none;
+    }
+  `}
+`;
+
+const RecommendedSection = styled.section`
+  width: 100%;
+  margin: 0 auto;
+  padding: 60px 16px;
+  text-align: center;
+`;
 
 const liStyle = {
-  listStyle: 'circle',
+  listStyle: 'square',
+  textAlign: 'left',
 };
 
 function HomePage() {
@@ -71,17 +99,26 @@ function HomePage() {
 
       <Main>
         <Section>
-          <SectionTitle>크리에이터와 팬이 만나는 곳, 픽션</SectionTitle>
-          <p>픽션에서는 누구나 크리에이터가 될 수 있고 누구나 나의 최애 크리에이터를 응원할 수 있습니다.</p>
-          <Link to="/dashboard" style={{ textDecoration: 'underline' }}>나의 콘텐츠 등록하기</Link>
-          <Link to="/all" style={{ textDecoration: 'underline' }}>연재 중인 프로젝트</Link>
-          <small>
-            English service is not currently supported. Click here to view the project information.
-          </small>
+          <Image src={IntroImage} />
+          <SectionTitle>크리에이터와 팬이 만나는 곳, 픽션.</SectionTitle>
+          <p>
+            픽션에서는 누구나 크리에이터가 될 수 있고
+            <br />
+            누구나 나의 최애 크리에이터를 응원할 수 있습니다.
+          </p>
+          <PrimaryButton as={Link} to="/dashboard">나의 콘텐츠 등록하기</PrimaryButton>
+          <SecondaryButton as={Link} to="/all">연재 중인 프로젝트</SecondaryButton>
         </Section>
+        <EnglishIntroduction>
+          English service is not currently supported.
+          <br />
+          {' '}
+          <a href="https://about.piction.network/en/">Click here</a>
+          {' '}
+          to view the project information.
+        </EnglishIntroduction>
 
         <Section>
-          <SectionTitle>What you can do</SectionTitle>
           <ul>
             <li style={liStyle}>
               <h2>크리에이터</h2>
@@ -96,13 +133,20 @@ function HomePage() {
 
         <Section>
           <SectionTitle>픽션은 무엇이 다른가요?</SectionTitle>
-          <article>
-            <h3 style={h3Style}>콘텐츠를 구매하면 바로 크리에이터의 지갑으로 PXL이 담겨요</h3>
+          <Article>
+            <Image src={PXLImage} />
+            <ArticleTitle>
+              콘텐츠를 구매하면 바로
+              <br />
+              크리에이터의 지갑으로 PXL이 담겨요
+            </ArticleTitle>
             <ul>
+              <h4>PXL이란?</h4>
               <li style={liStyle}>
-                <h4>PXL이란?</h4>
-                <p>픽션에서 사용되는 가상화폐로 PXL 거래를 지원하는 거래소를 통해 원화로 환전하거나 다른 가상화폐로 교환할 수 있어요.</p>
+                픽션에서 사용되는 가상화폐로 콘텐츠 구매, 후원 혹은 활동에 대한 보상으로 사용돼요.
               </li>
+            </ul>
+            <ul>
               <li style={liStyle}>
                 <h4>어떻게 PXL을 구하나요?</h4>
                 <p>픽션에서 사용되는 가상화폐로 PXL 거래를 지원하는 거래소를 통해 원화로 환전하거나 다른 가상화폐로 교환할 수 있어요.</p>
@@ -110,9 +154,14 @@ function HomePage() {
                 <p>픽션에서 다양한 이벤트와 크리에이터 지원 활동에 참가하시면 PXL을 보상으로 드려요.</p>
               </li>
             </ul>
-          </article>
-          <article>
-            <h3 style={h3Style}>매월 정산일을 기다릴 필요 없이 언제든지 현금으로 교환할 수 있어요.</h3>
+          </Article>
+          <Article>
+            <Image src={ExchangeImage} />
+            <ArticleTitle>
+              매월 정산일을 기다릴 필요 없이
+              <br />
+              언제든지 현금으로 교환할 수 있어요.
+            </ArticleTitle>
             <ul>
               <li style={liStyle}>
                 <h4>어떻게 PXL을 현금으로 교환하나요?</h4>
@@ -125,14 +174,20 @@ function HomePage() {
                 <p>지원되는 거래소는 점차 확대될 예정이에요.</p>
               </li>
             </ul>
-          </article>
-          <article>
-            <h3 style={h3Style}>블록체인 기반의 투명한 정산이 가능해요.</h3>
-            <p>크리에이터에 돌아가는 수익금 이외에 모든 수수료는 크리에이터와 팬에게 돌아가요.</p>
-          </article>
+          </Article>
+          <Article>
+            <Image src={PiegraphImage} />
+            <ArticleTitle>
+              블록체인 기반의 투명한 정산이 가능해요.
+              <br />
+              크리에이터에게 돌아가는 수익금 이외에
+              <br />
+              모든 수수료는 크리에이터와 팬에게 돌아가요.
+            </ArticleTitle>
+          </Article>
         </Section>
 
-        <Section>
+        <Section style={{ backgroundColor: 'var(--gray--light)' }}>
           <SectionTitle>크리에이터가 수익을 내는 방법! FAN PASS</SectionTitle>
           <p>FAN PASS는 크리에이터의 창작 활동을 후원하는 구독형 콘텐츠 판매 멤버십이에요</p>
           <ul>
@@ -142,7 +197,7 @@ function HomePage() {
           </ul>
         </Section>
 
-        <Section>
+        <Section style={{ backgroundColor: 'var(--gray--light)' }}>
           <SectionTitle>Next! 앞으로 이런 기능들이 추가될 거에요.</SectionTitle>
           <p>유용한 기능들을 지원하기 위해 픽션팀이 열심히 노력하고 있어요</p>
           <ul>
@@ -158,10 +213,15 @@ function HomePage() {
           <RecommendedProjects />
         </RecommendedSection>
 
-        <Section>
-          <p>지금 바로 당신의 작품을 등록하고 픽션에서 새로운 경험을 시작하세요!</p>
-
-          <Link to="/dashboard" style={{ textDecoration: 'underline' }}>나의 콘텐츠 등록하기</Link>
+        <Section style={{ backgroundColor: 'var(--gray--light)' }}>
+          <SectionTitle>
+            지금 바로 당신의 작품을 등록하고
+            <br />
+            픽션에서 새로운 경험을 시작하세요!
+          </SectionTitle>
+          <PrimaryButton as={Link} to="/dashboard" size="mini" style={{ margin: 'auto' }}>
+            나의 컨텐츠 등록하기
+          </PrimaryButton>
         </Section>
       </Main>
     </>
