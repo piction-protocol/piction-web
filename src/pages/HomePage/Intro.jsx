@@ -3,13 +3,33 @@ import { Link } from '@reach/router';
 import styled from 'styled-components';
 
 import media from 'styles/media';
-import Grid from 'styles/Grid';
+import Grid, { MainGrid } from 'styles/Grid';
 
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import IntroImage from './img-landingpage-intro.png';
 
 const Styled = {
+  Section: styled(MainGrid).attrs({
+    as: 'section',
+  })`
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    ${media.mobile`
+      --row-gap: 16px;
+      --outer-gap: 32px;
+      padding-top: 60px;
+      padding-bottom: 60px;
+      > * {
+        grid-column: 1 / -1;
+      }
+    `}
+    ${media.desktop`
+      padding-top: 80px;
+      padding-bottom: 80px;
+    `}
+  `,
   Image: styled.img`
     max-width: 100%;
     ${media.desktop`
@@ -57,7 +77,7 @@ const Styled = {
 };
 
 const Intro = () => (
-  <>
+  <Styled.Section>
     <Styled.Image src={IntroImage} />
     <Styled.Contents>
       <Styled.Title>크리에이터와 팬이 만나는 곳, 픽션.</Styled.Title>
@@ -69,7 +89,7 @@ const Intro = () => (
       <Styled.PrimaryButton as={Link} to="/dashboard">나의 콘텐츠 등록하기</Styled.PrimaryButton>
       <Styled.SecondaryButton as={Link} to="/all">연재 중인 프로젝트</Styled.SecondaryButton>
     </Styled.Contents>
-  </>
+  </Styled.Section>
 );
 
 export default Intro;

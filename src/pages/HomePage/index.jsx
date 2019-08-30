@@ -9,10 +9,10 @@ import { MainGrid } from 'styles/Grid';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import Intro from './Intro';
+import User from './User';
 import Feature from './Feature';
 import Next from './Next';
 import RecommendedProjects from './RecommendedProjects';
-
 
 const Main = styled.main`
   display: flex;
@@ -90,9 +90,7 @@ function HomePage() {
       </Helmet>
 
       <Main>
-        <Section>
-          <Intro />
-        </Section>
+        <Intro />
 
         <EnglishIntroduction>
           English service is not currently supported.
@@ -102,6 +100,8 @@ function HomePage() {
           {' '}
           to view the project information.
         </EnglishIntroduction>
+
+        <User />
 
         <Feature />
 
