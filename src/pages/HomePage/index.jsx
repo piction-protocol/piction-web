@@ -18,9 +18,9 @@ const Main = styled.main`
   display: flex;
   flex: 1;
   flex-flow: column;
-  font-size: 12px;
+  font-size: var(--font-size--small);
   ${media.desktop`
-    font-size: 18px;
+    font-size: var(--font-size--base);
   `}
 `;
 
@@ -121,7 +121,12 @@ function HomePage() {
               <br />
               픽션에서 새로운 경험을 시작하세요!
             </Styled.H1>
-            <PrimaryButton as={Link} to="/dashboard" size="mini" style={{ margin: 'auto', gridColumn: '1 / -1' }}>
+            <PrimaryButton
+              as={Link}
+              to="/dashboard"
+              size="mobile-mini"
+              style={{ margin: 'auto', gridColumn: '1 / -1' }}
+            >
               나의 컨텐츠 등록하기
             </PrimaryButton>
           </Section>

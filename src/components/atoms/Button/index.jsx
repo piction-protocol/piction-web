@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import media from 'styles/media';
+
 const Button = styled.button`
   appearance: none;
   position: relative;
@@ -17,6 +19,12 @@ const Button = styled.button`
     padding: 8px 16px;
   `}
 
+  ${media.mobile(
+    props => props.size === 'mobile-mini' && `
+      padding: 8px 16px;
+    `,
+  )}
+
   &[disabled] {
     pointer-events: none;
     background-color: var(--gray--light);
@@ -28,7 +36,7 @@ const Button = styled.button`
 `;
 
 Button.propTypes = {
-  size: PropTypes.oneOf(['normal', 'mini']),
+  size: PropTypes.oneOf(['normal', 'mini', 'mobile-mini']),
 };
 
 Button.defaultProps = {
