@@ -18,6 +18,7 @@ const Styled = {
   })`
     width: 100%;
     margin: 0 auto;
+    position: relative;
     text-align: center;
     ${media.mobile`
       --row-gap: 16px;
@@ -34,6 +35,21 @@ const Styled = {
       padding-bottom: 80px;
       text-align: left;
     `}
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      border-top: 1px solid #e2e2e2;
+      grid-column: 1 / -1;
+      ${media.desktop`
+        grid-column: 2 / -2;
+      `}
+    }
+    &:first-of-type::before {
+      display: none;
+    }
   `,
   A: styled.a`
     color: var(--blue);

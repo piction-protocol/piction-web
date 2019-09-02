@@ -46,6 +46,18 @@ const Styled = {
       padding-bottom: 80px;
       text-align: left;
     `}
+    &::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      border-bottom: 1px solid #e2e2e2;
+      grid-column: 1 / -1;
+      ${media.desktop`
+        grid-column: 2 / -2;
+      `}
+    }
   `,
   Creator: styled(Section)`
     ${media.desktop`
@@ -96,14 +108,6 @@ const Styled = {
     list-style: square;
     ${media.desktop`
       font-size: var(--font-size--small)
-    `}
-  `,
-  Hr: styled.hr`
-    width: 100%;
-    margin: 44px 0;
-    border: 1px solid #e2e2e2;
-    ${media.desktop`
-      display: none;
     `}
   `,
 };

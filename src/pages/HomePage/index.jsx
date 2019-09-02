@@ -82,6 +82,17 @@ const RecommendedSection = styled.section`
   text-align: center;
 `;
 
+const DashboardLink = styled(PrimaryButton)`
+  ${media.mobile`
+    margin: 0 auto;
+    grid-column: 1 / -1;
+  `}
+  ${media.desktop`
+    margin-top: 10px;
+    grid-column: 6 / span 2;
+  `}
+`;
+
 function HomePage() {
   return (
     <>
@@ -116,19 +127,18 @@ function HomePage() {
 
         <Styled.GrayDiv>
           <Section>
-            <Styled.H1 style={{ margin: 'auto', gridColumn: '1 / -1' }}>
+            <Styled.H1 style={{ gridColumn: '1 / -1' }}>
               지금 바로 당신의 작품을 등록하고
               <br />
               픽션에서 새로운 경험을 시작하세요!
             </Styled.H1>
-            <PrimaryButton
+            <DashboardLink
               as={Link}
               to="/dashboard"
               size="mobile-mini"
-              style={{ margin: 'auto', gridColumn: '1 / -1' }}
             >
               나의 컨텐츠 등록하기
-            </PrimaryButton>
+            </DashboardLink>
           </Section>
         </Styled.GrayDiv>
       </Main>
