@@ -146,7 +146,7 @@ DashboardPostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   createdAt: PropTypes.number.isRequired,
-  publishedAt: PropTypes.string,
+  publishedAt: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   handleDelete: PropTypes.func.isRequired,
 };

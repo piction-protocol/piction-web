@@ -55,7 +55,7 @@ const Styled = {
   `,
 };
 
-function DashboardPostList({ title, projectId, page }) {
+function DashboardPostList({ title, projectId, page = 1 }) {
   const [postList, setPostList] = useState([]);
   const [deletingPost, setDeletingPost] = useState(null);
   const [isRequiredFanPass, setIsRequiredFanPass] = useState(null);
@@ -122,11 +122,7 @@ function DashboardPostList({ title, projectId, page }) {
 DashboardPostList.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
-  page: PropTypes.string,
-};
-
-DashboardPostList.defaultProps = {
-  page: '1',
+  page: PropTypes.number,
 };
 
 export default DashboardPostList;
