@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components';
 
@@ -55,7 +55,7 @@ const NotFound = () => (
 function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [API] = useAPI();
+  const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getProjects = async () => {
@@ -68,8 +68,8 @@ function Dashboard() {
     };
 
     getProjects();
-    // eslint-disable-next-line
-  }, []);
+    return setProjects([]);
+  }, [API]);
 
   return (
     <DashboardTemplate projects={projects}>
