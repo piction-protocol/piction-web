@@ -83,13 +83,10 @@ const RecommendedSection = styled.section`
 `;
 
 const DashboardLink = styled(PrimaryButton)`
-  ${media.mobile`
-    margin: 0 auto;
-    grid-column: 1 / -1;
-  `}
+  margin: 0 auto;
+  grid-column: 1 / -1;
   ${media.desktop`
     margin-top: 10px;
-    grid-column: 6 / span 2;
   `}
 `;
 

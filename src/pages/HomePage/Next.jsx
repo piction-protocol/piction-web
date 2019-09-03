@@ -9,6 +9,7 @@ import NextImage from './img-landingpage-next.png';
 
 const Section = styled(Grid).attrs({
   columns: 4,
+  as: 'section',
 })`
   width: 100%;
   margin: 0 auto;

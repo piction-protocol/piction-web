@@ -86,8 +86,7 @@ const More = styled(SecondaryButton)`
   grid-column: 1 / -1;
   margin: 0 auto;
   ${media.desktop`
-    margin: 40px 0 0;
-    grid-column: 6 / span 2;
+    margin-top: 40px;
   `}
 `;
 
