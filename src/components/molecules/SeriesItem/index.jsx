@@ -13,18 +13,20 @@ const Styled = {
     font-size: var(--font-size--small);
   `,
   Name: styled.span`
-    margin: 12px 16px;
+    margin: 0 16px;
     font-weight: bold;
   `,
   Count: styled.span`
     color: var(--gray--dark);
   `,
   Buttons: styled.div`
+    display: flex;
     margin-left: auto;
   `,
   Button: styled.button.attrs({
     type: 'button',
   })`
+    display: flex;
     padding: 10px;
     border-left: 2px solid var(--gray--dark);
     cursor: pointer;
@@ -32,9 +34,7 @@ const Styled = {
 };
 
 function SeriesItem({
-  name,
-  postCount,
-  ...props
+  name, postCount, ...props
 }) {
   return (
     <Styled.Item {...props}>
