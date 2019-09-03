@@ -8,7 +8,7 @@ import useAPI from 'hooks/useAPI';
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
 
-import { PrimaryButton } from 'components/atoms/Button';
+import { SecondaryButton } from 'components/atoms/Button';
 import ContentImage from 'components/atoms/ContentImage';
 
 import PlaceholderImage from 'images/img-dummy-960x360.jpg';
@@ -60,7 +60,6 @@ const Project = ({
 Project.propTypes = {
   uri: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/require-default-props
   wideThumbnail: PropTypes.string,
   user: PropTypes.object.isRequired,
 };
@@ -71,7 +70,7 @@ const ProjectListWrapper = styled.div`
   width: 100%;
   padding-top: 24px;
   ${media.desktop`
-    padding-top: 16px;
+    padding-top: 40px;
   `}
 `;
 
@@ -83,10 +82,11 @@ const ProjectListItem = styled.div`
   `}
 `;
 
-const More = styled(PrimaryButton)`
-  grid-column: 3 / span 2;
+const More = styled(SecondaryButton)`
+  grid-column: 1 / -1;
+  margin: 0 auto;
   ${media.desktop`
-    margin-top: 40px;
+    margin: 40px 0 0;
     grid-column: 6 / span 2;
   `}
 `;
@@ -117,8 +117,9 @@ const RecommendedProjects = (props) => {
         <More
           as={Link}
           to="/all"
+          size="mobile-mini"
         >
-          더 보기
+          프로젝트 더 보기
         </More>
       </MainGrid>
     </ProjectListWrapper>

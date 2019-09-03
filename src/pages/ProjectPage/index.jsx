@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
+import moment from 'moment';
 
 import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -13,6 +15,7 @@ import GridTemplate from 'components/templates/GridTemplate';
 import Tabs from 'components/molecules/Tabs';
 import WideProjectCard from 'components/molecules/WideProjectCard';
 
+const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 const ProjectInfo = React.lazy(() => import('components/organisms/ProjectInfo'));
 const PostList = React.lazy(() => import('components/organisms/PostList'));
 
@@ -49,6 +52,7 @@ function ProjectPage({ projectId }) {
   const [subscription, setSubscription] = useState({});
   const [recommendedProjects, setRecommendedProjects] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), []);
   const isDesktop = useMedia(mediaQuery.desktop);
@@ -82,6 +86,12 @@ function ProjectPage({ projectId }) {
     };
 
     getProject();
+    return () => {
+      setProject({});
+      setSubscription({});
+      setRecommendedProjects([]);
+      setIsLoaded(false);
+    };
   }, [currentUser, API, projectId]);
 
   const handleSubscribe = async () => {
@@ -107,6 +117,10 @@ function ProjectPage({ projectId }) {
     }
   };
 
+  const handleCookie = () => {
+    setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
+  };
+
   return isLoaded && (
     <GridTemplate
       hero={(
@@ -117,6 +131,9 @@ function ProjectPage({ projectId }) {
         />
       )}
     >
+      {(project.adult && !cookies[`no-warning-${projectId}`]) && (
+        <AdultPopup close={handleCookie} />
+      )}
       <Styled.Tabs />
       <Styled.Content>
         <PostList

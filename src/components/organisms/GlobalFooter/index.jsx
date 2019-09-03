@@ -89,11 +89,6 @@ function GlobalFooter() {
       <Styled.Wrapper>
         <Styled.Links>
           <Styled.Item>
-            <Styled.Link href="https://about.piction.network">
-              About
-            </Styled.Link>
-          </Styled.Item>
-          <Styled.Item>
             <Styled.Link href="/terms">
               서비스 이용약관
             </Styled.Link>
@@ -103,6 +98,11 @@ function GlobalFooter() {
               <Styled.Em>
                 개인정보 처리방침
               </Styled.Em>
+            </Styled.Link>
+          </Styled.Item>
+          <Styled.Item>
+            <Styled.Link href="https://about.piction.network">
+              픽션 네트워크 프로젝트 소개
             </Styled.Link>
           </Styled.Item>
         </Styled.Links>

@@ -10,7 +10,10 @@ function LoginChecker({ bool, children, redirect }) {
 
   useEffect(() => {
     if (!currentUser === bool) {
-      navigate(redirect);
+      navigate(redirect, {
+        state: { redirectTo: encodeURIComponent(window.location.pathname) },
+        replace: true,
+      });
     }
   }, [redirect, bool, currentUser]);
 

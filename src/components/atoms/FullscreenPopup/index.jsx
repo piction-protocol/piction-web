@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
-import { ReactComponent as CloseIcon } from 'images/ic-close.svg';
-
 const Styled = {
   Wrapper: styled.div`
     position: fixed;
@@ -16,15 +14,9 @@ const Styled = {
     z-index: 1000;
     background-color: rgba(255, 255, 255, .96);
   `,
-  Button: styled.button`
-    display: flex;
-    position: absolute;
-    top: 16px;
-    right: 16px;
-  `,
 };
 
-function FullscreenPopup({ close, children, ...props }) {
+function FullscreenPopup({ children, ...props }) {
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -38,16 +30,12 @@ function FullscreenPopup({ close, children, ...props }) {
 
   return (
     <Styled.Wrapper ref={menuRef} {...props}>
-      <Styled.Button onClick={close}>
-        <CloseIcon />
-      </Styled.Button>
       {children}
     </Styled.Wrapper>
   );
 }
 
 FullscreenPopup.propTypes = {
-  close: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
 
