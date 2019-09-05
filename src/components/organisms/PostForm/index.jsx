@@ -18,6 +18,7 @@ import ErrorMessage from 'components/atoms/ErrorMessage';
 import Radio from 'components/atoms/Radio';
 import ImageUploader from 'components/atoms/ImageUploader';
 import Checkbox from 'components/atoms/Checkbox';
+import Select from 'components/atoms/Select';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import dummyCoverImage from 'images/img-dummy-960x360.jpg';
@@ -34,6 +35,16 @@ const Styled = {
     > * {
       grid-column: 1 / -1;
     }
+  `,
+  Select: styled(Select)`
+    grid-column: span 2;
+  `,
+  AddSeriesButton: styled(PrimaryButton).attrs({
+    size: 'mini',
+    type: 'button',
+  })`
+    grid-column: span 2;
+    margin-right: auto;
   `,
   Preview: styled.p`
     color: var(--blue);
@@ -87,26 +98,27 @@ function PostForm({ title, projectId, postId = null }) {
   const [isPublished, setIsPublished] = useState(false);
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
+  const [series, setSeries] = useState([]);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getFormData = async () => {
       try {
         const { data } = await API.post(projectId).get({ postId });
-        const content = await API.post(projectId).getContent({ postId });
+        const { data: contentData } = await API.post(projectId).getContent({ postId });
+        const { data: seriesData } = await API.series(projectId).getAll();
         const fanPass = await API.fanPass.getAll({ projectId });
         const fanPassId = fanPass.data[0].id;
         const { cover, ...defaultFormData } = {
-          title: data.title,
-          cover: data.cover,
-          status: data.status,
-          publishedAt: data.publishedAt,
+          ...data,
+          seriesId: data.series ? data.series.id : null,
           publishNow: false,
           publishingDate: moment(data.publishedAt).format('YYYY-MM-DD'),
           publishingTime: moment(data.publishedAt).format('HH:mm:ss'),
         };
+        setSeries(seriesData);
         setIsPublished(data.publishedAt < Date.now());
-        setFormData({ ...defaultFormData, content: content.data.content, fanPassId });
+        setFormData({ ...defaultFormData, content: contentData.content, fanPassId });
         setDefaultImage({
           cover,
         });
@@ -120,6 +132,7 @@ function PostForm({ title, projectId, postId = null }) {
         title: '',
         content: '',
         cover: '',
+        seriesId: null,
         publishNow: true,
         publishingDate: moment().format('YYYY-MM-DD'),
         publishingTime: moment().format('HH:mm:ss'),
@@ -174,6 +187,21 @@ function PostForm({ title, projectId, postId = null }) {
   return (
     <Styled.Form onSubmit={handleSubmit}>
       <Heading>{title}</Heading>
+      <Styled.Select
+        name="seriesId"
+        value={formData.seriesId}
+        onChange={handleChange}
+        options={[
+          { text: '시리즈 선택', value: 'null' },
+          ...series.map(item => ({
+            text: item.name,
+            value: item.id,
+          })),
+        ]}
+      />
+      <Styled.AddSeriesButton>
+        + 새 시리즈
+      </Styled.AddSeriesButton>
       <InputGroup
         name="title"
         placeholder="프로젝트 제목을 입력해주세요."
