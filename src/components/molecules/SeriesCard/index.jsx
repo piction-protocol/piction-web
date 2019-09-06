@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import media from 'styles/media';
+
 import ContentImage from 'components/atoms/ContentImage';
 
 const Styled = {
@@ -10,6 +12,9 @@ const Styled = {
     position: relative;
     flex-flow: column;
     background-color: var(--white);
+    ${media.mobile`
+      text-align: center;
+    `}
   `,
   Thumbnails: styled.div`
     display: flex;
@@ -35,6 +40,9 @@ const Styled = {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    ${media.desktop`
+      font-weight: normal;
+    `}
   `,
   Text: styled.p`
     margin-bottom: 16px;

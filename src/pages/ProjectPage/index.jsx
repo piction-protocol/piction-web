@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
@@ -13,37 +13,20 @@ import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import Tabs from 'components/molecules/Tabs';
-import WideProjectCard from 'components/molecules/WideProjectCard';
 
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 const ProjectInfo = React.lazy(() => import('components/organisms/ProjectInfo'));
-const PostList = React.lazy(() => import('components/organisms/PostList'));
+const Posts = React.lazy(() => import('./Posts'));
+const Series = React.lazy(() => import('./Series'));
 
 const Styled = {
   Tabs: styled(Tabs)`
     grid-column: 1 / -1;
+    margin-bottom: -24px;
     ${media.mobile`
       margin-right: calc(var(--outer-gap) * -1);
       margin-left: calc(var(--outer-gap) * -1);
     `}
-  `,
-  Content: styled.section`
-    grid-column: 1 / -1;
-    ${media.desktop`
-      grid-column: span 9;
-    `}
-  `,
-  Aside: styled.aside`
-    display: flex;
-    flex-flow: column;
-    grid-column: span 3;
-    > *:not(:last-child) {
-      margin-bottom: 16px;
-    }
-  `,
-  CardText: styled.p`
-    color: var(--gray--dark);
-    font-size: var(--font-size--small);
   `,
 };
 
@@ -51,6 +34,7 @@ function ProjectPage({ projectId }) {
   const [project, setProject] = useState({});
   const [subscription, setSubscription] = useState({});
   const [recommendedProjects, setRecommendedProjects] = useState([]);
+  const [series, setSeries] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const { currentUser } = useCurrentUser();
@@ -65,17 +49,19 @@ function ProjectPage({ projectId }) {
         const response = await Promise.all([
           API.project.get({ projectId }),
           API.recommended.getProjects({ params: { size: 5 } }),
+          API.series(projectId).getAll(),
           currentUser && API.fanPass.get({ fanPassId }),
           currentUser && API.fanPass.getSubscription({ projectId }),
         ]);
 
         if (currentUser) {
-          setSubscription({ ...response[2].data, isSubscribing: !!response[3].data.fanPass });
+          setSubscription({ ...response[3].data, isSubscribing: !!response[4].data.fanPass });
         }
         setProject({
           ...response[0].data,
           isMine: currentUser && (currentUser.loginId === response[0].data.user.loginId),
         });
+        setSeries(response[2].data);
         setRecommendedProjects(
           response[1].data.filter(recommended => recommended.uri !== projectId).slice(0, 4),
         );
@@ -86,6 +72,7 @@ function ProjectPage({ projectId }) {
     };
 
     getProject();
+
     return () => {
       setProject({});
       setSubscription({});
@@ -134,36 +121,25 @@ function ProjectPage({ projectId }) {
       {(project.adult && !cookies[`no-warning-${projectId}`]) && (
         <AdultPopup close={handleCookie} />
       )}
-      <Styled.Tabs />
-      <Styled.Content>
-        <PostList
-          isSubscribing={project.isMine || subscription.isSubscribing}
-          projectId={projectId}
+      <Styled.Tabs
+        links={[
+          { text: '포스트', to: 'posts' },
+          { text: '시리즈', to: 'series' },
+        ]}
+      />
+      <Router primary={false} component={({ children }) => <>{children}</>}>
+        <Redirect from="/" to={`project/${projectId}/posts`} noThrow />
+        <Posts
+          path="posts"
+          {...{
+            projectId, project, subscription, isDesktop, series, recommendedProjects,
+          }}
         />
-      </Styled.Content>
-      {isDesktop && (
-        recommendedProjects.length > 0 && (
-          <Styled.Aside>
-            <h2>
-              추천 프로젝트
-            </h2>
-            {recommendedProjects.map(recommededProject => (
-              <Link
-                to={`/project/${recommededProject.uri}`}
-                key={recommededProject.id}
-              >
-                <WideProjectCard
-                  {...recommededProject}
-                >
-                  <Styled.CardText>
-                    {`구독자 수 ${recommededProject.subscriptionUserCount}`}
-                  </Styled.CardText>
-                </WideProjectCard>
-              </Link>
-            ))}
-          </Styled.Aside>
-        )
-      )}
+        <Series
+          path="series"
+          series={series}
+        />
+      </Router>
     </GridTemplate>
   );
 }
