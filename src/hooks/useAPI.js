@@ -33,6 +33,8 @@ function useAPI() {
     getIsLike: params => API.get(`/projects/${projectId}/posts/${params.postId}/isLike`),
     update: params => API.put(`/projects/${projectId}/posts/${params.postId}`, params),
     like: params => API.post(`/projects/${projectId}/posts/${params.postId}/like`),
+    getNextPost: params => API.get(`/projects/${projectId}/posts/${params.postId}/next`),
+    getPreviousPost: params => API.get(`/projects/${projectId}/posts/${params.postId}/previous`),
     uploadContentImage: params => API.patch(`/projects/${projectId}/posts/content`, params, patchConfig),
     uploadCoverImage: params => API.patch(`/projects/${projectId}/posts/cover`, params, patchConfig),
   });
@@ -63,6 +65,7 @@ function useAPI() {
     get: params => API.get(`/projects/${projectId}/series/${params.seriesId}`),
     getAll: () => API.get(`/projects/${projectId}/series`),
     getPosts: params => API.get(`/projects/${projectId}/series/${params.seriesId}/posts`, params),
+    getPreviousAndNextPosts: params => API.get(`/projects/${projectId}/series/${params.seriesId}/posts/${params.postId}`, params),
     createSeries: params => API.post(`/projects/${projectId}/series`, params),
   });
 

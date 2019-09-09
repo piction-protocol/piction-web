@@ -13,6 +13,7 @@ import ContentStyle from 'styles/ContentStyle';
 import media from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
+import PostNavigation from 'components/organisms/PostNavigation';
 import Spinner from 'components/atoms/Spinner';
 import Heading from 'components/atoms/Heading';
 import LikeButton from 'components/atoms/LikeButton';
@@ -34,7 +35,7 @@ const Styled = {
       grid-column: 3 / 11;
     `}
   `,
-  ProjectName: styled(Link)`
+  SeriesName: styled(Link)`
     margin-bottom: 8px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
@@ -104,7 +105,7 @@ const Styled = {
     font-size: var(--font-size--small);
   `,
   LikeButton: styled(LikeButton)`
-    margin: 48px auto;
+    margin: 48px auto 24px;
   `,
 };
 
@@ -191,11 +192,13 @@ function PostPage({ projectId, postId }) {
       )}
       <Styled.Container>
         <Styled.Info>
-          <Styled.ProjectName
-            to="../"
-          >
-            {data.project.title}
-          </Styled.ProjectName>
+          {data.post.series && (
+            <Styled.SeriesName
+              to={`../../series/${data.post.series.id}`}
+            >
+              {data.post.series.name}
+            </Styled.SeriesName>
+          )}
           <Heading>
             {data.post.title}
           </Heading>
@@ -251,6 +254,7 @@ function PostPage({ projectId, postId }) {
           </>
         )}
       </Styled.Container>
+      <PostNavigation projectId={projectId} postId={postId} series={data.post.series} />
     </GridTemplate>
   ) : (<Spinner />);
 }

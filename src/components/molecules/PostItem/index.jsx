@@ -74,6 +74,11 @@ const Styled = {
       filter: blur(24px);
     `}
   `,
+  Series: styled.p`
+    margin-bottom: 8px;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+  `,
   Title: styled.h2`
     margin-bottom: 4px;
     font-size: var(--font-size--small);
@@ -105,7 +110,7 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover, publishedAt, likeCount, isLocked, ...props
+  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, ...props
 }) {
   return (
     <Styled.Item
@@ -132,6 +137,9 @@ function PostItem({
           </Styled.CoverWrapper>
         )
       )}
+      {series && (
+        <Styled.Series>{series.name}</Styled.Series>
+      )}
       <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
         <Styled.PublishedAt>
@@ -151,15 +159,10 @@ function PostItem({
 PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
+  series: PropTypes.object,
   publishedAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,
-};
-
-PostItem.defaultProps = {
-  cover: null,
-  likeCount: 0,
-  isLocked: false,
 };
 
 export default PostItem;
