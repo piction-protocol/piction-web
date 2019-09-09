@@ -84,7 +84,7 @@ const Styled = {
 
 function SeriesPage({ projectId, seriesId }) {
   const [posts, setPosts] = useState([]);
-  const [series, setSeries] = useState([]);
+  const [series, setSeries] = useState({});
   const [isDescending, setIsDescending] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [page, setPage] = useState(1);
@@ -112,9 +112,9 @@ function SeriesPage({ projectId, seriesId }) {
         const {
           data: { content: postsData, ...pageableData },
         } = await API.series(projectId).getPosts({
-          seriesId, params: { isDescending, page, size: 2 },
+          seriesId, params: { isDescending, page },
         });
-        setPosts(prevPosts => [...prevPosts, ...postsData]);
+        setPosts(postsData);
         setPageable(pageableData);
       } catch (error) {
         console.log(error);
