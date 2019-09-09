@@ -9,6 +9,8 @@ import Grid from 'styles/Grid';
 
 import ContentImage from 'components/atoms/ContentImage';
 
+import dummyCoverImage from 'images/img-dummy-960x360.jpg';
+
 const Styled = {
   Item: styled(Grid).attrs({
     as: 'article',
@@ -82,7 +84,7 @@ function SeriesPostItem({
         #
         {index}
       </Styled.Index>
-      <Styled.Cover image={cover} ratio={960 / 360} />
+      <Styled.Cover image={cover || dummyCoverImage} ratio={960 / 360} />
       <Styled.Text>
         <Styled.Title>{title}</Styled.Title>
         {fanPass ? (
