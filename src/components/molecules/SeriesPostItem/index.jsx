@@ -44,6 +44,7 @@ const Styled = {
   Text: styled.div`
     display: flex;
     flex-flow: column;
+    overflow: hidden;
     ${media.desktop`
       grid-column: span 4;
       justify-content: center;
