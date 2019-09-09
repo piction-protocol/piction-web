@@ -19,6 +19,7 @@ const Main = styled.main`
   flex: 1;
   flex-flow: column;
   font-size: var(--font-size--small);
+  word-break: keep-all;
   ${media.desktop`
     font-size: var(--font-size--base);
   `}
