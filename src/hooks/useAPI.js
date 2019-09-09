@@ -60,7 +60,10 @@ function useAPI() {
   };
 
   const series = projectId => ({
+    get: params => API.get(`/projects/${projectId}/series/${params.seriesId}`),
     getAll: () => API.get(`/projects/${projectId}/series`),
+    getPosts: params => API.get(`/projects/${projectId}/series/${params.seriesId}/posts`, params),
+    createSeries: params => API.post(`/projects/${projectId}/series`, params),
   });
 
   const session = {

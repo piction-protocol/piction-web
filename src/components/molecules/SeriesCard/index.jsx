@@ -6,6 +6,8 @@ import media from 'styles/media';
 
 import ContentImage from 'components/atoms/ContentImage';
 
+import dummyCoverImage from 'images/img-dummy-960x360.jpg';
+
 const Styled = {
   Item: styled.article`
     display: flex;
@@ -61,7 +63,7 @@ function SeriesCard({
       <Styled.Thumbnails>
         <Styled.Thumbnail
           ratio={960 / 360}
-          image={thumbnails[0]}
+          image={thumbnails[0] || dummyCoverImage}
         />
         <Styled.Thumbnail
           ratio={960 / 360}

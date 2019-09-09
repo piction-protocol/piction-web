@@ -18,6 +18,7 @@ const SubscriptionsPage = React.lazy(() => import('pages/SubscriptionsPage'));
 const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'));
 const TagPage = React.lazy(() => import('pages/TagPage'));
 const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
+const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
 const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
@@ -73,6 +74,7 @@ function App() {
               <TagPage path="tag/:tagName" />
 
               <ProjectPage path="project/:projectId/*" />
+              <SeriesPage path="project/:projectId/series/:seriesId" />
               <PostPage path="project/:projectId/posts/:postId" />
               <MembershipPage path="project/:projectId/memberships/" />
 
