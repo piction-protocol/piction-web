@@ -16,9 +16,6 @@ const Styled = {
     margin: 0 16px;
     font-weight: bold;
   `,
-  Count: styled.span`
-    color: var(--gray--dark);
-  `,
   Buttons: styled.div`
     display: flex;
     margin-left: auto;
@@ -34,17 +31,16 @@ const Styled = {
 };
 
 function SeriesItem({
-  name, postCount, ...props
+  name, handleUpdate, handleDelete, ...props
 }) {
   return (
     <Styled.Item {...props}>
       <Styled.Name>{name}</Styled.Name>
-      <Styled.Count>{`${postCount} 포스트`}</Styled.Count>
       <Styled.Buttons>
-        <Styled.Button>
+        <Styled.Button onClick={handleUpdate}>
           <EditIcon />
         </Styled.Button>
-        <Styled.Button>
+        <Styled.Button onClick={handleDelete}>
           <DeleteIcon />
         </Styled.Button>
       </Styled.Buttons>
@@ -54,7 +50,8 @@ function SeriesItem({
 
 SeriesItem.propTypes = {
   name: PropTypes.string.isRequired,
-  postCount: PropTypes.number.isRequired,
+  handleUpdate: PropTypes.func,
+  handleDelete: PropTypes.func,
 };
 
 export default SeriesItem;

@@ -72,6 +72,7 @@ const Styled = {
     align-items: center;
     margin-left: auto;
     font-size: var(--font-size--small);
+    cursor: pointer;
     svg {
       margin-right: 4px;
     }

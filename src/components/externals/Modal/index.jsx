@@ -46,7 +46,9 @@ function Modal({ close, children, ...props }) {
 
   useEffect(() => {
     const targetElement = modalRef.current;
-    disableBodyScroll(targetElement);
+    disableBodyScroll(targetElement, {
+      reserveScrollBarGap: true,
+    });
 
     return () => {
       enableBodyScroll(targetElement);

@@ -14,7 +14,7 @@ const ProjectForm = React.lazy(() => import('components/organisms/ProjectForm'))
 const PostForm = React.lazy(() => import('components/organisms/PostForm'));
 const DashboardPostList = React.lazy(() => import('components/organisms/DashboardPostList'));
 const UserList = React.lazy(() => import('components/organisms/UserList'));
-const SeriesList = React.lazy(() => import('components/organisms/SeriesList'));
+const SeriesListForm = React.lazy(() => import('components/organisms/SeriesListForm'));
 
 const Styled = {
   Router: styled(Router)`
@@ -84,7 +84,7 @@ function Dashboard() {
           <ProjectForm title="프로젝트 정보 수정" path=":projectId/info" setProjects={setProjects} />
           <Redirect from="/:projectId" to="dashboard/:projectId/posts" noThrow />
           <DashboardPostList title="포스트 관리" path=":projectId/posts" />
-          <SeriesList title="시리즈 관리" path=":projectId/series" />
+          <SeriesListForm title="시리즈 관리" path=":projectId/series" />
           <UserList title="구독자 목록" path=":projectId/members" />
           <PostForm title="새 포스트" path=":projectId/posts/new" />
           <PostForm title="포스트 수정" path=":projectId/posts/:postId/edit" />
