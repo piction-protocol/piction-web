@@ -11,6 +11,7 @@ import Grid from 'styles/Grid';
 
 import Editor from 'components/molecules/Editor';
 import InputGroup from 'components/molecules/InputGroup';
+import CreateSeriesModal from 'components/molecules/CreateSeriesModal';
 import Heading from 'components/atoms/Heading';
 import Label from 'components/atoms/Label';
 import Input from 'components/atoms/Input';
@@ -98,6 +99,7 @@ function PostForm({ title, projectId, postId = null }) {
   const [isPublished, setIsPublished] = useState(false);
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
+  const [isCreating, setIsCreating] = useState(false);
   const [series, setSeries] = useState([]);
   const [API] = useCallback(useAPI(), []);
 
@@ -106,17 +108,15 @@ function PostForm({ title, projectId, postId = null }) {
       try {
         const { data } = await API.post(projectId).get({ postId });
         const { data: contentData } = await API.post(projectId).getContent({ postId });
-        const { data: seriesData } = await API.series(projectId).getAll();
         const fanPass = await API.fanPass.getAll({ projectId });
         const fanPassId = fanPass.data[0].id;
         const { cover, ...defaultFormData } = {
           ...data,
-          seriesId: data.series ? data.series.id : null,
+          seriesId: data.series ? data.series.id : '',
           publishNow: false,
           publishingDate: moment(data.publishedAt).format('YYYY-MM-DD'),
           publishingTime: moment(data.publishedAt).format('HH:mm:ss'),
         };
-        setSeries(seriesData);
         setIsPublished(data.publishedAt < Date.now());
         setFormData({ ...defaultFormData, content: contentData.content, fanPassId });
         setDefaultImage({
@@ -127,12 +127,21 @@ function PostForm({ title, projectId, postId = null }) {
       }
     };
 
+    const getSeries = async () => {
+      try {
+        const { data: seriesData } = await API.series(projectId).getAll();
+        setSeries(seriesData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const clearForm = () => {
       setFormData({
         title: '',
         content: '',
         cover: '',
-        seriesId: null,
+        seriesId: '',
         publishNow: true,
         publishingDate: moment().format('YYYY-MM-DD'),
         publishingTime: moment().format('HH:mm:ss'),
@@ -143,6 +152,7 @@ function PostForm({ title, projectId, postId = null }) {
       });
     };
 
+    getSeries();
     if (postId) getFormData();
     return clearForm();
   }, [API, projectId, postId, setFormData]);
@@ -199,9 +209,17 @@ function PostForm({ title, projectId, postId = null }) {
           })),
         ]}
       />
-      <Styled.AddSeriesButton>
+      <Styled.AddSeriesButton onClick={() => setIsCreating(true)}>
         + 새 시리즈
       </Styled.AddSeriesButton>
+      {isCreating && (
+        <CreateSeriesModal
+          projectId={projectId}
+          close={() => setIsCreating(false)}
+          callback={setSeries}
+        />
+      )}
+      {errorMessage.content}
       <InputGroup
         name="title"
         placeholder="프로젝트 제목을 입력해주세요."
@@ -322,6 +340,7 @@ function PostForm({ title, projectId, postId = null }) {
           작성 취소
         </SecondaryButton>
       </Styled.SubmitGroup>
+
     </Styled.Form>
   );
 }
