@@ -110,7 +110,7 @@ const Styled = {
 };
 
 function PostPage({ projectId, postId }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [isLocked, setIsLocked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
@@ -149,6 +149,7 @@ function PostPage({ projectId, postId }) {
 
     getPost();
     return (() => {
+      setData({});
       setIsLocked(false);
       setIsLoaded(false);
     });
