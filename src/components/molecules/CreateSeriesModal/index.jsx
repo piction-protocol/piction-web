@@ -10,7 +10,11 @@ import ErrorMessage from 'components/atoms/ErrorMessage';
 import Input from 'components/atoms/Input';
 
 const Styled = {
-  Text: styled.p`
+  Form: styled.form`
+    display: flex;
+    flex-flow: column;
+  `,
+  Title: styled.h2`
     margin-bottom: 24px;
     text-align: center;
   `,
@@ -29,7 +33,8 @@ function CreateSeriesModal({
   const [name, setName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleCreate = async () => {
+  const handleCreate = async (event) => {
+    event.preventDefault();
     try {
       const response = await API.series(projectId).create({ name });
       await callback(prev => ([...prev, response.data]));
@@ -41,21 +46,24 @@ function CreateSeriesModal({
 
   return (
     <Modal close={close} {...props}>
-      <Styled.Text>
-        새 시리즈 추가
-      </Styled.Text>
-      <Input
-        value={name}
-        onChange={event => setName(event.target.value)}
-        invalid={!!errorMessage}
-      />
-      {errorMessage && <Styled.ErrorMessage>{errorMessage}</Styled.ErrorMessage>}
-      <Styled.Submit onClick={handleCreate}>
-        확인
-      </Styled.Submit>
-      <TertiaryButton onClick={close}>
-        취소
-      </TertiaryButton>
+      <Styled.Form onSubmit={handleCreate}>
+        <Styled.Title>
+          새 시리즈 추가
+        </Styled.Title>
+        <Input
+          value={name}
+          onChange={event => setName(event.target.value)}
+          invalid={!!errorMessage}
+          autoFocus
+        />
+        {errorMessage && <Styled.ErrorMessage>{errorMessage}</Styled.ErrorMessage>}
+        <Styled.Submit>
+          확인
+        </Styled.Submit>
+        <TertiaryButton onClick={close}>
+          취소
+        </TertiaryButton>
+      </Styled.Form>
     </Modal>
   );
 }

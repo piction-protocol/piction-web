@@ -10,6 +10,7 @@ import { PrimaryButton, TertiaryButton } from 'components/atoms/Button';
 const Styled = {
   Text: styled.p`
     margin-bottom: 24px;
+    line-height: var(--line-height--content);
     text-align: center;
   `,
   Submit: styled(PrimaryButton)`
@@ -36,11 +37,13 @@ function DeleteSeriesModal({
     <Modal close={close} {...props}>
       <Styled.Text>
         선택한 시리즈를 삭제하시겠습니까?
+        <br />
+        (포스트는 삭제되지 않습니다.)
       </Styled.Text>
       <Styled.Submit onClick={handleDelete}>
         확인
       </Styled.Submit>
-      <TertiaryButton onClick={close}>
+      <TertiaryButton onClick={close} autoFocus>
         취소
       </TertiaryButton>
     </Modal>
