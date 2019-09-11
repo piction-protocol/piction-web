@@ -61,6 +61,7 @@ const Styled = {
   `,
   Input: styled(Input)`
     grid-column: span ${({ columns }) => columns};
+    padding-right: 0;
   `,
   ImageUploader: styled(ImageUploader)`
     ${({ columns }) => columns && `grid-column: span ${columns};`}
