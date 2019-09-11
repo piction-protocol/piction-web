@@ -62,6 +62,11 @@ const Styled = {
     grid-column: span 4;
     justify-content: center;
   `,
+  Series: styled.p`
+    margin-bottom: 2px;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+  `,
   Title: styled.h2`
     margin-bottom: 4px;
     overflow: hidden;
@@ -93,7 +98,7 @@ const Styled = {
 };
 
 function DashboardPostItem({
-  id, projectId, title, cover = dummyCoverImage,
+  id, projectId, title, series, cover = dummyCoverImage,
   createdAt, publishedAt, status, handleDelete, ...props
 }) {
   return (
@@ -120,6 +125,9 @@ function DashboardPostItem({
           image={cover || dummyCoverImage}
         />
         <Styled.Text>
+          <Styled.Series>
+            {series ? series.name : '미지정'}
+          </Styled.Series>
           <Styled.Title>
             {title}
           </Styled.Title>
@@ -145,6 +153,7 @@ DashboardPostItem.propTypes = {
   projectId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
+  series: PropTypes.object,
   createdAt: PropTypes.number.isRequired,
   publishedAt: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
