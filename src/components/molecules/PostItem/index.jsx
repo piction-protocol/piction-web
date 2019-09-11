@@ -138,7 +138,7 @@ function PostItem({
         )
       )}
       {series && (
-        <Styled.Series>{series.name}</Styled.Series>
+        <Styled.Series>{`시리즈 · ${series.name}`}</Styled.Series>
       )}
       <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
