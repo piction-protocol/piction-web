@@ -6,6 +6,7 @@ const LayoutContext = createContext([{}, () => { }]);
 const LayoutProvider = ({ children }) => {
   const [layout, setLayout] = useState({
     type: 'default',
+    data: {},
   });
   return (
     <LayoutContext.Provider value={[layout, setLayout]}>
