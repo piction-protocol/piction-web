@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 const LayoutContext = createContext([{}, () => { }]);
 
 const LayoutProvider = ({ children }) => {
-  const [layout, setLayout] = useState({});
+  const [layout, setLayout] = useState({
+    type: 'default',
+  });
   return (
     <LayoutContext.Provider value={[layout, setLayout]}>
       {children}

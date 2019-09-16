@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
@@ -7,10 +9,11 @@ import useAPI from 'hooks/useAPI';
 
 import media from 'styles/media';
 
+import { LayoutContext } from 'context/LayoutContext';
+
 import { ReactComponent as SortIcon } from 'images/ic-sort.svg';
 
 import GridTemplate from 'components/templates/GridTemplate';
-import ProjectTitle from 'components/molecules/ProjectTitle';
 import SeriesPostItem from 'components/molecules/SeriesPostItem';
 import Heading from 'components/atoms/Heading';
 
@@ -93,6 +96,7 @@ function SeriesPage({ projectId, seriesId }) {
   const [page, setPage] = useState(1);
   const [pageable, setPageable] = useState({});
   const [API] = useCallback(useAPI(), []);
+  const [, setLayout] = useContext(LayoutContext);
 
   useEffect(() => {
     const getSeries = async () => {
@@ -129,6 +133,19 @@ function SeriesPage({ projectId, seriesId }) {
     getPosts();
   }, [API, projectId, seriesId, isDescending, page]);
 
+  useEffect(() => {
+    if (isLoaded) {
+      setLayout({
+        type: 'project',
+        data: { project },
+      });
+    }
+
+    return (() => {
+      setLayout({ type: 'default' });
+    });
+  }, [isLoaded, project, setLayout]);
+
   const calculateIndex = index => (isDescending ? (pageable.totalElements - index) : (index + 1));
 
   return isLoaded && (
@@ -148,7 +165,6 @@ function SeriesPage({ projectId, seriesId }) {
         </Styled.Hero>
       )}
     >
-      <ProjectTitle project={project} />
       <Styled.Section>
         <Styled.Sort onClick={() => {
           setPage(1);

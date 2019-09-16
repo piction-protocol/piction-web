@@ -14,6 +14,7 @@ import useMedia from 'hooks/useMedia';
 import useWallet from 'hooks/useWallet';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
+import ProjectTitle from 'components/molecules/ProjectTitle';
 import UserMenu from 'components/molecules/UserMenu';
 import Dropdown from 'components/atoms/Dropdown';
 import Sidemenu from 'components/atoms/Sidemenu';
@@ -156,7 +157,9 @@ function GlobalHeader({ paths, child, ...props }) {
         {({ location }) => (
           <Styled.Wrapper>
             <NavigateListner location={location} event={() => setIsMenuOpened(false)} />
-            {layout.headerChild || (
+            {layout.type === 'project' ? (
+              <ProjectTitle project={layout.data.project} />
+            ) : (
               <Styled.Link to={paths.home}>
                 <Styled.Logo />
               </Styled.Link>

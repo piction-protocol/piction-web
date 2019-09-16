@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Location, Link } from '@reach/router';
 import styled from 'styled-components';
@@ -12,9 +14,10 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import ContentStyle from 'styles/ContentStyle';
 import media from 'styles/media';
 
+import { LayoutContext } from 'context/LayoutContext';
+
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
-import ProjectTitle from 'components/molecules/ProjectTitle';
 import Spinner from 'components/atoms/Spinner';
 import Heading from 'components/atoms/Heading';
 import LikeButton from 'components/atoms/LikeButton';
@@ -117,6 +120,7 @@ function PostPage({ projectId, postId }) {
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const { currentUser } = useCurrentUser();
   const [API, handleError] = useCallback(useAPI(), []);
+  const [, setLayout] = useContext(LayoutContext);
 
   useEffect(() => {
     const getPost = async () => {
@@ -156,6 +160,21 @@ function PostPage({ projectId, postId }) {
     });
   }, [currentUser, API, handleError, postId, projectId]);
 
+  useEffect(() => {
+    if (isLoaded) {
+      setLayout({
+        type: 'project',
+        data: {
+          project: data.project,
+        },
+      });
+    }
+
+    return (() => {
+      setLayout({ type: 'default' });
+    });
+  }, [isLoaded, data.project, setLayout]);
+
   const handleLike = async () => {
     try {
       const response = await API.post(projectId).like({ postId });
@@ -192,7 +211,6 @@ function PostPage({ projectId, postId }) {
       {(data.project.adult && !cookies[`no-warning-${projectId}`]) && (
         <AdultPopup close={handleCookie} />
       )}
-      <ProjectTitle project={data.project} />
       <Styled.Container>
         <Styled.Info>
           {data.post.series && (

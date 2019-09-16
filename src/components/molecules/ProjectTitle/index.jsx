@@ -1,9 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
 import media from 'styles/media';
-import { LayoutContext } from 'context/LayoutContext';
 
 import { ReactComponent as Logo } from 'images/piction-symbol.svg';
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
@@ -54,35 +54,27 @@ const Styled = {
   `,
 };
 
-function ProjectTitle({ project }) {
-  const [, setLayout] = useContext(LayoutContext);
-
-  useEffect(() => {
-    setLayout({
-      headerChild: (
-        <>
-          <Link to="/">
-            <Styled.Logo />
-          </Link>
-          <Styled.Title>
-            <Link to={`/project/${project.uri}`}>
-              {project.title}
-            </Link>
-          </Styled.Title>
-          <Styled.SubscriptionCount>
-            <Styled.PeopleIcon />
-            {`구독자 수 ${project.subscriptionUserCount}`}
-          </Styled.SubscriptionCount>
-        </>
-      ),
-    });
-
-    return () => {
-      setLayout(prev => ({ ...prev, headerChild: null }));
-    };
-  }, [project, setLayout]);
-
-  return null;
+function ProjectTitle({ project = {} }) {
+  return (
+    <>
+      <Link to="/">
+        <Styled.Logo />
+      </Link>
+      <Styled.Title>
+        <Link to={`/project/${project.uri}`}>
+          {project.title}
+        </Link>
+      </Styled.Title>
+      <Styled.SubscriptionCount>
+        <Styled.PeopleIcon />
+        {`구독자 수 ${project.subscriptionUserCount}`}
+      </Styled.SubscriptionCount>
+    </>
+  );
 }
+
+ProjectTitle.propTypes = {
+  project: PropTypes.object,
+};
 
 export default ProjectTitle;
