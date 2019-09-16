@@ -14,6 +14,7 @@ import media from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
+import ProjectTitle from 'components/molecules/ProjectTitle';
 import Spinner from 'components/atoms/Spinner';
 import Heading from 'components/atoms/Heading';
 import LikeButton from 'components/atoms/LikeButton';
@@ -191,6 +192,7 @@ function PostPage({ projectId, postId }) {
       {(data.project.adult && !cookies[`no-warning-${projectId}`]) && (
         <AdultPopup close={handleCookie} />
       )}
+      <ProjectTitle project={data.project} />
       <Styled.Container>
         <Styled.Info>
           {data.post.series && (

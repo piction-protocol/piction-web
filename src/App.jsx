@@ -5,6 +5,8 @@ import { importMDX } from 'mdx.macro';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
+import { LayoutProvider } from 'context/LayoutContext';
+
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
 import Spinner from 'components/atoms/Spinner';
@@ -46,6 +48,7 @@ const NotFound = () => (
 function App() {
   const { getCurrentUser } = useCurrentUser();
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     async function loading() {
       try {
@@ -61,7 +64,7 @@ function App() {
   return (
     <div className="root">
       {isLoaded && (
-        <>
+        <LayoutProvider>
           <GlobalHeader />
           <Suspense fallback={<Spinner />}>
             <StyledRouter primary={false}>
@@ -91,7 +94,7 @@ function App() {
             </StyledRouter>
           </Suspense>
           <GlobalFooter />
-        </>
+        </LayoutProvider>
       )}
     </div>
   );

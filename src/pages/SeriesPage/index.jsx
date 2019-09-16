@@ -10,6 +10,7 @@ import media from 'styles/media';
 import { ReactComponent as SortIcon } from 'images/ic-sort.svg';
 
 import GridTemplate from 'components/templates/GridTemplate';
+import ProjectTitle from 'components/molecules/ProjectTitle';
 import SeriesPostItem from 'components/molecules/SeriesPostItem';
 import Heading from 'components/atoms/Heading';
 
@@ -84,6 +85,7 @@ const Styled = {
 };
 
 function SeriesPage({ projectId, seriesId }) {
+  const [project, setProject] = useState({});
   const [posts, setPosts] = useState([]);
   const [series, setSeries] = useState({});
   const [isDescending, setIsDescending] = useState(true);
@@ -95,7 +97,9 @@ function SeriesPage({ projectId, seriesId }) {
   useEffect(() => {
     const getSeries = async () => {
       try {
+        const { data: projectData } = await API.project.get({ projectId });
         const { data: seriesData } = await API.series(projectId).get({ seriesId });
+        setProject(projectData);
         setSeries(seriesData);
       } catch (error) {
         console.log(error);
@@ -144,6 +148,7 @@ function SeriesPage({ projectId, seriesId }) {
         </Styled.Hero>
       )}
     >
+      <ProjectTitle project={project} />
       <Styled.Section>
         <Styled.Sort onClick={() => {
           setPage(1);

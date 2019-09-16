@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, Location } from '@reach/router';
 
 import media, { mediaQuery } from 'styles/media';
+
+import { LayoutContext } from 'context/LayoutContext';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
@@ -117,13 +121,15 @@ const NavigateListner = ({ location, event }) => {
   return null;
 };
 
-function GlobalHeader({ paths }) {
+function GlobalHeader({ paths, child, ...props }) {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
   const [wallet] = useWallet();
+  const [layout] = useContext(LayoutContext);
 
   const menuRef = useRef();
+
   useOnClickOutside(menuRef, () => setIsMenuOpened(false));
 
   const links = [
@@ -145,14 +151,16 @@ function GlobalHeader({ paths }) {
   ];
 
   return (
-    <Styled.Header>
+    <Styled.Header {...props}>
       <Location>
         {({ location }) => (
           <Styled.Wrapper>
             <NavigateListner location={location} event={() => setIsMenuOpened(false)} />
-            <Styled.Link to={paths.home}>
-              <Styled.Logo />
-            </Styled.Link>
+            {layout.headerChild || (
+              <Styled.Link to={paths.home}>
+                <Styled.Logo />
+              </Styled.Link>
+            )}
             <Styled.Nav>
               {currentUser ? (
                 <Styled.User ref={menuRef}>
@@ -193,6 +201,7 @@ function GlobalHeader({ paths }) {
 
 GlobalHeader.propTypes = {
   paths: PropTypes.object,
+  child: PropTypes.node,
 };
 
 GlobalHeader.defaultProps = {
