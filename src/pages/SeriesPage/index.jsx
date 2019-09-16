@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import media from 'styles/media';
 
@@ -91,6 +94,7 @@ function SeriesPage({ projectId, seriesId }) {
   const [page, setPage] = useState(1);
   const [pageable, setPageable] = useState({});
   const [API] = useCallback(useAPI(), []);
+  const listRef = useRef(null);
 
   useEffect(() => {
     const getSeries = async () => {
@@ -113,10 +117,14 @@ function SeriesPage({ projectId, seriesId }) {
         const {
           data: { content: postsData, ...pageableData },
         } = await API.series(projectId).getPosts({
-          seriesId, params: { isDescending, page },
+          seriesId, params: { isDescending, page, size: 20 },
         });
-        setPosts(postsData);
-        setPageable(pageableData);
+        if (pageableData.first) {
+          setPosts(postsData);
+        } else {
+          setPosts(prev => [...prev, ...postsData]);
+        }
+        await setPageable(pageableData);
       } catch (error) {
         console.log(error);
       }
@@ -124,6 +132,12 @@ function SeriesPage({ projectId, seriesId }) {
 
     getPosts();
   }, [API, projectId, seriesId, isDescending, page]);
+
+  useInfiniteScroll(listRef, () => {
+    if (!pageable.last) {
+      setPage(prev => prev + 1);
+    }
+  });
 
   const calculateIndex = index => (isDescending ? (pageable.totalElements - index) : (index + 1));
 
@@ -153,7 +167,7 @@ function SeriesPage({ projectId, seriesId }) {
           <SortIcon />
           정렬 변경
         </Styled.Sort>
-        <Styled.SeriesPostList>
+        <Styled.SeriesPostList ref={listRef}>
           {posts.map((post, index) => (
             <Link key={post.id} to={`/project/${projectId}/posts/${post.id}`}>
               <SeriesPostItem index={calculateIndex(index)} {...post} />
