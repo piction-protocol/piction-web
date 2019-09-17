@@ -32,15 +32,7 @@ const Styled = {
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${media.mobile`
-      position: absolute;
-      top: 0;
-      right: var(--outer-gap);
-      margin-top: calc(50% - 16px);
-      padding: 8px 12px;
-      border-radius: 18px;
-      background-color: rgba(0, 0, 0, .3);
-      color: var(--white);
-      transform: translateY(-100%);
+      display: none;
     `}
   `,
   PeopleIcon: styled(PeopleIcon)`
