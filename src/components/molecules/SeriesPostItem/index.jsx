@@ -74,7 +74,7 @@ const Styled = {
 };
 
 function SeriesPostItem({
-  index, title, cover = null, publishedAt, fanPass, ...props
+  index, title, cover = null, publishedAt, fanPass, isViewable, ...props
 }) {
   return (
     <Styled.Item
@@ -87,15 +87,15 @@ function SeriesPostItem({
       <Styled.Cover image={cover || dummyCoverImage} ratio={960 / 360} />
       <Styled.Text>
         <Styled.Title>{title}</Styled.Title>
-        {fanPass ? (
+        {isViewable ? (
+          <Styled.PublishedAt>
+            {moment(publishedAt).format('YYYY년 MMMM Do hh:mm 발행')}
+          </Styled.PublishedAt>
+        ) : (
           <Styled.FanPass>
             {fanPass.subscriptionPrice > 0 && `${fanPass.name} 이상 `}
             구독자 전용
           </Styled.FanPass>
-        ) : (
-          <Styled.PublishedAt>
-            {moment(publishedAt).format('YYYY년 MMMM Do hh:mm 발행')}
-          </Styled.PublishedAt>
         )}
       </Styled.Text>
     </Styled.Item>
@@ -108,6 +108,7 @@ SeriesPostItem.propTypes = {
   cover: PropTypes.string,
   publishedAt: PropTypes.number.isRequired,
   fanPass: PropTypes.object,
+  isViewable: PropTypes.bool.isRequired,
 };
 
 export default SeriesPostItem;

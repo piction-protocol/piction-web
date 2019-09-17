@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
+import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
@@ -92,6 +93,7 @@ function SeriesPage({ projectId, seriesId }) {
   const [project, setProject] = useState({});
   const [posts, setPosts] = useState([]);
   const [series, setSeries] = useState({});
+  const [fanPass, setFanPass] = useState({});
   const [isDescending, setIsDescending] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [page, setPage] = useState(1);
@@ -99,14 +101,17 @@ function SeriesPage({ projectId, seriesId }) {
   const [API] = useCallback(useAPI(), []);
   const listRef = useRef(null);
   const [, setLayout] = useContext(LayoutContext);
+  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     const getSeries = async () => {
       try {
         const { data: projectData } = await API.project.get({ projectId });
-        const { data: seriesData } = await API.series(projectId).get({ seriesId });
         setProject(projectData);
+        const { data: seriesData } = await API.series(projectId).get({ seriesId });
         setSeries(seriesData);
+        const { data: subscriptionData } = await API.fanPass.getSubscription({ projectId });
+        setFanPass(subscriptionData.fanPass);
       } catch (error) {
         console.log(error);
       }
@@ -160,6 +165,14 @@ function SeriesPage({ projectId, seriesId }) {
 
   const calculateIndex = index => (isDescending ? (pageable.totalElements - index) : (index + 1));
 
+  const checkIsViewable = (post) => {
+    if (!post.fanPass) return true;
+    if (!currentUser) return false;
+    const isSubscribing = fanPass && fanPass.level >= post.fanPass.level;
+    const isMine = project.user.loginId === currentUser.loginId;
+    return isSubscribing || isMine;
+  };
+
   return isLoaded && (
     <GridTemplate
       hero={(
@@ -189,7 +202,11 @@ function SeriesPage({ projectId, seriesId }) {
         <Styled.SeriesPostList ref={listRef}>
           {posts.map((post, index) => (
             <Link key={post.id} to={`/project/${projectId}/posts/${post.id}`}>
-              <SeriesPostItem index={calculateIndex(index)} {...post} />
+              <SeriesPostItem
+                index={calculateIndex(index)}
+                isViewable={checkIsViewable(post)}
+                {...post}
+              />
             </Link>
           ))}
         </Styled.SeriesPostList>
