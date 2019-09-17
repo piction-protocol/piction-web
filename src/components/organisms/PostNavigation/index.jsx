@@ -9,6 +9,7 @@ import media from 'styles/media';
 import Grid from 'styles/Grid';
 
 import { ReactComponent as ChevronIcon } from 'images/ic-chevron.svg';
+import { ReactComponent as CurrentPostIcon } from 'images/ic-post-current.svg';
 
 import NextPost, { NoNextPost } from './NextPost';
 
@@ -52,6 +53,7 @@ const Styled = {
     align-items: center;
     justify-content: flex-end;
     grid-column: span 3 / -1;
+    text-align: right;
     padding: 16px 0;
     svg {
       transform: rotate(180deg);
@@ -128,6 +130,7 @@ const Styled = {
   NextPost: styled(NextPost)`
     grid-column: 1 / span 4;
     grid-row: span 5;
+    margin-bottom: auto;
     ${media.mobile`
       display: none;
     `}
@@ -135,6 +138,7 @@ const Styled = {
   NoNextPost: styled(NoNextPost)`
     grid-column: 1 / span 4;
     grid-row: span 5;
+    margin-bottom: auto;
     ${media.mobile`
       display: none;
     `}
@@ -145,9 +149,6 @@ const Styled = {
   })`
     align-items: center;
     color: var(--gray--dark);
-    &[aria-current] {
-      color: var(--black);
-    }
     ${media.mobile`
       padding: 16px 0;
       border-bottom: 1px solid var(--gray--light);
@@ -156,21 +157,30 @@ const Styled = {
       display: flex;
       grid-column: span 4 / -1;
     `}
+    &[aria-current] {
+      font-weight: bold;
+    }
   `,
   PostIndex: styled.span`
+    display: flex;
     grid-column: span 1;
     font-size: 22px;
     font-weight: bold;
     ${media.desktop`
-      margin-right: 20px;
+      margin-right: 12px;
     `}
   `,
   PostTitle: styled.span`
     grid-column: span 5;
     overflow: hidden;
+    color: var(--black);
     font-size: var(--font-size--small);
     white-space: nowrap;
     text-overflow: ellipsis;
+  `,
+  CurrentPostIcon: styled(CurrentPostIcon)`
+    width: 28px;
+    height: 33px;
   `,
 };
 
@@ -265,10 +275,16 @@ function PostNavigation({ projectId, postId, series }) {
             )}
             {postList.map(({ index, post }) => (
               <Styled.Post to={`../${post.id}`} key={post.id}>
-                <Styled.PostIndex>
-                  #
-                  {index + 1}
-                </Styled.PostIndex>
+                {String(post.id) === postId ? (
+                  <Styled.PostIndex>
+                    <Styled.CurrentPostIcon />
+                  </Styled.PostIndex>
+                ) : (
+                  <Styled.PostIndex>
+                    #
+                    {index + 1}
+                  </Styled.PostIndex>
+                )}
                 <Styled.PostTitle>
                   {post.title}
                 </Styled.PostTitle>

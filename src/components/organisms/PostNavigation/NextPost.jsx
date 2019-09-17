@@ -25,7 +25,10 @@ const Styled = {
   `,
   PostTitle: styled.p`
     margin-top: 4px;
+    overflow: hidden;
     color: var(--white);
+    white-space: nowrap;
+    text-overflow: ellipsis;
   `,
   NoNextPost: styled(Link)`
     position: relative;
