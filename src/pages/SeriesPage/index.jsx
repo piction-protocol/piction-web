@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback, useRef,
+  useState, useEffect, useCallback, useRef, useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
@@ -9,6 +9,8 @@ import useAPI from 'hooks/useAPI';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import media from 'styles/media';
+
+import { LayoutContext } from 'context/LayoutContext';
 
 import { ReactComponent as SortIcon } from 'images/ic-sort.svg';
 
@@ -87,6 +89,7 @@ const Styled = {
 };
 
 function SeriesPage({ projectId, seriesId }) {
+  const [project, setProject] = useState({});
   const [posts, setPosts] = useState([]);
   const [series, setSeries] = useState({});
   const [isDescending, setIsDescending] = useState(true);
@@ -95,11 +98,14 @@ function SeriesPage({ projectId, seriesId }) {
   const [pageable, setPageable] = useState({});
   const [API] = useCallback(useAPI(), []);
   const listRef = useRef(null);
+  const [, setLayout] = useContext(LayoutContext);
 
   useEffect(() => {
     const getSeries = async () => {
       try {
+        const { data: projectData } = await API.project.get({ projectId });
         const { data: seriesData } = await API.series(projectId).get({ seriesId });
+        setProject(projectData);
         setSeries(seriesData);
       } catch (error) {
         console.log(error);
@@ -138,6 +144,19 @@ function SeriesPage({ projectId, seriesId }) {
       setPage(prev => prev + 1);
     }
   });
+
+  useEffect(() => {
+    if (isLoaded) {
+      setLayout({
+        type: 'project',
+        data: { project },
+      });
+    }
+
+    return (() => {
+      setLayout({ type: 'default' });
+    });
+  }, [isLoaded, project, setLayout]);
 
   const calculateIndex = index => (isDescending ? (pageable.totalElements - index) : (index + 1));
 

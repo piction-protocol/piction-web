@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Location, Link } from '@reach/router';
 import styled from 'styled-components';
@@ -11,6 +13,8 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 import ContentStyle from 'styles/ContentStyle';
 import media from 'styles/media';
+
+import { LayoutContext } from 'context/LayoutContext';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
@@ -116,6 +120,7 @@ function PostPage({ projectId, postId }) {
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const { currentUser } = useCurrentUser();
   const [API, handleError] = useCallback(useAPI(), []);
+  const [, setLayout] = useContext(LayoutContext);
 
   useEffect(() => {
     const getPost = async () => {
@@ -154,6 +159,21 @@ function PostPage({ projectId, postId }) {
       setIsLoaded(false);
     });
   }, [currentUser, API, handleError, postId, projectId]);
+
+  useEffect(() => {
+    if (isLoaded) {
+      setLayout({
+        type: 'project',
+        data: {
+          project: data.project,
+        },
+      });
+    }
+
+    return (() => {
+      setLayout({ type: 'default' });
+    });
+  }, [isLoaded, data.project, setLayout]);
 
   const handleLike = async () => {
     try {
