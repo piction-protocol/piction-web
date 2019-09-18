@@ -13,8 +13,9 @@ function handleScroll(element, handler) {
 function useInfiniteScroll(ref, handler) {
   useEffect(() => {
     const eventListener = () => handleScroll(ref.current, handler);
-
-    document.addEventListener('scroll', eventListener);
+    if (ref.current) {
+      document.addEventListener('scroll', eventListener);
+    }
     return () => document.removeEventListener('scroll', eventListener);
   }, [ref, handler]);
 }
