@@ -38,8 +38,11 @@ const Styled = {
   `,
 };
 
+const getIdArray = array => array.map(item => item.id);
+
 function SeriesListForm({ title, projectId }) {
   const [seriesList, setSeriesList] = useState([]);
+  const [prevSeriesList, setPrevSeriesList] = useState([]);
   const [selected, setSelected] = useState({});
   const [modalStatus, setModalStatus] = useState(null);
   const [API] = useCallback(useAPI(), []);
@@ -49,6 +52,7 @@ function SeriesListForm({ title, projectId }) {
       try {
         const { data } = await API.series(projectId).getAll();
         setSeriesList(data);
+        setPrevSeriesList(data);
       } catch (error) {
         console.log(error);
       }
@@ -107,7 +111,16 @@ function SeriesListForm({ title, projectId }) {
   const [, drop] = useDrop({
     accept: 'series',
     drop: async () => {
-      console.log(seriesList);
+      const seriesListIds = getIdArray(seriesList);
+      if (JSON.stringify(seriesListIds) !== JSON.stringify(getIdArray(prevSeriesList))) {
+        try {
+          const response = await API.series(projectId).sort(seriesListIds);
+          console.log(response);
+          setPrevSeriesList(seriesList);
+        } catch (error) {
+          console.log(error);
+        }
+      }
     },
   });
 

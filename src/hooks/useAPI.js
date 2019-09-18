@@ -66,6 +66,7 @@ function useAPI() {
     getAll: () => API.get(`/projects/${projectId}/series`),
     getPosts: params => API.get(`/projects/${projectId}/series/${params.seriesId}/posts`, params),
     getPreviousAndNextPosts: params => API.get(`/projects/${projectId}/series/${params.seriesId}/posts/${params.postId}`, params),
+    sort: params => API.put(`/projects/${projectId}/series`, params),
     create: params => API.post(`/projects/${projectId}/series`, params),
     update: params => API.put(`/projects/${projectId}/series/${params.seriesId}`, params),
     delete: params => API.delete(`/projects/${projectId}/series/${params.seriesId}`),
