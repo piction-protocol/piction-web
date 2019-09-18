@@ -24,6 +24,11 @@ function useAPI() {
     subscriptions: () => API.get('my/subscriptions'),
   };
 
+  const resetPassword = {
+    sendEmail: params => API.post('/password-resets', params),
+    reset: params => API.patch(`/password-resets/${params.token}`, params),
+  };
+
   const post = projectId => ({
     getAll: params => API.get(`/projects/${projectId}/posts`, params),
     create: params => API.post(`/projects/${projectId}/posts`, params),
@@ -98,6 +103,7 @@ function useAPI() {
 
   return [{
     my,
+    resetPassword,
     post,
     project,
     fanPass,

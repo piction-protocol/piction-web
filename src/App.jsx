@@ -16,6 +16,7 @@ import TermsComponents from 'components/templates/TermsComponents';
 const HomePage = React.lazy(() => import('pages/HomePage'));
 const LoginPage = React.lazy(() => import('pages/LoginPage'));
 const SignupPage = React.lazy(() => import('pages/SignupPage'));
+const ForgotPasswordPage = React.lazy(() => import('pages/ForgotPasswordPage'));
 const SubscriptionsPage = React.lazy(() => import('pages/SubscriptionsPage'));
 const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'));
 const TagPage = React.lazy(() => import('pages/TagPage'));
@@ -71,6 +72,7 @@ function App() {
               <HomePage path="/" />
               <LoginPage path="login" />
               <SignupPage path="signup/*" />
+              <ForgotPasswordPage path="forgot_password/*" />
 
               <SubscriptionsPage path="subscriptions" />
               <AllProjectsPage path="all" />
