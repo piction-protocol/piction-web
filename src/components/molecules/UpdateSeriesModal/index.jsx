@@ -39,7 +39,7 @@ function UpdateSeriesModal({
       close();
     } else {
       try {
-        const response = await API.series(projectId).update({ seriesId, name });
+        const response = await API.series(projectId).update({ seriesId, name: name.trim() });
         await callback((prev) => {
           const seriesList = [...prev];
           seriesList[prev.findIndex(series => series.id === response.data.id)] = response.data;

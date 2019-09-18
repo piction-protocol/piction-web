@@ -36,7 +36,7 @@ function CreateSeriesModal({
   const handleCreate = async (event) => {
     event.preventDefault();
     try {
-      const response = await API.series(projectId).create({ name });
+      const response = await API.series(projectId).create({ name: name.trim() });
       await callback(prev => ([...prev, response.data]));
       close();
     } catch (error) {
