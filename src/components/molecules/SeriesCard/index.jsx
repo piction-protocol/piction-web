@@ -24,16 +24,17 @@ const Styled = {
   `,
   Thumbnail: styled(ContentImage)`
     flex: 1;
-    background-color: rgba(0, 0, 0, .1);
     &:first-child {
       z-index: 1;
       margin: 16px 16px 0 0;
+      background-color: var(--white);
     }
     &:last-child {
       position: absolute;
       top: 0;
       right: 0;
       left: 16px;
+      background-color: rgba(0, 0, 0, .1);
     }
   `,
   Title: styled.h3`
