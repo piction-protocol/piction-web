@@ -70,7 +70,7 @@ export const NoNextPost = props => (
     <Styled.NoNextPostText>
       다음 포스트가 없습니다.
       <Styled.PostTitle>
-        시리즈 전체 목록 보기 &gt;
+        전체 목록 보기 &gt;
       </Styled.PostTitle>
     </Styled.NoNextPostText>
   </Styled.NoNextPost>
