@@ -102,7 +102,7 @@ function SignupForm() {
       <Styled.InputGroup
         name="email"
         label="이메일"
-        placeholder="example@gmail.com"
+        placeholder="example@email.com"
         autoComplete="email"
         onChange={handleChange}
         required
