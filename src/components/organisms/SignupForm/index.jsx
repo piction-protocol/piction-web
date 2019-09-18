@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { navigate } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';
@@ -37,9 +37,7 @@ const Styled = {
     color: var(--gray--dark);
     white-space: pre-wrap;
   `,
-  Link: styled.a.attrs({
-    target: '_blank',
-  })`
+  Link: styled(Link)`
     color: var(--blue);
   `,
   Submit: styled(PrimaryButton).attrs({
@@ -47,7 +45,14 @@ const Styled = {
     type: 'submit',
   })`
     width: 100%;
-    margin-bottom: 24px;
+  `,
+  Login: styled.p`
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    margin: 24px auto;
+    color: var(--gray--dark);
+    white-space: pre-wrap;
   `,
 };
 
@@ -139,14 +144,19 @@ function SignupForm() {
           checked={formData.agree}
           required
         />
-        <Styled.Link href="/terms">서비스 이용약관</Styled.Link>
+        <Styled.Link as="a" href="/terms" target="_blank">서비스 이용약관</Styled.Link>
         {' 및 '}
-        <Styled.Link href="/privacy">개인정보 처리방침</Styled.Link>
+        <Styled.Link as="a" href="/privacy" target="_blank">개인정보 처리방침</Styled.Link>
         에 동의합니다.
       </Styled.Terms>
       <Styled.Submit
         value="동의 및 회원가입"
       />
+      <Styled.Login>
+        이미 픽션 계정을 가지고 있다면,
+        {' '}
+        <Styled.Link to="/login">로그인</Styled.Link>
+      </Styled.Login>
       {isLoading && <Spinner />}
     </Styled.Form>
   );

@@ -8,7 +8,7 @@ import useAPI from 'hooks/useAPI';
 
 import Heading from 'components/atoms/Heading';
 import Checkbox from 'components/atoms/Checkbox';
-import { PrimaryButton } from 'components/atoms/Button';
+import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import InputGroup from 'components/molecules/InputGroup';
 
@@ -25,13 +25,6 @@ const Styled = {
   InputGroup: styled(InputGroup)`
     margin-bottom: 24px;
   `,
-  Submit: styled(PrimaryButton).attrs({
-    as: 'input',
-    type: 'submit',
-  })`
-    width: 100%;
-    margin-bottom: 24px;
-  `,
   Checkbox: styled(Checkbox)`
     margin-right: 8px;
   `,
@@ -40,12 +33,22 @@ const Styled = {
     align-items: center;
     margin-bottom: 16px;
   `,
-  Signup: styled.p`
+  Submit: styled(PrimaryButton).attrs({
+    as: 'input',
+    type: 'submit',
+  })`
+    width: 100%;
+    margin-bottom: 8px;
+  `,
+  Signup: styled(SecondaryButton).attrs({
+    as: Link,
+  })`
+    width: 100%;
+    margin-bottom: 24px;
+  `,
+  ForgotPassword: styled(Link)`
     display: flex;
     margin: auto;
-  `,
-  Link: styled(Link)`
-    margin-left: 4px;
     color: var(--blue);
   `,
 };
@@ -109,12 +112,12 @@ function LoginForm({ redirectTo }) {
       <Styled.Submit
         value="로그인"
       />
-      <Styled.Signup>
-        Piction에 처음 오셨다면,
-        <Styled.Link to="/signup">
-          회원가입
-        </Styled.Link>
+      <Styled.Signup to="/signup">
+        회원가입
       </Styled.Signup>
+      <Styled.ForgotPassword to="/forgot_password">
+        비밀번호를 잊으셨나요?
+      </Styled.ForgotPassword>
     </Styled.Form>
   );
 }
