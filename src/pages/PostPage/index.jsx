@@ -217,7 +217,7 @@ function PostPage({ projectId, postId }) {
             <Styled.SeriesName
               to={`../../series/${data.post.series.id}`}
             >
-              {data.post.series.name}
+              {`시리즈 · ${data.post.series.name}`}
             </Styled.SeriesName>
           )}
           <Heading>

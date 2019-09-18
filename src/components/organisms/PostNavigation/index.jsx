@@ -262,7 +262,7 @@ function PostNavigation({ projectId, postId, series }) {
           <Styled.SeriesName>{series.name}</Styled.SeriesName>
           <Styled.PostCount>{`${series.postCount} 포스트`}</Styled.PostCount>
           <Styled.AllPosts to={`../../series/${series.id}`}>
-            포스트 전체 목록
+            전체 목록
           </Styled.AllPosts>
           <Styled.PostList>
             {postList[postList.findIndex(({ post }) => String(post.id) === postId) + 1] ? (
