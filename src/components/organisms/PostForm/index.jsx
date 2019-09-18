@@ -196,23 +196,146 @@ function PostForm({ title, projectId, postId = null }) {
   };
 
   return (
-    <Styled.Form onSubmit={handleSubmit}>
-      <Heading>{title}</Heading>
-      <Styled.Select
-        name="seriesId"
-        value={formData.seriesId}
-        onChange={handleChange}
-        options={[
-          { text: '시리즈 선택', value: 'null' },
-          ...series.map(item => ({
-            text: item.name,
-            value: item.id,
-          })),
-        ]}
-      />
-      <Styled.AddSeriesButton onClick={() => setIsCreating(true)}>
-        + 새 시리즈
-      </Styled.AddSeriesButton>
+    <>
+      <Styled.Form onSubmit={handleSubmit}>
+        <Heading>{title}</Heading>
+        <Styled.Select
+          name="seriesId"
+          value={formData.seriesId}
+          onChange={handleChange}
+          options={[
+            { text: '시리즈 선택', value: 'null' },
+            ...series.map(item => ({
+              text: item.name,
+              value: item.id,
+            })),
+          ]}
+        />
+        <Styled.AddSeriesButton onClick={() => setIsCreating(true)}>
+          + 새 시리즈
+        </Styled.AddSeriesButton>
+        {errorMessage.content}
+        <InputGroup
+          name="title"
+          placeholder="프로젝트 제목을 입력해주세요."
+          onChange={handleChange}
+          value={formData.title}
+          required
+          errorMessage={errorMessage.title}
+        />
+        <Editor
+          projectId={projectId}
+          onChange={handleEditor}
+          value={formData.content}
+        />
+        {errorMessage.content && (
+          <ErrorMessage>
+            {errorMessage.content}
+          </ErrorMessage>
+        )}
+        <Styled.Group>
+          <Label>
+            커버이미지
+          </Label>
+          <Styled.Spec>
+            JPG 또는 PNG 파일, 최대 5MB, 권장 사이즈 960*360 px
+          </Styled.Spec>
+          <Styled.ImageUploader
+            name="cover"
+            ratio={960 / 360}
+            defaultImage={defaultImage.cover}
+            backgroundImage={dummyCoverImage}
+            onChange={handleChange}
+            uploadAPI={API.post(projectId).uploadCoverImage}
+            columns={3}
+          />
+          {errorMessage.content && (
+            <ErrorMessage>
+              {errorMessage.content}
+            </ErrorMessage>
+          )}
+        </Styled.Group>
+        <Styled.Group>
+          <Label>
+            공개 설정
+          </Label>
+          <Radio
+            name="status"
+            onChange={handleChange}
+            value="PUBLIC"
+            checked={formData.status === 'PUBLIC'}
+          >
+            전체 공개
+          </Radio>
+          <Radio
+            name="status"
+            onChange={handleChange}
+            value="FAN_PASS"
+            checked={formData.status === 'FAN_PASS'}
+          >
+            구독자 공개
+          </Radio>
+          <Radio
+            name="status"
+            onChange={handleChange}
+            value="PRIVATE"
+            checked={formData.status === 'PRIVATE'}
+          >
+            비공개
+          </Radio>
+        </Styled.Group>
+        <Styled.Group>
+          <Label>
+            발행 시간 설정
+          </Label>
+          {!isPublished && (
+            <Styled.CheckboxGroup>
+              <Styled.Checkbox
+                name="publishNow"
+                onChange={handleChange}
+                checked={formData.publishNow}
+              />
+              즉시 발행
+            </Styled.CheckboxGroup>
+          )}
+          <Styled.Input
+            name="publishingDate"
+            columns={3}
+            type="date"
+            disabled={formData.publishNow || isPublished}
+            onChange={handleChange}
+            value={formData.publishingDate}
+          />
+          <Styled.Input
+            name="publishingTime"
+            columns={2}
+            step="1"
+            type="time"
+            disabled={formData.publishNow || isPublished}
+            onChange={handleChange}
+            value={formData.publishingTime}
+          />
+          <Styled.Spec>
+            공개 설정과 관계없이 설정한 시간 이전에는 포스트가 공개되지 않습니다.
+          </Styled.Spec>
+          <Styled.Spec>
+            한 번 포스트가 발행된 이후에는 발행 시간을 변경할 수 없습니다.
+          </Styled.Spec>
+        </Styled.Group>
+        <Styled.SubmitGroup>
+          <Styled.Submit
+            as="input"
+            type="submit"
+            value="포스트 등록"
+          />
+          <SecondaryButton
+            as={Link}
+            to={`/dashboard/${projectId}/posts/`}
+          >
+            작성 취소
+          </SecondaryButton>
+        </Styled.SubmitGroup>
+      </Styled.Form>
       {isCreating && (
         <CreateSeriesModal
           projectId={projectId}
@@ -220,129 +343,7 @@ function PostForm({ title, projectId, postId = null }) {
           callback={setSeries}
         />
       )}
-      {errorMessage.content}
-      <InputGroup
-        name="title"
-        placeholder="프로젝트 제목을 입력해주세요."
-        onChange={handleChange}
-        value={formData.title}
-        required
-        errorMessage={errorMessage.title}
-      />
-      <Editor
-        projectId={projectId}
-        onChange={handleEditor}
-        value={formData.content}
-      />
-      {errorMessage.content && (
-        <ErrorMessage>
-          {errorMessage.content}
-        </ErrorMessage>
-      )}
-      <Styled.Group>
-        <Label>
-          커버이미지
-        </Label>
-        <Styled.Spec>
-          JPG 또는 PNG 파일, 최대 5MB, 권장 사이즈 960*360 px
-        </Styled.Spec>
-        <Styled.ImageUploader
-          name="cover"
-          ratio={960 / 360}
-          defaultImage={defaultImage.cover}
-          backgroundImage={dummyCoverImage}
-          onChange={handleChange}
-          uploadAPI={API.post(projectId).uploadCoverImage}
-          columns={3}
-        />
-        {errorMessage.content && (
-          <ErrorMessage>
-            {errorMessage.content}
-          </ErrorMessage>
-        )}
-      </Styled.Group>
-      <Styled.Group>
-        <Label>
-          공개 설정
-        </Label>
-        <Radio
-          name="status"
-          onChange={handleChange}
-          value="PUBLIC"
-          checked={formData.status === 'PUBLIC'}
-        >
-          전체 공개
-        </Radio>
-        <Radio
-          name="status"
-          onChange={handleChange}
-          value="FAN_PASS"
-          checked={formData.status === 'FAN_PASS'}
-        >
-          구독자 공개
-        </Radio>
-        <Radio
-          name="status"
-          onChange={handleChange}
-          value="PRIVATE"
-          checked={formData.status === 'PRIVATE'}
-        >
-          비공개
-        </Radio>
-      </Styled.Group>
-      <Styled.Group>
-        <Label>
-          발행 시간 설정
-        </Label>
-        {!isPublished && (
-          <Styled.CheckboxGroup>
-            <Styled.Checkbox
-              name="publishNow"
-              onChange={handleChange}
-              checked={formData.publishNow}
-            />
-            즉시 발행
-          </Styled.CheckboxGroup>
-        )}
-        <Styled.Input
-          name="publishingDate"
-          columns={3}
-          type="date"
-          disabled={formData.publishNow || isPublished}
-          onChange={handleChange}
-          value={formData.publishingDate}
-        />
-        <Styled.Input
-          name="publishingTime"
-          columns={2}
-          step="1"
-          type="time"
-          disabled={formData.publishNow || isPublished}
-          onChange={handleChange}
-          value={formData.publishingTime}
-        />
-        <Styled.Spec>
-          공개 설정과 관계없이 설정한 시간 이전에는 포스트가 공개되지 않습니다.
-        </Styled.Spec>
-        <Styled.Spec>
-          한 번 포스트가 발행된 이후에는 발행 시간을 변경할 수 없습니다.
-        </Styled.Spec>
-      </Styled.Group>
-      <Styled.SubmitGroup>
-        <Styled.Submit
-          as="input"
-          type="submit"
-          value="포스트 등록"
-        />
-        <SecondaryButton
-          as={Link}
-          to={`/dashboard/${projectId}/posts/`}
-        >
-          작성 취소
-        </SecondaryButton>
-      </Styled.SubmitGroup>
-
-    </Styled.Form>
+    </>
   );
 }
 
