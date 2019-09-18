@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useDrag, useDrop } from 'react-dnd';
 
+import { ReactComponent as DragIndicatorIcon } from 'images/ic-drag-indicator.svg';
 import { ReactComponent as EditIcon } from 'images/ic-edit.svg';
 import { ReactComponent as DeleteIcon } from 'images/ic-delete.svg';
 
@@ -11,6 +13,12 @@ const Styled = {
     align-items: center;
     border: 2px solid var(--gray--dark);
     font-size: var(--font-size--small);
+  `,
+  Indicator: styled.div`
+    display: flex;
+    padding: 10px;
+    border-right: 2px solid var(--gray--dark);
+    cursor: move;
   `,
   Name: styled.span`
     margin: 0 16px;
@@ -31,10 +39,36 @@ const Styled = {
 };
 
 function SeriesItem({
-  name, handleUpdate, handleDelete, ...props
+  id, name, handleUpdate, handleDelete, moveSeries, findSeries, ...props
 }) {
+  const originalIndex = findSeries(id).index;
+  const [, drop] = useDrop({
+    accept: 'series',
+    canDrop: () => false,
+    hover({ id: draggedId }) {
+      if (draggedId !== id) {
+        const { index: hoverIndex } = findSeries(id);
+        moveSeries(draggedId, hoverIndex);
+      }
+    },
+  });
+
+  const [{ isDragging }, drag, preview] = useDrag({
+    item: { type: 'series', id, originalIndex },
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
   return (
-    <Styled.Item {...props}>
+    <Styled.Item
+      ref={node => preview(drop(node))}
+      style={{ opacity: isDragging ? 0 : 1 }}
+      {...props}
+    >
+      <Styled.Indicator ref={drag}>
+        <DragIndicatorIcon />
+      </Styled.Indicator>
       <Styled.Name>{name}</Styled.Name>
       <Styled.Buttons>
         <Styled.Button onClick={handleUpdate}>
@@ -49,9 +83,12 @@ function SeriesItem({
 }
 
 SeriesItem.propTypes = {
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   handleUpdate: PropTypes.func,
   handleDelete: PropTypes.func,
+  moveSeries: PropTypes.func,
+  findSeries: PropTypes.func,
 };
 
 export default SeriesItem;

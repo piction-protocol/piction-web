@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import update from 'immutability-helper';
+import { useDrop } from 'react-dnd';
 
 import useAPI from 'hooks/useAPI';
 
@@ -10,9 +12,6 @@ import DeleteSeriesModal from 'components/molecules/DeleteSeriesModal';
 import SeriesItem from 'components/molecules/SeriesItem';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton } from 'components/atoms/Button';
-
-import { ReactComponent as DragIndicatorIcon } from 'images/ic-drag-indicator.svg';
-
 
 const Styled = {
   Heading: styled(Heading)`
@@ -34,20 +33,8 @@ const Styled = {
     top: 32px;
     right: 0;
   `,
-  Series: styled.div`
-    display: flex;
-    margin-bottom: 8px;
-  `,
   SeriesItem: styled(SeriesItem)`
-    flex: 1;
-  `,
-  Indicator: styled(DragIndicatorIcon)`
-    width: 48px;
-    height: 48px;
-    padding: 12px;
-    border: 2px solid var(--gray--dark);
-    border-right: 0px;
-    cursor: move;
+    margin-bottom: 8px;
   `,
 };
 
@@ -67,6 +54,12 @@ function SeriesListForm({ title, projectId }) {
       }
     };
     getSeriesList();
+
+    return () => {
+      setSeriesList([]);
+      setSelected({});
+      setModalStatus(null);
+    };
   }, [API, projectId]);
 
   const modal = {
@@ -96,27 +89,50 @@ function SeriesListForm({ title, projectId }) {
     ),
   };
 
+  const findSeries = (id) => {
+    const series = seriesList.find(s => `${s.id}` === id);
+    return {
+      series,
+      index: seriesList.indexOf(series),
+    };
+  };
+
+  const moveSeries = (id, toIndex) => {
+    const { series, index } = findSeries(id);
+    setSeriesList(update(seriesList, {
+      $splice: [[index, 1], [toIndex, 0, series]],
+    }));
+  };
+
+  const [, drop] = useDrop({
+    accept: 'series',
+    drop: async () => {
+      console.log(seriesList);
+    },
+  });
+
   return (
-    <Styled.Form>
+    <Styled.Form ref={drop}>
       <Styled.Heading>{title}</Styled.Heading>
       <Styled.Create onClick={() => setModalStatus('create')}>
         + 새 시리즈
       </Styled.Create>
       {seriesList.map(series => (
-        <Styled.Series key={series.id}>
-          <Styled.Indicator />
-          <Styled.SeriesItem
-            name={series.name}
-            handleUpdate={() => {
-              setModalStatus('update');
-              setSelected(series);
-            }}
-            handleDelete={() => {
-              setModalStatus('delete');
-              setSelected(series);
-            }}
-          />
-        </Styled.Series>
+        <Styled.SeriesItem
+          key={series.id}
+          id={`${series.id}`}
+          name={series.name}
+          handleUpdate={() => {
+            setModalStatus('update');
+            setSelected(series);
+          }}
+          handleDelete={() => {
+            setModalStatus('delete');
+            setSelected(series);
+          }}
+          moveSeries={moveSeries}
+          findSeries={findSeries}
+        />
       ))}
       {modal[modalStatus]}
     </Styled.Form>
