@@ -6,8 +6,10 @@ import styled from 'styled-components';
 import withLoginChecker from 'components/LoginChecker';
 
 import CompactTemplate from 'components/templates/CompactTemplate';
-import ForgotPasswordForm from 'components/organisms/ForgotPasswordForm';
 import Heading from 'components/atoms/Heading';
+
+const ForgotPasswordForm = React.lazy(() => import('components/organisms/ForgotPasswordForm'));
+const ResetPasswordForm = React.lazy(() => import('components/organisms/ResetPasswordForm'));
 
 const Styled = {
   Heading: styled(Heading)`
@@ -24,6 +26,7 @@ function ForgotPasswordPage() {
       </Styled.Heading>
       <Router primary={false} basepath="/forgot_password">
         <ForgotPasswordForm path="/" />
+        <ResetPasswordForm path="/edit" />
       </Router>
     </CompactTemplate>
   );
