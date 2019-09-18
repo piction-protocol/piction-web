@@ -22,6 +22,12 @@ const Styled = {
     font-size: var(--font-size--small);
     line-height: var(--line-height--content);
   `,
+  Email: styled.a`
+    display: inline-block;
+    margin-bottom: 24px;
+    color: var(--blue);
+    font-size: var(--font-size--small);
+  `,
   InputGroup: styled(InputGroup)`
     margin-bottom: 24px;
   `,
@@ -60,7 +66,21 @@ function ResetPasswordForm({ location: { search } }) {
     }
   };
 
-  return (search ? isSent ? (
+  return (!search ? (
+    <>
+      <Styled.Text>
+         잘못된 접근이거나, 유효기간이 만료된 링크로 접속하였습니다. 지속적으로 문제가 있을 경우 고객센터에 문의 바랍니다.
+      </Styled.Text>
+      <Styled.Email href="mailto:help@piction.network">
+        help@piction.network
+      </Styled.Email>
+      <Styled.Link
+        to="/"
+      >
+        홈으로 이동
+      </Styled.Link>
+    </>
+  ) : isSent ? (
     <>
       <Styled.Text>
         비밀번호 재설정이 완료되었습니다.
@@ -112,7 +132,7 @@ function ResetPasswordForm({ location: { search } }) {
         value="확인"
       />
     </Styled.Form>
-  ) : null);
+  ));
 }
 
 ResetPasswordForm.propTypes = {
