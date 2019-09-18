@@ -35,6 +35,7 @@ const Styled = {
       right: 0;
       left: 16px;
       background-color: rgba(0, 0, 0, .1);
+      filter: brightness(0.8);
     }
   `,
   Title: styled.h3`
