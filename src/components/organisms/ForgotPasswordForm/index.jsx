@@ -80,7 +80,7 @@ function ForgotPasswordForm() {
       <Styled.Link
         to="/"
       >
-        픽션 홈으로 이동
+        홈으로 이동
       </Styled.Link>
     </>
   ) : (
