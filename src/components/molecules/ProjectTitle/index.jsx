@@ -20,15 +20,19 @@ const Styled = {
   `,
   Title: styled.h1`
     margin-left: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     ${media.mobile`
-      margin-left: 16px;
+      margin: 0 16px;
       font-size: var(--font-size--small);
     `}
   `,
   SubscriptionCount: styled.div`
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
-    margin-left: 24px;
+    margin: 0 24px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${media.mobile`

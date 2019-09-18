@@ -53,15 +53,16 @@ const Styled = {
     `}
   `,
   Nav: styled.nav`
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    white-space: nowrap;
     > *:not(:last-child) {
       margin-right: 16px;
       ${media.desktop`
         margin-right: 48px;
       `}
     }
-    display: flex;
-    align-items: center;
-    margin-left: auto;
   `,
   Login: styled(Link)`
     color: var(--gray--dark);
