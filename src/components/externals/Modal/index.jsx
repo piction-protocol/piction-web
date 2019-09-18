@@ -21,7 +21,9 @@ const Styled = {
     justify-content: center;
     background-color: rgba(0, 0, 0, .3);
   `,
-  Modal: styled.section`
+  Modal: styled.aside.attrs({
+    'aria-modal': 'true',
+  })`
     display: flex;
     flex-flow: column;
     grid-column: 1 / -1;
@@ -46,7 +48,10 @@ function Modal({ close, children, ...props }) {
 
   useEffect(() => {
     const targetElement = modalRef.current;
-    disableBodyScroll(targetElement);
+    targetElement.focus();
+    disableBodyScroll(targetElement, {
+      reserveScrollBarGap: true,
+    });
 
     return () => {
       enableBodyScroll(targetElement);

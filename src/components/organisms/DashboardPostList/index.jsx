@@ -29,6 +29,7 @@ const Styled = {
   `,
   Select: styled(Select)`
     width: 190px;
+    margin-right: 16px;
   `,
   New: styled(PrimaryButton).attrs({
     as: Link,
@@ -55,10 +56,12 @@ const Styled = {
   `,
 };
 
-function DashboardPostList({ title, projectId, page }) {
+function DashboardPostList({ title, projectId, page = 1 }) {
   const [postList, setPostList] = useState([]);
+  const [seriesList, setSeriesList] = useState([]);
   const [deletingPost, setDeletingPost] = useState(null);
   const [isRequiredFanPass, setIsRequiredFanPass] = useState(null);
+  const [seriesId, setSeriesId] = useState(null);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
@@ -66,16 +69,23 @@ function DashboardPostList({ title, projectId, page }) {
       try {
         const { data } = await API.my.posts({
           projectId,
-          params: { size: 15, page, isRequiredFanPass: isRequiredFanPass === 'null' ? null : isRequiredFanPass },
+          params: {
+            size: 15,
+            page,
+            isRequiredFanPass: isRequiredFanPass === 'null' ? null : isRequiredFanPass,
+            seriesId,
+          },
         });
+        const { data: seriesData } = await API.series(projectId).getAll();
         setPostList(data.content);
+        setSeriesList(seriesData);
       } catch (error) {
         console.log(error);
       }
     };
 
     getFormData();
-  }, [API, projectId, page, isRequiredFanPass]);
+  }, [API, projectId, page, isRequiredFanPass, seriesId]);
 
   return (
     <Styled.Container>
@@ -83,9 +93,20 @@ function DashboardPostList({ title, projectId, page }) {
       <Styled.Tools>
         <Styled.Select
           onChange={event => setIsRequiredFanPass(event.target.value)}
+          value={isRequiredFanPass}
           options={[
-            { text: '모든 포스트', value: 'null' },
-            { text: '멤버십 전용', value: 'true' },
+            { text: '공개 설정 필터', value: '' },
+            { text: '전체 공개', value: 'false' },
+            { text: '구독자 공개', value: 'true' },
+          ]}
+        />
+        <Styled.Select
+          onChange={event => setSeriesId(event.target.value)}
+          value={seriesId}
+          options={[
+            { text: '시리즈 필터', value: '' },
+            { text: '미지정', value: '0' },
+            ...seriesList.map(series => ({ text: series.name, value: series.id })),
           ]}
         />
         <Styled.New to="new">+ 새 포스트 등록</Styled.New>
@@ -122,11 +143,7 @@ function DashboardPostList({ title, projectId, page }) {
 DashboardPostList.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
-  page: PropTypes.string,
-};
-
-DashboardPostList.defaultProps = {
-  page: '1',
+  page: PropTypes.number,
 };
 
 export default DashboardPostList;

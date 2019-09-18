@@ -82,9 +82,7 @@ function PostList({
       <Styled.List>
         {contentList.map(content => (
           <Link
-            to={
-              (isSubscribing || !content.isRequiredFanPass) ? `posts/${content.id}` : 'memberships'
-            }
+            to={`${content.id}`}
             key={content.id}
           >
             <PostItem

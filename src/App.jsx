@@ -5,6 +5,8 @@ import { importMDX } from 'mdx.macro';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
+import { LayoutProvider } from 'context/LayoutContext';
+
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
 import Spinner from 'components/atoms/Spinner';
@@ -18,6 +20,7 @@ const SubscriptionsPage = React.lazy(() => import('pages/SubscriptionsPage'));
 const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'));
 const TagPage = React.lazy(() => import('pages/TagPage'));
 const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
+const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
 const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
@@ -45,6 +48,7 @@ const NotFound = () => (
 function App() {
   const { getCurrentUser } = useCurrentUser();
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     async function loading() {
       try {
@@ -60,7 +64,7 @@ function App() {
   return (
     <div className="root">
       {isLoaded && (
-        <>
+        <LayoutProvider>
           <GlobalHeader />
           <Suspense fallback={<Spinner />}>
             <StyledRouter primary={false}>
@@ -73,6 +77,7 @@ function App() {
               <TagPage path="tag/:tagName" />
 
               <ProjectPage path="project/:projectId/*" />
+              <SeriesPage path="project/:projectId/series/:seriesId" />
               <PostPage path="project/:projectId/posts/:postId" />
               <MembershipPage path="project/:projectId/memberships/" />
 
@@ -89,7 +94,7 @@ function App() {
             </StyledRouter>
           </Suspense>
           <GlobalFooter />
-        </>
+        </LayoutProvider>
       )}
     </div>
   );
