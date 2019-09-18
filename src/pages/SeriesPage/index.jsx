@@ -6,7 +6,7 @@ import { Link } from '@reach/router';
 import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
-import useInfiniteScroll from 'hooks/useInfiniteScroll';
+import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
@@ -144,7 +144,7 @@ function SeriesPage({ projectId, seriesId }) {
     getPosts();
   }, [API, projectId, seriesId, isDescending, page]);
 
-  useInfiniteScroll(listRef, () => {
+  useOnScrollToBottom(listRef, () => {
     if (!pageable.last) {
       setPage(prev => prev + 1);
     }

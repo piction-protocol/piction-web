@@ -10,7 +10,7 @@ function handleScroll(element, handler) {
   handler();
 }
 
-function useInfiniteScroll(ref, handler) {
+function useOnScrollToBottom(ref, handler) {
   useEffect(() => {
     const eventListener = () => handleScroll(ref.current, handler);
     if (ref.current) {
@@ -20,4 +20,4 @@ function useInfiniteScroll(ref, handler) {
   }, [ref, handler]);
 }
 
-export default useInfiniteScroll;
+export default useOnScrollToBottom;
