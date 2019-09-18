@@ -114,8 +114,7 @@ function SeriesListForm({ title, projectId }) {
       const seriesListIds = getIdArray(seriesList);
       if (JSON.stringify(seriesListIds) !== JSON.stringify(getIdArray(prevSeriesList))) {
         try {
-          const response = await API.series(projectId).sort(seriesListIds);
-          console.log(response);
+          await API.series(projectId).sort(seriesListIds);
           setPrevSeriesList(seriesList);
         } catch (error) {
           console.log(error);
