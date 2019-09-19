@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
+import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
@@ -56,28 +59,38 @@ const Styled = {
   `,
 };
 
-function DashboardPostList({ title, projectId, page = 1 }) {
+function DashboardPostList({ title, projectId }) {
   const [postList, setPostList] = useState([]);
   const [seriesList, setSeriesList] = useState([]);
   const [deletingPost, setDeletingPost] = useState(null);
-  const [isRequiredFanPass, setIsRequiredFanPass] = useState(null);
-  const [seriesId, setSeriesId] = useState(null);
+  const [isRequiredFanPass, setIsRequiredFanPass] = useState('');
+  const [seriesId, setSeriesId] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageable, setPageable] = useState({});
+  const listRef = useRef(null);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getFormData = async () => {
       try {
-        const { data } = await API.my.posts({
+        const { data: { content: postsData, ...pageableData } } = await API.my.posts({
           projectId,
           params: {
             size: 15,
             page,
-            isRequiredFanPass: isRequiredFanPass === 'null' ? null : isRequiredFanPass,
+            isRequiredFanPass,
             seriesId,
           },
         });
+        await setPageable(pageableData);
+
+        if (pageableData.first) {
+          setPostList(postsData);
+        } else {
+          setPostList(prev => [...prev, ...postsData]);
+        }
+
         const { data: seriesData } = await API.series(projectId).getAll();
-        setPostList(data.content);
         setSeriesList(seriesData);
       } catch (error) {
         console.log(error);
@@ -86,6 +99,12 @@ function DashboardPostList({ title, projectId, page = 1 }) {
 
     getFormData();
   }, [API, projectId, page, isRequiredFanPass, seriesId]);
+
+  useOnScrollToBottom(listRef, () => {
+    if (!pageable.last) {
+      setPage(prev => prev + 1);
+    }
+  });
 
   return (
     <Styled.Container>
@@ -119,7 +138,7 @@ function DashboardPostList({ title, projectId, page = 1 }) {
           </p>
         </Styled.Empty>
       )}
-      <Styled.List>
+      <Styled.List ref={listRef}>
         {postList.map(post => (
           <DashboardPostItem
             {...post}
@@ -129,6 +148,7 @@ function DashboardPostList({ title, projectId, page = 1 }) {
           />
         ))}
       </Styled.List>
+
       {deletingPost && (
         <DeletePostModal
           projectId={projectId}
@@ -143,7 +163,6 @@ function DashboardPostList({ title, projectId, page = 1 }) {
 DashboardPostList.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
-  page: PropTypes.number,
 };
 
 export default DashboardPostList;
