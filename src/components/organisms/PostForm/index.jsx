@@ -217,7 +217,7 @@ function PostForm({ title, projectId, postId = null }) {
         {errorMessage.content}
         <InputGroup
           name="title"
-          placeholder="프로젝트 제목을 입력해주세요."
+          placeholder="포스트 제목을 입력해주세요."
           onChange={handleChange}
           value={formData.title}
           required
