@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
-import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
 import DeletePostModal from 'components/molecules/DeletePostModal';
 import DashboardPostItem from 'components/molecules/DashboardPostItem';
+import Pagination from 'components/molecules/Pagination';
 import Heading from 'components/atoms/Heading';
 import Select from 'components/atoms/Select';
 import { PrimaryButton } from 'components/atoms/Button';
@@ -82,13 +82,8 @@ function DashboardPostList({ title, projectId }) {
             seriesId,
           },
         });
-        await setPageable(pageableData);
-
-        if (pageableData.first) {
-          setPostList(postsData);
-        } else {
-          setPostList(prev => [...prev, ...postsData]);
-        }
+        setPageable(pageableData);
+        setPostList(postsData);
 
         const { data: seriesData } = await API.series(projectId).getAll();
         setSeriesList(seriesData);
@@ -99,12 +94,6 @@ function DashboardPostList({ title, projectId }) {
 
     getFormData();
   }, [API, projectId, page, isRequiredFanPass, seriesId]);
-
-  useOnScrollToBottom(listRef, () => {
-    if (!pageable.last) {
-      setPage(prev => prev + 1);
-    }
-  });
 
   return (
     <Styled.Container>
@@ -148,7 +137,7 @@ function DashboardPostList({ title, projectId }) {
           />
         ))}
       </Styled.List>
-
+      <Pagination {...pageable} setPage={setPage} delta={2} />
       {deletingPost && (
         <DeletePostModal
           projectId={projectId}
