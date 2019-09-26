@@ -16,6 +16,7 @@ const Styled = {
     width: 24px;
     height: 24px;
     cursor: pointer;
+    font-size: var(--font-size--small);
     ${({ isCurrent }) => isCurrent && `
       background-color: var(--black);
       color: var(--white);
