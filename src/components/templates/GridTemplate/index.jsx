@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -14,16 +14,14 @@ const Styled = {
   `,
 };
 
-function GridTemplate({ hero, children }) {
-  return (
-    <Styled.Main>
-      {hero}
-      <MainGrid>
-        {children}
-      </MainGrid>
-    </Styled.Main>
-  );
-}
+const GridTemplate = forwardRef(({ hero, children }, ref) => (
+  <Styled.Main>
+    {hero}
+    <MainGrid ref={ref}>
+      {children}
+    </MainGrid>
+  </Styled.Main>
+));
 
 GridTemplate.propTypes = {
   children: PropTypes.node.isRequired,
