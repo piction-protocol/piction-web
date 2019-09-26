@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback, useRef,
+  useState, useEffect, useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -67,7 +67,6 @@ function DashboardPostList({ title, projectId }) {
   const [seriesId, setSeriesId] = useState('');
   const [page, setPage] = useState(1);
   const [pageable, setPageable] = useState({});
-  const listRef = useRef(null);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
@@ -127,7 +126,7 @@ function DashboardPostList({ title, projectId }) {
           </p>
         </Styled.Empty>
       )}
-      <Styled.List ref={listRef}>
+      <Styled.List>
         {postList.map(post => (
           <DashboardPostItem
             {...post}
