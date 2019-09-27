@@ -25,6 +25,8 @@ const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
 const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
+const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
+
 const Dashboard = React.lazy(() => import('Dashboard'));
 
 const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
@@ -88,6 +90,8 @@ function App() {
 
               <Terms components={TermsComponents} path="terms" />
               <Privacy components={TermsComponents} path="privacy" />
+
+              <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
 
               <Redirect from="/en" to="/" noThrow />
               <Redirect from="/ko" to="/" noThrow />
