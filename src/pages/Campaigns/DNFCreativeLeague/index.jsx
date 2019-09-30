@@ -1,35 +1,46 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Title from './Title';
-import Intro from './Intro';
-import Participate from './Participate';
-import Prize from './Prize';
+import useMedia from 'hooks/useMedia';
+
+import { mediaQuery } from 'styles/media';
+
+import DesktopIntro from './Intro/desktop';
+import MobileIntro from './Intro/mobile';
+import DesktopParticipate from './Participate/desktop';
+import MobileParticipate from './Participate/mobile';
+import DesktopPrize from './Prize/desktop';
+import MobilePrize from './Prize/mobile';
 import Notice from './Notice';
 
 const Styled = {
   Article: styled.article`
     --main-color: #00fff6;
     display: flex;
-    flex-flow: column;
     position: relative;
-  `,
-  Title: styled(Title)`
-    position: absolute;
-    top: 0;
-  `,
-  Intro: styled(Intro)`
-    padding-top: 64%;
+    flex-flow: column;
+    width: 100%;
   `,
 };
 
 function DNFCreativeLeague() {
+  const isDesktop = useMedia(mediaQuery.desktop);
+
   return (
     <Styled.Article>
-      <Styled.Title />
-      <Styled.Intro />
-      <Participate />
-      <Prize />
+      {isDesktop ? (
+        <>
+          <DesktopIntro />
+          <DesktopParticipate />
+          <DesktopPrize />
+        </>
+      ) : (
+        <>
+          <MobileIntro />
+          <MobileParticipate />
+          <MobilePrize />
+        </>
+      )}
       <Notice />
     </Styled.Article>
   );
