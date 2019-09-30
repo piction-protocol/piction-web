@@ -59,7 +59,7 @@ const Styled = {
   `,
 };
 
-const Participate = () => (
+const Intro = () => (
   <Styled.Section>
     <Styled.Wrapper>
       <Styled.Background src={titleBackground} />
@@ -79,4 +79,4 @@ const Participate = () => (
   </Styled.Section>
 );
 
-export default Participate;
+export default Intro;

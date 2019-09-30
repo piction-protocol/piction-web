@@ -31,7 +31,7 @@
     "eject": "react-scripts eject",
     "docz": "docz dev",
     "docz:build": "docz build",
-    "svgo": "svgo --config=.svgo.yml --indent=2 src/images/*.svg",
+    "svgo": "svgo --config=.svgo.yml --indent=2 src/**/*.svg",
     "lint": "eslint --ext jsx --ext js src"
   },
   "husky": {

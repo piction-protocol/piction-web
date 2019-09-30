@@ -5,13 +5,13 @@ import useMedia from 'hooks/useMedia';
 
 import { mediaQuery } from 'styles/media';
 
-import DesktopIntro from './Intro/desktop';
-import MobileIntro from './Intro/mobile';
-import DesktopParticipate from './Participate/desktop';
-import MobileParticipate from './Participate/mobile';
-import DesktopPrize from './Prize/desktop';
-import MobilePrize from './Prize/mobile';
-import Notice from './Notice';
+const DesktopIntro = React.lazy(() => import('./Intro/desktop'));
+const MobileIntro = React.lazy(() => import('./Intro/mobile'));
+const DesktopParticipate = React.lazy(() => import('./Participate/desktop'));
+const MobileParticipate = React.lazy(() => import('./Participate/mobile'));
+const DesktopPrize = React.lazy(() => import('./Prize/desktop'));
+const MobilePrize = React.lazy(() => import('./Prize/mobile'));
+const Notice = React.lazy(() => import('./Notice'));
 
 const Styled = {
   Article: styled.article`
