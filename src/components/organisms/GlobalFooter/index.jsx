@@ -107,7 +107,7 @@ function GlobalFooter() {
           </Styled.Item>
         </Styled.Links>
         <Styled.Texts>
-          <Styled.Item>Contact | contact@piction.network</Styled.Item>
+          <Styled.Item>Contact | help@piction.network</Styled.Item>
           <Styled.Item>© 2018-2019 Piction Network. All rights reserved</Styled.Item>
         </Styled.Texts>
         <Styled.Logo />
