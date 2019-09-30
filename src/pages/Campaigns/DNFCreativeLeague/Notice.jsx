@@ -62,6 +62,13 @@ const Styled = {
   Tag: styled.strong`
     color: var(--main-color);
   `,
+  Link: styled.a.attrs({
+    target: '_blank',
+  })`
+    color: var(--white);
+    font-weight: bold;
+    text-decoration: underline;
+  `,
 };
 
 const Notice = () => (
@@ -112,9 +119,32 @@ const Notice = () => (
         </Styled.Text>
       </Styled.Item>
       <Styled.Item>
-        <Styled.Name>부정 행위 대응</Styled.Name>
+        <Styled.Name>부정 행위 및 저작권 이슈</Styled.Name>
         <Styled.Text>
-          다중 계정 생성을 통한 부정한 방법으로 참가한 사실이 발각될 시, 수여 대상에서 제외됩니다.
+          다중 계정 생성을 통한 부정한 방법으로 참가한 사실이 발각되거나,
+          저작권과 관련한 이슈 발생 시 수상이 취소될 수 있습니다.
+        </Styled.Text>
+      </Styled.Item>
+      <Styled.Item>
+        <Styled.Name>PXL 및 픽션이란?</Styled.Name>
+        <Styled.Text>
+          PXL이란, 픽션에서 사용가능한 가상화폐로,
+          {' '}
+          <Styled.Link href="https://coinone.co.kr/">거래소</Styled.Link>
+          를 통해 현금화 가능합니다.
+          픽션에 관한 더 자세한 내용은
+          {' '}
+          <Styled.Link href="https://about.piction.network/">이곳</Styled.Link>
+          에서 확인해 주세요.
+        </Styled.Text>
+      </Styled.Item>
+      <Styled.Item>
+        <Styled.Name>고객 센터 및 기타 문의 사항</Styled.Name>
+        <Styled.Text>
+          더 궁금한 사항이 있으면
+          {' '}
+          <Styled.Link href="mailto:help@piction.network">help@piction.network</Styled.Link>
+          로 문의해 주십시오.
         </Styled.Text>
       </Styled.Item>
     </Styled.MainGrid>
