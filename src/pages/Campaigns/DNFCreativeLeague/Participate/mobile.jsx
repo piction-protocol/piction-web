@@ -25,11 +25,12 @@ const Styled = {
     left: 0;
     flex-flow: column;
     align-items: center;
-    margin-top: 96.4%;
+    width: 72.5%;
+    margin: 96.4% auto 0;
   `,
   Link: styled(Link)`
     display: flex;
-    width: 72.5%;
+    width: 100%;
   `,
   ButtonImage: styled.svg`
     width: 100%;
