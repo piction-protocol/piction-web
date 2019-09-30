@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useRef,
+} from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 
 import useAPI from 'hooks/useAPI';
+import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import media from 'styles/media';
 
@@ -47,19 +50,38 @@ const Styled = {
 
 function AllProjectsPage() {
   const [projects, setProjects] = useState([]);
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
+  const [pageable, setPageable] = useState({});
+  const listRef = useRef(null);
+
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getProjects = async () => {
-      const { data } = await API.project.getAll({
-        params: { size: 100, page },
-      });
-      setProjects(data.content);
+      try {
+        const { data: { content: projectsData, ...pageableData } } = await API.project.getAll({
+          params: { size: 20, page },
+        });
+        setPageable(pageableData);
+
+        if (pageableData.first) {
+          setProjects(projectsData);
+        } else {
+          setProjects(prev => [...prev, ...projectsData]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     getProjects();
   }, [API, page]);
+
+  useOnScrollToBottom(listRef, () => {
+    if (!pageable.last) {
+      setPage(prev => prev + 1);
+    }
+  });
 
   return (
     <GridTemplate
@@ -73,6 +95,7 @@ function AllProjectsPage() {
           </Styled.P>
         </Styled.Hero>
       )}
+      ref={listRef}
     >
       {projects.map(project => (
         <Styled.Link to={`/project/${project.uri}`} key={project.id}>

@@ -91,7 +91,7 @@ const Styled = {
   `,
   Dropdown: styled(Dropdown)`
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     top: 56px;
     right: 0;
     width: 240px;

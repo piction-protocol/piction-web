@@ -4,7 +4,7 @@ function handleScroll(element, handler) {
   const scrollPosition = document.documentElement.scrollTop + document.documentElement.offsetHeight;
   const elementBottomPosition = element.offsetTop + element.offsetHeight;
 
-  if (scrollPosition < elementBottomPosition) {
+  if (scrollPosition + 200 < elementBottomPosition) {
     return;
   }
   handler();

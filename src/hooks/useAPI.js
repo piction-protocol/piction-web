@@ -9,6 +9,7 @@ function useAPI() {
     baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
     headers: {
       'X-Auth-Token': accessToken,
+      'X-Device-Platform': 'web',
       accept: 'application/vnd.piction.v1+json',
     },
   });
