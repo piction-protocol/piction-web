@@ -136,7 +136,12 @@ function DashboardPostList({ title, projectId }) {
           />
         ))}
       </Styled.List>
-      <Pagination {...pageable} setPage={setPage} delta={2} />
+      <Pagination
+        number={pageable.number}
+        totalPages={pageable.totalPages}
+        setPage={setPage}
+        delta={2}
+      />
       {deletingPost && (
         <DeletePostModal
           projectId={projectId}
