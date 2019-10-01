@@ -128,10 +128,7 @@ const Notice = () => (
       <Styled.Item>
         <Styled.Name>PXL 및 픽션이란?</Styled.Name>
         <Styled.Text>
-          PXL이란, 픽션에서 사용가능한 가상화폐로,
-          {' '}
-          <Styled.Link href="https://coinone.co.kr/">거래소</Styled.Link>
-          를 통해 현금화 가능합니다.
+          PXL이란 픽션에서 사용가능한 재화입니다.
           픽션에 관한 더 자세한 내용은
           {' '}
           <Styled.Link href="https://about.piction.network/">이곳</Styled.Link>
