@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import media from 'styles/media';
 import { MainGrid } from 'styles/Grid';
 
+import DNFBanner from 'components/organisms/Banner/DNFBanner';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import Intro from './Intro';
@@ -99,6 +100,7 @@ function HomePage() {
       </Helmet>
 
       <Main>
+        <DNFBanner />
         <Intro />
 
         <EnglishIntroduction>
