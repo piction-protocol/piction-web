@@ -67,7 +67,7 @@ function UserList({ title, projectId }) {
     const getFormData = async () => {
       const { data: { content, ...pageableData } } = await API.my.projectSubscriptions({
         projectId,
-        params: { size: 2, page },
+        params: { size: 20, page },
       });
       setSubscribers(content);
       setPageable(pageableData);

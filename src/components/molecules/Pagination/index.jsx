@@ -28,13 +28,9 @@ function Pagination({
   number, totalPages, delta, setPage, ...props
 }) {
   const currentPage = number + 1;
-  const start = currentPage <= delta
-    ? 1
-    : currentPage > (totalPages - delta)
-      ? totalPages - delta * 2
-      : currentPage - delta;
-  const length = totalPages > delta * 2 + 1 ? delta * 2 + 1 : totalPages;
-  const pages = [...Array(length)].map((_, i) => i + (start > 1 ? start : 1));
+  const start = currentPage - delta - 1 > 0 ? currentPage - delta - 1 : 0;
+  const end = currentPage + delta;
+  const pages = [...Array(totalPages)].map((_, i) => i + 1).slice(start, end);
 
   return (
     <Styled.Pagination {...props}>
