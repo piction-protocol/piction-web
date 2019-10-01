@@ -6,6 +6,7 @@ import 'moment/locale/ko';
 
 import useAPI from 'hooks/useAPI';
 
+import Pagination from 'components/molecules/Pagination';
 import ContentImage from 'components/atoms/ContentImage';
 import Heading from 'components/atoms/Heading';
 
@@ -54,33 +55,31 @@ const Styled = {
   `,
 };
 
-function UserList({ title, projectId, page = 1 }) {
+function UserList({ title, projectId }) {
   const [subscribers, setSubscribers] = useState([]);
-  const [pageData, setPageData] = useState({});
+  const [page, setPage] = useState(1);
+  const [pageable, setPageable] = useState({
+    totalElements: '',
+  });
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
     const getFormData = async () => {
-      const { data } = await API.my.projectSubscriptions({
+      const { data: { content, ...pageableData } } = await API.my.projectSubscriptions({
         projectId,
         params: { size: 20, page },
       });
-      const { content, ...args } = data;
       setSubscribers(content);
-      setPageData(args);
+      setPageable(pageableData);
     };
 
     getFormData();
-
-    return () => {
-      setSubscribers([]);
-    };
   }, [API, projectId, page]);
 
   return (
     <Styled.Container>
       <Heading>
-        {`${title}(${pageData.totalElements})`}
+        {`${title}(${pageable.totalElements})`}
       </Heading>
       <Styled.List>
         {subscribers.map(subscriber => (
@@ -101,6 +100,12 @@ function UserList({ title, projectId, page = 1 }) {
           </Styled.Item>
         ))}
       </Styled.List>
+      <Pagination
+        number={pageable.number}
+        totalPages={pageable.totalPages}
+        setPage={setPage}
+        delta={2}
+      />
     </Styled.Container>
   );
 }
@@ -108,7 +113,6 @@ function UserList({ title, projectId, page = 1 }) {
 UserList.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
-  page: PropTypes.string,
 };
 
 export default UserList;
