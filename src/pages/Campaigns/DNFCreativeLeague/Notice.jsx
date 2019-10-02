@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from '@reach/router';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -62,9 +63,7 @@ const Styled = {
   Tag: styled.strong`
     color: var(--main-color);
   `,
-  Link: styled.a.attrs({
-    target: '_blank',
-  })`
+  Link: styled.a`
     color: var(--white);
     font-weight: bold;
     text-decoration: underline;
@@ -131,7 +130,7 @@ const Notice = () => (
           PXL이란 픽션에서 사용가능한 재화입니다.
           픽션에 관한 더 자세한 내용은
           {' '}
-          <Styled.Link href="https://about.piction.network/">이곳</Styled.Link>
+          <Styled.Link as={Link} to="/creatorsguide">이곳</Styled.Link>
           에서 확인해 주세요.
         </Styled.Text>
       </Styled.Item>
