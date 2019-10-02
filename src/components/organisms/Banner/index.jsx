@@ -14,6 +14,7 @@ const Styled = {
   Link: styled(Link)`
     display: flex;
     width: 100%;
+    align-items: flex-start;
   `,
   Image: styled.img`
     width: 100%;
