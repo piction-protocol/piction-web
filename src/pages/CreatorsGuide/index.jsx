@@ -157,8 +157,8 @@ const Styled = {
       padding: 80px 0;
     `}
   `,
-  Link: styled(Link).attrs({
-    as: PrimaryButton,
+  Link: styled(PrimaryButton).attrs({
+    as: Link,
   })`
     margin-top: 24px;
     ${media.desktop`
