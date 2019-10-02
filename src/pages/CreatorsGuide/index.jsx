@@ -147,6 +147,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     align-items: center;
+    margin-bottom: 2px;
     padding: 60px 0;
     background-size: auto 100%;
     background-repeat: no-repeat;
@@ -172,7 +173,6 @@ function CreatorsGuide() {
 
   return (
     <Styled.Main>
-      <DNFBanner />
       <Styled.Intro>
         <CircleSymbol />
         <Styled.Title>
@@ -317,6 +317,7 @@ function CreatorsGuide() {
           </Styled.Link>
         )}
       </Styled.Outro>
+      <DNFBanner />
     </Styled.Main>
   );
 }
