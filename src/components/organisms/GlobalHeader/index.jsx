@@ -190,7 +190,12 @@ function GlobalHeader({ paths, child, ...props }) {
                   >
                     로그인
                   </Styled.Login>
-                  <Styled.Signup to={paths.signup}>
+                  <Styled.Signup
+                    to={paths.signup}
+                    state={{
+                      redirectTo: encodeURIComponent(location.pathname),
+                    }}
+                  >
                     회원가입
                   </Styled.Signup>
                 </>
