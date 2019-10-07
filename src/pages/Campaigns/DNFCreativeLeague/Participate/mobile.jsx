@@ -2,14 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
-import useCurrentUser from 'hooks/useCurrentUser';
-
 import image from './participate-mobile.png';
 import image2 from './participate-mobile@2x.png';
 import image3 from './participate-mobile@3x.png';
 
-import { ReactComponent as JoinButton } from './btn-join.svg';
-import { ReactComponent as ComingSoon } from './btn-coming-soon.svg';
+import { ReactComponent as ParticipateButton } from './btn-participate.svg';
 
 const Styled = {
   Container: styled.section`
@@ -43,36 +40,26 @@ const Styled = {
   `,
 };
 
-const Participate = () => {
-  const { currentUser } = useCurrentUser();
-
-  return (
-    <Styled.Container>
-      <img
-        src={image}
-        srcSet={`
-          ${image} 360w,
-          ${image2} 720w,
-          ${image3} 1080w
-        `}
-        alt="참가방법"
-      />
-      {currentUser ? (
-        <Styled.Start>
-          <Styled.ButtonImage as={ComingSoon} />
-        </Styled.Start>
-      ) : (
-        <Styled.Start>
-          <Styled.Link to="/signup">
-            <Styled.ButtonImage as={JoinButton} />
-          </Styled.Link>
-          <Styled.Text>
-            이벤트에 참가하려면 픽션 계정이 필요합니다.
-          </Styled.Text>
-        </Styled.Start>
-      )}
-    </Styled.Container>
-  );
-};
+const Participate = () => (
+  <Styled.Container>
+    <img
+      src={image}
+      srcSet={`
+        ${image} 360w,
+        ${image2} 720w,
+        ${image3} 1080w
+      `}
+      alt="참가방법"
+    />
+    <Styled.Start>
+      <Styled.Link to="/dashboard/new-project?tag=던파크리">
+        <Styled.ButtonImage as={ParticipateButton} />
+      </Styled.Link>
+      <Styled.Text>
+        이벤트에 참가하려면 픽션 계정이 필요합니다.
+      </Styled.Text>
+    </Styled.Start>
+  </Styled.Container>
+);
 
 export default Participate;
