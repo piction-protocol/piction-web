@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
+import queryString from 'query-string';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -75,7 +76,12 @@ const Styled = {
   `,
 };
 
-function ProjectForm({ title, projectId, setProjects }) {
+function ProjectForm({
+  title,
+  projectId = '',
+  setProjects,
+  location: { search },
+}) {
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     uri: '',
@@ -104,6 +110,7 @@ function ProjectForm({ title, projectId, setProjects }) {
       }
     };
 
+    const defaultTag = queryString.parse(search).tag;
     const clearForm = () => {
       setFormData({
         title: '',
@@ -111,7 +118,7 @@ function ProjectForm({ title, projectId, setProjects }) {
         synopsis: '',
         thumbnail: '',
         wideThumbnail: '',
-        tags: [],
+        tags: defaultTag ? [defaultTag] : [],
         status: 'PUBLIC',
       });
       setDefaultImage({
@@ -122,7 +129,7 @@ function ProjectForm({ title, projectId, setProjects }) {
 
     if (projectId) getProjectData();
     return clearForm();
-  }, [setFormData, projectId, API]);
+  }, [setFormData, projectId, API, search]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -259,11 +266,7 @@ ProjectForm.propTypes = {
   projectId: PropTypes.string,
   title: PropTypes.string.isRequired,
   setProjects: PropTypes.func,
-};
-
-ProjectForm.defaultProps = {
-  projectId: '',
-  setProjects: () => {},
+  location: PropTypes.object,
 };
 
 export default ProjectForm;
