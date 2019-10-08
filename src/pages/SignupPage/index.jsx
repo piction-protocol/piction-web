@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CompactTemplate from 'components/templates/CompactTemplate';
 import { Router } from '@reach/router';
 
@@ -9,15 +10,19 @@ import Welcome from 'components/organisms/Welcome';
 
 const SignupFormWithLoginChecker = withLoginChecker(SignupForm, false, '/');
 
-function SignupPage() {
+function SignupPage({ location }) {
   return (
     <CompactTemplate>
       <Router primary={false} basepath="/signup">
         <SignupFormWithLoginChecker path="/" />
-        <Welcome path="/welcome" />
+        <Welcome path="/welcome" {...location.state} />
       </Router>
     </CompactTemplate>
   );
 }
+
+SignupPage.propTypes = {
+  location: PropTypes.object.isRequired,
+};
 
 export default SignupPage;

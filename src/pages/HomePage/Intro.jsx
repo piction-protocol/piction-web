@@ -63,10 +63,11 @@ const Styled = {
     `}
   `,
   PrimaryButton: styled(PrimaryButton)`
-    ${media.desktop`
-      grid-column: span 2;
-      padding-right: 0;
-      padding-left: 0;
+    grid-column: span 2;
+    padding-right: 0;
+    padding-left: 0;
+    ${media.mobile`
+      display: none;
     `}
   `,
   SecondaryButton: styled(SecondaryButton)`

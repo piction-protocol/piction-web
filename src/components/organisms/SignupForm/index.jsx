@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Link, navigate } from '@reach/router';
@@ -56,7 +57,7 @@ const Styled = {
   `,
 };
 
-function SignupForm() {
+function SignupForm({ location }) {
   const [formData, { handleChange }] = useForm({
     loginId: '',
     email: '',
@@ -75,7 +76,7 @@ function SignupForm() {
       setIsLoading(true);
       const response = await API.user.create(formData);
       API.token.create(response.data.accessToken);
-      navigate('/signup/welcome', { replace: true });
+      navigate('/signup/welcome', { replace: true, state: location.state });
     } catch (error) {
       setErrorMessage({
         [error.response.data.field]: error.response.data.message,
@@ -155,11 +156,15 @@ function SignupForm() {
       <Styled.Login>
         이미 픽션 계정을 가지고 있다면,
         {' '}
-        <Styled.Link to="/login">로그인</Styled.Link>
+        <Styled.Link to="/login" state={location.state}>로그인</Styled.Link>
       </Styled.Login>
       {isLoading && <Spinner />}
     </Styled.Form>
   );
 }
+
+SignupForm.propTypes = {
+  location: PropTypes.object.isRequired,
+};
 
 export default SignupForm;

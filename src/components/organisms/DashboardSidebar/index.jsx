@@ -5,6 +5,8 @@ import { Location, Link } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
+import media from 'styles/media';
+
 import { TertiaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as ExpandIcon } from 'images/ic-expand-more.svg';
@@ -71,6 +73,9 @@ const Styled = {
     }
   `,
   Button: styled(TertiaryButton)`
+    ${media.mobile`
+      display: none;
+    `}
     margin: 24px;
     text-align: center;
   `,

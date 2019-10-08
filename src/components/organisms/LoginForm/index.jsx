@@ -112,7 +112,7 @@ function LoginForm({ redirectTo }) {
       <Styled.Submit
         value="로그인"
       />
-      <Styled.Signup to="/signup">
+      <Styled.Signup to="/signup" state={{ redirectTo }}>
         회원가입
       </Styled.Signup>
       <Styled.ForgotPassword to="/forgot_password">

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
@@ -36,7 +37,7 @@ const Styled = {
   `,
 };
 
-function Welcome() {
+function Welcome({ redirectTo = '/' }) {
   return (
     <Styled.Container>
       <Styled.Heading>회원가입이 완료되었습니다!</Styled.Heading>
@@ -46,9 +47,13 @@ function Welcome() {
         <br />
         다양한 창작물을 즐겨보세요!
       </Styled.Text>
-      <Styled.Button to="/">계속</Styled.Button>
+      <Styled.Button to={decodeURIComponent(redirectTo)}>계속</Styled.Button>
     </Styled.Container>
   );
 }
+
+Welcome.propTypes = {
+  redirectTo: PropTypes.string,
+};
 
 export default Welcome;

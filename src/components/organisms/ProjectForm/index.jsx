@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
+import queryString from 'query-string';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -53,8 +54,12 @@ const Styled = {
     color: var(--blue);
   `,
   Spec: styled.p`
-    font-size: var(--font-size--small);
     color: var(--gray--dark);
+    font-size: var(--font-size--small);
+    a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
   `,
   CheckboxGroup: styled.label`
     display: flex;
@@ -75,7 +80,12 @@ const Styled = {
   `,
 };
 
-function ProjectForm({ title, projectId, setProjects }) {
+function ProjectForm({
+  title,
+  projectId = '',
+  setProjects,
+  location: { search },
+}) {
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     uri: '',
@@ -104,6 +114,7 @@ function ProjectForm({ title, projectId, setProjects }) {
       }
     };
 
+    const defaultTag = queryString.parse(search).tag;
     const clearForm = () => {
       setFormData({
         title: '',
@@ -111,7 +122,7 @@ function ProjectForm({ title, projectId, setProjects }) {
         synopsis: '',
         thumbnail: '',
         wideThumbnail: '',
-        tags: [],
+        tags: defaultTag ? [defaultTag] : [],
         status: 'PUBLIC',
       });
       setDefaultImage({
@@ -122,7 +133,7 @@ function ProjectForm({ title, projectId, setProjects }) {
 
     if (projectId) getProjectData();
     return clearForm();
-  }, [setFormData, projectId, API]);
+  }, [setFormData, projectId, API, search]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -230,6 +241,12 @@ function ProjectForm({ title, projectId, setProjects }) {
           invalid={!!errorMessage.tags}
           onlyUnique
         />
+        <Styled.Spec>
+          #던파크리 태그를 입력하시면
+          {' '}
+          <a href="/campaigns/dnfcreativeleague" target="_blank">던파 크리에이티브 리그</a>
+          에 자동으로 참가됩니다. (10/9~11/20)
+        </Styled.Spec>
         <ErrorMessage>{errorMessage.tags}</ErrorMessage>
       </Styled.ImageGroup>
       <Styled.ImageGroup>
@@ -259,11 +276,7 @@ ProjectForm.propTypes = {
   projectId: PropTypes.string,
   title: PropTypes.string.isRequired,
   setProjects: PropTypes.func,
-};
-
-ProjectForm.defaultProps = {
-  projectId: '',
-  setProjects: () => {},
+  location: PropTypes.object,
 };
 
 export default ProjectForm;
