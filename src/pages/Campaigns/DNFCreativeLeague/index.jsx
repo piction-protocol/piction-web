@@ -7,6 +7,8 @@ import { mediaQuery } from 'styles/media';
 
 const DesktopIntro = React.lazy(() => import('./Intro/desktop'));
 const MobileIntro = React.lazy(() => import('./Intro/mobile'));
+const DesktopFeatured = React.lazy(() => import('./Featured/desktop'));
+const MobileFeatured = React.lazy(() => import('./Featured/mobile'));
 const DesktopParticipate = React.lazy(() => import('./Participate/desktop'));
 const MobileParticipate = React.lazy(() => import('./Participate/mobile'));
 const DesktopPrize = React.lazy(() => import('./Prize/desktop'));
@@ -33,6 +35,7 @@ function DNFCreativeLeague() {
       {isDesktop ? (
         <>
           <DesktopIntro />
+          <DesktopFeatured />
           <DesktopParticipate />
           <DesktopPrize />
           <DesktopAboutDNF />
@@ -40,6 +43,7 @@ function DNFCreativeLeague() {
       ) : (
         <>
           <MobileIntro />
+          <MobileFeatured />
           <MobileParticipate />
           <MobilePrize />
           <MobileAboutDNF />

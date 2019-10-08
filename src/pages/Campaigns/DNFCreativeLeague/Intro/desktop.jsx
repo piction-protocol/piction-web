@@ -53,7 +53,7 @@ const Styled = {
   Thunder2: styled.img`
     position: absolute;
     z-index: 1;
-    bottom: -37.8%;
+    bottom: -30%;
     grid-column: 1 / span 2;
     width: 100%;
   `,
