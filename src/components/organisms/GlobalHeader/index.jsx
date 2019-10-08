@@ -118,7 +118,7 @@ UserMenuWithWrapper.propTypes = {
   close: PropTypes.func.isRequired,
 };
 
-const NavigateListner = ({ location, event }) => {
+const NavigateListener = ({ location, event }) => {
   useEffect(event, [location]);
   return null;
 };
@@ -157,7 +157,7 @@ function GlobalHeader({ paths, child, ...props }) {
       <Location>
         {({ location }) => (
           <Styled.Wrapper>
-            <NavigateListner location={location} event={() => setIsMenuOpened(false)} />
+            <NavigateListener location={location} event={() => setIsMenuOpened(false)} />
             {layout.type === 'project' ? (
               <ProjectTitle project={layout.data.project} />
             ) : (
@@ -165,42 +165,44 @@ function GlobalHeader({ paths, child, ...props }) {
                 <Styled.Logo />
               </Styled.Link>
             )}
-            <Styled.Nav>
-              {currentUser ? (
-                <Styled.User ref={menuRef}>
-                  <Styled.Toggle
-                    src={currentUser.picture}
-                    onClick={() => setIsMenuOpened(prevState => !prevState)}
-                  />
-                  {isMenuOpened && (
-                    <UserMenuWithWrapper
-                      PXL={wallet.amount}
-                      links={links}
-                      close={() => setIsMenuOpened(false)}
+            {/^\/login|^\/signup/.test(location.pathname) || (
+              <Styled.Nav>
+                {currentUser ? (
+                  <Styled.User ref={menuRef}>
+                    <Styled.Toggle
+                      src={currentUser.picture}
+                      onClick={() => setIsMenuOpened(prevState => !prevState)}
                     />
-                  )}
-                </Styled.User>
-              ) : (
-                <>
-                  <Styled.Login
-                    to={paths.login}
-                    state={{
-                      redirectTo: encodeURIComponent(location.pathname),
-                    }}
-                  >
-                    로그인
-                  </Styled.Login>
-                  <Styled.Signup
-                    to={paths.signup}
-                    state={{
-                      redirectTo: encodeURIComponent(location.pathname),
-                    }}
-                  >
-                    회원가입
-                  </Styled.Signup>
-                </>
-              )}
-            </Styled.Nav>
+                    {isMenuOpened && (
+                      <UserMenuWithWrapper
+                        PXL={wallet.amount}
+                        links={links}
+                        close={() => setIsMenuOpened(false)}
+                      />
+                    )}
+                  </Styled.User>
+                ) : (
+                  <>
+                    <Styled.Login
+                      to={paths.login}
+                      state={{
+                        redirectTo: encodeURIComponent(location.pathname),
+                      }}
+                    >
+                      로그인
+                    </Styled.Login>
+                    <Styled.Signup
+                      to={paths.signup}
+                      state={{
+                        redirectTo: encodeURIComponent(location.pathname),
+                      }}
+                    >
+                      회원가입
+                    </Styled.Signup>
+                  </>
+                )}
+              </Styled.Nav>
+            )}
           </Styled.Wrapper>
         )}
       </Location>
