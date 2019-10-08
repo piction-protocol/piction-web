@@ -32,7 +32,12 @@ const Styled = {
     background-position: center;
     &::after {
       content: '';
+      width: 100%;
       padding-top: 50%;
+      background-color: rgba(0, 26, 49, .5);
+    }
+    &:hover::after {
+      visibility: hidden;
     }
   `,
   Link: styled(Link)`
