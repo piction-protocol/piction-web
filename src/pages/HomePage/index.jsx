@@ -3,8 +3,10 @@ import { Helmet } from 'react-helmet';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 
-import media from 'styles/media';
+import media, { mediaQuery } from 'styles/media';
 import { MainGrid } from 'styles/Grid';
+
+import useMedia from 'hooks/useMedia';
 
 import DNFBanner from 'components/organisms/Banner/DNFBanner';
 import { PrimaryButton } from 'components/atoms/Button';
@@ -93,6 +95,8 @@ const DashboardLink = styled(PrimaryButton)`
 `;
 
 function HomePage() {
+  const isDesktop = useMedia(mediaQuery.desktop);
+
   return (
     <>
       <Helmet>
@@ -132,13 +136,22 @@ function HomePage() {
               <br />
               픽션에서 새로운 경험을 시작하세요!
             </Styled.H1>
-            <DashboardLink
-              as={Link}
-              to="/dashboard"
-              size="mobile-mini"
-            >
-              나의 컨텐츠 등록하기
-            </DashboardLink>
+            {isDesktop ? (
+              <DashboardLink
+                as={Link}
+                to="/dashboard"
+              >
+                나의 컨텐츠 등록하기
+              </DashboardLink>
+            ) : (
+              <DashboardLink
+                as={Link}
+                to="/all"
+                size="mini"
+              >
+                연재중인 프로젝트
+              </DashboardLink>
+            )}
           </Section>
         </Styled.GrayDiv>
       </Main>
