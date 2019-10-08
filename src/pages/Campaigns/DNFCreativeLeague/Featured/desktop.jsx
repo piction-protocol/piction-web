@@ -69,7 +69,7 @@ const Featured = () => (
           }}
         />
       ))}
-      <Styled.Link to="/dashboard/new-project?tag=던파크리">
+      <Styled.Link to="/tag/던파크리">
         <Styled.ButtonImage
           as={allButton}
         />
