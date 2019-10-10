@@ -50,7 +50,7 @@ const Styled = {
   ImageUploader: styled(ImageUploader)`
     ${({ columns }) => columns && `grid-column: span ${columns};`}
   `,
-  Preview: styled.p`
+  Description: styled.p`
     color: var(--blue);
   `,
   Spec: styled.p`
@@ -170,7 +170,11 @@ function ProjectForm({
         value={formData.title}
         required
         errorMessage={errorMessage.title}
-      />
+      >
+        <Styled.Description>
+          프로젝트를 통해 연재하는 작품 또는 콘텐츠의 대표 제목을 입력하세요.
+        </Styled.Description>
+      </Styled.InputGroup>
       <Styled.InputGroup
         name="uri"
         label="프로젝트 ID"
@@ -186,10 +190,10 @@ function ProjectForm({
             수정이 불가능한 항목입니다.
           </Styled.Spec>
         ) : (
-          <Styled.Preview>
+          <Styled.Description>
             프로젝트 주소 : https://piction.network/project/
             {formData.uri}
-          </Styled.Preview>
+          </Styled.Description>
         )}
       </Styled.InputGroup>
       <Styled.ImageGroup>
@@ -225,12 +229,16 @@ function ProjectForm({
       </Styled.ImageGroup>
       <InputGroup
         name="synopsis"
-        label="시놉시스"
+        label="설명"
         placeholder="최대 100자"
         onChange={handleChange}
         value={formData.synopsis}
         errorMessage={errorMessage.synopsis}
-      />
+      >
+        <Styled.Description>
+          연재하는 작품 또는 콘텐츠에 대한 간단한 소개 또는 시놉시스를 입력하세요.
+        </Styled.Description>
+      </InputGroup>
       <Styled.ImageGroup>
         <Label>태그</Label>
         <TagsInput
