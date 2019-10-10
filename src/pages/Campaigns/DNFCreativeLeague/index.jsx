@@ -19,7 +19,6 @@ const Notice = React.lazy(() => import('./Notice'));
 
 const Styled = {
   Article: styled.article`
-    --main-color: #00fff6;
     display: flex;
     position: relative;
     flex-flow: column;

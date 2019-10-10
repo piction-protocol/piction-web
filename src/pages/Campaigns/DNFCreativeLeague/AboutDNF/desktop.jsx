@@ -17,14 +17,14 @@ const Styled = {
   `,
   About: styled.p`
     margin: 16px 0;
-    color: var(--gray--dark);
+    color: #BFBFBF;
     font-size: 16px;
     word-break: keep-all;
   `,
   Link: styled.a`
     margin-right: 8px;
-    color: var(--white);
-    font-size: var(--font-size--small);
+    color: #FFFFFF;
+    font-size: 14px;
     font-weight: bold;
     text-decoration: underline;
   `,

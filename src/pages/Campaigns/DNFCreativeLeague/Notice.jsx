@@ -29,7 +29,7 @@ const Styled = {
     `}
   `,
   Title: styled.h2`
-    color: var(--white);
+    color: #FFFFFF;
     font-size: 24px;
     ${media.desktop`
       font-size: 32px;
@@ -39,9 +39,9 @@ const Styled = {
     columns: 'var(--columns)',
   })`
     --columns: 6;
-    padding-top: var(--row-gap);
+    padding-top: 24px;
     border-top: 1px solid;
-    color: var(--gray--dark);
+    color: #BFBFBF;
     font-size: 14px;
     ${media.desktop`
       --columns: 8;
@@ -50,7 +50,7 @@ const Styled = {
   `,
   Name: styled.p`
     grid-column: 1 / span 2;
-    color: var(--white);
+    color: #FFFFFF;
     font-weight: bold;
     word-break: keep-all;
   `,
@@ -61,10 +61,10 @@ const Styled = {
     `}
   `,
   Tag: styled.strong`
-    color: var(--main-color);
+    color: #00FFF6;
   `,
   Link: styled.a`
-    color: var(--white);
+    color: #FFFFFF;
     font-weight: bold;
     text-decoration: underline;
   `,
