@@ -8,9 +8,12 @@ import { ReactComponent as Logo } from 'images/img-piction-logo--gray.svg';
 const Styled = {
   Footer: styled.footer`
     display: flex;
+    flex-flow: column;
     margin-top: auto;
-    padding: var(--row-gap) 0;
+    padding: 24px 0;
+    border-top: 1px solid #F2F2F2;
     border-top: 1px solid var(--gray--light);
+    background-color: #FFFFFF;
     background-color: var(--white);
     ${media.desktop`
       height: 112px;
@@ -21,12 +24,16 @@ const Styled = {
     flex: 1;
     flex-flow: column;
     align-items: center;
+    width: 100%;
+    max-width: 1280px;
     max-width: var(--max-width);
     height: 100%;
     margin: auto;
     padding: 0 var(--outer-gap);
     ${media.desktop`
       flex-flow: row wrap;
+      padding: 0 20px;
+      padding: 0 var(--outer-gap);
     `}
   `,
   Logo: styled(Logo)`
@@ -66,7 +73,9 @@ const Styled = {
   `,
   Item: styled.li`
     margin-bottom: 10px;
+    color: #BFBFBF;
     color: var(--gray--dark);
+    font-size: 14px;
     font-size: var(--font-size--small);
     ${media.desktop`
       margin: 4px 0;
@@ -78,6 +87,7 @@ const Styled = {
     color: inherit;
   `,
   Em: styled.em`
+    color: #000000;
     color: var(--black);
     font-style: normal;
   `,

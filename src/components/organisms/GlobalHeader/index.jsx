@@ -28,7 +28,9 @@ import { ReactComponent as LogoutIcon } from 'images/ic-logout.svg';
 
 const Styled = {
   Header: styled.header`
+    border-bottom: 1px solid #F2F2F2;
     border-bottom: 1px solid var(--gray--light);
+    background-color: #FFFFFF;
     background-color: var(--white);
   `,
   Wrapper: styled.div`
@@ -38,9 +40,12 @@ const Styled = {
     height: 52px;
     padding: 0 var(--outer-gap);
     ${media.desktop`
+      max-width: 1280px;
       max-width: var(--max-width);
       height: 80px;
       margin: auto;
+      padding: 0 20px;
+      padding: 0 var(--outer-gap);
     `}
   `,
   Link: styled(Link)`
@@ -49,6 +54,7 @@ const Styled = {
   Logo: styled(Logo)`
     height: 20px;
     ${media.desktop`
+      width: 155px;
       height: 40px;
     `}
   `,
@@ -65,11 +71,15 @@ const Styled = {
     }
   `,
   Login: styled(Link)`
+    color: #BFBFBF;
     color: var(--gray--dark);
+    font-size: 14px;
     font-size: var(--font-size--small);
   `,
   Signup: styled(Link)`
+    color: #1A92FF;
     color: var(--blue);
+    font-size: 14px;
     font-size: var(--font-size--small);
   `,
   User: styled.div`
