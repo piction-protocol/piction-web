@@ -1,9 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from '@reach/router';
 
-import Grid, { MainGrid } from 'styles/Grid';
+import Grid from 'styles/Grid';
 import media from 'styles/media';
+import MainGrid from './Grid';
+
+const createNthChildStyle = () => {
+  let style = '';
+
+  for (let n = 0; n < 9; n += 1) {
+    style += `
+      &:nth-child(${n + 1}) {
+        -ms-grid-row: ${n + 1};
+      }
+    `;
+  }
+
+  return css`${style}`;
+};
 
 const Styled = {
   Container: styled.section`
@@ -24,7 +39,10 @@ const Styled = {
     `}
     ${media.desktop`
       > * {
+        -ms-grid-column: 5;
+        -ms-grid-column-span: 15;
         grid-column: 3 / -3;
+        ${createNthChildStyle()}
       }
     `}
   `,
@@ -45,10 +63,18 @@ const Styled = {
     font-size: 14px;
     ${media.desktop`
       --columns: 8;
+      display: -ms-grid;
+      -ms-grid-columns:  1fr 20px 1fr 20px 1fr 20px 1fr 20px 1fr 20px 1fr 20px 1fr 20px 1fr;
+      margin-top: 24px;
       font-size: 16px;
+      @supports(column-gap: 24px) {
+        margin-top: 0;
+      }
     `}
   `,
   Name: styled.p`
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 3;
     grid-column: 1 / span 2;
     color: #FFFFFF;
     font-weight: bold;
@@ -57,6 +83,8 @@ const Styled = {
   Text: styled.p`
     grid-column: span 4;
     ${media.desktop`
+      -ms-grid-column: 5;
+      -ms-grid-column-span: 11;
       grid-column: span 6;
     `}
   `,

@@ -23,7 +23,7 @@ const Styled = {
   Body: styled.div`
     display: flex;
     flex-flow: column;
-    margin: 0 auto 16.667%;
+    margin-bottom: 16.667%;
   `,
   Images: styled.div`
     display: flex;

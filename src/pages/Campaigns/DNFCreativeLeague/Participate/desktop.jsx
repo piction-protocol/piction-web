@@ -10,6 +10,7 @@ import { ReactComponent as ParticipateButton } from './btn-participate.svg';
 const Styled = {
   Section: styled.section`
     background-color: #001629;
+    text-align: center;
   `,
   MainGrid: styled(MainGrid)`
     position: relative;
@@ -17,24 +18,25 @@ const Styled = {
   Image: styled.img`
     grid-column: 2 / -2;
     width: 100%;
+    max-width: 1030px;
   `,
   Start: styled.div`
     display: flex;
     position: absolute;
-    top: 0;
     right: 0;
+    bottom: 0;
     left: 0;
     flex-flow: column;
     grid-column: 5 / -5;
     align-items: center;
-    margin-top: 136%;
+    margin-bottom: 60px;
   `,
   Link: styled(Link)`
     display: flex;
     margin: 0 10px;
   `,
   ButtonImage: styled.svg`
-    width: 100%;
+    max-width: 100%;
     height: auto;
   `,
   Text: styled.p`
