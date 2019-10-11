@@ -20,11 +20,11 @@ const Styled = {
   `,
   About: styled.p`
     margin-bottom: 4.5vw;
-    color: var(--gray--dark);
+    color: #BFBFBF;
   `,
   Link: styled.a`
     margin: 1.11vw;
-    color: var(--white);
+    color: #FFFFFF;
     font-weight: bold;
     text-decoration: underline;
   `,

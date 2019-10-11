@@ -13,7 +13,9 @@ import introImage from './intro-desktop.png';
 const Styled = {
   Section: styled.section`
     position: relative;
+    flex-shrink: 0;
     background-color: #00213d;
+    text-align: center;
   `,
   Wrapper: styled.div`
     max-width: 1440px;
@@ -38,24 +40,31 @@ const Styled = {
   `,
   MainGrid: styled(MainGrid)`
     position: relative;
+    width: 100%;
+    max-width: 1280px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
   `,
   Image: styled.img`
     grid-column: 2 / -2;
     width: 100%;
-    margin-top: -21.85%;
+    max-width: 1030px;
+    margin: -21.85% auto 0;
   `,
   Thunder1: styled.img`
     position: absolute;
     z-index: 1;
+    right: 14.113%;
     bottom: 38.2%;
-    grid-column-start: 9;
   `,
   Thunder2: styled.img`
     position: absolute;
     z-index: 1;
+    left: 0;
     bottom: -30%;
     grid-column: 1 / span 2;
-    width: 100%;
   `,
 };
 

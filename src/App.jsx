@@ -35,7 +35,7 @@ const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'));
 
 const StyledRouter = styled(Router)`
   display: flex;
-  flex: 1;
+  flex: 1 0 auto;
 `;
 
 const NotFound = () => (
