@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
-
-import ContentImage from 'components/atoms/ContentImage';
+import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 
 const Styled = {
   Item: styled.article`
@@ -30,9 +28,8 @@ function WideProjectCard({
     <Styled.Item
       {...props}
     >
-      <ContentImage
-        ratio={1440 / 450}
-        image={wideThumbnail || dummyWideThumbnailImage}
+      <WideThumbnail
+        image={wideThumbnail}
       />
       <Styled.Text>
         <Styled.Title>{title}</Styled.Title>

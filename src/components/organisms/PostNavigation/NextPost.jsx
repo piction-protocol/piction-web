@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
-import dummyCoverImage from 'images/img-dummy-960x360.jpg';
-
-import ContentImage from 'components/atoms/ContentImage';
+import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
   NextPost: styled(Link)`
@@ -52,9 +50,10 @@ const Styled = {
 
 const NextPost = ({ post, ...props }) => (
   <Styled.NextPost to={`../${post.id}`} {...props}>
-    <ContentImage
-      image={post.cover || dummyCoverImage}
-      ratio={960 / 480}
+    <Cover
+      image={post.cover}
+      width={960}
+      height={480}
     />
     <Styled.Text>
       다음 포스트

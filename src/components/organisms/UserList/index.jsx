@@ -7,10 +7,8 @@ import 'moment/locale/ko';
 import useAPI from 'hooks/useAPI';
 
 import Pagination from 'components/molecules/Pagination';
-import ContentImage from 'components/atoms/ContentImage';
+import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Heading from 'components/atoms/Heading';
-
-import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
 
 const Styled = {
   Container: styled.div`
@@ -35,7 +33,7 @@ const Styled = {
     padding: 12px 0;
     border-bottom: 1px solid var(--gray--light);
   `,
-  UserPicture: styled(ContentImage)`
+  UserProfile: styled(UserProfile)`
     width: 56px;
     margin-right: 16px;
     border-radius: 50%;
@@ -84,9 +82,8 @@ function UserList({ title, projectId }) {
       <Styled.List>
         {subscribers.map(subscriber => (
           <Styled.Item key={subscriber.user.username}>
-            <Styled.UserPicture
-              image={subscriber.user.picture || dummyThumbnailImage}
-              ratio={500 / 500}
+            <Styled.UserProfile
+              image={subscriber.user.picture}
             />
             <Styled.UserName>
               {subscriber.user.username}

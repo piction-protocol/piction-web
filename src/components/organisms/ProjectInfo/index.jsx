@@ -11,7 +11,8 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
-import ContentImage from 'components/atoms/ContentImage';
+import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
+import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Heading from 'components/atoms/Heading';
 import Tag from 'components/atoms/Tag';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
@@ -20,8 +21,6 @@ import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
 import { ReactComponent as SettingIcon } from 'images/ic-setting.svg';
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
-import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
-import dummyUserPicture from 'images/img-user-profile.svg';
 
 const Styled = {
   Section: styled.section`
@@ -29,7 +28,7 @@ const Styled = {
     flex-flow: column;
     position: relative;
   `,
-  WideThumbnail: styled(ContentImage)`
+  WideThumbnail: styled(WideThumbnail)`
     ${media.desktop`
       max-height: 450px;
     `}
@@ -139,7 +138,7 @@ const Styled = {
       grid-row: 1;
     `}
   `,
-  UserPicture: styled(ContentImage)`
+  UserProfile: styled(UserProfile)`
     border-radius: 50%;
   `,
   Subscribe: styled.div`
@@ -187,8 +186,12 @@ function ProjectInfo({
   return (
     <Styled.Section {...props}>
       <Styled.WideThumbnail
-        ratio={isDesktop ? (1440 / 450) : (360 / 180)}
-        image={project.wideThumbnail || dummyWideThumbnailImage}
+        {...(isDesktop ? {
+          width: null, height: null,
+        } : {
+          width: 720, height: 360,
+        })}
+        image={project.wideThumbnail}
       />
       <Styled.MainGrid>
         <Styled.Text>
@@ -234,9 +237,8 @@ function ProjectInfo({
           )}
         </Styled.Text>
         <Styled.UserPictureWrapper>
-          <Styled.UserPicture
-            ratio={500 / 500}
-            image={project.user.picture || dummyUserPicture}
+          <Styled.UserProfile
+            image={project.user.picture}
           />
         </Styled.UserPictureWrapper>
         <Styled.Subscribe>

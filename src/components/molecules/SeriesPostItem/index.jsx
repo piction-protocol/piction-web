@@ -7,9 +7,7 @@ import 'moment/locale/ko';
 import media from 'styles/media';
 import Grid from 'styles/Grid';
 
-import ContentImage from 'components/atoms/ContentImage';
-
-import dummyCoverImage from 'images/img-dummy-960x360.jpg';
+import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
   Item: styled(Grid).attrs({
@@ -37,7 +35,7 @@ const Styled = {
       font-size: var(--font-size--large);
     `}
   `,
-  Cover: styled(ContentImage)`
+  Cover: styled(Cover)`
       grid-column: span 3;
     ${media.mobile`
       display: none;
@@ -84,7 +82,7 @@ function SeriesPostItem({
         #
         {index}
       </Styled.Index>
-      <Styled.Cover image={cover || dummyCoverImage} ratio={960 / 360} />
+      <Styled.Cover image={cover} />
       <Styled.Text>
         <Styled.Title>{title}</Styled.Title>
         {isViewable ? (

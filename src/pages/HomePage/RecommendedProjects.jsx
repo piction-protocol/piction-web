@@ -9,16 +9,14 @@ import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
 
 import { SecondaryButton } from 'components/atoms/Button';
-import ContentImage from 'components/atoms/ContentImage';
-
-import PlaceholderImage from 'images/img-dummy-960x360.jpg';
+import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 
 const ProjectWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
 `;
 
-const ProjectThumbnail = styled(ContentImage)`
+const ProjectThumbnail = styled(WideThumbnail)`
   ${media.mobile`
     margin: 0 -32px;
   `}
@@ -48,8 +46,9 @@ const Project = ({
   return (
     <ProjectWrapper to={projectPath}>
       <ProjectThumbnail
-        ratio={360 / 180}
-        image={wideThumbnail || PlaceholderImage}
+        width={360}
+        height={180}
+        image={wideThumbnail}
       />
       <ProjectTitle>{title}</ProjectTitle>
       <ProjectAuthor>{user.username}</ProjectAuthor>

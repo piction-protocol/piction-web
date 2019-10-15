@@ -23,7 +23,6 @@ const TagPage = React.lazy(() => import('pages/TagPage'));
 const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
 const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
-const MembershipPage = React.lazy(() => import('pages/MembershipPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
 const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
@@ -84,7 +83,6 @@ function App() {
               <ProjectPage path="project/:projectId/*" />
               <SeriesPage path="project/:projectId/series/:seriesId" />
               <PostPage path="project/:projectId/posts/:postId" />
-              <MembershipPage path="project/:projectId/memberships/" />
 
               <MyPage path="my/*" />
               <Dashboard path="dashboard/*" />

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { MainGrid } from 'styles/Grid';
 
-import ContentImage from 'components/atoms/ContentImage';
+import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
 import Heading from 'components/atoms/Heading';
 import FullscreenPopup from 'components/atoms/FullscreenPopup';
 import Tag from 'components/atoms/Tag';
@@ -28,7 +28,7 @@ const Styled = {
     top: 16px;
     right: 16px;
   `,
-  Thumbnail: styled(ContentImage)`
+  Thumbnail: styled(Thumbnail)`
     grid-column: 3 / 5;
     margin-bottom: 8px;
     border-radius: 50%;
@@ -68,10 +68,7 @@ function SynopsisPopup({
         <CloseIcon />
       </Styled.Button>
       <Styled.Grid>
-        <Styled.Thumbnail
-          ratio={500 / 500}
-          image={thumbnail}
-        />
+        <Styled.Thumbnail image={thumbnail} />
         <div>
           <Styled.Heading>{title}</Styled.Heading>
           <Styled.Title>{user.username}</Styled.Title>

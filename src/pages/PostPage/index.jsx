@@ -21,10 +21,9 @@ import PostNavigation from 'components/organisms/PostNavigation';
 import Spinner from 'components/atoms/Spinner';
 import Heading from 'components/atoms/Heading';
 import LikeButton from 'components/atoms/LikeButton';
-import ContentImage from 'components/atoms/ContentImage';
+import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import { PrimaryButton } from 'components/atoms/Button';
 
-import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
 
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
@@ -64,7 +63,7 @@ const Styled = {
       font-weight: bold;
     `}
   `,
-  UserPicture: styled(ContentImage)`
+  UserProfile: styled(UserProfile)`
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -224,9 +223,8 @@ function PostPage({ projectId, postId }) {
             {data.post.title}
           </Heading>
           <Styled.User>
-            <Styled.UserPicture
-              ratio={500 / 500}
-              image={data.project.user.picture || dummyThumbnailImage}
+            <Styled.UserProfile
+              image={data.project.user.picture}
             />
             {data.project.user.username}
           </Styled.User>
