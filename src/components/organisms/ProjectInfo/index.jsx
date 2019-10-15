@@ -186,6 +186,11 @@ function ProjectInfo({
   return (
     <Styled.Section {...props}>
       <Styled.WideThumbnail
+        {...(isDesktop ? {
+          width: null, height: null,
+        } : {
+          width: 720, height: 360,
+        })}
         image={project.wideThumbnail}
       />
       <Styled.MainGrid>
