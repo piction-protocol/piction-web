@@ -7,12 +7,10 @@ import 'moment/locale/ko';
 
 import Grid from 'styles/Grid';
 
-import dummyCoverImage from 'images/img-dummy-960x360.jpg';
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 
-import ContentImage from 'components/atoms/ContentImage';
-
+import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
   Item: styled(Grid).attrs({
@@ -53,7 +51,7 @@ const Styled = {
   })`
     grid-column: span 7;
   `,
-  Cover: styled(ContentImage)`
+  Cover: styled(Cover)`
     grid-column: span 3;
   `,
   Text: styled.div`
@@ -98,7 +96,7 @@ const Styled = {
 };
 
 function DashboardPostItem({
-  id, projectId, title, series, cover = dummyCoverImage,
+  id, projectId, title, series, cover,
   createdAt, publishedAt, status, handleDelete, ...props
 }) {
   return (
@@ -120,10 +118,7 @@ function DashboardPostItem({
             </Styled.Label>
           )}
         </Styled.Labels>
-        <Styled.Cover
-          ratio={960 / 360}
-          image={cover || dummyCoverImage}
-        />
+        <Styled.Cover image={cover} />
         <Styled.Text>
           <Styled.Series>
             {series ? series.name : '미지정'}

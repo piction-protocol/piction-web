@@ -5,9 +5,7 @@ import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
 
-import ContentImage from 'components/atoms/ContentImage';
-
-import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
+import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
 
 const Styled = {
   Section: styled.section`
@@ -38,7 +36,7 @@ const Styled = {
       background-color: var(--gray--light);
     }
   `,
-  Thumbnail: styled(ContentImage)`
+  Thumbnail: styled(Thumbnail)`
     flex: 0 0 auto;
     width: 40px;
     margin-right: 12px;
@@ -113,10 +111,7 @@ function UserMenu({
           </Styled.Title>
           {projects.map(project => (
             <Styled.Project to={`/project/${project.uri}`} key={project.id}>
-              <Styled.Thumbnail
-                ratio={500 / 500}
-                image={project.thumbnail || dummyThumbnailImage}
-              />
+              <Styled.Thumbnail image={project.thumbnail} />
               <Styled.ProjectTexts>
                 <Styled.ProjectTitle>
                   {project.title}

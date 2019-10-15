@@ -9,7 +9,7 @@ import media from 'styles/media';
 import { ReactComponent as ThumbupIcon } from 'images/ic-thumbup.svg';
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
 
-import ContentImage from 'components/atoms/ContentImage';
+import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
   Item: styled.article`
@@ -25,7 +25,7 @@ const Styled = {
     padding-bottom: 37.5%;
     overflow: hidden;
   `,
-  Cover: styled(ContentImage)`
+  Cover: styled(Cover)`
     position: absolute;
     width: 100%;
     height: 100%;
@@ -68,7 +68,7 @@ const Styled = {
       margin-bottom: 16px;
     `}
   `,
-  LockedCover: styled(ContentImage)`
+  LockedCover: styled(Cover)`
     filter: blur(16px);
     ${media.desktop`
       filter: blur(24px);

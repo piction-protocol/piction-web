@@ -5,9 +5,7 @@ import moment from 'moment';
 
 import media from 'styles/media';
 
-import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
-
-import ContentImage from 'components/atoms/ContentImage';
+import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
 
 const Styled = {
   Item: styled.article`
@@ -55,10 +53,7 @@ function ProjectCard({
     <Styled.Item
       {...props}
     >
-      <ContentImage
-        ratio={500 / 500}
-        image={thumbnail || dummyThumbnailImage}
-      />
+      <Thumbnail image={thumbnail} />
       <Styled.Text>
         <Styled.Title>{title}</Styled.Title>
         {children}

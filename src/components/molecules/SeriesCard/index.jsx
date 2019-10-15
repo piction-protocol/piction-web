@@ -4,9 +4,7 @@ import styled from 'styled-components';
 
 import media from 'styles/media';
 
-import ContentImage from 'components/atoms/ContentImage';
-
-import dummyCoverImage from 'images/img-dummy-960x360.jpg';
+import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
   Item: styled.article`
@@ -18,11 +16,11 @@ const Styled = {
       text-align: center;
     `}
   `,
-  Thumbnails: styled.div`
+  Covers: styled.div`
     display: flex;
     margin-bottom: 16px;
   `,
-  Thumbnail: styled(ContentImage)`
+  Cover: styled(Cover)`
     flex: 1;
     &:first-child {
       z-index: 1;
@@ -62,16 +60,14 @@ function SeriesCard({
     <Styled.Item
       {...props}
     >
-      <Styled.Thumbnails>
-        <Styled.Thumbnail
-          ratio={960 / 360}
-          image={thumbnails[0] || dummyCoverImage}
+      <Styled.Covers>
+        <Styled.Cover
+          image={thumbnails[0]}
         />
-        <Styled.Thumbnail
-          ratio={960 / 360}
+        <Styled.Cover
           image={thumbnails[1]}
         />
-      </Styled.Thumbnails>
+      </Styled.Covers>
       <Styled.Title>{name}</Styled.Title>
       <Styled.Text>{`${postCount} 포스트`}</Styled.Text>
     </Styled.Item>
