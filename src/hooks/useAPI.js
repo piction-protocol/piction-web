@@ -22,7 +22,7 @@ function useAPI() {
     projects: () => API.get('my/projects'),
     projectSubscriptions: params => API.get(`my/projects/${params.projectId}/subscriptions`, params),
     posts: params => API.get(`my/projects/${params.projectId}/posts`, params),
-    subscriptions: () => API.get('my/subscriptions'),
+    subscriptions: params => API.get('my/subscriptions', params),
   };
 
   const resetPassword = {
