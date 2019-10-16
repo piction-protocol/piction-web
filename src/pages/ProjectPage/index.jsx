@@ -36,7 +36,7 @@ function ProjectPage({ projectId }) {
   const [recommendedProjects, setRecommendedProjects] = useState([]);
   const [series, setSeries] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
+  const [cookies, setCookie] = useCookies();
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), []);
   const isDesktop = useMedia(mediaQuery.desktop);
