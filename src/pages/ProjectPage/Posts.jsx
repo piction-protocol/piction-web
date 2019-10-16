@@ -61,16 +61,16 @@ const Posts = ({
         {recommendedProjects.length > 0 && (
           <Styled.Aside>
             <h2>추천 프로젝트</h2>
-            {recommendedProjects.map(recommededProject => (
+            {recommendedProjects.map(recommendedProject => (
               <Link
-                to={`/project/${recommededProject.uri}`}
-                key={recommededProject.id}
+                to={`/project/${recommendedProject.uri}`}
+                key={recommendedProject.id}
               >
                 <WideProjectCard
-                  {...recommededProject}
+                  {...recommendedProject}
                 >
                   <Styled.CardText>
-                    {`구독자 수 ${recommededProject.subscriptionUserCount}`}
+                    {`구독자 수 ${recommendedProject.subscriptionUserCount}`}
                   </Styled.CardText>
                 </WideProjectCard>
               </Link>
