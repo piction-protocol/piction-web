@@ -67,6 +67,10 @@ function useAPI() {
     getProjects: params => API.get('/recommended/projects', params),
   };
 
+  const search = {
+    project: params => API.get('/search/projects', params),
+  };
+
   const series = projectId => ({
     get: params => API.get(`/projects/${projectId}/series/${params.seriesId}`),
     getAll: () => API.get(`/projects/${projectId}/series`),
@@ -109,6 +113,7 @@ function useAPI() {
     project,
     fanPass,
     recommended,
+    search,
     series,
     session,
     user,
