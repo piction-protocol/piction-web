@@ -68,11 +68,15 @@ function SearchBar({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setQuery('');
     setIsOpened(false);
     navigate(`/search?query=${query}`);
   };
 
-  const toggleModal = () => setIsOpened(prev => !prev);
+  const toggleModal = () => {
+    setQuery('');
+    setIsOpened(prev => !prev);
+  };
 
   return isDesktop ? (
     <Styled.Form onSubmit={handleSubmit} {...props}>
