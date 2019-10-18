@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 
-import { mediaQuery } from 'styles/media';
+import media, { mediaQuery } from 'styles/media';
 import useMedia from 'hooks/useMedia';
 
 import Modal from 'components/externals/Modal';
@@ -18,11 +18,15 @@ const Styled = {
     position: relative;
     flex: 1;
     margin-right: 16px;
+    ${media.desktop`
+      width: 220px;
+    `}
   `,
   Input: styled.input.attrs({
     type: 'search',
   })`
     flex: 1;
+    min-width: 0;
     height: 40px;
     padding: 8px 12px;
     padding-left: 40px;
