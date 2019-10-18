@@ -19,6 +19,7 @@ const SignupPage = React.lazy(() => import('pages/SignupPage'));
 const ForgotPasswordPage = React.lazy(() => import('pages/ForgotPasswordPage'));
 const SubscriptionsPage = React.lazy(() => import('pages/SubscriptionsPage'));
 const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'));
+const Search = React.lazy(() => import('pages/Search'));
 const TagPage = React.lazy(() => import('pages/TagPage'));
 const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
 const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
@@ -79,6 +80,7 @@ function App() {
               <SubscriptionsPage path="subscriptions" />
               <AllProjectsPage path="all" />
               <TagPage path="tag/:tagName" />
+              <Search path="search" />
 
               <ProjectPage path="project/:projectId/*" />
               <SeriesPage path="project/:projectId/series/:seriesId" />
