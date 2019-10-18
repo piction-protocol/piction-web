@@ -16,6 +16,7 @@ import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import ProjectTitle from 'components/molecules/ProjectTitle';
 import UserMenu from 'components/molecules/UserMenu';
+import SearchBox from 'components/molecules/SearchBox';
 import Dropdown from 'components/atoms/Dropdown';
 import Sidemenu from 'components/atoms/Sidemenu';
 
@@ -64,11 +65,13 @@ const Styled = {
     margin-left: auto;
     white-space: nowrap;
     > *:not(:last-child) {
-      margin-right: 16px;
+      margin-right: 12px;
       ${media.desktop`
         margin-right: 48px;
       `}
     }
+  `,
+  SearchBox: styled(SearchBox)`
   `,
   Login: styled(Link)`
     color: #BFBFBF;
@@ -177,6 +180,7 @@ function GlobalHeader({ paths, child, ...props }) {
             )}
             {/^\/login|^\/signup/.test(location.pathname) || (
               <Styled.Nav>
+                <Styled.SearchBox />
                 {currentUser ? (
                   <Styled.User ref={menuRef}>
                     <Styled.Toggle
