@@ -68,6 +68,7 @@ function SearchBar({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    event.target.querySelector('input').blur();
     setQuery('');
     setIsOpened(false);
     navigate(`/search?query=${query}`);
