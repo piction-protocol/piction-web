@@ -71,8 +71,6 @@ const Styled = {
       `}
     }
   `,
-  SearchBox: styled(SearchBox)`
-  `,
   Login: styled(Link)`
     color: #BFBFBF;
     color: var(--gray--dark);
@@ -180,7 +178,7 @@ function GlobalHeader({ paths, child, ...props }) {
             )}
             {/^\/login|^\/signup/.test(location.pathname) || (
               <Styled.Nav>
-                <Styled.SearchBox />
+                <SearchBox />
                 {currentUser ? (
                   <Styled.User ref={menuRef}>
                     <Styled.Toggle

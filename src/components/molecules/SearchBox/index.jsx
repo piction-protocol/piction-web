@@ -11,13 +11,17 @@ import { ReactComponent as SearchIcon } from 'images/ic-search.svg';
 import { ReactComponent as CloseIcon } from 'images/ic-close.svg';
 
 const Styled = {
-  Form: styled.form`
+  Form: styled.form.attrs({
+    role: 'search',
+  })`
     display: flex;
     position: relative;
     flex: 1;
     margin-right: 16px;
   `,
-  Input: styled.input`
+  Input: styled.input.attrs({
+    type: 'search',
+  })`
     flex: 1;
     height: 40px;
     padding: 8px 12px;
@@ -59,7 +63,7 @@ const Styled = {
   `,
 };
 
-function SearchBar({
+function SearchBox({
   ...props
 }) {
   const [isOpened, setIsOpened] = useState(false);
@@ -112,4 +116,4 @@ function SearchBar({
   );
 }
 
-export default SearchBar;
+export default SearchBox;
