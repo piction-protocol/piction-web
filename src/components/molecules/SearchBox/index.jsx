@@ -17,6 +17,7 @@ const Styled = {
     display: flex;
     position: relative;
     flex: 1;
+    min-width: 0;
     margin-right: 16px;
     ${media.desktop`
       width: 220px;
@@ -26,7 +27,7 @@ const Styled = {
     type: 'search',
   })`
     flex: 1;
-    min-width: 0;
+    width: 100%;
     height: 40px;
     padding: 8px 12px;
     padding-left: 40px;
