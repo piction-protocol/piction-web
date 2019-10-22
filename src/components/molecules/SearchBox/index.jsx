@@ -26,7 +26,6 @@ const Styled = {
   Input: styled.input.attrs({
     type: 'search',
   })`
-    flex: 1;
     width: 100%;
     height: 40px;
     padding: 8px 12px;
@@ -57,6 +56,7 @@ const Styled = {
     type: 'button',
   })`
     display: flex;
+    margin: auto;
   `,
   Modal: styled(Modal)`
     position: absolute;
