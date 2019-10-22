@@ -75,7 +75,9 @@ function SignupForm({ location }) {
     try {
       setIsLoading(true);
       const response = await API.user.create(formData);
-      API.token.create(response.data.accessToken);
+      API.token.create(response.data.accessToken, {
+        expires: new Date('2099-12-31T23:59:59'),
+      });
       navigate('/signup/welcome', { replace: true, state: location.state });
     } catch (error) {
       setErrorMessage({
