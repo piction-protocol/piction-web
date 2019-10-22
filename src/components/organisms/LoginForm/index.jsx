@@ -57,7 +57,7 @@ function LoginForm({ redirectTo }) {
   const [formData, { handleChange }] = useForm({
     loginId: '',
     password: '',
-    rememberme: false,
+    rememberme: true,
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [API] = useAPI();
