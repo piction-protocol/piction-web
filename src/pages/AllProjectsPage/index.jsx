@@ -38,6 +38,7 @@ const Styled = {
   `,
   Link: styled(Link)`
     grid-column: span 3;
+    overflow: hidden;
   `,
   CardText: styled.p`
     overflow: hidden;
