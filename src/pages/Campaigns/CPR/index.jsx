@@ -15,10 +15,10 @@ import intro2x from './intro-mobile@2x.png';
 import intro3x from './intro-mobile@3x.png';
 import introDesktop from './intro-desktop.png';
 
-import step from './step-mobile.png';
-import step2x from './step-mobile@2x.png';
-import step3x from './step-mobile@3x.png';
-import stepDesktop from './step-desktop.png';
+import steps from './steps-mobile.png';
+import steps2x from './steps-mobile@2x.png';
+import steps3x from './steps-mobile@3x.png';
+import stepsDesktop from './steps-desktop.png';
 
 const Styled = {
   Article: styled.article`
@@ -65,11 +65,11 @@ function CPR() {
         alt="당신의 서랍 속 작품. 다시 심장 뛰게 하세요."
       />
       <Styled.Image
-        src={step}
+        src={steps}
         srcSet={`
-          ${step} 360w,
-          ${step2x} 720w,
-          ${step3x} 1080w
+          ${steps} 360w,
+          ${steps2x} 720w,
+          ${steps3x} 1080w
         `}
         alt="작품 올리고, 용돈도 꿀-꺽! 참 쉬운 참여 방법."
       />
@@ -102,7 +102,7 @@ function CPR() {
         }}
       >
         <Styled.Image
-          src={stepDesktop}
+          src={stepsDesktop}
           alt="작품 올리고, 용돈도 꿀-꺽! 참 쉬운 참여 방법."
         />
       </Styled.Section>
