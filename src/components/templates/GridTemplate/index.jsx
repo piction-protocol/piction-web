@@ -11,6 +11,7 @@ const Styled = {
     display: flex;
     flex: 1;
     flex-flow: column;
+    margin-bottom: var(--row-gap);
   `,
 };
 
