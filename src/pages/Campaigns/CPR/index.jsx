@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { importMDX } from 'mdx.macro';
 
 import media, { mediaQuery } from 'styles/media';
 
@@ -20,10 +21,13 @@ import stepsDesktop from './steps-desktop.png';
 
 import { ReactComponent as ParticipateButton } from './btn-participate.svg';
 
+import NoticeComponents from '../NoticeComponents';
+
+const Notice = React.lazy(() => importMDX('./Notice.mdx'));
+
 const Styled = {
   Article: styled.article`
     display: flex;
-    position: relative;
     flex-flow: column;
     width: 100%;
   `,
@@ -31,6 +35,7 @@ const Styled = {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    position: relative;
     overflow: hidden;
   `,
   Image: styled.img`
@@ -115,6 +120,7 @@ function CPR() {
           <ParticipateButton />
         </Styled.Link>
       </Styled.Picture>
+      <Notice components={NoticeComponents} />
     </Styled.Article>
   );
 }
