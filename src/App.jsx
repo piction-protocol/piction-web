@@ -93,8 +93,8 @@ function App() {
               <Terms components={TermsComponents} path="terms" />
               <Privacy components={TermsComponents} path="privacy" />
 
-              <CPR path="campaigns/cpr" />
               <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
+              <CPR path="campaigns/cpr_2019" />
 
               <CreatorsGuide path="creatorsguide" />
 
