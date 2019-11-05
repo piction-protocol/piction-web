@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { importMDX } from 'mdx.macro';
+import axios from 'axios';
+import moment from 'moment';
 
 import media, { mediaQuery } from 'styles/media';
 
@@ -18,6 +20,8 @@ import steps from './steps-mobile.png';
 import steps2x from './steps-mobile@2x.png';
 import steps3x from './steps-mobile@3x.png';
 import stepsDesktop from './steps-desktop.png';
+
+import cloud from './img-cloud.png';
 
 import { ReactComponent as ParticipateButton } from './btn-participate.svg';
 
@@ -46,9 +50,32 @@ const Styled = {
       width: auto;
     `}
   `,
-  Link: styled.a.attrs({
+  Cloud: styled.div`
+    position: absolute;
+    background-size: contain;
+    background-image: url(${cloud});
+    background-repeat: no-repeat;
+    color: #c5273f;
+    text-align: center;
+    ${media.mobile`
+      bottom: 46.6%;
+      width: 77.2%;
+      height: 5.92%;
+      padding-top: 2.78%;
+      font-size: 3.88vw;
+    `}
+    ${media.desktop`
+      bottom: 334px;
+      width: 278px;
+      height: 61px;
+      margin-left: 154px;
+      padding-top: 10px;
+      font-size: 14px;
+    `}
+  `,
+  Link: styled.a.attrs(() => ({
     target: '_blank',
-  })`
+  }))`
     position: absolute;
     display: flex;
     ${media.mobile`
@@ -67,6 +94,20 @@ const Styled = {
 };
 
 function CPR() {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    const getValue = async () => {
+      const { data } = await axios.get('https://api.coinone.co.kr/ticker/', {
+        params: {
+          currency: 'PXL',
+        },
+      });
+      setValue(data.yesterday_last * 30000);
+    };
+
+    getValue();
+  }, []);
+
   return (
     <Styled.Article>
       <Styled.Picture
@@ -100,6 +141,9 @@ function CPR() {
           `}
           alt="당신의 서랍 속 작품. 다시 심장 뛰게 하세요."
         />
+        <Styled.Cloud>
+          {`*${moment().subtract(1, 'days').format('YYYY.MM.DD')} 기준 ${value.toLocaleString()}원 상당!`}
+        </Styled.Cloud>
       </Styled.Picture>
       <Styled.Picture
         style={{
