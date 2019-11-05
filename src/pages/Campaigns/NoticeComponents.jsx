@@ -62,7 +62,9 @@ const P = styled.p`
   color: var(--gray--dark);
 `;
 
-const A = styled.a`
+const A = styled.a.attrs(() => ({
+  target: '_blank',
+}))`
   color: var(--white);
   font-weight: bold;
   text-decoration: underline;
