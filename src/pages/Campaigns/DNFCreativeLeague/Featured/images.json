@@ -1,11 +1,11 @@
 [
   {
     "path": "https://piction.network/project/darktiger/",
-    "image": "https://cdn.piction.network/projects/225/posts/cover/1572418014885.png?w=284&h=142&quality=80&output=webp"
+    "image": "https://cdn.piction.network/projects/225/posts/cover/1572418014885.png?w=284&h=142&quality=80"
   },
   {
     "path": "https://piction.network/project/fungback/",
-    "image": "https://cdn.piction.network/projects/238/posts/cover/1572867924875.png?w=295&h=148&quality=80&output=webp"
+    "image": "https://cdn.piction.network/projects/238/posts/cover/1572867924875.png?w=295&h=148&quality=80"
   },
   {
     "path": "https://piction.network/project/piano/",
@@ -13,6 +13,6 @@
   },
   {
     "path": "https://piction.network/project/dobcos/",
-    "image": "https://cdn.piction.network/projects/75/posts/cover/1572781187152.jpg?w=295&h=148&quality=80&output=webp"
+    "image": "https://cdn.piction.network/projects/75/posts/cover/1572781187152.jpg?w=295&h=148&quality=80"
   }
 ]
