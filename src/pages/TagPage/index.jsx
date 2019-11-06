@@ -52,8 +52,9 @@ function TagPage({ tagName }) {
   useEffect(() => {
     const getProjects = async () => {
       try {
-        const { data } = await API.project.getAll({
-          params: { size: 100, page, tagName },
+        const { data } = await API.project.getTaggingProjects({
+          tag: tagName,
+          params: { size: 100, page },
         });
         setProjects(data.content);
         setCount(data.numberOfElements);
