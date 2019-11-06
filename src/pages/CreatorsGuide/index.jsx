@@ -28,6 +28,7 @@ const Styled = {
     display: flex;
     flex: 1;
     flex-flow: column;
+    width: 100%;
   `,
   Intro: styled.section`
     display: flex;
