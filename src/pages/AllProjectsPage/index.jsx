@@ -1,10 +1,10 @@
-import React, {
-  useState, useEffect, useCallback, useRef,
-} from 'react';
+import React, { useRef } from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 
-import useAPI from 'hooks/useAPI';
+import axios from 'axios';
+import useSWR, { useSWRPages } from 'swr';
+
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import media from 'styles/media';
@@ -49,39 +49,72 @@ const Styled = {
   `,
 };
 
+/**
+ * FIXME: Custom fetcher 함수를 구현해서 별도로 분리해야 합니다. POC 구현을 간단하게 하기 위해 그냥 여기에 복붙합니다.
+ */
+async function fetcher(args) {
+  const API = axios.create({
+    baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
+    headers: {
+      'X-Device-Platform': 'web',
+      accept: 'application/vnd.piction.v1+json',
+    },
+  });
+  const res = await API.get(args);
+  return res.data;
+}
+
+
 function AllProjectsPage() {
-  const [projects, setProjects] = useState([]);
-  const [page, setPage] = useState(1);
-  const [pageable, setPageable] = useState({});
+  const FETCHING_SIZE = 20;
   const listRef = useRef(null);
 
-  const [API] = useCallback(useAPI(), []);
+  /**
+   * TODO: 필요에 따라서 별도로 분리합니다. 여기 있어도 크게 상관없긴 할 것 같습니다.
+   *
+   * 가져온 데이터로 구성할 페이지 컴포넌트
+   */
+  function ProjectsPage({ offset, withSWR }) {
+    const { data } = withSWR(
+      useSWR(() => `/projects?size=${FETCHING_SIZE}&page=${offset + 1}`, fetcher),
+    );
 
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const { data: { content: projectsData, ...pageableData } } = await API.project.getAll({
-          params: { size: 20, page },
-        });
-        setPageable(pageableData);
+    if (!data) return <span>Loading</span>;
+    return data.content.map(project => (
+      <Styled.Link to={`/project/${project.uri}`} key={project.id}>
+        <ProjectCard {...project}>
+          <Styled.CardText>
+            {project.user.username}
+          </Styled.CardText>
+        </ProjectCard>
+      </Styled.Link>
+    ));
+  }
 
-        if (pageableData.first) {
-          setProjects(projectsData);
-        } else {
-          setProjects(prev => [...prev, ...projectsData]);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  /**
+   * SWR 데이터를 가지고 다음 페이지의 offset을 계산하는 함수
+   * 다음 페이지가 없을 때는 null을 호출해야 하는 것으로 보이지만 공식 문서에 언급은 없음
+   */
+  function nextOffset(data) {
+    if (data.last) return null;
+    return data.pageable.pageNumber + 1;
+  }
 
-    getProjects();
-  }, [API, page]);
+  const {
+    pages,
+    isLoadingMore,
+    isReachingEnd,
+    loadMore,
+  } = useSWRPages(
+    'all-projects',
+    ProjectsPage,
+    nextOffset,
+    [],
+  );
 
   useOnScrollToBottom(listRef, () => {
-    if (!pageable.last) {
-      setPage(prev => prev + 1);
-    }
+    if (isLoadingMore || isReachingEnd) return;
+    loadMore();
   });
 
   return (
@@ -98,15 +131,7 @@ function AllProjectsPage() {
       )}
       ref={listRef}
     >
-      {projects.map(project => (
-        <Styled.Link to={`/project/${project.uri}`} key={project.id}>
-          <ProjectCard {...project}>
-            <Styled.CardText>
-              {project.user.username}
-            </Styled.CardText>
-          </ProjectCard>
-        </Styled.Link>
-      ))}
+      {pages}
     </GridTemplate>
   );
 }
