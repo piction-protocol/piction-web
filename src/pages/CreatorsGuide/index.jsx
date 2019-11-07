@@ -7,7 +7,7 @@ import Grid, { MainGrid } from 'styles/Grid';
 
 import useMedia from 'hooks/useMedia';
 
-import DNFBanner from 'components/organisms/Banner/DNFBanner';
+import FeaturedBanner from 'components/organisms/Banner/FeaturedBanner';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as CircleSymbol } from 'images/img-circlesymbol.svg';
@@ -28,6 +28,7 @@ const Styled = {
     display: flex;
     flex: 1;
     flex-flow: column;
+    width: 100%;
   `,
   Intro: styled.section`
     display: flex;
@@ -317,7 +318,7 @@ function CreatorsGuide() {
           </Styled.Link>
         )}
       </Styled.Outro>
-      <DNFBanner />
+      <FeaturedBanner />
     </Styled.Main>
   );
 }

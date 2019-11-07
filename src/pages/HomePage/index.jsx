@@ -8,7 +8,7 @@ import { MainGrid } from 'styles/Grid';
 
 import useMedia from 'hooks/useMedia';
 
-import DNFBanner from 'components/organisms/Banner/DNFBanner';
+import Banner from 'components/organisms/Banner/FeaturedBanner';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import Intro from './Intro';
@@ -21,6 +21,7 @@ const Main = styled.main`
   display: flex;
   flex: 1;
   flex-flow: column;
+  max-width: 100%;
   font-size: var(--font-size--small);
   word-break: keep-all;
   ${media.desktop`
@@ -104,7 +105,7 @@ function HomePage() {
       </Helmet>
 
       <Main>
-        <DNFBanner />
+        <Banner />
         <Intro />
 
         <EnglishIntroduction>
