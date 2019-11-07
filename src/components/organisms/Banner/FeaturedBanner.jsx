@@ -17,7 +17,7 @@ const FeaturedBanner = () => (
     }, {
       mobileImage: cprMobileImage,
       desktopImage: cprDesktopImage,
-      title: '2019 픽션 X 던파 크리에이티브 리그2',
+      title: '전 국민 창작지원 프로그램, 심폐소생전',
       color: '#f45067',
       link: '/campaigns/cpr_2019',
     }]}
