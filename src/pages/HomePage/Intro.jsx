@@ -7,7 +7,7 @@ import Grid, { MainGrid } from 'styles/Grid';
 
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
-import IntroImage from './img-landingpage-intro.png';
+import IntroImage from 'images/piction-symbol.svg';
 
 const Styled = {
   Section: styled(MainGrid).attrs({
