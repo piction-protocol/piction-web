@@ -6,6 +6,7 @@ import media from 'styles/media';
 
 import Banner from 'components/organisms/Banner/FeaturedBanner';
 
+import Choice from './Choice';
 import Intro from './Intro';
 import Feature from './Feature';
 import Next from './Next';
@@ -46,6 +47,7 @@ function HomePage() {
 
       <Main>
         <Banner />
+        <Choice />
         <Intro />
 
         <Feature />
