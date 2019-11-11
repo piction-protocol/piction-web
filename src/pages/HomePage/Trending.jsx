@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import { Link } from '@reach/router';
 
 import useAPI from 'hooks/useAPI';
+import useMedia from 'hooks/useMedia';
 
 import { MainGrid } from 'styles/Grid';
-import media from 'styles/media';
+import media, { mediaQuery } from 'styles/media';
 
 import ProjectCard from 'components/molecules/ProjectCard';
+import UserProfile from 'components/atoms/ContentImage/UserProfile';
 
 const Styled = {
   Section: styled(MainGrid).attrs({
@@ -46,18 +49,38 @@ const Styled = {
     color: #999999;
     font-size: var(--font-size--small);
   `,
-  ProjectCard: styled(ProjectCard)`
+  Link: styled(Link)`
     grid-column: span 3;
   `,
+  Synopsis: styled.p`
+    height: 40px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+  `,
   Author: styled.p`
+    display: flex;
+    align-items: center;
     color: #999999;
     font-size: 13px;
+  `,
+  UserProfile: styled(UserProfile)`
+    width: 32px;
+    margin-right: 12px;
+    border-radius: 50%;
+    overflow: hidden;
+  `,
+  LoginId: styled.span`
+    color: var(--gray--dark);
+    font-size: 12px;
   `,
 };
 
 const Trending = (props) => {
   const [projects, setProjects] = useState([]);
   const [API] = useCallback(useAPI(), []);
+  const isDesktop = useMedia(mediaQuery.desktop);
 
   useEffect(() => {
     async function fetchProject() {
@@ -81,11 +104,34 @@ const Trending = (props) => {
         </Styled.SubTitle>
       </Styled.Texts>
       {projects.map(project => (
-        <Styled.ProjectCard {...project} key={project.id}>
-          <Styled.Author>
-            {project.user.username}
-          </Styled.Author>
-        </Styled.ProjectCard>
+        <Styled.Link to={`/project/${project.uri}`} key={project.id}>
+          <ProjectCard {...project}>
+            {isDesktop ? (
+              <>
+                <Styled.Synopsis>
+                  {project.synopsis}
+                </Styled.Synopsis>
+                <Styled.Author>
+                  <Styled.UserProfile
+                    image={project.user.picture}
+                  />
+                  <div>
+                    {project.user.username}
+                    <br />
+                    <Styled.LoginId>
+                      @
+                      {project.user.loginId}
+                    </Styled.LoginId>
+                  </div>
+                </Styled.Author>
+              </>
+            ) : (
+              <Styled.Author>
+                {project.user.username}
+              </Styled.Author>
+            )}
+          </ProjectCard>
+        </Styled.Link>
       ))}
     </Styled.Section>
   );
