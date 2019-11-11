@@ -31,8 +31,11 @@ const Styled = {
       }
     `}
   `,
-  MainImage: styled(Thumbnail)`
+  MainImage: styled(Link)`
     grid-column: 1 / -1;
+    ${media.mobile`
+      margin: calc( -1 * var(--outer-gap));
+    `}
     ${media.desktop`
       grid-column: 1 / 5;
       grid-row: span 2;
@@ -43,7 +46,7 @@ const Styled = {
     ${media.mobile`
       z-index: 1;
       grid-column: 1 / -1;
-      margin: -64px var(--outer-gap) 20px;
+      margin: -64px 0 20px;
       padding-top: 20px;
       background-color: var(--white);
       text-align: center;
@@ -142,9 +145,9 @@ const Choice = (props) => {
   return collection ? (
     <Styled.Container {...props}>
       <MainGrid>
-        <Styled.MainImage
-          image={collection.thumbnail}
-        />
+        <Styled.MainImage to={collection.uri ? `/project/${collection.uri}` : ''}>
+          <Thumbnail image={collection.thumbnail} />
+        </Styled.MainImage>
         <Styled.Texts>
           <Styled.Name>
             Piction’s Choice
