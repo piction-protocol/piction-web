@@ -48,11 +48,16 @@ function useAPI() {
   const project = {
     getAll: params => API.get('/projects', params),
     getTaggingProjects: params => API.get(`/projects/tags/${params.tag}`, params),
+    getTrendingProjects: params => API.get('/projects/trending', params),
     create: params => API.post('/projects', params),
     get: params => API.get(`/projects/${params.projectId}`),
     update: params => API.put(`/projects/${params.projectId}`, params),
     uploadThumbnail: params => API.patch('/projects/thumbnail', params, patchConfig),
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
+  };
+
+  const collection = {
+    getActive: params => API.get('/collections/active', params),
   };
 
   const fanPass = {
@@ -111,6 +116,7 @@ function useAPI() {
     resetPassword,
     post,
     project,
+    collection,
     fanPass,
     recommended,
     search,

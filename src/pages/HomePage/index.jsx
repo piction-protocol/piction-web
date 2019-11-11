@@ -7,6 +7,7 @@ import media from 'styles/media';
 import Banner from 'components/organisms/Banner/FeaturedBanner';
 
 import Choice from './Choice';
+import Trending from './Trending';
 import Intro from './Intro';
 import Feature from './Feature';
 import Next from './Next';
@@ -48,6 +49,7 @@ function HomePage() {
       <Main>
         <Banner />
         <Choice />
+        <Trending />
         <Intro />
 
         <Feature />
