@@ -52,8 +52,11 @@ const Styled = {
   Link: styled(Link)`
     grid-column: span 3;
   `,
+  ProjectCard: styled(ProjectCard)`
+    height: 100%;
+  `,
   Synopsis: styled.p`
-    height: 40px;
+    max-height: 40px;
     margin-bottom: 12px;
     overflow: hidden;
     color: var(--gray--dark);
@@ -62,6 +65,7 @@ const Styled = {
   Author: styled.p`
     display: flex;
     align-items: center;
+    margin-top: auto;
     color: #999999;
     font-size: 13px;
   `,
@@ -105,7 +109,7 @@ const Trending = (props) => {
       </Styled.Texts>
       {projects.map(project => (
         <Styled.Link to={`/project/${project.uri}`} key={project.id}>
-          <ProjectCard {...project}>
+          <Styled.ProjectCard {...project}>
             {isDesktop ? (
               <>
                 <Styled.Synopsis>
@@ -130,7 +134,7 @@ const Trending = (props) => {
                 {project.user.username}
               </Styled.Author>
             )}
-          </ProjectCard>
+          </Styled.ProjectCard>
         </Styled.Link>
       ))}
     </Styled.Section>
