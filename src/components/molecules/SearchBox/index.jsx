@@ -50,7 +50,7 @@ const Styled = {
     type: 'button',
   })`
     display: flex;
-    margin: auto;
+    margin-left: auto;
   `,
   Modal: styled(Modal)`
     position: absolute;

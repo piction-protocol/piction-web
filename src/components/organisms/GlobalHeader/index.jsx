@@ -44,12 +44,6 @@ const Styled = {
     padding: 0 var(--outer-gap);
     font-size: var(--font-size--small);
     white-space: nowrap;
-    > *:not(:last-child) {
-      margin-right: 12px;
-      ${media.desktop`
-        margin-right: 40px;
-      `}
-    }
     ${media.desktop`
       max-width: 1280px;
       max-width: var(--max-width);
@@ -61,6 +55,10 @@ const Styled = {
   `,
   Link: styled(Link)`
     display: flex;
+    margin-right: 12px;
+    ${media.desktop`
+      margin-right: 40px;
+    `}
   `,
   Logo: styled(Logo)`
     height: 20px;
@@ -75,8 +73,9 @@ const Styled = {
     margin-right: 16px;
     margin-left: auto;
     ${media.desktop`
-      width: 220px;
       flex: 0 auto;
+      width: 220px;
+      margin-right: 40px;
     `}
   `,
   Login: styled(Link)`
@@ -105,6 +104,9 @@ const Styled = {
     background-position: center;
     background-size: cover;
     cursor: pointer;
+    ${media.mobile`
+      margin-left: 16px;
+    `}
     ${media.desktop`
       width: 40px;
       height: 40px;
@@ -205,12 +207,12 @@ function GlobalHeader({ paths, child, ...props }) {
                 </Styled.Link>
                 {isDesktop && (
                   <>
-                    <Link to="/all">
+                    <Styled.Link to="/all">
                       전체 프로젝트
-                    </Link>
-                    <Link to="/creatorsguide">
+                    </Styled.Link>
+                    <Styled.Link to="/creatorsguide">
                       크리에이터 가이드
-                    </Link>
+                    </Styled.Link>
                   </>
                 )}
               </>
