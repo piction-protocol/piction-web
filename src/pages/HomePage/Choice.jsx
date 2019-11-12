@@ -39,6 +39,7 @@ const Styled = {
     ${media.desktop`
       grid-column: 1 / 5;
       grid-row: span 2;
+      margin-bottom: auto;
       box-shadow: 0 9px 12px 0 rgba(0, 0, 0, .15);
     `}
   `,

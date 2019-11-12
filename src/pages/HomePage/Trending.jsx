@@ -62,7 +62,7 @@ const Styled = {
     color: var(--gray--dark);
     font-size: var(--font-size--small);
   `,
-  Author: styled.p`
+  Author: styled.div`
     display: flex;
     align-items: center;
     margin-top: auto;
