@@ -79,6 +79,7 @@ const Styled = {
     `}
   `,
   Login: styled(Link)`
+    margin-right: 40px;
     color: #BFBFBF;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
