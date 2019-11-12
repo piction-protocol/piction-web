@@ -24,7 +24,7 @@
     "react-tagsinput": "^3.19.0",
     "styled-components": "^4.2.0",
     "swiper": "^5.2.0",
-    "swr": "^0.1.8"
+    "swr": "0.1.9"
   },
   "scripts": {
     "start": "react-scripts start",
