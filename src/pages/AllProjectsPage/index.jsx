@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 
-import axios from 'axios';
 import useSWR, { useSWRPages } from 'swr';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
@@ -49,21 +48,6 @@ const Styled = {
   `,
 };
 
-/**
- * FIXME: Custom fetcher 함수를 구현해서 별도로 분리해야 합니다. POC 구현을 간단하게 하기 위해 그냥 여기에 복붙합니다.
- */
-async function fetcher(args) {
-  const API = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
-    headers: {
-      'X-Device-Platform': 'web',
-      accept: 'application/vnd.piction.v1+json',
-    },
-  });
-  const res = await API.get(args);
-  return res.data;
-}
-
 
 function AllProjectsPage() {
   const FETCHING_SIZE = 20;
@@ -76,10 +60,17 @@ function AllProjectsPage() {
    */
   function ProjectsPage({ offset, withSWR }) {
     const { data } = withSWR(
-      useSWR(() => `/projects?size=${FETCHING_SIZE}&page=${offset + 1}`, fetcher),
+      useSWR(() => `/projects?size=${FETCHING_SIZE}&page=${offset + 1}`),
     );
 
-    if (!data) return <span>Loading</span>;
+    if (!data) {
+      return Array(FETCHING_SIZE).fill(
+        <Styled.Link to="#">
+          <ProjectCard.Placeholder />
+        </Styled.Link>,
+      );
+    }
+
     return data.content.map(project => (
       <Styled.Link to={`/project/${project.uri}`} key={project.id}>
         <ProjectCard {...project}>

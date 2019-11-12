@@ -33,6 +33,10 @@ const Styled = {
       margin-bottom: 8px;
       font-size: var(--font-size--base);
     `}
+    ${props => props.placeholder && `
+      background-color: var(--gray--light);
+      color: var(--gray--light);
+    `};
   `,
   Labels: styled.div`
     position: absolute;
@@ -69,6 +73,15 @@ function ProjectCard({
     </Styled.Item>
   );
 }
+
+ProjectCard.Placeholder = () => (
+  <Styled.Item>
+    <Thumbnail />
+    <Styled.Text>
+      <Styled.Title placeholder>Project</Styled.Title>
+    </Styled.Text>
+  </Styled.Item>
+);
 
 ProjectCard.propTypes = {
   title: PropTypes.string.isRequired,
