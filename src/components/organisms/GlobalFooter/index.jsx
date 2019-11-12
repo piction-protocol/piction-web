@@ -112,7 +112,12 @@ function GlobalFooter() {
           </Styled.Item>
           <Styled.Item>
             <Styled.Link href="https://about.piction.network">
-              픽션 네트워크 프로젝트 소개
+              프로젝트 소개
+            </Styled.Link>
+          </Styled.Item>
+          <Styled.Item>
+            <Styled.Link href="https://about.piction.network/en">
+              English
             </Styled.Link>
           </Styled.Item>
         </Styled.Links>
