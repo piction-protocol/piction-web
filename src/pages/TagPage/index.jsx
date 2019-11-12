@@ -1,17 +1,14 @@
-import React, {
-  useState, useEffect, useCallback,
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
-
-import useAPI from 'hooks/useAPI';
 
 import media from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import ProjectCard from 'components/molecules/ProjectCard';
 import Heading from 'components/atoms/Heading';
+import useSWR from 'swr';
 
 const Styled = {
   Hero: styled.div`
@@ -44,27 +41,27 @@ const Styled = {
 };
 
 function TagPage({ tagName }) {
-  const [projects, setProjects] = useState([]);
-  const [page] = useState(1);
-  const [count, setCount] = useState(0);
-  const [API] = useCallback(useAPI(), []);
+  const { data } = useSWR(`projects?tagName=${tagName}&size=100&page=1`);
 
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const { data } = await API.project.getAll({
-          params: { size: 100, page, tagName },
-        });
-        setProjects(data.content);
-        setCount(data.numberOfElements);
-      } catch (error) {
-        setProjects([]);
-        setCount(0);
-      }
-    };
+  const Projects = ({ projects }) => (
+    projects.map(project => (
+      <Styled.Link to={`/project/${project.uri}`} key={project.id}>
+        <ProjectCard {...project}>
+          <Styled.CardText>
+            {project.user.username}
+          </Styled.CardText>
+        </ProjectCard>
+      </Styled.Link>
+    ))
+  );
 
-    getProjects();
-  }, [API, page, tagName]);
+  const ProjectsPlaceholder = () => (
+    Array(4).fill(
+      <Styled.Link to="#">
+        <ProjectCard.Placeholder />
+      </Styled.Link>,
+    )
+  );
 
   return (
     <GridTemplate
@@ -74,20 +71,16 @@ function TagPage({ tagName }) {
             {`#${tagName}`}
           </Heading>
           <Styled.Count>
-            {`${count} 프로젝트`}
+            {`${data ? data.totalElements : 0} 프로젝트`}
           </Styled.Count>
         </Styled.Hero>
       )}
     >
-      {projects.map(project => (
-        <Styled.Link to={`/project/${project.uri}`} key={project.id}>
-          <ProjectCard {...project}>
-            <Styled.CardText>
-              {project.user.username}
-            </Styled.CardText>
-          </ProjectCard>
-        </Styled.Link>
-      ))}
+      {data ? (
+        <Projects projects={data.content} />
+      ) : (
+        <ProjectsPlaceholder />
+      )}
     </GridTemplate>
   );
 }

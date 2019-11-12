@@ -37,6 +37,7 @@ function useCurrentUser() {
 
   return {
     currentUser,
+    accessToken,
     getCurrentUser,
     deleteSession,
   };

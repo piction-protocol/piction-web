@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
-
-import useAPI from 'hooks/useAPI';
+import useSWR, { useSWRPages } from 'swr';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
@@ -42,59 +41,59 @@ const Styled = {
 function PostList({
   projectId, isSubscribing, ...props
 }) {
-  const [page, setPage] = useState(1);
-  const [isLast, setIsLast] = useState(true);
-  const [contentList, setContentList] = useState([]);
-  const [API] = useCallback(useAPI(), []);
+  const FETCHING_SIZE = 10;
 
-  useEffect(() => (() => {
-    setContentList([]);
-    setPage(1);
-  }), [projectId]);
+  function PostsPage({ offset, withSWR }) {
+    const { data } = withSWR(
+      useSWR(`/projects/${projectId}/posts?size=${FETCHING_SIZE}&page=${offset + 1}`),
+    );
 
-  useEffect(() => {
-    const getFormData = async () => {
-      try {
-        const { data } = await API.post(projectId).getAll({ params: { size: 10, page } });
-        setContentList(prevContentList => [
-          ...prevContentList,
-          ...data.content,
-        ]);
-        setIsLast(data.last);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    if (!data) return Array(FETCHING_SIZE).fill(<PostItem.Placeholder />);
 
-    getFormData();
-  }, [API, projectId, page]);
-
-  return (
-    <Styled.Container {...props}>
-      {contentList.length === 0 && (
+    if (data.content.length === 0) {
+      return (
         <Styled.Empty>
           <Styled.BadMoodIcon />
           <p>
             등록된 포스트가 없습니다.
           </p>
         </Styled.Empty>
-      )}
+      );
+    }
+
+    return data.content.map(content => (
+      <Link
+        to={`${content.id}`}
+        key={content.id}
+      >
+        <PostItem
+          {...content}
+          isLocked={!isSubscribing && !!content.fanPass}
+        />
+      </Link>
+    ));
+  }
+
+  function nextOffset({ data }) {
+    if (data.last) return null;
+    return data.pageable.pageNumber + 1;
+  }
+
+  const {
+    pages,
+    isLoadingMore,
+    isReachingEnd,
+    loadMore,
+  } = useSWRPages('projects', PostsPage, nextOffset, []);
+
+  return (
+    <Styled.Container {...props}>
       <Styled.List>
-        {contentList.map(content => (
-          <Link
-            to={`${content.id}`}
-            key={content.id}
-          >
-            <PostItem
-              {...content}
-              isLocked={!isSubscribing && !!content.fanPass}
-            />
-          </Link>
-        ))}
-        {!isLast && (
-          <Styled.More onClick={() => setPage(prevPage => (prevPage + 1))}>
-            포스트 더 보기
-          </Styled.More>
+        {pages}
+        {!(isLoadingMore || isReachingEnd) && (
+        <Styled.More onClick={() => loadMore()}>
+          포스트 더 보기
+        </Styled.More>
         )}
       </Styled.List>
     </Styled.Container>

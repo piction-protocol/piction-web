@@ -1,7 +1,9 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components';
 import { importMDX } from 'mdx.macro';
+import { SWRConfig } from 'swr';
+import createFetcher from 'config/fetcher';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -51,24 +53,19 @@ const NotFound = () => (
 );
 
 function App() {
-  const { getCurrentUser } = useCurrentUser();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { accessToken, getCurrentUser } = useCurrentUser();
+  const fetcher = createFetcher(accessToken);
 
   useEffect(() => {
     async function loading() {
-      try {
-        await getCurrentUser();
-      } finally {
-        setIsLoaded(true);
-      }
+      await getCurrentUser();
     }
     loading();
-    return setIsLoaded(false);
   }, [getCurrentUser]);
 
   return (
     <div className="root">
-      {isLoaded && (
+      <SWRConfig value={{ fetcher }}>
         <LayoutProvider>
           <GlobalHeader />
           <Suspense fallback={<Spinner />}>
@@ -106,7 +103,7 @@ function App() {
           </Suspense>
           <GlobalFooter />
         </LayoutProvider>
-      )}
+      </SWRConfig>
     </div>
   );
 }

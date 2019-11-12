@@ -1,10 +1,8 @@
-import React, {
-  useState, useEffect, useCallback, useRef,
-} from 'react';
+import React, { useRef } from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
+import useSWR, { useSWRPages } from 'swr';
 
-import useAPI from 'hooks/useAPI';
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import media from 'styles/media';
@@ -50,38 +48,49 @@ const Styled = {
 };
 
 function AllProjectsPage() {
-  const [projects, setProjects] = useState([]);
-  const [page, setPage] = useState(1);
-  const [pageable, setPageable] = useState({});
+  const FETCHING_SIZE = 20;
+
   const listRef = useRef(null);
 
-  const [API] = useCallback(useAPI(), []);
+  function ProjectsPage({ offset, withSWR }) {
+    const { data } = withSWR(
+      useSWR(() => `/projects?size=${FETCHING_SIZE}&page=${offset + 1}`),
+    );
 
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const { data: { content: projectsData, ...pageableData } } = await API.project.getAll({
-          params: { size: 20, page },
-        });
-        setPageable(pageableData);
+    if (!data) {
+      return Array(FETCHING_SIZE).fill(
+        <Styled.Link to="#">
+          <ProjectCard.Placeholder />
+        </Styled.Link>,
+      );
+    }
 
-        if (pageableData.first) {
-          setProjects(projectsData);
-        } else {
-          setProjects(prev => [...prev, ...projectsData]);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    return data.content.map(project => (
+      <Styled.Link to={`/project/${project.uri}`} key={project.id}>
+        <ProjectCard {...project}>
+          <Styled.CardText>
+            {project.user.username}
+          </Styled.CardText>
+        </ProjectCard>
+      </Styled.Link>
+    ));
+  }
 
-    getProjects();
-  }, [API, page]);
+  function nextOffset({ data }) {
+    if (data.last) return null;
+    return data.pageable.pageNumber + 1;
+  }
+
+  const {
+    pages,
+    isLoadingMore,
+    isReachingEnd,
+    loadMore,
+  } = useSWRPages('all-projects', ProjectsPage, nextOffset, []);
 
   useOnScrollToBottom(listRef, () => {
-    if (!pageable.last) {
-      setPage(prev => prev + 1);
-    }
+    if (isLoadingMore || isReachingEnd) return;
+    loadMore();
   });
 
   return (
@@ -98,15 +107,7 @@ function AllProjectsPage() {
       )}
       ref={listRef}
     >
-      {projects.map(project => (
-        <Styled.Link to={`/project/${project.uri}`} key={project.id}>
-          <ProjectCard {...project}>
-            <Styled.CardText>
-              {project.user.username}
-            </Styled.CardText>
-          </ProjectCard>
-        </Styled.Link>
-      ))}
+      {pages}
     </GridTemplate>
   );
 }

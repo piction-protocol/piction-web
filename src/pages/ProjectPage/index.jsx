@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Router, Redirect } from '@reach/router';
+import { Router, Redirect, navigate } from '@reach/router';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
+import useSWR, { trigger } from 'swr';
 
 import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -13,11 +14,11 @@ import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import Tabs from 'components/molecules/Tabs';
+import ProjectInfo from 'components/organisms/ProjectInfo';
+import AdultPopup from 'components/organisms/AdultPopup';
 
-const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
-const ProjectInfo = React.lazy(() => import('components/organisms/ProjectInfo'));
-const Posts = React.lazy(() => import('./Posts'));
-const Series = React.lazy(() => import('./Series'));
+import Posts from './Posts';
+import Series from './Series';
 
 const Styled = {
   Tabs: styled(Tabs)`
@@ -31,113 +32,108 @@ const Styled = {
 };
 
 function ProjectPage({ projectId }) {
-  const [project, setProject] = useState({});
-  const [subscription, setSubscription] = useState({});
-  const [recommendedProjects, setRecommendedProjects] = useState([]);
-  const [series, setSeries] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [cookies, setCookie] = useCookies();
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), []);
   const isDesktop = useMedia(mediaQuery.desktop);
 
+  const [subscribed, setSubscribed] = useState(false);
+  const [myProject, setMyProject] = useState(false);
+
+  const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
+  const { data: series } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
+  const { data: recommendedProjects } = useSWR('/recommended/projects?size=5', { revalidateOnFocus: false });
+  const { data: fanPass } = useSWR(`/fan-pass/projects/${projectId}`);
+  const { data: subscription, revalidate: revalidateSubscription } = useSWR(() => (currentUser ? `/fan-pass/projects/${projectId}/subscription` : null));
+
   useEffect(() => {
-    const getProject = async () => {
-      try {
-        const fanPass = await API.fanPass.getAll({ projectId });
-        const fanPassId = fanPass.data[0].id;
-        const response = await Promise.all([
-          API.project.get({ projectId }),
-          API.recommended.getProjects({ params: { size: 5 } }),
-          API.series(projectId).getAll(),
-          currentUser && API.fanPass.get({ fanPassId }),
-          currentUser && API.fanPass.getSubscription({ projectId }),
-        ]);
-
-        if (currentUser) {
-          setSubscription({ ...response[3].data, isSubscribing: !!response[4].data.fanPass });
-        }
-        setProject({
-          ...response[0].data,
-          isMine: currentUser && (currentUser.loginId === response[0].data.user.loginId),
-        });
-        setSeries(response[2].data);
-        setRecommendedProjects(
-          response[1].data.filter(recommended => recommended.uri !== projectId).slice(0, 4),
-        );
-        setIsLoaded(true);
-      } catch (error) {
-        console.log(error);
+    if (subscription && currentUser) {
+      if (subscription.subscriber) {
+        setSubscribed(true);
+      } else {
+        setSubscribed(false);
       }
-    };
+    }
+  }, [subscription, currentUser]);
 
-    getProject();
+  useEffect(() => {
+    if (project && currentUser) {
+      if (currentUser.loginId === project.user.loginId) setMyProject(true);
+    }
+  }, [project, currentUser]);
 
-    return () => {
-      setProject({});
-      setSubscription({});
-      setRecommendedProjects([]);
-      setIsLoaded(false);
-    };
-  }, [currentUser, API, projectId]);
-
+  // TODO: asdf
   const handleSubscribe = async () => {
-    if (subscription.isSubscribing) {
+    if (subscribed) {
       try {
         await API.fanPass.unsubscribe({
-          fanPassId: subscription.id,
+          fanPassId: fanPass[0].id,
         });
-        setSubscription(prev => ({ ...prev, isSubscribing: false }));
-      } catch (error) {
-        console.log(error);
+      } finally {
+        revalidateSubscription();
       }
     } else {
       try {
         await API.fanPass.subscribe({
-          fanPassId: subscription.id,
-          subscriptionPrice: subscription.subscriptionPrice,
+          fanPassId: fanPass[0].id,
+          subscriptionPrice: fanPass[0].subscriptionPrice,
         });
-        setSubscription(prev => ({ ...prev, isSubscribing: true }));
-      } catch (error) {
-        console.log(error);
+      } finally {
+        revalidateSubscription();
       }
     }
+    trigger(`/projects/${projectId}`);
   };
 
   const handleCookie = () => {
     setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
   };
 
-  return isLoaded && (
+  if (error) {
+    navigate('/404');
+  }
+
+  return (
     <GridTemplate
-      hero={(
+      hero={project ? (
         <ProjectInfo
           project={project}
-          subscription={subscription}
+          isMine={myProject}
+          isSubscribing={subscribed}
           handleSubscribe={handleSubscribe}
         />
+      ) : (
+        <ProjectInfo.Placeholder isDesktop={isDesktop} />
       )}
     >
-      {(project.adult && !cookies[`no-warning-${projectId}`]) && (
+
+      {(project && project.adult && !cookies[`no-warning-${projectId}`]) && (
         <AdultPopup close={handleCookie} />
       )}
+
       <Styled.Tabs
         links={[
           { text: '포스트', to: 'posts' },
           { text: '시리즈', to: 'series' },
         ]}
       />
+
       <Router primary={false} component={({ children }) => <>{children}</>}>
         <Redirect from="/" to={`project/${projectId}/posts`} noThrow />
         <Posts
           path="posts"
           {...{
-            projectId, project, subscription, isDesktop, series, recommendedProjects,
+            projectId,
+            project,
+            subscribed: (myProject || subscribed),
+            isDesktop,
+            series: (series || []),
+            recommendedProjects,
           }}
         />
         <Series
           path="series"
-          series={series}
+          series={series || []}
         />
       </Router>
     </GridTemplate>
