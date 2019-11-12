@@ -6,6 +6,7 @@ import media from 'styles/media';
 const GlobalStyle = createGlobalStyle`
   :root {
     --black: #000000;
+    --charcoal-black: #333333;
     --gray--dark: #BFBFBF;
     --gray--light: #F2F2F2;
     --white: #FFFFFF;
@@ -53,6 +54,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     box-sizing: border-box;
+    color: var(--charcoal-black);
     font-size: var(--font-size--base);
     font-family: 'Noto Sans KR', sans-serif;
     line-height: var(--line-height--base);
