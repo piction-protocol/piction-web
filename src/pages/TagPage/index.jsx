@@ -43,7 +43,7 @@ const Styled = {
 function TagPage({ tagName }) {
   const { data } = useSWR(`projects?tagName=${tagName}&size=100&page=1`);
 
-  const TaggedProjects = ({ projects }) => (
+  const Projects = ({ projects }) => (
     projects.map(project => (
       <Styled.Link to={`/project/${project.uri}`} key={project.id}>
         <ProjectCard {...project}>
@@ -55,7 +55,7 @@ function TagPage({ tagName }) {
     ))
   );
 
-  const TaggedProjectsPlaceholder = () => (
+  const ProjectsPlaceholder = () => (
     Array(4).fill(
       <Styled.Link to="#">
         <ProjectCard.Placeholder />
@@ -71,15 +71,15 @@ function TagPage({ tagName }) {
             {`#${tagName}`}
           </Heading>
           <Styled.Count>
-            {data ? `${data.totalElements} 프로젝트` : '0 프로젝트'}
+            {`${data ? data.totalElements : 0} 프로젝트`}
           </Styled.Count>
         </Styled.Hero>
       )}
     >
       {data ? (
-        <TaggedProjects projects={data.content} />
+        <Projects projects={data.content} />
       ) : (
-        <TaggedProjectsPlaceholder />
+        <ProjectsPlaceholder />
       )}
     </GridTemplate>
   );

@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
-
 import useSWR, { useSWRPages } from 'swr';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
@@ -48,16 +47,11 @@ const Styled = {
   `,
 };
 
-
 function AllProjectsPage() {
   const FETCHING_SIZE = 20;
+
   const listRef = useRef(null);
 
-  /**
-   * TODO: 필요에 따라서 별도로 분리합니다. 여기 있어도 크게 상관없긴 할 것 같습니다.
-   *
-   * 가져온 데이터로 구성할 페이지 컴포넌트
-   */
   function ProjectsPage({ offset, withSWR }) {
     const { data } = withSWR(
       useSWR(() => `/projects?size=${FETCHING_SIZE}&page=${offset + 1}`),
@@ -82,11 +76,7 @@ function AllProjectsPage() {
     ));
   }
 
-  /**
-   * SWR 데이터를 가지고 다음 페이지의 offset을 계산하는 함수
-   * 다음 페이지가 없을 때는 null을 호출해야 하는 것으로 보이지만 공식 문서에 언급은 없음
-   */
-  function nextOffset(data) {
+  function nextOffset({ data }) {
     if (data.last) return null;
     return data.pageable.pageNumber + 1;
   }
@@ -96,12 +86,7 @@ function AllProjectsPage() {
     isLoadingMore,
     isReachingEnd,
     loadMore,
-  } = useSWRPages(
-    'all-projects',
-    ProjectsPage,
-    nextOffset,
-    [],
-  );
+  } = useSWRPages('all-projects', ProjectsPage, nextOffset, []);
 
   useOnScrollToBottom(listRef, () => {
     if (isLoadingMore || isReachingEnd) return;

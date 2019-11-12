@@ -29,6 +29,7 @@ const Styled = {
     position: relative;
   `,
   WideThumbnail: styled(WideThumbnail)`
+    background-color: var(--gray--light);
     ${media.desktop`
       max-height: 450px;
     `}
@@ -140,6 +141,7 @@ const Styled = {
   `,
   UserProfile: styled(UserProfile)`
     border-radius: 50%;
+    background-color: var(--gray--light);
   `,
   Subscribe: styled.div`
     display: flex;
@@ -177,7 +179,7 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, subscription, handleSubscribe, ...props
+  project, handleSubscribe, isMine = false, isSubscribing = false, ...props
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -242,7 +244,7 @@ function ProjectInfo({
           />
         </Styled.UserPictureWrapper>
         <Styled.Subscribe>
-          {project.isMine ? isDesktop && (
+          {isMine ? isDesktop && (
             <>
               <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
                 새 포스트 작성
@@ -251,7 +253,7 @@ function ProjectInfo({
                 <SettingIcon />
               </Styled.SettingButton>
             </>
-          ) : subscription.isSubscribing ? (
+          ) : isSubscribing ? (
             <Styled.UnsubscribeButton onClick={handleSubscribe}>
               구독 중
             </Styled.UnsubscribeButton>
@@ -283,9 +285,62 @@ function ProjectInfo({
 }
 
 ProjectInfo.propTypes = {
+  isMine: PropTypes.bool,
+  isSubscribing: PropTypes.bool,
   project: PropTypes.object.isRequired,
-  subscription: PropTypes.object.isRequired,
   handleSubscribe: PropTypes.func.isRequired,
+};
+
+const Placeholder = {
+  Heading: styled(Styled.Heading)`
+    display: inline-block;
+    width: 50%;
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+  `,
+  User: styled(Styled.User)`
+    width: 20%;
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+  `,
+  Synopsis: styled(Styled.Synopsis)`
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+  `,
+};
+
+ProjectInfo.Placeholder = ({ isDesktop }) => (
+  <Styled.Section>
+    <Styled.WideThumbnail
+      {...(isDesktop ? {
+        width: null, height: null,
+      } : {
+        width: 720, height: 360,
+      })}
+      image={null}
+    />
+    <Styled.MainGrid>
+      <Styled.Text>
+        <Styled.HeadingWrapper>
+          <Placeholder.Heading>Title</Placeholder.Heading>
+        </Styled.HeadingWrapper>
+        <Placeholder.User>Author</Placeholder.User>
+        <Placeholder.Synopsis>Synopsis</Placeholder.Synopsis>
+      </Styled.Text>
+
+      <Styled.UserPictureWrapper>
+        <Styled.UserProfile />
+      </Styled.UserPictureWrapper>
+
+      <Styled.Subscribe>
+        <Styled.SubscribeButton disabled>무료로 구독하기</Styled.SubscribeButton>
+      </Styled.Subscribe>
+    </Styled.MainGrid>
+  </Styled.Section>
+);
+
+ProjectInfo.Placeholder.propTypes = {
+  isDesktop: PropTypes.bool,
 };
 
 export default ProjectInfo;
