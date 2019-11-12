@@ -22,7 +22,6 @@ const Styled = {
     text-align: center;
     ${media.mobile`
       --row-gap: 16px;
-      --outer-gap: 32px;
       padding-top: 60px;
       padding-bottom: 60px;
       > * {
@@ -58,12 +57,13 @@ const Styled = {
   H1: styled.h1`
     margin-top: 60px;
     margin-bottom: -44px;
-    font-size: var(--font-size--base);
+    font-size: 24px;
+    color: var(--blue);
     text-align: center;
     ${media.desktop`
       margin-top: 80px;
       margin-bottom: -80px;
-      font-size: var(--font-size--large);
+      font-size: 40px;
     `}
   `,
   H2: styled.h2`
@@ -75,6 +75,7 @@ const Styled = {
   `,
   P: styled.p`
     color: var(--blue);
+    font-size: 16px;
     font-weight: normal;
     ${media.desktop`
       padding-left: 24px;
@@ -129,7 +130,7 @@ const Styled = {
 const Feature = () => (
 
   <article>
-    <Styled.H1>픽션은 무엇이 다른가요?</Styled.H1>
+    <Styled.H1>“픽션은 무엇이 다른가요?”</Styled.H1>
     <Styled.Section>
       <Styled.PXLImage />
       <Styled.RightContents>

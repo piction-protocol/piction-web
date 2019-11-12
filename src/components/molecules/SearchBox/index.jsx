@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 
-import media, { mediaQuery } from 'styles/media';
+import { mediaQuery } from 'styles/media';
 import useMedia from 'hooks/useMedia';
 
 import Modal from 'components/externals/Modal';
@@ -16,12 +16,6 @@ const Styled = {
   })`
     display: flex;
     position: relative;
-    flex: 1;
-    min-width: 0;
-    margin-right: 16px;
-    ${media.desktop`
-      width: 220px;
-    `}
   `,
   Input: styled.input.attrs({
     type: 'search',
@@ -56,7 +50,7 @@ const Styled = {
     type: 'button',
   })`
     display: flex;
-    margin: auto;
+    margin-left: auto;
   `,
   Modal: styled(Modal)`
     position: absolute;

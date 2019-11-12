@@ -16,6 +16,7 @@ const Styled = {
   `,
   Text: styled.div`
     display: flex;
+    flex: 1;
     flex-flow: column;
     padding: 16px 0 0;
     ${media.desktop`

@@ -21,6 +21,7 @@ const Styled = {
   Title: styled.h1`
     margin-left: 24px;
     overflow: hidden;
+    font-size: var(--font-size--base);
     text-overflow: ellipsis;
     white-space: nowrap;
     ${media.mobile`
