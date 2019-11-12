@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
+import { mediaQuery } from 'styles/media';
+
 import useAPI from 'hooks/useAPI';
+import useCurrentUser from 'hooks/useCurrentUser';
+import useMedia from 'hooks/useMedia';
 
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
+import { SecondaryButton } from 'components/atoms/Button';
 
 const Styled = {
   Section: styled.section`
@@ -24,6 +29,7 @@ const Styled = {
   PXL: styled.span`
     margin-left: 16px;
     color: var(--blue);
+    font-family: 'Poppins', sans-serif;
     font-size: var(--font-size--base);
     font-weight: bold;
   `,
@@ -56,6 +62,11 @@ const Styled = {
     color: var(--gray--dark);
     font-size: var(--font-size--tiny);
   `,
+  SecondaryButton: styled(SecondaryButton).attrs(() => ({
+    as: Link,
+  }))`
+    margin: 16px 16px 0 16px;
+  `,
   Links: styled.div`
     display: flex;
     flex-flow: column;
@@ -86,6 +97,9 @@ function UserMenu({
 }) {
   const [API] = useCallback(useAPI(), []);
   const [projects, setProjects] = useState([]);
+  const { currentUser } = useCurrentUser();
+  const isDesktop = useMedia(mediaQuery.desktop);
+
   useEffect(() => {
     const getProjects = async () => {
       const { data } = await API.my.projects();
@@ -94,35 +108,47 @@ function UserMenu({
 
     getProjects();
   }, [API]);
+
   return (
     <>
-      <Styled.Section>
-        <Styled.Title>
-          내 지갑
-        </Styled.Title>
-        <Styled.PXL>
-          {`${PXL.toLocaleString()} PXL`}
-        </Styled.PXL>
-      </Styled.Section>
-      {projects.length > 0 && (
-        <Styled.Section>
-          <Styled.Title>
-            내 프로젝트
-          </Styled.Title>
-          {projects.map(project => (
-            <Styled.Project to={`/project/${project.uri}`} key={project.id}>
-              <Styled.Thumbnail image={project.thumbnail} />
-              <Styled.ProjectTexts>
-                <Styled.ProjectTitle>
-                  {project.title}
-                </Styled.ProjectTitle>
-                <Styled.ProjectInfo>
-                  {`구독자 ${project.subscriptionUserCount}`}
-                </Styled.ProjectInfo>
-              </Styled.ProjectTexts>
-            </Styled.Project>
-          ))}
-        </Styled.Section>
+      {currentUser && (
+        <>
+          <Styled.Section>
+            <Styled.Title>
+              내 지갑
+            </Styled.Title>
+            <Styled.PXL>
+              {`${PXL.toLocaleString()} PXL`}
+            </Styled.PXL>
+          </Styled.Section>
+          <Styled.Section>
+            {projects.length > 0 && (
+              <>
+                <Styled.Title>
+                  내 프로젝트
+                </Styled.Title>
+                {projects.map(project => (
+                  <Styled.Project to={`/project/${project.uri}`} key={project.id}>
+                    <Styled.Thumbnail image={project.thumbnail} />
+                    <Styled.ProjectTexts>
+                      <Styled.ProjectTitle>
+                        {project.title}
+                      </Styled.ProjectTitle>
+                      <Styled.ProjectInfo>
+                        {`구독자 ${project.subscriptionUserCount}`}
+                      </Styled.ProjectInfo>
+                    </Styled.ProjectTexts>
+                  </Styled.Project>
+                ))}
+              </>
+            )}
+            {isDesktop && (
+              <Styled.SecondaryButton to="/dashboard">
+                {projects.length > 0 ? '크리에이터 대시보드' : '+ 새 프로젝트 만들기'}
+              </Styled.SecondaryButton>
+            )}
+          </Styled.Section>
+        </>
       )}
       <Styled.Links>
         {links.map(({

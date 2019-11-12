@@ -17,14 +17,16 @@ import useOnClickOutside from 'hooks/useOnClickOutside';
 import ProjectTitle from 'components/molecules/ProjectTitle';
 import UserMenu from 'components/molecules/UserMenu';
 import SearchBox from 'components/molecules/SearchBox';
+import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Dropdown from 'components/atoms/Dropdown';
 import Sidemenu from 'components/atoms/Sidemenu';
 
 import { ReactComponent as Logo } from 'images/piction-logo.svg';
+import { ReactComponent as MenuIcon } from 'images/ic-menu.svg';
 import { ReactComponent as SubscriptionsIcon } from 'images/ic-subscriptions.svg';
 import { ReactComponent as AccountIcon } from 'images/ic-account.svg';
-import { ReactComponent as DashboardIcon } from 'images/ic-dashboard.svg';
-import { ReactComponent as NewProjectIcon } from 'images/ic-newproject.svg';
+import { ReactComponent as ProjectsIcon } from 'images/ic-entire-project.svg';
+import { ReactComponent as PictionIcon } from 'images/ic-piction-symbol-black.svg';
 import { ReactComponent as LogoutIcon } from 'images/ic-logout.svg';
 
 const Styled = {
@@ -34,12 +36,20 @@ const Styled = {
     background-color: #FFFFFF;
     background-color: var(--white);
   `,
-  Wrapper: styled.div`
+  Nav: styled.nav`
     display: flex;
     flex: 1;
     align-items: center;
     height: 52px;
     padding: 0 var(--outer-gap);
+    font-size: var(--font-size--small);
+    white-space: nowrap;
+    > *:not(:last-child) {
+      margin-right: 12px;
+      ${media.desktop`
+        margin-right: 40px;
+      `}
+    }
     ${media.desktop`
       max-width: 1280px;
       max-width: var(--max-width);
@@ -59,28 +69,24 @@ const Styled = {
       height: 40px;
     `}
   `,
-  Nav: styled.nav`
-    display: flex;
-    align-items: center;
+  SearchBox: styled(SearchBox)`
+    flex: 1;
+    min-width: 0;
+    margin-right: 16px;
     margin-left: auto;
-    white-space: nowrap;
-    > *:not(:last-child) {
-      margin-right: 12px;
-      ${media.desktop`
-        margin-right: 48px;
-      `}
-    }
+    ${media.desktop`
+      width: 220px;
+      flex: 0 auto;
+    `}
   `,
   Login: styled(Link)`
     color: #BFBFBF;
     color: var(--gray--dark);
-    font-size: 14px;
     font-size: var(--font-size--small);
   `,
   Signup: styled(Link)`
     color: #1A92FF;
     color: var(--blue);
-    font-size: 14px;
     font-size: var(--font-size--small);
   `,
   User: styled.div`
@@ -88,10 +94,14 @@ const Styled = {
     position: relative;
   `,
   Toggle: styled.button`
+    display: flex;
     width: 28px;
     height: 28px;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    background-image: url(${({ src }) => src});
+    overflow: hidden;
+    background-color: var(--charcoal-black);
     background-position: center;
     background-size: cover;
     cursor: pointer;
@@ -99,6 +109,9 @@ const Styled = {
       width: 40px;
       height: 40px;
     `}
+  `,
+  UserProfile: styled(UserProfile)`
+    flex: 1;
   `,
   Dropdown: styled(Dropdown)`
     position: absolute;
@@ -109,9 +122,7 @@ const Styled = {
   `,
 };
 
-function UserMenuWithWrapper({ close, ...props }) {
-  const isDesktop = useMedia(mediaQuery.desktop);
-
+function UserMenuWithWrapper({ isDesktop, close, ...props }) {
   return (
     isDesktop ? (
       <Styled.Dropdown>
@@ -126,6 +137,7 @@ function UserMenuWithWrapper({ close, ...props }) {
 }
 
 UserMenuWithWrapper.propTypes = {
+  isDesktop: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
 };
 
@@ -146,49 +158,82 @@ function GlobalHeader({ paths, child, ...props }) {
   useOnClickOutside(menuRef, () => setIsMenuOpened(false));
 
   const links = [
-    { text: '구독 중인 프로젝트', to: '/subscriptions', icon: <SubscriptionsIcon /> },
-    { text: '내 정보', to: '/my/info', icon: <AccountIcon /> },
-    ...isDesktop ? [
-      { text: '크리에이터 대시보드', to: '/dashboard', icon: <DashboardIcon /> },
-      { text: '새 프로젝트 만들기', to: '/dashboard/new-project', icon: <NewProjectIcon /> },
-    ] : [],
-    {
-      text: '로그아웃',
-      icon: <LogoutIcon />,
-      as: 'button',
-      onClick: () => {
-        setIsMenuOpened(false);
-        deleteSession();
+    ...isDesktop ? [] : [
+      { text: '전체 프로젝트', to: '/all', icon: <ProjectsIcon /> },
+      { text: '크리에이터 가이드', to: '/creatorsguide', icon: <PictionIcon /> },
+    ],
+    ...currentUser ? [
+      { text: '구독 중인 프로젝트', to: '/subscriptions', icon: <SubscriptionsIcon /> },
+      { text: '내 정보', to: '/my/info', icon: <AccountIcon /> },
+      {
+        text: '로그아웃',
+        icon: <LogoutIcon />,
+        as: 'button',
+        onClick: () => {
+          setIsMenuOpened(false);
+          deleteSession();
+        },
       },
-    },
+    ] : [
+      {
+        text: '로그인',
+        to: paths.login,
+        icon: <AccountIcon />,
+        state: { redirectTo: encodeURIComponent(window.location.pathname) },
+      },
+      {
+        text: '회원가입',
+        to: paths.signup,
+        icon: <PictionIcon />,
+        state: { redirectTo: encodeURIComponent(window.location.pathname) },
+      },
+    ],
   ];
 
   return (
     <Styled.Header {...props}>
       <Location>
         {({ location }) => (
-          <Styled.Wrapper>
+          <Styled.Nav>
             <NavigateListener location={location} event={() => setIsMenuOpened(false)} />
             {layout.type === 'project' ? (
               <ProjectTitle project={layout.data.project} />
             ) : (
-              <Styled.Link to={paths.home}>
-                <Styled.Logo />
-              </Styled.Link>
+              <>
+                <Styled.Link to={paths.home}>
+                  <Styled.Logo />
+                </Styled.Link>
+                {isDesktop && (
+                  <>
+                    <Link to="/all">
+                      전체 프로젝트
+                    </Link>
+                    <Link to="/creatorsguide">
+                      크리에이터 가이드
+                    </Link>
+                  </>
+                )}
+              </>
             )}
             {/^\/login|^\/signup/.test(location.pathname) || (
-              <Styled.Nav>
-                <SearchBox />
-                {currentUser ? (
+              <>
+                <Styled.SearchBox />
+                {currentUser || !isDesktop ? (
                   <Styled.User ref={menuRef}>
                     <Styled.Toggle
-                      src={currentUser.picture}
                       onClick={() => setIsMenuOpened(prevState => !prevState)}
-                    />
+                    >
+                      {currentUser ? (
+                        <Styled.UserProfile image={currentUser.picture} />
+                      ) : (
+                        <MenuIcon />
+                      )}
+                    </Styled.Toggle>
                     {isMenuOpened && (
                       <UserMenuWithWrapper
                         PXL={wallet.amount}
                         links={links}
+                        isDesktop={isDesktop}
                         close={() => setIsMenuOpened(false)}
                       />
                     )}
@@ -213,9 +258,9 @@ function GlobalHeader({ paths, child, ...props }) {
                     </Styled.Signup>
                   </>
                 )}
-              </Styled.Nav>
+              </>
             )}
-          </Styled.Wrapper>
+          </Styled.Nav>
         )}
       </Location>
     </Styled.Header>
