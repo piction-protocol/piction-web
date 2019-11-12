@@ -74,7 +74,7 @@ function SearchBox({
     event.target.querySelector('input').blur();
     setQuery('');
     setIsOpened(false);
-    navigate(`/search?query=${query.trim()}`);
+    navigate(`/search?query=${encodeURIComponent(query.trim())}`);
   };
 
   const toggleModal = () => {

@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
+import axios from 'axios';
 
 import { mediaQuery } from 'styles/media';
 
@@ -30,8 +31,14 @@ const Styled = {
     margin-left: 16px;
     color: var(--blue);
     font-family: 'Poppins', sans-serif;
-    font-size: var(--font-size--base);
+    font-size: 22px;
     font-weight: bold;
+  `,
+  Won: styled.span`
+    margin-top: 4px;
+    margin-left: 16px;
+    color: #999999;
+    font-size: var(--font-size--small);
   `,
   Project: styled(Link)`
     display: flex;
@@ -99,6 +106,7 @@ function UserMenu({
   const [projects, setProjects] = useState([]);
   const { currentUser } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
+  const [won, setWon] = useState(0);
 
   useEffect(() => {
     const getProjects = async () => {
@@ -106,8 +114,21 @@ function UserMenu({
       setProjects(data);
     };
 
+    const getWon = async () => {
+      const { data } = await axios.get('https://api.coinone.co.kr/ticker/', {
+        params: {
+          currency: 'PXL',
+        },
+      });
+      setWon(data.last * PXL);
+    };
+
     getProjects();
-  }, [API]);
+
+    if (PXL) {
+      getWon();
+    }
+  }, [API, PXL]);
 
   return (
     <>
@@ -120,6 +141,11 @@ function UserMenu({
             <Styled.PXL>
               {`${PXL.toLocaleString()} PXL`}
             </Styled.PXL>
+            {won > 0 && (
+              <Styled.Won>
+                {`≒ ${Math.floor(won).toLocaleString()} 원`}
+              </Styled.Won>
+            )}
           </Styled.Section>
           <Styled.Section>
             {projects.length > 0 && (
