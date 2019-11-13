@@ -1,11 +1,10 @@
 import React, {
-  useState, useEffect, useCallback, useRef, useContext,
+  useState, useEffect, useRef, useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 
-import useAPI from 'hooks/useAPI';
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -18,6 +17,7 @@ import { ReactComponent as SortIcon } from 'images/ic-sort.svg';
 import GridTemplate from 'components/templates/GridTemplate';
 import SeriesPostItem from 'components/molecules/SeriesPostItem';
 import Heading from 'components/atoms/Heading';
+import useSWR, { useSWRPages } from 'swr';
 
 const Styled = {
   Hero: styled.div`
@@ -90,125 +90,100 @@ const Styled = {
 };
 
 function SeriesPage({ projectId, seriesId }) {
-  const [project, setProject] = useState({});
-  const [posts, setPosts] = useState([]);
-  const [series, setSeries] = useState({});
-  const [fanPass, setFanPass] = useState({});
-  const [isDescending, setIsDescending] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageable, setPageable] = useState({});
-  const [API] = useCallback(useAPI(), []);
   const listRef = useRef(null);
   const [, setLayout] = useContext(LayoutContext);
   const { currentUser } = useCurrentUser();
 
-  useEffect(() => {
-    const getSeries = async () => {
-      try {
-        const { data: projectData } = await API.project.get({ projectId });
-        setProject(projectData);
-        const { data: seriesData } = await API.series(projectId).get({ seriesId });
-        setSeries(seriesData);
-        const { data: subscriptionData } = await API.fanPass.getSubscription({ projectId });
-        setFanPass(subscriptionData.fanPass);
-      } catch (error) {
-        console.log(error);
-      }
-      setIsLoaded(true);
-    };
+  const [isDescending, setIsDescending] = useState(true);
 
-    getSeries();
-    return () => setIsLoaded(false);
-  }, [API, projectId, seriesId]);
+  const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
+  const { data: series } = useSWR(`/projects/${projectId}/series/${seriesId}`, { revalidateOnFocus: false });
+  const { data: fanPass } = useSWR(`/fan-pass/projects/${projectId}`, { revalidateOnFocus: false });
 
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const {
-          data: { content: postsData, ...pageableData },
-        } = await API.series(projectId).getPosts({
-          seriesId, params: { isDescending, page, size: 20 },
-        });
-        if (pageableData.first) {
-          setPosts(postsData);
-        } else {
-          setPosts(prev => [...prev, ...postsData]);
-        }
-        await setPageable(pageableData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getPosts();
-  }, [API, projectId, seriesId, isDescending, page]);
-
-  useOnScrollToBottom(listRef, () => {
-    if (!pageable.last) {
-      setPage(prev => prev + 1);
-    }
-  });
-
-  useEffect(() => {
-    if (isLoaded) {
-      setLayout({
-        type: 'project',
-        data: { project },
-      });
-    }
+    setLayout({
+      type: 'project',
+      data: { project },
+    });
 
     return (() => {
       setLayout({ type: 'default' });
     });
-  }, [isLoaded, project, setLayout]);
+  }, [project, setLayout]);
 
-  const calculateIndex = index => (isDescending ? (pageable.totalElements - index) : (index + 1));
+  const PostsPage = ({ offset, withSWR }) => {
+    const { data } = withSWR(
+      useSWR(`/projects/${projectId}/series/${seriesId}/posts?isDescending=${isDescending}&page=${offset + 1}&size=20`),
+    );
 
-  const checkIsViewable = (post) => {
-    if (!post.fanPass) return true;
-    if (!currentUser) return false;
-    const isSubscribing = fanPass && fanPass.level >= post.fanPass.level;
-    const isMine = project.user.loginId === currentUser.loginId;
-    return isSubscribing || isMine;
+    const calculateIndex = (index) => {
+      const previousIndex = data.pageable.pageNumber * data.pageable.pageSize;
+
+      if (isDescending) {
+        return data.totalElements - previousIndex - index;
+      }
+      return index + 1 + previousIndex;
+    };
+
+    const checkIsViewable = (post) => {
+      if (!post.fanPass) return true;
+      if (!currentUser) return false;
+      const isSubscribing = fanPass && fanPass.level >= post.fanPass.level;
+      const isMine = project.user.loginId === currentUser.loginId;
+      return isSubscribing || isMine;
+    };
+
+    if (!data) {
+      return (
+        Array(4).fill(
+          <SeriesPostItem.Placeholder />,
+        )
+      );
+    }
+
+    return data.content.map((post, index) => (
+      <Link key={post.id} to={`/project/${projectId}/posts/${post.id}`}>
+        <SeriesPostItem
+          index={calculateIndex(index)}
+          isViewable={checkIsViewable(post)}
+          {...post}
+        />
+      </Link>
+    ));
   };
+  function nextOffset({ data }) {
+    if (data.last) return null;
+    return data.pageable.pageNumber + 1;
+  }
+  const {
+    pages, isLoadingMore, isReachingEnd, loadMore,
+  } = useSWRPages('series', PostsPage, nextOffset, [isDescending]);
 
-  return isLoaded && (
+  useOnScrollToBottom(listRef, () => {
+    if (isLoadingMore || isReachingEnd) return;
+    loadMore();
+  });
+
+  return (
     <GridTemplate
-      hero={(
-        <Styled.Hero
-          image={series.thumbnails[0]}
-        >
+      hero={series ? (
+        <Styled.Hero image={series.thumbnails[0]}>
           <Styled.HeroText>
-            <Styled.Heading>
-              {series.name}
-            </Styled.Heading>
+            <Styled.Heading>{series.name}</Styled.Heading>
             <p>
               {`${series.postCount} 포스트`}
             </p>
           </Styled.HeroText>
         </Styled.Hero>
-      )}
+      ) : <Styled.Hero />}
     >
       <Styled.Section>
-        <Styled.Sort onClick={() => {
-          setPage(1);
-          setIsDescending(prev => !prev);
-        }}
-        >
+        <Styled.Sort onClick={() => setIsDescending(prev => !prev)}>
           <SortIcon />
           정렬 변경
         </Styled.Sort>
         <Styled.SeriesPostList ref={listRef}>
-          {posts.map((post, index) => (
-            <Link key={post.id} to={`/project/${projectId}/posts/${post.id}`}>
-              <SeriesPostItem
-                index={calculateIndex(index)}
-                isViewable={checkIsViewable(post)}
-                {...post}
-              />
-            </Link>
-          ))}
+          {pages}
         </Styled.SeriesPostList>
       </Styled.Section>
     </GridTemplate>
@@ -219,4 +194,5 @@ export default SeriesPage;
 
 SeriesPage.propTypes = {
   projectId: PropTypes.string.isRequired,
+  seriesId: PropTypes.string.isRequired,
 };

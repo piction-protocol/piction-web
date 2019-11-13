@@ -109,4 +109,34 @@ SeriesPostItem.propTypes = {
   isViewable: PropTypes.bool.isRequired,
 };
 
+const Placeholder = {
+  Index: styled(Styled.Index)`
+    color: var(--gray--light);
+    background-color: var(--gray--light);
+  `,
+  Title: styled(Styled.Title)`
+    color: var(--gray--light);
+    background-color: var(--gray--light);
+    width: 20%;
+  `,
+  PublishedAt: styled(Styled.PublishedAt)`
+    color: var(--gray--light);
+    background-color: var(--gray--light);
+    width: 40%;
+  `,
+};
+
+SeriesPostItem.Placeholder = () => (
+  <Styled.Item>
+    <Placeholder.Index>
+      ##
+    </Placeholder.Index>
+    <Styled.Cover />
+    <Styled.Text>
+      <Placeholder.Title>Title</Placeholder.Title>
+      <Placeholder.PublishedAt>Published at</Placeholder.PublishedAt>
+    </Styled.Text>
+  </Styled.Item>
+);
+
 export default SeriesPostItem;
