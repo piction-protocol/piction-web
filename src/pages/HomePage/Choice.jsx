@@ -32,6 +32,7 @@ const Styled = {
   `,
   MainImage: styled(Link)`
     grid-column: 1 / -1;
+    background-color: var(--gray--light);
     ${media.mobile`
       margin: calc( -1 * var(--outer-gap));
     `}
@@ -105,6 +106,7 @@ const Styled = {
   `,
   ProjectListItem: styled.li`
     scroll-snap-align: start;
+    overflow: hidden;
     ${media.desktop`
       grid-column: span 2;
     `}
@@ -166,21 +168,6 @@ const Choice = (props) => {
 };
 
 const Placeholder = {
-  Name: styled(Styled.Name)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-    width: 33%;
-  `,
-  Title: styled(Styled.Title)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-    width: 40%;
-  `,
-  SubTitle: styled(Styled.SubTitle)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-    width: 50%;
-  `,
   ProjectTitle: styled(Styled.ProjectTitle)`
     background-color: var(--gray--light);
     color: var(--gray--light);
@@ -193,17 +180,7 @@ Choice.Placeholder = props => (
       <Styled.MainImage to="#">
         <Thumbnail />
       </Styled.MainImage>
-      <Styled.Texts>
-        <Placeholder.Name>
-          Piction’s Choice
-        </Placeholder.Name>
-        <Placeholder.Title>
-          collection.title
-        </Placeholder.Title>
-        <Placeholder.SubTitle>
-          collection.subTitle
-        </Placeholder.SubTitle>
-      </Styled.Texts>
+      <Styled.Texts />
       <Styled.ProjectList>
         {Array(4).fill(
           <Styled.ProjectListItem>
