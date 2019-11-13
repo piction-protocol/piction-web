@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
+import useSWR from 'swr';
 
-import useAPI from 'hooks/useAPI';
 import useMedia from 'hooks/useMedia';
 
 import { MainGrid } from 'styles/Grid';
@@ -82,22 +82,12 @@ const Styled = {
 };
 
 const Trending = (props) => {
-  const [projects, setProjects] = useState([]);
-  const [API] = useCallback(useAPI(), []);
+  const FETCHING_SIZE = 6;
   const isDesktop = useMedia(mediaQuery.desktop);
 
-  useEffect(() => {
-    async function fetchProject() {
-      const response = await API.project.getTrendingProjects({ params: { size: 6 } });
-      const fetchedProjects = response.data.map(p => ({
-        ...p,
-      }));
-      setProjects(fetchedProjects);
-    }
-    fetchProject();
-  }, [API]);
+  const { data: projects } = useSWR(`/projects/trending?size=${FETCHING_SIZE}`, { revalidateOnFocus: false });
 
-  return (
+  return projects ? (
     <Styled.Section {...props}>
       <Styled.Texts>
         <Styled.Title>
@@ -107,7 +97,7 @@ const Trending = (props) => {
           지금 주목받는 프로젝트. 놓치지 마세요!
         </Styled.SubTitle>
       </Styled.Texts>
-      {projects.map(project => (
+      {projects ? projects.map(project => (
         <Styled.Link to={`/project/${project.uri}`} key={project.id}>
           <Styled.ProjectCard {...project}>
             {isDesktop ? (
@@ -136,9 +126,27 @@ const Trending = (props) => {
             )}
           </Styled.ProjectCard>
         </Styled.Link>
-      ))}
+      )) : ''}
     </Styled.Section>
-  );
+  ) : <Trending.Placeholder {...props} />;
 };
+
+Trending.Placeholder = props => (
+  <Styled.Section {...props}>
+    <Styled.Texts>
+      <Styled.Title>
+        Trending
+      </Styled.Title>
+      <Styled.SubTitle>
+        지금 주목받는 프로젝트. 놓치지 마세요!
+      </Styled.SubTitle>
+    </Styled.Texts>
+    {Array(6).fill(
+      <Styled.Link to="#">
+        <Styled.ProjectCard.Placeholder />
+      </Styled.Link>,
+    )}
+  </Styled.Section>
+);
 
 export default Trending;

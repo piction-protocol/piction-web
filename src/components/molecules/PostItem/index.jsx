@@ -156,6 +156,35 @@ function PostItem({
   );
 }
 
+const Placeholder = {
+  Title: styled(Styled.Title)`
+    display: inline-block;
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+  `,
+  PublishedAt: styled(Styled.PublishedAt)`
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+  `,
+};
+
+PostItem.Placeholder = () => (
+  <Styled.Item>
+    <Styled.CoverWrapper>
+      <Styled.Cover
+        ratio={960 / 360}
+        image={null}
+      />
+    </Styled.CoverWrapper>
+    <Placeholder.Title>Title</Placeholder.Title>
+    <Styled.Text>
+      <Placeholder.PublishedAt>
+        Published at
+      </Placeholder.PublishedAt>
+    </Styled.Text>
+  </Styled.Item>
+);
+
 PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,

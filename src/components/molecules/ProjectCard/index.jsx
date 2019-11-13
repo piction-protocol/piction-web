@@ -70,6 +70,22 @@ function ProjectCard({
   );
 }
 
+const Placeholder = {
+  Title: styled(Styled.Title)`
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+  `,
+};
+
+ProjectCard.Placeholder = () => (
+  <Styled.Item>
+    <Thumbnail />
+    <Styled.Text>
+      <Placeholder.Title>Project</Placeholder.Title>
+    </Styled.Text>
+  </Styled.Item>
+);
+
 ProjectCard.propTypes = {
   title: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,

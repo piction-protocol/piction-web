@@ -34,12 +34,12 @@ const Styled = {
 };
 
 const Posts = ({
-  projectId, project, subscription, isDesktop, series, recommendedProjects,
+  isDesktop, projectId, subscribed = false, series = [], recommendedProjects = [],
 }) => (
   <>
     <Styled.Section>
       <PostList
-        isSubscribing={project.isMine || subscription.isSubscribing}
+        isSubscribing={subscribed}
         projectId={projectId}
       />
     </Styled.Section>
@@ -58,7 +58,7 @@ const Posts = ({
             ))}
           </Styled.Aside>
         )}
-        {recommendedProjects.length > 0 && (
+        {recommendedProjects && recommendedProjects.length > 0 && (
           <Styled.Aside>
             <h2>추천 프로젝트</h2>
             {recommendedProjects.map(recommendedProject => (
@@ -84,8 +84,7 @@ const Posts = ({
 
 Posts.propTypes = {
   projectId: PropTypes.string,
-  project: PropTypes.object,
-  subscription: PropTypes.object,
+  subscribed: PropTypes.bool,
   isDesktop: PropTypes.bool,
   series: PropTypes.array,
   recommendedProjects: PropTypes.array,
