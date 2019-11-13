@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
-
-import useAPI from 'hooks/useAPI';
+import useSWR from 'swr';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -131,17 +130,8 @@ const Styled = {
 };
 
 const Choice = (props) => {
-  const [collection, setCollection] = useState(null);
-  const [API] = useCallback(useAPI(), []);
-
-  useEffect(() => {
-    async function fetchProject() {
-      const { data } = await API.collection.getActive({ params: { size: 4 } });
-      setCollection(data);
-    }
-
-    fetchProject();
-  }, [API]);
+  const FETCHING_SIZE = 4;
+  const { data: collection } = useSWR(`/collections/active?size=${FETCHING_SIZE}`, { revalidateOnFocus: false });
 
   return collection ? (
     <Styled.Container {...props}>
@@ -172,7 +162,60 @@ const Choice = (props) => {
         </Styled.ProjectList>
       </MainGrid>
     </Styled.Container>
-  ) : null;
+  ) : <Choice.Placeholder {...props} />;
 };
+
+const Placeholder = {
+  Name: styled(Styled.Name)`
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+    width: 33%;
+  `,
+  Title: styled(Styled.Title)`
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+    width: 40%;
+  `,
+  SubTitle: styled(Styled.SubTitle)`
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+    width: 50%;
+  `,
+  ProjectTitle: styled(Styled.ProjectTitle)`
+    background-color: var(--gray--light);
+    color: var(--gray--light);
+  `,
+};
+
+Choice.Placeholder = props => (
+  <Styled.Container {...props}>
+    <MainGrid>
+      <Styled.MainImage to="#">
+        <Thumbnail />
+      </Styled.MainImage>
+      <Styled.Texts>
+        <Placeholder.Name>
+          Piction’s Choice
+        </Placeholder.Name>
+        <Placeholder.Title>
+          collection.title
+        </Placeholder.Title>
+        <Placeholder.SubTitle>
+          collection.subTitle
+        </Placeholder.SubTitle>
+      </Styled.Texts>
+      <Styled.ProjectList>
+        {Array(4).fill(
+          <Styled.ProjectListItem>
+            <Styled.Project to="#">
+              <Thumbnail />
+              <Placeholder.ProjectTitle>project.title</Placeholder.ProjectTitle>
+            </Styled.Project>
+          </Styled.ProjectListItem>,
+        )}
+      </Styled.ProjectList>
+    </MainGrid>
+  </Styled.Container>
+);
 
 export default Choice;
