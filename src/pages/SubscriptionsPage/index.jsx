@@ -1,12 +1,10 @@
-import React, {
-  useState, useEffect, useCallback, useRef,
-} from 'react';
-import { Link, navigate } from '@reach/router';
+import React, { useState, useRef } from 'react';
+import { Link } from '@reach/router';
 import styled from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/ko';
+import useSWR, { useSWRPages } from 'swr';
 
-import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
@@ -39,63 +37,65 @@ const Styled = {
 
 function SubscriptionsPage() {
   const { currentUser } = useCurrentUser();
-  const [projects, setProjects] = useState([]);
-  const [pageable, setPageable] = useState({});
-  const [page, setPage] = useState(1);
-  const [API] = useCallback(useAPI(), []);
-  const listRef = useRef(null);
+  const listRef = useRef();
 
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const { data: { content: projectsData, ...pageableData } } = await API.my.subscriptions({
-          params: { page, size: 20 },
-        });
+  const [totalSubscriotion, setTotalSubscription] = useState();
 
-        setPageable(pageableData);
+  const SubPage = ({ offset, withSWR }) => {
+    const { data } = withSWR(
+      useSWR(`my/subscriptions?page=${offset + 1}&size=20`),
+    );
 
-        if (pageableData.first) {
-          setProjects(projectsData);
-        } else {
-          setProjects(prev => [...prev, ...projectsData]);
-        }
-      } catch (error) {
-        navigate('/404');
-      }
-    };
+    if (!data) {
+      return Array(4).fill(
+        <Styled.Link to="#">
+          <ProjectCard.Placeholder />
+        </Styled.Link>,
+      );
+    }
 
-    getProjects();
-  }, [API, page]);
+    setTotalSubscription(data.totalElements);
+    return data.content.map(project => (
+      <Styled.Link to={`/project/${project.uri}`} key={project.id}>
+        <ProjectCard {...project}>
+          {project.lastPublishedAt && (
+            <Styled.CardText>
+              {`${moment(project.lastPublishedAt).fromNow()} 업데이트`}
+            </Styled.CardText>
+          )}
+        </ProjectCard>
+      </Styled.Link>
+    ));
+  };
+
+  function nextOffset({ data }) {
+    if (data.last) return null;
+    return data.pageable.pageNumber + 1;
+  }
+
+  const {
+    pages, isLoadingMore, isReachingEnd, loadMore,
+  } = useSWRPages(
+    'my/subscripitions',
+    SubPage,
+    nextOffset,
+    [],
+  );
 
   useOnScrollToBottom(listRef, () => {
-    if (!pageable.last) {
-      setPage(prev => prev + 1);
-    }
+    if (isLoadingMore || isReachingEnd) return;
+    loadMore();
   });
 
   return (
     <GridTemplate
-      hero={(
-        <UserInfo
-          {...currentUser}
-        />
-      )}
+      hero={<UserInfo {...currentUser} />}
       ref={listRef}
     >
       <Styled.Heading>
-        {`구독 중인 프로젝트(${pageable.totalElements || 0})`}
+        {`구독 중인 프로젝트(${totalSubscriotion || 0})`}
       </Styled.Heading>
-      {projects.map(project => (
-        <Styled.Link to={`/project/${project.uri}`} key={project.id}>
-          <ProjectCard {...project}>
-            {project.lastPublishedAt && (
-              <Styled.CardText>
-                {`${moment(project.lastPublishedAt).fromNow()} 업데이트`}
-              </Styled.CardText>
-            )}
-          </ProjectCard>
-        </Styled.Link>
-      ))}
+      {pages}
     </GridTemplate>
   );
 }
