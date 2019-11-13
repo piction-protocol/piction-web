@@ -31,6 +31,7 @@ function useAPI() {
   };
 
   const post = projectId => ({
+    getAll: params => API.get(`/projects/${projectId}/posts`, params),
     create: params => API.post(`/projects/${projectId}/posts`, params),
     delete: params => API.delete(`/projects/${projectId}/posts/${params.postId}`),
     get: params => API.get(`/projects/${projectId}/posts/${params.postId}`),
@@ -45,6 +46,7 @@ function useAPI() {
   });
 
   const project = {
+    getAll: params => API.get('/projects', params),
     getTaggingProjects: params => API.get(`/projects/tags/${params.tag}`, params),
     getTrendingProjects: params => API.get('/projects/trending', params),
     create: params => API.post('/projects', params),
@@ -71,6 +73,8 @@ function useAPI() {
   };
 
   const series = projectId => ({
+    get: params => API.get(`/projects/${projectId}/series/${params.seriesId}`),
+    getAll: () => API.get(`/projects/${projectId}/series`),
     getPosts: params => API.get(`/projects/${projectId}/series/${params.seriesId}/posts`, params),
     getPreviousAndNextPosts: params => API.get(`/projects/${projectId}/series/${params.seriesId}/posts/${params.postId}`, params),
     sort: params => API.put(`/projects/${projectId}/series`, params),
