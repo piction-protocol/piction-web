@@ -39,7 +39,7 @@ function SubscriptionsPage() {
   const { currentUser } = useCurrentUser();
   const listRef = useRef();
 
-  const [totalSubscriotion, setTotalSubscription] = useState();
+  const [totalSubscriptionCount, setTotalSubscriptionCount] = useState(0);
 
   const SubPage = ({ offset, withSWR }) => {
     const { data } = withSWR(
@@ -54,7 +54,7 @@ function SubscriptionsPage() {
       );
     }
 
-    setTotalSubscription(data.totalElements);
+    setTotalSubscriptionCount(data.totalElements);
     return data.content.map(project => (
       <Styled.Link to={`/project/${project.uri}`} key={project.id}>
         <ProjectCard {...project}>
@@ -93,7 +93,7 @@ function SubscriptionsPage() {
       ref={listRef}
     >
       <Styled.Heading>
-        {`구독 중인 프로젝트(${totalSubscriotion || 0})`}
+        {`구독 중인 프로젝트(${totalSubscriptionCount})`}
       </Styled.Heading>
       {pages}
     </GridTemplate>
