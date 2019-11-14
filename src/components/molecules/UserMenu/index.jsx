@@ -73,6 +73,9 @@ const Styled = {
     as: Link,
   }))`
     margin: 16px 16px 0 16px;
+    &:only-child {
+      margin-top: 0;
+    }
   `,
   Links: styled.div`
     display: flex;
@@ -147,33 +150,35 @@ function UserMenu({
               </Styled.Won>
             )}
           </Styled.Section>
-          <Styled.Section>
-            {projects.length > 0 && (
-              <>
-                <Styled.Title>
-                  내 프로젝트
-                </Styled.Title>
-                {projects.map(project => (
-                  <Styled.Project to={`/project/${project.uri}`} key={project.id}>
-                    <Styled.Thumbnail image={project.thumbnail} />
-                    <Styled.ProjectTexts>
-                      <Styled.ProjectTitle>
-                        {project.title}
-                      </Styled.ProjectTitle>
-                      <Styled.ProjectInfo>
-                        {`구독자 ${project.subscriptionUserCount}`}
-                      </Styled.ProjectInfo>
-                    </Styled.ProjectTexts>
-                  </Styled.Project>
-                ))}
-              </>
-            )}
-            {isDesktop && (
-              <Styled.SecondaryButton to="/dashboard">
-                {projects.length > 0 ? '크리에이터 대시보드' : '+ 새 프로젝트 만들기'}
-              </Styled.SecondaryButton>
-            )}
-          </Styled.Section>
+          {(isDesktop || projects.length > 0) && (
+            <Styled.Section>
+              {projects.length > 0 && (
+                <>
+                  <Styled.Title>
+                    내 프로젝트
+                  </Styled.Title>
+                  {projects.map(project => (
+                    <Styled.Project to={`/project/${project.uri}`} key={project.id}>
+                      <Styled.Thumbnail image={project.thumbnail} />
+                      <Styled.ProjectTexts>
+                        <Styled.ProjectTitle>
+                          {project.title}
+                        </Styled.ProjectTitle>
+                        <Styled.ProjectInfo>
+                          {`구독자 ${project.subscriptionUserCount}`}
+                        </Styled.ProjectInfo>
+                      </Styled.ProjectTexts>
+                    </Styled.Project>
+                  ))}
+                </>
+              )}
+              {isDesktop && (
+                <Styled.SecondaryButton to="/dashboard">
+                  {projects.length > 0 ? '크리에이터 대시보드' : '+ 새 프로젝트 만들기'}
+                </Styled.SecondaryButton>
+              )}
+            </Styled.Section>
+          )}
         </>
       )}
       <Styled.Links>
