@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import withLoginChecker from 'components/LoginChecker';
+import useRedirectWhenSignedIn from 'hooks/useRedirectWhenSignedIn';
 
 import CompactTemplate from 'components/templates/CompactTemplate';
 import LoginForm from 'components/organisms/LoginForm';
 
 function LoginPage({ location }) {
+  useRedirectWhenSignedIn();
+
   return (
     <CompactTemplate>
       <LoginForm {...location.state} />
@@ -18,4 +20,4 @@ LoginPage.propTypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default withLoginChecker(LoginPage, false, '/');
+export default LoginPage;
