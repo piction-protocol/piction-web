@@ -62,7 +62,6 @@ function ProjectPage({ projectId }) {
     }
   }, [project, currentUser]);
 
-  // TODO: asdf
   const handleSubscribe = async () => {
     if (subscribed) {
       try {
