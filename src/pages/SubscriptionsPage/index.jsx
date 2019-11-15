@@ -10,6 +10,7 @@ import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import media from 'styles/media';
 
+import withLoginChecker from 'components/LoginChecker';
 import GridTemplate from 'components/templates/GridTemplate';
 import UserInfo from 'components/organisms/UserInfo';
 import ProjectCard from 'components/molecules/ProjectCard';
@@ -100,4 +101,4 @@ function SubscriptionsPage() {
   );
 }
 
-export default SubscriptionsPage;
+export default withLoginChecker(SubscriptionsPage);
