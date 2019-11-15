@@ -1,6 +1,4 @@
-import React, {
-  useState, useEffect, useRef, useContext,
-} from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
@@ -10,14 +8,13 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
-import { LayoutContext } from 'context/LayoutContext';
-
 import { ReactComponent as SortIcon } from 'images/ic-sort.svg';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import SeriesPostItem from 'components/molecules/SeriesPostItem';
 import Heading from 'components/atoms/Heading';
 import useSWR, { useSWRPages } from 'swr';
+import useProjectLayout from 'hooks/useNavigationLayout';
 
 const Styled = {
   Hero: styled.div`
@@ -91,7 +88,6 @@ const Styled = {
 
 function SeriesPage({ projectId, seriesId }) {
   const listRef = useRef(null);
-  const [, setLayout] = useContext(LayoutContext);
   const { currentUser } = useCurrentUser();
 
   const [isDescending, setIsDescending] = useState(true);
@@ -100,16 +96,7 @@ function SeriesPage({ projectId, seriesId }) {
   const { data: series } = useSWR(`/projects/${projectId}/series/${seriesId}`, { revalidateOnFocus: false });
   const { data: fanPass } = useSWR(`/fan-pass/projects/${projectId}`, { revalidateOnFocus: false });
 
-  useEffect(() => {
-    setLayout({
-      type: 'project',
-      data: { project },
-    });
-
-    return (() => {
-      setLayout({ type: 'default' });
-    });
-  }, [project, setLayout]);
+  useProjectLayout(project);
 
   const PostsPage = ({ offset, withSWR }) => {
     const { data } = withSWR(

@@ -1,6 +1,12 @@
 import { css } from 'styled-components';
 
 const ContentStyle = css`
+  @font-face {
+      font-family: 'RIDIBatang';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
   font-size: var(--font-size--base);
   line-height: var(--line-height--content);
   word-break: break-all;
