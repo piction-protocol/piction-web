@@ -3,8 +3,6 @@ import { Router } from '@reach/router';
 
 import styled from 'styled-components';
 
-import withLoginChecker from 'components/LoginChecker';
-
 import CompactTemplate from 'components/templates/CompactTemplate';
 import Heading from 'components/atoms/Heading';
 
@@ -32,4 +30,4 @@ function ForgotPasswordPage() {
   );
 }
 
-export default withLoginChecker(ForgotPasswordPage, false, '/');
+export default ForgotPasswordPage;

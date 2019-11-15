@@ -1,36 +1,38 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { navigate } from '@reach/router';
 
-import { CurrentUserContext } from 'context/CurrentUserContext';
-
 import Spinner from 'components/atoms/Spinner';
+import useCurrentUser from 'hooks/useCurrentUser';
 
-function LoginChecker({ bool, children, redirect }) {
-  const [currentUser] = useContext(CurrentUserContext);
+function LoginChecker({ children, redirect }) {
+  const { currentUser, accessToken } = useCurrentUser();
+  const [isFetchingCurrentUser, setIsFetchingCurrentUser] = useState(true);
 
   useEffect(() => {
-    if (!currentUser === bool) {
-      navigate(redirect, {
-        state: {
-          redirectTo: encodeURIComponent(window.location.pathname + window.location.search),
-        },
-        replace: true,
-      });
-    }
-  }, [redirect, bool, currentUser]);
+    if (accessToken) return;
 
-  if (!currentUser === bool) {
-    return (
-      <Spinner />
-    );
-  }
+    navigate(redirect, {
+      state: {
+        redirectTo: encodeURIComponent(window.location.pathname + window.location.search),
+      },
+      replace: true,
+    });
+  }, [accessToken, redirect]);
+
+  useEffect(() => {
+    if (currentUser && accessToken) {
+      setIsFetchingCurrentUser(false);
+    }
+  }, [currentUser, accessToken]);
+
+  if (isFetchingCurrentUser) return <Spinner />;
 
   return children;
 }
 
-const withLoginChecker = (WrappedComponent, bool = true, redirect = '/login') => (
+const withLoginChecker = (WrappedComponent, redirect = '/login') => (
   props => (
-    <LoginChecker bool={bool} redirect={redirect}>
+    <LoginChecker redirect={redirect}>
       <WrappedComponent {...props} />
     </LoginChecker>
   )
