@@ -33,8 +33,6 @@
     "deploy:staging": "aws s3 sync build s3://staging.piction.network",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "docz": "docz dev",
-    "docz:build": "docz build",
     "svgo": "svgo --config=.svgo.yml --indent=2 src/**/*.svg",
     "lint": "eslint --ext jsx --ext js src"
   },
@@ -92,8 +90,6 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.4.3",
-    "docz": "^1.2.0",
-    "docz-theme-default": "^1.2.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "husky": "^2.3.0",
@@ -101,8 +97,5 @@
     "react-hot-loader": "^4.8.4",
     "react-scripts": "^3.0.1",
     "svgo": "^1.2.2"
-  },
-  "resolutions": {
-    "docz/**/webpack": "4.28.4"
   }
 }
