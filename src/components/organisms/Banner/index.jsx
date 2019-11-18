@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 import Swiper from 'react-id-swiper';
-import 'react-id-swiper/lib/styles/css/swiper.css';
+import 'swiper/css/swiper.css';
 
 import media, { mediaQuery } from 'styles/media';
 
