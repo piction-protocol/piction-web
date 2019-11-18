@@ -7,11 +7,13 @@ import CompactTemplate from 'components/templates/CompactTemplate';
 import LoginForm from 'components/organisms/LoginForm';
 
 function LoginPage({ location }) {
-  useRedirectWhenSignedIn();
+  const redirectTo = decodeURIComponent(location.state.redirectTo);
+
+  useRedirectWhenSignedIn(redirectTo);
 
   return (
     <CompactTemplate>
-      <LoginForm {...location.state} />
+      <LoginForm redirectTo={redirectTo} />
     </CompactTemplate>
   );
 }

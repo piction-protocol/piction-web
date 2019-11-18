@@ -53,7 +53,7 @@ const Styled = {
   `,
 };
 
-function LoginForm({ redirectTo }) {
+function LoginForm({ redirectTo = '/' }) {
   const [formData, { handleChange }] = useForm({
     loginId: '',
     password: '',
@@ -69,7 +69,7 @@ function LoginForm({ redirectTo }) {
       await API.token.create(response.data.accessToken, formData.rememberme && {
         expires: new Date('2099-12-31T23:59:59'),
       });
-      navigate(decodeURIComponent(redirectTo), { replace: true });
+      navigate(redirectTo, { replace: true });
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }

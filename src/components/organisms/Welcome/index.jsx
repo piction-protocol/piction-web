@@ -47,7 +47,7 @@ function Welcome({ redirectTo = '/' }) {
         <br />
         다양한 창작물을 즐겨보세요!
       </Styled.Text>
-      <Styled.Button to={decodeURIComponent(redirectTo)}>계속</Styled.Button>
+      <Styled.Button to={redirectTo}>계속</Styled.Button>
     </Styled.Container>
   );
 }

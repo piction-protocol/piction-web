@@ -9,13 +9,15 @@ import SignupForm from 'components/organisms/SignupForm';
 import Welcome from 'components/organisms/Welcome';
 
 function SignupPage({ location }) {
-  useRedirectWhenSignedIn();
+  const redirectTo = decodeURIComponent(location.state.redirectTo);
+
+  useRedirectWhenSignedIn(redirectTo);
 
   return (
     <CompactTemplate>
       <Router primary={false} basepath="/signup">
         <SignupForm path="/" />
-        <Welcome path="/welcome" {...location.state} />
+        <Welcome path="/welcome" redirectTo={redirectTo} />
       </Router>
     </CompactTemplate>
   );
