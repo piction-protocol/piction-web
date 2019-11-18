@@ -127,7 +127,7 @@ function SeriesPage({ projectId, seriesId }) {
 
     const checkIsViewable = (post) => {
       if (!post.fanPass) return true;
-      if (!currentUser) return false;
+      if (!currentUser || !project) return false;
       const isSubscribing = fanPass && fanPass.level >= post.fanPass.level;
       const isMine = project.user.loginId === currentUser.loginId;
       return isSubscribing || isMine;
