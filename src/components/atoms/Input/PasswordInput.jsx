@@ -24,15 +24,15 @@ const Styled = {
 };
 
 function PasswordInput(props) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isMasked, setIsMasked] = useState(true);
 
   return (
     <Styled.Wrapper>
-      <Styled.Input {...props} type={isVisible ? 'password' : 'text'} />
-      <Styled.Toggle onClick={() => setIsVisible(visibility => !visibility)}>
-        {isVisible
-          ? <VisibleIcon />
-          : <InvisibleIcon />
+      <Styled.Input {...props} type={isMasked ? 'password' : 'text'} />
+      <Styled.Toggle onClick={() => setIsMasked(prev => !prev)}>
+        {isMasked
+          ? <InvisibleIcon />
+          : <VisibleIcon />
         }
       </Styled.Toggle>
     </Styled.Wrapper>
