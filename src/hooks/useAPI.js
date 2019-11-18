@@ -99,7 +99,7 @@ function useAPI() {
   const token = {
     get: () => accessToken,
     create: (value, params) => setCookie('access_token', value, { ...params, path: '/' }),
-    delete: () => removeCookie('access_token'),
+    delete: () => removeCookie('access_token', { path: '/' }),
   };
 
   const handleCommonError = ({ code }) => ({
