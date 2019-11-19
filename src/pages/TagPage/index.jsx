@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
+import useSWR, { useSWRPages } from 'swr';
+
+import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import media from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import ProjectCard from 'components/molecules/ProjectCard';
 import Heading from 'components/atoms/Heading';
-import useSWR from 'swr';
 
 const Styled = {
   Hero: styled.div`
@@ -41,10 +43,28 @@ const Styled = {
 };
 
 function TagPage({ tagName }) {
-  const { data } = useSWR(`projects?tagName=${tagName}&size=100&page=1`);
+  const FETCHING_SIZE = 20;
 
-  const Projects = ({ projects }) => (
-    projects.map(project => (
+  const [totalCount, setTotalCount] = useState(0);
+
+  function TaggedProjectsPage({ offset, withSWR }) {
+    const { data } = withSWR(
+      useSWR(`projects?tagName=${tagName}&size=${FETCHING_SIZE}&page=${offset + 1}`),
+    );
+
+    if (!data) {
+      return (
+        Array(4).fill(
+          <Styled.Link to="#">
+            <ProjectCard.Placeholder />
+          </Styled.Link>,
+        )
+      );
+    }
+
+    setTotalCount(data.totalElements);
+
+    return data.content.map(project => (
       <Styled.Link to={`/project/${project.uri}`} key={project.id}>
         <ProjectCard {...project}>
           <Styled.CardText>
@@ -52,16 +72,26 @@ function TagPage({ tagName }) {
           </Styled.CardText>
         </ProjectCard>
       </Styled.Link>
-    ))
-  );
+    ));
+  }
 
-  const ProjectsPlaceholder = () => (
-    Array(4).fill(
-      <Styled.Link to="#">
-        <ProjectCard.Placeholder />
-      </Styled.Link>,
-    )
-  );
+  function nextOffset({ data }) {
+    if (data.last) return null;
+    return data.pageable.pageNumber + 1;
+  }
+
+  const {
+    pages,
+    isLoadingMore,
+    isReachingEnd,
+    loadMore,
+  } = useSWRPages(`tag-page/${tagName}`, TaggedProjectsPage, nextOffset, []);
+
+  const listRef = useRef(null);
+  useOnScrollToBottom(listRef, () => {
+    if (isLoadingMore || isReachingEnd) return;
+    loadMore();
+  });
 
   return (
     <GridTemplate
@@ -71,16 +101,13 @@ function TagPage({ tagName }) {
             {`#${tagName}`}
           </Heading>
           <Styled.Count>
-            {`${data ? data.totalElements : 0} 프로젝트`}
+            {`${totalCount} 프로젝트`}
           </Styled.Count>
         </Styled.Hero>
       )}
+      ref={listRef}
     >
-      {data ? (
-        <Projects projects={data.content} />
-      ) : (
-        <ProjectsPlaceholder />
-      )}
+      {pages}
     </GridTemplate>
   );
 }

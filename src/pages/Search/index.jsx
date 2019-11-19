@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
 import queryString from 'query-string';
-import useSWR from 'swr';
+import useSWR, { useSWRPages } from 'swr';
+
+import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import media from 'styles/media';
 
@@ -43,10 +45,27 @@ const Styled = {
 
 function Search({ location: { search } }) {
   const { query } = queryString.parse(search);
-  const { data } = useSWR(`/search/projects?name=${query}&size=100&page=1`);
 
-  const Projects = ({ projects }) => (
-    projects.map(project => (
+  const FETCHING_SIZE = 20;
+  const [totalCount, setTotalCount] = useState(0);
+  function FoundProjectsPage({ offset, withSWR }) {
+    const { data } = withSWR(
+      useSWR(`/search/projects?name=${query}&size=${FETCHING_SIZE}&page=${offset + 1}`),
+    );
+
+    if (!data) {
+      return (
+        Array(4).fill(
+          <Styled.Link to="#">
+            <ProjectCard.Placeholder />
+          </Styled.Link>,
+        )
+      );
+    }
+
+    setTotalCount(data.totalElements);
+
+    return data.content.map(project => (
       <Styled.Link to={`/project/${project.uri}`} key={project.id}>
         <ProjectCard {...project}>
           <Styled.CardText>
@@ -54,16 +73,26 @@ function Search({ location: { search } }) {
           </Styled.CardText>
         </ProjectCard>
       </Styled.Link>
-    ))
-  );
+    ));
+  }
 
-  const ProjectsPlaceholder = () => (
-    Array(4).fill(
-      <Styled.Link to="#">
-        <ProjectCard.Placeholder />
-      </Styled.Link>,
-    )
-  );
+  function nextOffset({ data }) {
+    if (data.last) return null;
+    return data.pageable.pageNumber + 1;
+  }
+
+  const {
+    pages,
+    isLoadingMore,
+    isReachingEnd,
+    loadMore,
+  } = useSWRPages(`search-page/${query}`, FoundProjectsPage, nextOffset, []);
+
+  const listRef = useRef(null);
+  useOnScrollToBottom(listRef, () => {
+    if (isLoadingMore || isReachingEnd) return;
+    loadMore();
+  });
 
   return (
     <GridTemplate
@@ -73,16 +102,13 @@ function Search({ location: { search } }) {
             {`"${query || ''}" 검색 결과`}
           </Heading>
           <Styled.Count>
-            {`${data ? data.totalElements : 0} 프로젝트`}
+            {`${totalCount} 프로젝트`}
           </Styled.Count>
         </Styled.Hero>
       )}
+      ref={listRef}
     >
-      {data ? (
-        <Projects projects={data.content} />
-      ) : (
-        <ProjectsPlaceholder />
-      )}
+      {pages}
     </GridTemplate>
   );
 }
