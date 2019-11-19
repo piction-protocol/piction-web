@@ -127,13 +127,13 @@ function SeriesPage({ projectId, seriesId }) {
 
     const checkIsViewable = (post) => {
       if (!post.fanPass) return true;
-      if (!currentUser || !project) return false;
+      if (!currentUser) return false;
       const isSubscribing = fanPass && fanPass.level >= post.fanPass.level;
       const isMine = project.user.loginId === currentUser.loginId;
       return isSubscribing || isMine;
     };
 
-    if (!data) {
+    if (!data || !project) {
       return (
         Array(4).fill(
           <SeriesPostItem.Placeholder />,
@@ -157,7 +157,7 @@ function SeriesPage({ projectId, seriesId }) {
   }
   const {
     pages, isLoadingMore, isReachingEnd, loadMore,
-  } = useSWRPages('series', PostsPage, nextOffset, [isDescending]);
+  } = useSWRPages('series', PostsPage, nextOffset, [isDescending, project]);
 
   useOnScrollToBottom(listRef, () => {
     if (isLoadingMore || isReachingEnd) return;
