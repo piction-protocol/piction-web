@@ -86,7 +86,7 @@ function Search({ location: { search } }) {
     isLoadingMore,
     isReachingEnd,
     loadMore,
-  } = useSWRPages(`search-page/${query}`, FoundProjectsPage, nextOffset, []);
+  } = useSWRPages(`search-page/${query}`, FoundProjectsPage, nextOffset, [query]);
 
   const listRef = useRef(null);
   useOnScrollToBottom(listRef, () => {

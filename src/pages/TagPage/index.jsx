@@ -85,7 +85,7 @@ function TagPage({ tagName }) {
     isLoadingMore,
     isReachingEnd,
     loadMore,
-  } = useSWRPages(`tag-page/${tagName}`, TaggedProjectsPage, nextOffset, []);
+  } = useSWRPages(`tag-page/${tagName}`, TaggedProjectsPage, nextOffset, [tagName]);
 
   const listRef = useRef(null);
   useOnScrollToBottom(listRef, () => {
