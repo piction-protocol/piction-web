@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
-
-import useAPI from 'hooks/useAPI';
 
 import Pagination from 'components/molecules/Pagination';
 import UserProfile from 'components/atoms/ContentImage/UserProfile';
@@ -38,13 +37,20 @@ const Styled = {
     margin-right: 16px;
     border-radius: 50%;
   `,
+  Text: styled.div``,
   UserName: styled.span`
-    margin-right: 16px;
-
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
   `,
   UserId: styled.span`
+    margin-left: 4px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
+  `,
+  Tier: styled.span`
+    font-size: var(--font-size--small);
+    color: #999999;
   `,
   SubscriptionDate: styled.span`
     margin-left: auto;
@@ -54,25 +60,12 @@ const Styled = {
 };
 
 function UserList({ title, projectId }) {
-  const [subscribers, setSubscribers] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageable, setPageable] = useState({
-    totalElements: '',
-  });
-  const [API] = useCallback(useAPI(), []);
 
-  useEffect(() => {
-    const getFormData = async () => {
-      const { data: { content, ...pageableData } } = await API.my.projectSubscriptions({
-        projectId,
-        params: { size: 20, page },
-      });
-      setSubscribers(content);
-      setPageable(pageableData);
-    };
-
-    getFormData();
-  }, [API, projectId, page]);
+  const { data: { content: subscriptions, ...pageable } } = useSWR(
+    `/my/projects/${projectId}/subscriptions?page=${page}`,
+    { suspense: true },
+  );
 
   return (
     <Styled.Container>
@@ -80,22 +73,31 @@ function UserList({ title, projectId }) {
         {`${title}(${pageable.totalElements})`}
       </Heading>
       <Styled.List>
-        {subscribers.map(subscriber => (
-          <Styled.Item key={subscriber.user.username}>
+        {subscriptions ? (subscriptions.map(subscription => (
+          <Styled.Item key={subscription.subscriber.username}>
             <Styled.UserProfile
-              image={subscriber.user.picture}
+              image={subscription.subscriber.picture}
             />
-            <Styled.UserName>
-              {subscriber.user.username}
-            </Styled.UserName>
-            <Styled.UserId>
-              {`@${subscriber.user.loginId}`}
-            </Styled.UserId>
+            <Styled.Text>
+              <Styled.UserName>
+                {subscription.subscriber.username}
+                <Styled.UserId>
+                  {`@${subscription.subscriber.loginId}`}
+                </Styled.UserId>
+              </Styled.UserName>
+              <Styled.Tier>
+                {`${subscription.fanPass.level ? `티어 ${subscription.fanPass.level}` : '무료 티어'} - ${subscription.fanPass.name}`}
+              </Styled.Tier>
+            </Styled.Text>
             <Styled.SubscriptionDate>
-              {moment(subscriber.subscriptionDate).format('YYYY/MM/DD HH:mm')}
+              {moment(subscription.subscriptionDate).format('YYYY/MM/DD HH:mm')}
             </Styled.SubscriptionDate>
           </Styled.Item>
-        ))}
+        ))) : (
+          <div>
+            placeholder temp
+          </div>
+        )}
       </Styled.List>
       <Pagination
         number={pageable.number}
