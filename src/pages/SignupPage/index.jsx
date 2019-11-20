@@ -9,7 +9,7 @@ import SignupForm from 'components/organisms/SignupForm';
 import Welcome from 'components/organisms/Welcome';
 
 function SignupPage({ location }) {
-  const redirectTo = decodeURIComponent(location.state.redirectTo);
+  const redirectTo = decodeURIComponent(location.state ? location.state.redirectTo : '/');
 
   useRedirectWhenSignedIn(redirectTo);
 
