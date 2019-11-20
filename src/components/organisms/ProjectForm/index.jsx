@@ -249,12 +249,6 @@ function ProjectForm({
           invalid={!!errorMessage.tags}
           onlyUnique
         />
-        <Styled.Spec>
-          #던파크리 태그를 입력하시면
-          {' '}
-          <a href="/campaigns/dnfcreativeleague" target="_blank">던파 크리에이티브 리그</a>
-          에 자동으로 참가됩니다. (10/9~11/20)
-        </Styled.Spec>
         <ErrorMessage>{errorMessage.tags}</ErrorMessage>
       </Styled.ImageGroup>
       <Styled.ImageGroup>
