@@ -61,11 +61,10 @@ function useAPI() {
   };
 
   const fanPass = {
-    get: params => API.get(`/fan-pass/${params.fanPassId}`),
-    getAll: params => API.get(`/fan-pass/projects/${params.projectId}`),
-    getSubscription: params => API.get(`/fan-pass/projects/${params.projectId}/subscription`),
-    subscribe: params => API.post(`/fan-pass/${params.fanPassId}/subscription`, params),
-    unsubscribe: params => API.delete(`/fan-pass/${params.fanPassId}/subscription`),
+    get: params => API.get(`/projects/${params.projectId}`),
+    getAll: params => API.get(`/projects/${params.projectId}/fan-pass`),
+    subscribe: params => API.post(`/projects/${params.projectId}/fan-pass/subscription`, params),
+    unsubscribe: params => API.delete(`/projects/${params.projectId}/fan-pass/subscription`),
   };
 
   const recommended = {
