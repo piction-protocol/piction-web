@@ -33,7 +33,7 @@
     "deploy:staging": "aws s3 sync build s3://staging.piction.network",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "svgo": "svgo --config=.svgo.yml --indent=2 src/**/*.svg",
+    "svgo": "svgo --config=.svgo.yml --indent=2 ./src/ -r",
     "lint": "eslint --ext jsx --ext js src"
   },
   "husky": {
