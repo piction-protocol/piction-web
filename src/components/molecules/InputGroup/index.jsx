@@ -13,13 +13,13 @@ const Styled = {
     row-gap: 8px;
   `,
   Spec: styled.p`
-    font-size: var(--font-size--small);
     color: var(--gray--dark);
+    font-size: var(--font-size--small);
   `,
 };
 
 function InputGroup({
-  name, label, spec, errorMessage, className, type, children, ...props
+  name, label, spec, errorMessage, className, type, children, inputRef, ...props
 }) {
   return (
     <Styled.Group className={className}>
@@ -30,8 +30,8 @@ function InputGroup({
         <Styled.Spec>{spec}</Styled.Spec>
       )}
       {type === 'password'
-        ? <PasswordInput id={name} name={name} invalid={!!errorMessage} {...props} />
-        : <Input id={name} name={name} type={type} invalid={!!errorMessage} {...props} />
+        ? <PasswordInput id={name} name={name} ref={inputRef} invalid={!!errorMessage} {...props} />
+        : <Input id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} />
       }
       {children}
       {errorMessage && (
@@ -51,6 +51,7 @@ InputGroup.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
   children: PropTypes.node,
+  inputRef: PropTypes.func,
 };
 
 InputGroup.defaultProps = {
