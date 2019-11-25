@@ -1,11 +1,9 @@
-import React, {
-  useState, useEffect, useCallback,
-} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
-
-import useAPI from 'hooks/useAPI';
+import queryString from 'query-string';
+import useSWR from 'swr';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
@@ -60,51 +58,47 @@ const Styled = {
 };
 
 function DashboardPostList({ title, projectId }) {
-  const [postList, setPostList] = useState([]);
-  const [seriesList, setSeriesList] = useState([]);
   const [deletingPost, setDeletingPost] = useState(null);
-  const [isRequiredFanPass, setIsRequiredFanPass] = useState('');
   const [seriesId, setSeriesId] = useState('');
   const [page, setPage] = useState(1);
-  const [pageable, setPageable] = useState({});
-  const [API] = useCallback(useAPI(), []);
+  const [condition, setCondition] = useState(null);
+  const [fanPassLevel, setFanPassLevel] = useState(null);
 
-  useEffect(() => {
-    const getFormData = async () => {
-      try {
-        const { data: { content: postsData, ...pageableData } } = await API.my.posts({
-          projectId,
-          params: {
-            size: 15,
-            page,
-            isRequiredFanPass,
-            seriesId,
-          },
-        });
-        setPageable(pageableData);
-        setPostList(postsData);
+  const query = queryString.stringify({
+    page, seriesId, condition, fanPassLevel,
+  });
 
-        const { data: seriesData } = await API.series(projectId).getAll();
-        setSeriesList(seriesData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const handleQuery = (value) => {
+    if (value === 'PUBLIC') {
+      setCondition('PUBLIC');
+      setFanPassLevel(null);
+    } else if (value === '') {
+      setCondition(null);
+      setFanPassLevel(null);
+    } else {
+      setCondition('FAN_PASS');
+      setFanPassLevel(value);
+    }
+  };
 
-    getFormData();
-  }, [API, projectId, page, isRequiredFanPass, seriesId]);
+  // FIXME: suspense 옵션 제거하고 placeholder 추가
+  const { data: postList } = useSWR(`my/projects/${projectId}/posts?${query}`, { suspense: true });
+  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-pass`, { suspense: true });
+  const { data: seriesList } = useSWR(`/projects/${projectId}/series`, { suspense: true });
 
   return (
     <Styled.Container>
       <Heading>{title}</Heading>
       <Styled.Tools>
         <Styled.Select
-          onChange={event => setIsRequiredFanPass(event.target.value)}
-          value={isRequiredFanPass}
+          onChange={event => handleQuery(event.target.value)}
           options={[
-            { text: '공개 설정 필터', value: '' },
-            { text: '전체 공개', value: 'false' },
-            { text: '구독자 공개', value: 'true' },
+            { text: 'FAN PASS 필터', value: '' },
+            { text: '전체 공개', value: 'PUBLIC' },
+            ...fanPassList.map(fanPass => ({
+              text: fanPass.level > 0 ? `티어 ${fanPass.level}` : '무료 티어',
+              value: fanPass.level,
+            })),
           ]}
         />
         <Styled.Select
@@ -118,7 +112,7 @@ function DashboardPostList({ title, projectId }) {
         />
         <Styled.New to="new">+ 새 포스트 등록</Styled.New>
       </Styled.Tools>
-      {postList.length === 0 && (
+      {postList.content.length === 0 && (
         <Styled.Empty>
           <Styled.BadMoodIcon />
           <p>
@@ -127,7 +121,7 @@ function DashboardPostList({ title, projectId }) {
         </Styled.Empty>
       )}
       <Styled.List>
-        {postList.map(post => (
+        {postList.content.map(post => (
           <DashboardPostItem
             {...post}
             projectId={projectId}
@@ -137,8 +131,8 @@ function DashboardPostList({ title, projectId }) {
         ))}
       </Styled.List>
       <Pagination
-        number={pageable.number}
-        totalPages={pageable.totalPages}
+        number={postList.number}
+        totalPages={postList.totalPages}
         setPage={setPage}
         delta={2}
       />
