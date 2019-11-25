@@ -96,7 +96,7 @@ const Styled = {
 };
 
 function DashboardPostItem({
-  id, projectId, title, series, cover,
+  id, projectId, title, cover, series, fanPass,
   createdAt, publishedAt, status, handleDelete, ...props
 }) {
   return (
@@ -122,6 +122,7 @@ function DashboardPostItem({
         <Styled.Text>
           <Styled.Series>
             {series ? series.name : '미지정'}
+            {fanPass && ` · ${fanPass.level > 0 ? `티어 ${fanPass.level}` : '무료 티어'}`}
           </Styled.Series>
           <Styled.Title>
             {title}
@@ -149,6 +150,7 @@ DashboardPostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   series: PropTypes.object,
+  fanPass: PropTypes.object,
   createdAt: PropTypes.number.isRequired,
   publishedAt: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,

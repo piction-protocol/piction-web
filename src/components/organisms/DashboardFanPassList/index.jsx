@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from '@reach/router';
 import useSWR from 'swr';
 
 import Grid from 'styles/Grid';
 
 import FanPass from 'components/molecules/FanPass';
 import Heading from 'components/atoms/Heading';
-import { PrimaryButton } from 'components/atoms/Button';
+import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
+import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
+import { ReactComponent as EditIcon } from 'images/ic-edit.svg';
 import { ReactComponent as FanPassImage } from './img-fanpass-null.svg';
 
 const Styled = {
@@ -24,6 +27,38 @@ const Styled = {
   `,
   FanPass: styled(FanPass)`
     grid-column: 1 / -1;
+  `,
+  Price: styled.p`
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+  `,
+  Subscriptions: styled.span`
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+    color: #999999;
+    font-weight: bold;
+    font-size: var(--font-size--tiny);
+    font-family: 'Noto Sans KR', sans-serif;
+  `,
+  PeopleIcon: styled(PeopleIcon)`
+    width: 18px;
+    margin-right: 4px;
+    color: vaR(--gray--dark);
+  `,
+  Edit: styled(Link)`
+    position: absolute;
+    top: 40px;
+    right: 40px;
+  `,
+  Create: styled(SecondaryButton).attrs(() => ({
+    as: Link,
+  }))`
+    grid-column: 4 / -4;
   `,
   Center: styled.div`
     display: flex;
@@ -57,8 +92,28 @@ function DashboardFanPassList({ title, projectId }) {
       {project.activeFanPass ? (
         <Grid columns={9}>
           {fanPassList.map(fanPass => (
-            <Styled.FanPass {...fanPass} key={fanPass.id} />
+            <Styled.FanPass {...fanPass} key={fanPass.id}>
+              <Styled.Price>
+                {fanPass.subscriptionPrice > 0 ? `${fanPass.subscriptionPrice} PXL` : '무료'}
+                <Styled.Subscriptions>
+                  <Styled.PeopleIcon />
+                  {fanPass.subscriptionLimit !== null
+                    ? `${fanPass.subscriptionCount}/${fanPass.subscriptionLimit}`
+                    : fanPass.subscriptionCount
+                  }
+                  명 구독 중
+                </Styled.Subscriptions>
+              </Styled.Price>
+              <Styled.Edit to={`${fanPass.id}/edit`}>
+                <EditIcon />
+              </Styled.Edit>
+            </Styled.FanPass>
           ))}
+          {fanPassList.length <= 5 && (
+            <Styled.Create to="new">
+              {`+ 티어 ${fanPassList.length} 상품 추가`}
+            </Styled.Create>
+          )}
         </Grid>
       ) : (
         <Styled.Center>
