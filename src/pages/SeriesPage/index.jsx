@@ -135,9 +135,9 @@ function SeriesPage({ projectId, seriesId }) {
 
     if (!data || !project) {
       return (
-        Array(4).fill(
-          <SeriesPostItem.Placeholder />,
-        )
+        [...new Array(4)].map(() => (
+          <SeriesPostItem.Placeholder />
+        ))
       );
     }
 

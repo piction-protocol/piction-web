@@ -54,11 +54,11 @@ function TagPage({ tagName }) {
 
     if (!data) {
       return (
-        Array(4).fill(
+        [...new Array(4)].map(() => (
           <Styled.Link to="#">
             <ProjectCard.Placeholder />
-          </Styled.Link>,
-        )
+          </Styled.Link>
+        ))
       );
     }
 

@@ -58,11 +58,11 @@ function AllProjectsPage() {
     );
 
     if (!data) {
-      return Array(FETCHING_SIZE).fill(
+      return [...new Array(FETCHING_SIZE)].map(() => (
         <Styled.Link to="#">
           <ProjectCard.Placeholder />
-        </Styled.Link>,
-      );
+        </Styled.Link>
+      ));
     }
 
     return data.content.map(project => (

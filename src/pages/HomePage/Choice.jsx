@@ -182,14 +182,14 @@ Choice.Placeholder = props => (
       </Styled.MainImage>
       <Styled.Texts />
       <Styled.ProjectList>
-        {Array(4).fill(
+        {[...new Array(4)].map(() => (
           <Styled.ProjectListItem>
             <Styled.Project to="#">
               <Thumbnail />
               <Placeholder.ProjectTitle>project.title</Placeholder.ProjectTitle>
             </Styled.Project>
-          </Styled.ProjectListItem>,
-        )}
+          </Styled.ProjectListItem>
+        ))}
       </Styled.ProjectList>
     </MainGrid>
   </Styled.Container>

@@ -48,11 +48,11 @@ function SubscriptionsPage() {
     );
 
     if (!data) {
-      return Array(4).fill(
+      return [...new Array(4)].map(() => (
         <Styled.Link to="#">
           <ProjectCard.Placeholder />
-        </Styled.Link>,
-      );
+        </Styled.Link>
+      ));
     }
 
     setTotalSubscriptionCount(data.totalElements);

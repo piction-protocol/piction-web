@@ -48,7 +48,7 @@ function PostList({
       useSWR(`/projects/${projectId}/posts?size=${FETCHING_SIZE}&page=${offset + 1}`),
     );
 
-    if (!data) return Array(FETCHING_SIZE).fill(<PostItem.Placeholder />);
+    if (!data) return [...new Array(FETCHING_SIZE)].map(() => <PostItem.Placeholder />);
 
     if (data.content.length === 0) {
       return (
