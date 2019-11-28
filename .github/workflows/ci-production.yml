@@ -21,6 +21,7 @@ jobs:
           yarn
           yarn build --if-present
         env:
+          REACT_APP_SENTRY_DSN: https://1b5c0c49057245f0a26f4113ba9d5c3d@sentry.io/1837195
           REACT_APP_API_URL: https://api.piction.network/
           REACT_APP_TAGMANAGER_CONTAINER_ID: GTM-KCZDV3M
       - name: Deploy to S3
