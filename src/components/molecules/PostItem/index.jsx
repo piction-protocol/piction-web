@@ -5,6 +5,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 import media from 'styles/media';
+import placeholder from 'styles/placeholder';
 
 import { ReactComponent as ThumbupIcon } from 'images/ic-thumbup.svg';
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
@@ -85,6 +86,7 @@ const Styled = {
     ${media.desktop`
       font-size: var(--font-size--base);
     `}
+    ${placeholder}
   `,
   Text: styled.div`
     display: flex;
@@ -93,6 +95,7 @@ const Styled = {
   PublishedAt: styled.p`
     color: var(--gray--dark);
     font-size: var(--font-size--small);
+    ${placeholder}
   `,
   LikeCount: styled.span`
     display: flex;
@@ -156,18 +159,6 @@ function PostItem({
   );
 }
 
-const Placeholder = {
-  Title: styled(Styled.Title)`
-    display: inline-block;
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-  `,
-  PublishedAt: styled(Styled.PublishedAt)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-  `,
-};
-
 PostItem.Placeholder = () => (
   <Styled.Item>
     <Styled.CoverWrapper>
@@ -176,11 +167,11 @@ PostItem.Placeholder = () => (
         image={null}
       />
     </Styled.CoverWrapper>
-    <Placeholder.Title>Title</Placeholder.Title>
+    <Styled.Title placeholder>Title</Styled.Title>
     <Styled.Text>
-      <Placeholder.PublishedAt>
+      <Styled.PublishedAt placeholder>
         Published at
-      </Placeholder.PublishedAt>
+      </Styled.PublishedAt>
     </Styled.Text>
   </Styled.Item>
 );
