@@ -102,13 +102,12 @@ function PostPage({ projectId, postId }) {
 
   const handleSubscription = async () => {
     try {
-      const response = await API.fanPass.getAll({ projectId });
-      const fanPass = response.data[0];
-      const res = await API.fanPass.subscribe({
-        fanPassId: fanPass.id,
-        subscriptionPrice: fanPass.subscriptionPrice,
+      const response = await API.fanPass.subscribe({
+        projectId,
+        fanPassId: post.fanPass.id,
+        subscriptionPrice: post.fanPass.subscriptionPrice,
       });
-      if (res.status === 200) {
+      if (response.status === 200) {
         revalidateContent();
         setNeedSubscription(false);
       }
