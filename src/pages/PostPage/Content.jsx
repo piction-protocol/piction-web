@@ -55,6 +55,7 @@ function Content({ publishedAt, content, textmode }) {
     fontFamily: 'RIDIBatang, serif',
     textAlign: 'justify',
     maxWidth: '600px',
+    width: '100%',
     margin: '0 auto',
     lineHeight: 2.5,
   };
