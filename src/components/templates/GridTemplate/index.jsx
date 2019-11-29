@@ -15,8 +15,8 @@ const Styled = {
   `,
 };
 
-const GridTemplate = forwardRef(({ hero, children }, ref) => (
-  <Styled.Main>
+const GridTemplate = forwardRef(({ hero, children, ...props }, ref) => (
+  <Styled.Main {...props}>
     {hero}
     <MainGrid ref={ref}>
       {children}
