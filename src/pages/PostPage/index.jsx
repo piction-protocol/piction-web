@@ -6,16 +6,18 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { mutate } from 'swr';
 
-import media from 'styles/media';
+import media, { mediaQuery } from 'styles/media';
+import useMedia from 'hooks/useMedia';
 
 import useProjectLayout from 'hooks/useNavigationLayout';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useAPI from 'hooks/useAPI';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
 
-import { SecondaryButton } from 'components/atoms/Button';
+import Button from 'components/atoms/Button';
 import LikeButton from 'components/atoms/LikeButton';
 import { navigate } from '@reach/router';
 import Header from './Header';
@@ -41,10 +43,21 @@ const Styled = {
   LikeButton: styled(LikeButton)`
     margin: 48px auto 24px;
   `,
+  ReaderModeToggle: styled(Button)`
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--gray--dark);
+    background-color: var(--white);
+    box-shadow: 0 1px 2px 0 var(--shadow-color);
+    &:hover {
+      box-shadow: 0 2px 4px 0 var(--shadow-color);
+    }
+  `,
 };
 
 function PostPage({ projectId, postId }) {
-  const [textmode, setTextmode] = useState(false);
+  const isDesktop = useMedia(mediaQuery.desktop);
+  const [textmode, setTextmode] = useLocalStorage(`project/${projectId}/textmode`, false);
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const [API, handleError] = useCallback(useAPI(), []);
 
@@ -109,29 +122,15 @@ function PostPage({ projectId, postId }) {
     setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
   };
 
-  const darkModeStyle = {
-    backgroundColor: '#EEEEEE',
-  };
-
   const headerLoaded = project && post;
   const contentLoaded = content && post;
 
   return (
-    <GridTemplate style={textmode ? darkModeStyle : null}>
+    <GridTemplate>
 
       {shouldShowAdultPopup && <AdultPopup close={handleAdultPopupClose} />}
 
-      <Styled.Article style={textmode ? darkModeStyle : null}>
-
-        <div style={{
-          position: 'absolute',
-          right: '1em',
-          top: '6em',
-        }}
-        >
-          <SecondaryButton size="mini" onClick={() => setTextmode(prev => !prev)}>읽기 모드</SecondaryButton>
-        </div>
-
+      <Styled.Article>
         {headerLoaded ? (
           <Header user={project.user} series={post.series} title={post.title} />
         ) : (
@@ -161,6 +160,18 @@ function PostPage({ projectId, postId }) {
           />
         )}
       </Styled.Article>
+      {contentLoaded && isDesktop && (
+        <div style={{
+          position: 'absolute',
+          right: '1em',
+          top: '5.5em',
+        }}
+        >
+          <Styled.ReaderModeToggle size="mini" onClick={() => setTextmode(prev => !prev)}>
+            {textmode ? '일반 모드' : '읽기 모드'}
+          </Styled.ReaderModeToggle>
+        </div>
+      )}
 
       {post && <PostNavigation projectId={projectId} postId={postId} series={post.series} />}
     </GridTemplate>
