@@ -168,9 +168,9 @@ PostItem.Placeholder = () => (
         image={null}
       />
     </Styled.CoverWrapper>
-    <Styled.Title placeholder>Title</Styled.Title>
+    <Styled.Title isPlaceholder>Title</Styled.Title>
     <Styled.Text>
-      <Styled.PublishedAt placeholder>
+      <Styled.PublishedAt isPlaceholder>
         Published at
       </Styled.PublishedAt>
     </Styled.Text>

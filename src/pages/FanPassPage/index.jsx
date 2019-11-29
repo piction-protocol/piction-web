@@ -75,6 +75,12 @@ const Styled = {
       grid-column: 4 / -4;
     `}
   `,
+  FanPassInfo: styled.div`
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    margin-top: 16px;
+  `,
   Subscribe: styled.div`
     padding-top: 16px;
   `,
@@ -144,13 +150,17 @@ function FanPassPage({ projectId, location }) {
       </Styled.Header>
       {fanPassList ? fanPassList.map(fanPass => (
         <Styled.FanPass {...fanPass} key={fanPass.id}>
-          <PrimaryButton as={Link} to={`purchase/${fanPass.id}`}>
-            {`${fanPass.subscriptionPrice} PXL / 30일`}
-          </PrimaryButton>
+          <Styled.FanPassInfo>
+            <PrimaryButton as={Link} to={`purchase/${fanPass.id}`}>
+              {`${fanPass.subscriptionPrice} PXL / 30일`}
+            </PrimaryButton>
+          </Styled.FanPassInfo>
         </Styled.FanPass>
       )) : Array.from({ length: 6 }, (_, i) => (
         <Styled.FanPass isPlaceholder key={i}>
-          <PrimaryButton disabled />
+          <Styled.FanPassInfo>
+            <PrimaryButton disabled />
+          </Styled.FanPassInfo>
         </Styled.FanPass>
       ))}
     </GridTemplate>
