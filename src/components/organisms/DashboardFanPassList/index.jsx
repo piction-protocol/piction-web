@@ -20,7 +20,6 @@ const Styled = {
     flex-flow: column;
     flex: 1;
     padding: 24px 0 48px;
-    font-size: var(--font-size--small);
     > * {
       margin-bottom: var(--row-gap);
     }

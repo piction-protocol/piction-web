@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 const placeholder = style => css`
-  ${props => props.placeholder && `
+  ${({ isPlaceholder }) => isPlaceholder && `
     color: var(--gray--light);
     background-color: var(--gray--light);
     ${style}

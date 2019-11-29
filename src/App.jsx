@@ -24,6 +24,7 @@ const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'));
 const Search = React.lazy(() => import('pages/Search'));
 const TagPage = React.lazy(() => import('pages/TagPage'));
 const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
+const FanPassPage = React.lazy(() => import('pages/FanPassPage'));
 const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
@@ -81,6 +82,7 @@ function App() {
               <Search path="search" />
 
               <ProjectPage path="project/:projectId/*" />
+              <FanPassPage path="project/:projectId/fanpass" />
               <SeriesPage path="project/:projectId/series/:seriesId" />
               <PostPage path="project/:projectId/posts/:postId" />
 

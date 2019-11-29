@@ -127,7 +127,6 @@ function PostPage({ projectId, postId }) {
 
   return (
     <GridTemplate>
-
       {shouldShowAdultPopup && <AdultPopup close={handleAdultPopupClose} />}
 
       <Styled.Article>
@@ -146,7 +145,7 @@ function PostPage({ projectId, postId }) {
           />
         ) : (
           needSubscription ? (
-            <Content.Locked handleSubscription={handleSubscription} />
+            <Content.Locked handleSubscription={handleSubscription} post={post} />
           ) : (
             <Content.Placeholder />
           )
