@@ -1,6 +1,4 @@
-import React, {
-  useState, useEffect, useRef, useContext,
-} from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
@@ -10,14 +8,13 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
-import { LayoutContext } from 'context/LayoutContext';
-
 import { ReactComponent as SortIcon } from 'images/ic-sort.svg';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import SeriesPostItem from 'components/molecules/SeriesPostItem';
 import Heading from 'components/atoms/Heading';
 import useSWR, { useSWRPages } from 'swr';
+import useProjectLayout from 'hooks/useNavigationLayout';
 
 const Styled = {
   Hero: styled.div`
@@ -91,7 +88,6 @@ const Styled = {
 
 function SeriesPage({ projectId, seriesId }) {
   const listRef = useRef(null);
-  const [, setLayout] = useContext(LayoutContext);
   const { currentUser } = useCurrentUser();
 
   const [isDescending, setIsDescending] = useState(true);
@@ -100,16 +96,7 @@ function SeriesPage({ projectId, seriesId }) {
   const { data: series } = useSWR(`/projects/${projectId}/series/${seriesId}`, { revalidateOnFocus: false });
   const { data: fanPass } = useSWR(`/fan-pass/projects/${projectId}`, { revalidateOnFocus: false });
 
-  useEffect(() => {
-    setLayout({
-      type: 'project',
-      data: { project },
-    });
-
-    return (() => {
-      setLayout({ type: 'default' });
-    });
-  }, [project, setLayout]);
+  useProjectLayout(project);
 
   const PostsPage = ({ offset, withSWR }) => {
     const { data } = withSWR(
@@ -127,17 +114,17 @@ function SeriesPage({ projectId, seriesId }) {
 
     const checkIsViewable = (post) => {
       if (!post.fanPass) return true;
-      if (!currentUser || !project) return false;
+      if (!currentUser) return false;
       const isSubscribing = fanPass && fanPass.level >= post.fanPass.level;
       const isMine = project.user.loginId === currentUser.loginId;
       return isSubscribing || isMine;
     };
 
-    if (!data) {
+    if (!data || !project) {
       return (
-        Array(4).fill(
-          <SeriesPostItem.Placeholder />,
-        )
+        [...new Array(4)].map(() => (
+          <SeriesPostItem.Placeholder />
+        ))
       );
     }
 
@@ -157,7 +144,7 @@ function SeriesPage({ projectId, seriesId }) {
   }
   const {
     pages, isLoadingMore, isReachingEnd, loadMore,
-  } = useSWRPages('series', PostsPage, nextOffset, [isDescending]);
+  } = useSWRPages('series', PostsPage, nextOffset, [isDescending, project]);
 
   useOnScrollToBottom(listRef, () => {
     if (isLoadingMore || isReachingEnd) return;

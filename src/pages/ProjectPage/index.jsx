@@ -89,7 +89,7 @@ function ProjectPage({ projectId }) {
   };
 
   if (error) {
-    navigate('/404');
+    navigate('/404', { replace: true });
   }
 
   return (

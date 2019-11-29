@@ -141,11 +141,11 @@ Trending.Placeholder = props => (
         지금 주목받는 프로젝트. 놓치지 마세요!
       </Styled.SubTitle>
     </Styled.Texts>
-    {Array(6).fill(
+    {[...new Array(6)].map(() => (
       <Styled.Link to="#">
         <Styled.ProjectCard.Placeholder />
-      </Styled.Link>,
-    )}
+      </Styled.Link>
+    ))}
   </Styled.Section>
 );
 
