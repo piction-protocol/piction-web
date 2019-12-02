@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as VisibleIcon } from 'images/ic-visibility-on.svg';
@@ -23,12 +23,12 @@ const Styled = {
   `,
 };
 
-function PasswordInput(props) {
+const PasswordInput = forwardRef((props, ref) => {
   const [isMasked, setIsMasked] = useState(true);
 
   return (
     <Styled.Wrapper>
-      <Styled.Input {...props} type={isMasked ? 'password' : 'text'} />
+      <Styled.Input ref={ref} {...props} type={isMasked ? 'password' : 'text'} />
       <Styled.Toggle onClick={() => setIsMasked(prev => !prev)}>
         {isMasked
           ? <InvisibleIcon />
@@ -37,6 +37,6 @@ function PasswordInput(props) {
       </Styled.Toggle>
     </Styled.Wrapper>
   );
-}
+});
 
 export default PasswordInput;

@@ -54,11 +54,11 @@ const Styled = {
 
 function WalletPage() {
   const { currentUser } = useCurrentUser();
-  const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
+  const { data: wallet = { amount: 0 } } = useSWR('/my/wallet', { revalidateOnFocus: false });
   const { data: rate = 4000 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
     const response = await axios.get(path);
     return response.data.last;
-  });
+  }, { revalidateOnFocus: false });
 
   return (
     <GridTemplate
