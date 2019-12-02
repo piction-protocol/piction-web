@@ -24,6 +24,8 @@ const GlobalStyle = createGlobalStyle`
     --font-size--small: 14px;
     --font-size--tiny: 12px;
 
+    --poppins: 'Poppins', 'Noto Sans KR', sans-serif;
+
     --line-height--base: normal;
     --line-height--content: 1.75;
 

@@ -179,7 +179,7 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, handleSubscribe, isMine = false, isSubscribing = false, ...props
+  project, hasFanPasses, handleSubscribe, isMyProject = false, subscription, ...props
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -244,7 +244,7 @@ function ProjectInfo({
           />
         </Styled.UserPictureWrapper>
         <Styled.Subscribe>
-          {isMine ? isDesktop && (
+          {isMyProject ? isDesktop && (
             <>
               <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
                 새 포스트 작성
@@ -253,16 +253,26 @@ function ProjectInfo({
                 <SettingIcon />
               </Styled.SettingButton>
             </>
-          ) : isSubscribing ? (
-            <Styled.UnsubscribeButton onClick={handleSubscribe}>
-              구독 중
-            </Styled.UnsubscribeButton>
+          ) : subscription ? (
+            hasFanPasses ? (
+              <Styled.UnsubscribeButton as={Link} to="./fanpass">
+                구독 중
+              </Styled.UnsubscribeButton>
+            ) : (
+              <Styled.UnsubscribeButton onClick={handleSubscribe}>
+                구독 중
+              </Styled.UnsubscribeButton>
+            )
           ) : (currentUser ? (
-            <Styled.SubscribeButton
-              onClick={handleSubscribe}
-            >
-              무료로 구독하기
-            </Styled.SubscribeButton>
+            hasFanPasses ? (
+              <Styled.SubscribeButton as={Link} to="./fanpass">
+                구독하기
+              </Styled.SubscribeButton>
+            ) : (
+              <Styled.SubscribeButton onClick={handleSubscribe}>
+                무료로 구독하기
+              </Styled.SubscribeButton>
+            )
           ) : (
             <Location>
               {({ location }) => (
@@ -285,10 +295,11 @@ function ProjectInfo({
 }
 
 ProjectInfo.propTypes = {
-  isMine: PropTypes.bool,
-  isSubscribing: PropTypes.bool,
+  isMyProject: PropTypes.bool,
+  subscription: PropTypes.object,
   project: PropTypes.object.isRequired,
   handleSubscribe: PropTypes.func.isRequired,
+  hasFanPasses: PropTypes.bool,
 };
 
 const Placeholder = {
@@ -333,7 +344,7 @@ ProjectInfo.Placeholder = ({ isDesktop }) => (
       </Styled.UserPictureWrapper>
 
       <Styled.Subscribe>
-        <Styled.SubscribeButton disabled>무료로 구독하기</Styled.SubscribeButton>
+        <Styled.SubscribeButton disabled>구독하기</Styled.SubscribeButton>
       </Styled.Subscribe>
     </Styled.MainGrid>
   </Styled.Section>

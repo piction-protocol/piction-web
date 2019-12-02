@@ -104,19 +104,36 @@ Content.Placeholder = () => {
   );
 };
 
-function LockedContent({ handleSubscription }) {
+function LockedContent({ handleSubscription, post }) {
   const { currentUser } = useCurrentUser();
+  const hasPrice = post.fanPass.subscriptionPrice > 0;
 
   return (
     <Styled.Locked>
       <Styled.LockedIcon />
-      구독자 전용 포스트입니다.
+      {hasPrice && (
+        <>
+          {hasPrice && `${post.fanPass.name} 이상\n`}
+          <br />
+        </>
+      )}
+      구독자만 이용 가능한 포스트입니다.
       {currentUser ? (
-        <Styled.Subscription
-          onClick={handleSubscription}
-        >
-          무료로 구독하기
-        </Styled.Subscription>
+        hasPrice ? (
+          <Styled.Subscription
+            as={Link}
+            to="../../fanpass"
+            state={{ post }}
+          >
+            구독하기
+          </Styled.Subscription>
+        ) : (
+          <Styled.Subscription
+            onClick={handleSubscription}
+          >
+            무료로 구독하기
+          </Styled.Subscription>
+        )
       ) : (
         <Location>
           {({ location }) => (
@@ -127,7 +144,7 @@ function LockedContent({ handleSubscription }) {
                 redirectTo: encodeURIComponent(location.pathname),
               }}
             >
-              무료로 구독하기
+              {hasPrice ? '구독하기' : '무료로 구독하기'}
             </Styled.Subscription>
           )}
         </Location>
@@ -138,6 +155,7 @@ function LockedContent({ handleSubscription }) {
 
 LockedContent.propTypes = {
   handleSubscription: PropTypes.func,
+  post: PropTypes.object,
 };
 
 Content.Locked = LockedContent;

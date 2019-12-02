@@ -113,7 +113,7 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, ...props
+  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, fanPass, ...props
 }) {
   return (
     <Styled.Item
@@ -123,7 +123,8 @@ function PostItem({
         <Styled.Locked>
           <Styled.LockedText>
             <Styled.LockedIcon />
-            구독자 전용 포스트입니다.
+            {fanPass.subscriptionPrice > 0 && `${fanPass.name} 이상\n`}
+            구독자만 이용 가능한 포스트입니다.
           </Styled.LockedText>
           <Styled.LockedCover
             ratio={960 / 360}
@@ -167,9 +168,9 @@ PostItem.Placeholder = () => (
         image={null}
       />
     </Styled.CoverWrapper>
-    <Styled.Title placeholder>Title</Styled.Title>
+    <Styled.Title isPlaceholder>Title</Styled.Title>
     <Styled.Text>
-      <Styled.PublishedAt placeholder>
+      <Styled.PublishedAt isPlaceholder>
         Published at
       </Styled.PublishedAt>
     </Styled.Text>
@@ -180,6 +181,7 @@ PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   series: PropTypes.object,
+  fanPass: PropTypes.object,
   publishedAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,

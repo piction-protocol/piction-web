@@ -102,13 +102,12 @@ function PostPage({ projectId, postId }) {
 
   const handleSubscription = async () => {
     try {
-      const response = await API.fanPass.getAll({ projectId });
-      const fanPass = response.data[0];
-      const res = await API.fanPass.subscribe({
-        fanPassId: fanPass.id,
-        subscriptionPrice: fanPass.subscriptionPrice,
+      const response = await API.fanPass.subscribe({
+        projectId,
+        fanPassId: post.fanPass.id,
+        subscriptionPrice: post.fanPass.subscriptionPrice,
       });
-      if (res.status === 200) {
+      if (response.status === 200) {
         revalidateContent();
         setNeedSubscription(false);
       }
@@ -127,7 +126,6 @@ function PostPage({ projectId, postId }) {
 
   return (
     <GridTemplate>
-
       {shouldShowAdultPopup && <AdultPopup close={handleAdultPopupClose} />}
 
       <Styled.Article>
@@ -145,8 +143,9 @@ function PostPage({ projectId, postId }) {
             textmode={textmode}
           />
         ) : (
-          needSubscription ? (
-            <Content.Locked handleSubscription={handleSubscription} />
+          // FIXME: needSubscription을 관리하는 코드를 개선
+          post && post.fanPass && needSubscription ? (
+            <Content.Locked handleSubscription={handleSubscription} post={post} />
           ) : (
             <Content.Placeholder />
           )

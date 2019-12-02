@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
-
-import useAPI from 'hooks/useAPI';
+import useSWR from 'swr';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -185,51 +184,9 @@ const Styled = {
 };
 
 function PostNavigation({ projectId, postId, series }) {
-  const [prev, setPrev] = useState(null);
-  const [next, setNext] = useState(null);
-  const [postList, setPostList] = useState([]);
-  const [API] = useCallback(useAPI(), []);
-
-  useEffect(() => {
-    const getPrevNext = async () => {
-      try {
-        const { data: previousData } = await API.post(projectId).getPreviousPost({ postId });
-        setPrev(previousData);
-      } catch (error) {
-        setPrev(null);
-      }
-
-      try {
-        const { data: nextData } = await API.post(projectId).getNextPost({ postId });
-        setNext(nextData);
-      } catch (error) {
-        setNext(null);
-      }
-    };
-
-    const getPostList = async () => {
-      try {
-        const { data } = await API.series(projectId).getPreviousAndNextPosts({
-          postId,
-          seriesId: series.id,
-        });
-        setPostList(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getPrevNext();
-    if (series) {
-      getPostList();
-    }
-
-    return (() => {
-      setPrev(null);
-      setNext(null);
-      setPostList([]);
-    });
-  }, [API, postId, projectId, series]);
+  const { data: prev } = useSWR(`/projects/${projectId}/posts/${postId}/previous`);
+  const { data: next } = useSWR(`/projects/${projectId}/posts/${postId}/next`);
+  const { data: postList } = useSWR(series ? `/projects/${projectId}/series/${series.id}/posts/${postId}` : null);
 
   return (
     <Styled.Container>
@@ -257,7 +214,7 @@ function PostNavigation({ projectId, postId, series }) {
           </Styled.Next>
         )}
       </Styled.PrevNext>
-      {series && (
+      {postList && (
         <Styled.Series>
           <Styled.SeriesName>{series.name}</Styled.SeriesName>
           <Styled.PostCount>{`${series.postCount} 포스트`}</Styled.PostCount>

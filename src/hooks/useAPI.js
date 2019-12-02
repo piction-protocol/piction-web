@@ -36,7 +36,6 @@ function useAPI() {
     delete: params => API.delete(`/projects/${projectId}/posts/${params.postId}`),
     get: params => API.get(`/projects/${projectId}/posts/${params.postId}`),
     getContent: params => API.get(`/projects/${projectId}/posts/${params.postId}/content`),
-    getIsLike: params => API.get(`/projects/${projectId}/posts/${params.postId}/isLike`),
     update: params => API.put(`/projects/${projectId}/posts/${params.postId}`, params),
     like: params => API.post(`/projects/${projectId}/posts/${params.postId}/like`),
     getNextPost: params => API.get(`/projects/${projectId}/posts/${params.postId}/next`),
@@ -66,8 +65,8 @@ function useAPI() {
     create: params => API.post(`/projects/${params.projectId}/fan-pass`, params),
     update: params => API.put(`/projects/${params.projectId}/fan-pass/${params.fanPassId}`, params),
     delete: params => API.delete(`/projects/${params.projectId}/fan-pass/${params.fanPassId}`, params),
-    subscribe: params => API.post(`/projects/${params.projectId}/fan-pass/subscription`, params),
-    unsubscribe: params => API.delete(`/projects/${params.projectId}/fan-pass/subscription`),
+    subscribe: params => API.post(`/projects/${params.projectId}/fan-pass/${params.fanPassId}/subscription`, params),
+    unsubscribe: params => API.delete(`/projects/${params.projectId}/fan-pass/${params.fanPassId}/subscription`, params),
   };
 
   const recommended = {
