@@ -1,54 +1,100 @@
 import React from 'react';
+import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components';
+import useSWR from 'swr';
+import axios from 'axios';
 
 import useCurrentUser from 'hooks/useCurrentUser';
-import useWallet from 'hooks/useWallet';
+
+import media from 'styles/media';
 
 import withLoginChecker from 'components/LoginChecker';
 
-import UserTemplate from 'components/templates/UserTemplate';
+import GridTemplate from 'components/templates/GridTemplate';
 import UserInfo from 'components/organisms/UserInfo';
-import Transactions from 'components/organisms/Transactions';
+import Tabs from 'components/molecules/Tabs';
 import Heading from 'components/atoms/Heading';
+
+const Transactions = React.lazy(() => import('components/organisms/Transactions'));
+const Deposit = React.lazy(() => import('components/organisms/Deposit'));
+const Withdraw = React.lazy(() => import('components/organisms/Withdraw'));
 
 const Styled = {
   Heading: styled(Heading)`
-    margin-bottom: 24px;
+    grid-column: 1 / -1;
+    margin-top: var(--row-gap);
+    ${media.mobile`
+      display: none;
+    `}
   `,
-  PXL: styled.p`
-    margin-bottom: 4px;
-    font-size: var(--font-size--large);
+  Tabs: styled(Tabs)`
+    grid-column: 1 / -1;
+    ${media.mobile`
+      margin: 0 calc(var(--outer-gap) * -1);
+    `}
+  `,
+  PXL: styled.span`
+    color: #999999;
     font-weight: bold;
+    font-size: 16px;
+    ${media.desktop`
+      font-size: 20px;
+    `}
+  `,
+  Won: styled.span`
+    margin-left: 4px;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+    font-weight: bold;
+    ${media.desktop`
+      font-size: 16px;
+    `}
   `,
 };
 
 function WalletPage() {
   const { currentUser } = useCurrentUser();
-  const [wallet] = useWallet();
+  const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
+  const { data: rate = 4000 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
+    const response = await axios.get(path);
+    return response.data.last;
+  });
 
   return (
-    <UserTemplate
+    <GridTemplate
       hero={(
         <UserInfo
-          username={currentUser.username}
-          picture={currentUser.picture}
-          description={`계좌 주소 : ${wallet.publicKey}`}
+          {...currentUser}
         >
-          <div>
-            <Styled.PXL>
-              {wallet.amount && `${wallet.amount.toLocaleString()} PXL`}
-            </Styled.PXL>
-          </div>
+          <Styled.PXL>
+            {`${wallet.amount.toLocaleString()} PXL`}
+          </Styled.PXL>
+          {wallet.amount > 0 && (
+            <Styled.Won>
+              {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()}원`}
+            </Styled.Won>
+          )}
         </UserInfo>
       )}
     >
       <Styled.Heading>
-        거래 내역
+        내 지갑
       </Styled.Heading>
-      <Transactions />
-    </UserTemplate>
+      <Styled.Tabs
+        links={[
+          { text: '거래 내역', to: 'transactions' },
+          { text: '입금', to: 'deposit' },
+          { text: '출금', to: 'withdraw' },
+        ]}
+      />
+      <Router primary={false} component={({ children }) => <>{children}</>}>
+        <Redirect from="/" to="wallet/transaction" noThrow />
+        <Transactions path="transactions" />
+        <Deposit path="deposit" wallet={wallet} />
+        <Withdraw path="withdraw" wallet={wallet} />
+      </Router>
+    </GridTemplate>
   );
 }
-
 
 export default withLoginChecker(WalletPage);

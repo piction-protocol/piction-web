@@ -29,6 +29,7 @@ const PurchasePage = React.lazy(() => import('pages/PurchasePage'));
 const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
+const WalletPage = React.lazy(() => import('pages/WalletPage'));
 const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
 const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
 const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
@@ -89,6 +90,7 @@ function App() {
               <PostPage path="project/:projectId/posts/:postId" />
 
               <MyPage path="my/*" />
+              <WalletPage path="wallet/*" />
               <Dashboard path="dashboard/*" />
 
               <Terms components={TermsComponents} path="terms" />

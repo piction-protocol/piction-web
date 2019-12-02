@@ -61,9 +61,6 @@ const Styled = {
       font-size: var(--font-size--base);
     `}
   `,
-  Children: styled.div`
-    margin-left: auto;
-  `,
 };
 
 function UserInfo({
@@ -80,15 +77,12 @@ function UserInfo({
               {`@${loginId}`}
             </Styled.ID>
           </Styled.Name>
-          <Styled.Description>
-            {`가입일 : ${moment(createdAt).format('ll')} (D+${moment().diff(moment(createdAt), 'days')})`}
-          </Styled.Description>
+          {children || (
+            <Styled.Description>
+              {`가입일 : ${moment(createdAt).format('ll')} (D+${moment().diff(moment(createdAt), 'days')})`}
+            </Styled.Description>
+          )}
         </Styled.User>
-        {children && (
-          <Styled.Children>
-            {children}
-          </Styled.Children>
-        )}
       </Styled.Wrapper>
     </Styled.Section>
   );
