@@ -63,7 +63,11 @@ function Transactions() {
   const [page, setPage] = useState(1);
   const FETCHING_SIZE = 10;
 
-  const { data: { content: transactions, ...pageable } = {} } = useSWR(`/my/transactions?page=${page}&size=${FETCHING_SIZE}`);
+  const {
+    data: { content: transactions, ...pageable } = {},
+  } = useSWR(`/my/transactions?page=${page}&size=${FETCHING_SIZE}`, {
+    revalidateOnFocus: false,
+  });
 
   return (
     <>
@@ -76,14 +80,16 @@ function Transactions() {
         </Styled.Thead>
         {transactions ? transactions.map(({
           inOut,
-          amount,
+          amountOriginal,
           createdAt,
           transactionType,
           transactionHash,
         }) => (
           <Styled.Row key={transactionHash}>
             <Styled.Cell>{moment(createdAt).format('YYYY/MM/DD HH:mm:ss')}</Styled.Cell>
-            <Styled.Cell>{`${(inOut === 'IN' ? '+' : '-') + amount.toLocaleString()} PXL`}</Styled.Cell>
+            <Styled.Cell>
+              {`${(inOut === 'IN' ? '+' : '-') + amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
+            </Styled.Cell>
             <Styled.Cell>{transactionTypeText(inOut, transactionType)}</Styled.Cell>
             <Styled.Cell>완료</Styled.Cell>
           </Styled.Row>
@@ -102,7 +108,7 @@ function Transactions() {
         number={pageable.number}
         totalPages={pageable.totalPages}
         setPage={setPage}
-        delta={2}
+        delta={5}
       />
     </>
   );
