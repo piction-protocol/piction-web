@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import useSWR from 'swr';
+import moment from 'moment';
+import 'moment/locale/ko';
 
-import useCurrentUser from 'hooks/useCurrentUser';
+import media from 'styles/media';
+import Grid from 'styles/Grid';
+
+import Pagination from 'components/molecules/Pagination';
 
 const Styled = {
   Table: styled.div`
     --row-height: 52px;
-
     display: flex;
+    grid-column: 1 / -1;
     flex-flow: column;
     font-size: var(--font-size--small);
   `,
@@ -21,75 +26,86 @@ const Styled = {
     border-width: 1px 0;
     background-color: var(--gray--light);
     font-weight: bold;
+    ${media.mobile`
+      display: none;
+    `}
   `,
-  Row: styled.div`
+  Row: styled(Grid).attrs({
+    column: 'var(--grid-columns)',
+  })`
     display: flex;
     flex-flow: row wrap;
     align-items: center;
     height: var(--row-height);
     border-bottom: 1px solid var(--gray--dark);
-    ${({ isSuccess }) => isSuccess || 'color: var(--red);'}
   `,
   Cell: styled.div`
     flex: 1;
     text-align: center;
   `,
+  Pagination: styled(Pagination)`
+    grid-column: 1 / -1;
+    margin: var(--row-gap) auto;
+  `,
 };
+
+const transactionTypeText = (inOut, transactionType) => (
+  inOut === 'IN' ? ({
+    SPONSORSHIP: '후원금 수령',
+    SUBSCRIPTION: 'FAN PASS 판매',
+  }[transactionType] || '입금') : ({
+    SPONSORSHIP: '후원',
+    SUBSCRIPTION: 'FAN PASS 구매',
+  }[transactionType] || '출금')
+);
 
 function Transactions() {
-  const [content, setContent] = useState([]);
-  const { accessToken } = useCurrentUser();
+  const [page, setPage] = useState(1);
+  const FETCHING_SIZE = 10;
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get('http://api-iro.piction.network/my-transactions', {
-          headers: {
-            'X-Auth-Token': accessToken,
-          },
-          params: {
-            page: 1,
-            size: 50,
-          },
-        });
-        setContent(data.content);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getData();
-  }, [accessToken]);
+  const { data: { content: transactions, ...pageable } = {} } = useSWR(`/my/transactions?page=${page}&size=${FETCHING_SIZE}`);
 
   return (
-    <Styled.Table>
-      <Styled.Thead>
-        <Styled.Cell>종류</Styled.Cell>
-        <Styled.Cell>상태</Styled.Cell>
-        <Styled.Cell>거래 금액</Styled.Cell>
-        <Styled.Cell>완료 시간(*실패 시간)</Styled.Cell>
-      </Styled.Thead>
-      {content.map(({
-        inOut,
-        status,
-        amount,
-        createdAt,
-      }) => (
-        <Styled.Row isSuccess={status === 'SUCCESS'} key={createdAt}>
-          <Styled.Cell>{inOut === 'IN' ? '입금' : '출금'}</Styled.Cell>
-          <Styled.Cell>{status === 'SUCCESS' ? '성공' : '실패'}</Styled.Cell>
-          <Styled.Cell>{`${(inOut === 'IN' ? '+' : '-') + amount.toLocaleString()} PXL`}</Styled.Cell>
-          <Styled.Cell>{createdAt.replace(/[T]/g, ' ')}</Styled.Cell>
-        </Styled.Row>
-      ))}
-    </Styled.Table>
+    <>
+      <Styled.Table>
+        <Styled.Thead>
+          <Styled.Cell>거래 시간</Styled.Cell>
+          <Styled.Cell>거래 금액</Styled.Cell>
+          <Styled.Cell>종류 / 내역</Styled.Cell>
+          <Styled.Cell>상태</Styled.Cell>
+        </Styled.Thead>
+        {transactions ? transactions.map(({
+          inOut,
+          amount,
+          createdAt,
+          transactionType,
+          transactionHash,
+        }) => (
+          <Styled.Row key={transactionHash}>
+            <Styled.Cell>{moment(createdAt).format('YYYY/MM/DD HH:mm:ss')}</Styled.Cell>
+            <Styled.Cell>{`${(inOut === 'IN' ? '+' : '-') + amount.toLocaleString()} PXL`}</Styled.Cell>
+            <Styled.Cell>{transactionTypeText(inOut, transactionType)}</Styled.Cell>
+            <Styled.Cell>완료</Styled.Cell>
+          </Styled.Row>
+        )) : (
+          [...new Array(FETCHING_SIZE)].map(() => (
+            <Styled.Row>
+              <Styled.Cell></Styled.Cell>
+              <Styled.Cell></Styled.Cell>
+              <Styled.Cell></Styled.Cell>
+              <Styled.Cell></Styled.Cell>
+            </Styled.Row>
+          ))
+        )}
+      </Styled.Table>
+      <Styled.Pagination
+        number={pageable.number}
+        totalPages={pageable.totalPages}
+        setPage={setPage}
+        delta={2}
+      />
+    </>
   );
 }
-
-Transactions.propTypes = {
-};
-
-Transactions.defaultProps = {
-};
 
 export default Transactions;
