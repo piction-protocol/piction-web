@@ -61,10 +61,10 @@ function PostPage({ projectId, postId }) {
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const [API, handleError] = useCallback(useAPI(), []);
 
-  const { data: project, error: projectError } = useSWR(`/projects/${projectId}`);
+  const { data: project, error: projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
 
-  const { data: post, error: postError } = useSWR(`/projects/${projectId}/posts/${postId}`);
+  const { data: post, error: postError } = useSWR(`/projects/${projectId}/posts/${postId}`, { revalidateOnFocus: false });
 
   useEffect(() => {
     if (projectError || postError) {
@@ -76,7 +76,7 @@ function PostPage({ projectId, postId }) {
     data: content,
     error: contentError,
     revalidate: revalidateContent,
-  } = useSWR(`/projects/${projectId}/posts/${postId}/content`);
+  } = useSWR(`/projects/${projectId}/posts/${postId}/content`, { revalidateOnFocus: false, shouldRetryOnError: false });
 
   const [needSubscription, setNeedSubscription] = useState(false);
 
@@ -88,7 +88,7 @@ function PostPage({ projectId, postId }) {
   }, [contentError]);
 
   const { currentUser } = useCurrentUser();
-  const { data: isLike } = useSWR(currentUser ? `/projects/${projectId}/posts/${postId}/isLike` : null);
+  const { data: isLike } = useSWR(currentUser ? `/projects/${projectId}/posts/${postId}/isLike` : null, { revalidateOnFocus: false });
 
   const handleLike = async () => {
     try {
