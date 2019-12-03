@@ -134,7 +134,7 @@ function Withdraw({ wallet }) {
           })}
         />
         <Styled.Balance>
-          {`출금 가능한 금액 : ${wallet.amount} PXL`}
+          {`출금 가능한 금액 : ${wallet.amount.toLocaleString()} PXL`}
         </Styled.Balance>
         {errors.amount && (
           <Styled.ErrorMessage>
