@@ -62,7 +62,7 @@ function WithdrawModal({
         다음 주소로
         {' '}
         <Styled.Amount>
-          {`${amount} PXL`}
+          {`${Number(amount).toLocaleString()} PXL`}
         </Styled.Amount>
         을 전송합니다.
       </Styled.Text>

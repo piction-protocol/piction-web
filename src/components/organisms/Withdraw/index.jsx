@@ -121,14 +121,13 @@ function Withdraw({ wallet }) {
         <Styled.Input
           type="number"
           name="amount"
-          step="any"
           placeholder="0"
           invalid={errors.amount}
           ref={register({
             required: '출금 수량을 입력하세요.',
             min: {
               value: 1,
-              message: '출금 수량을 입력하세요.',
+              message: '1 이상의 정수만 입력 가능합니다.',
             },
             max: {
               value: wallet.amount,
@@ -136,9 +135,11 @@ function Withdraw({ wallet }) {
             },
           })}
         />
-        <Styled.Balance>
-          {`출금 가능한 금액 : ${wallet.amount} PXL`}
-        </Styled.Balance>
+        {wallet.amountOriginal && (
+          <Styled.Balance>
+            {`출금 가능한 금액 : ${wallet.amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
+          </Styled.Balance>
+        )}
         {errors.amount && (
           <Styled.ErrorMessage>
             {errors.amount.message}
