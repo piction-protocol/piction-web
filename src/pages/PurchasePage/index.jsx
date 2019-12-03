@@ -238,15 +238,15 @@ function PurchasePage({ projectId, fanPassId, redirect }) {
           <Styled.FeesTitle>송금 안내</Styled.FeesTitle>
           <Styled.Ul>
             <Styled.Li>
-              {project.user.username}
-              <Styled.FeesAmount>
-                {`${fanPass.subscriptionPrice * (100 - fees.contentsDistributorRate) / 100} PXL`}
-              </Styled.FeesAmount>
-            </Styled.Li>
-            <Styled.Li>
               {`기본 수수료 ${fees.contentsDistributorRate}%`}
               <Styled.FeesAmount>
                 {`${fanPass.subscriptionPrice * (fees.contentsDistributorRate) / 100} PXL`}
+              </Styled.FeesAmount>
+            </Styled.Li>
+            <Styled.Li>
+              {project.user.username}
+              <Styled.FeesAmount>
+                {`${fanPass.subscriptionPrice * (100 - fees.contentsDistributorRate) / 100} PXL`}
               </Styled.FeesAmount>
             </Styled.Li>
           </Styled.Ul>
