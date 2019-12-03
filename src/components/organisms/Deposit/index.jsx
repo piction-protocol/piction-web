@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import media from 'styles/media';
 
-import Input from 'components/atoms/Input';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import CoinOneLogo from 'images/img-logo-coin-one.png';
@@ -32,13 +31,15 @@ const Styled = {
       flex-flow: row;
     `}
   `,
-  Input: styled(Input).attrs(() => ({
-    readOnly: true,
-  }))`
+  Key: styled.p`
     width: 100%;
-    ${media.desktop`
-      max-width: 400px;
-    `}
+    padding: 16px 0 14px;
+    border-bottom: 2px solid;
+    font-size: var(--font-size--small);
+  `,
+  Em: styled.em`
+    color: var(--blue);
+    font-style: normal;
   `,
   Copy: styled(PrimaryButton)`
     ${media.mobile`
@@ -73,13 +74,15 @@ const Styled = {
 };
 
 function Deposit({ wallet }) {
-  const inputRef = useRef(null);
   const handleCopy = () => {
-    const target = inputRef.current;
-    inputRef.current.select();
+    const tempInput = document.createElement('input');
+    const { body } = document;
+    body.appendChild(tempInput);
+    tempInput.setAttribute('value', wallet.publicKey);
+    tempInput.select();
     document.execCommand('copy');
     alert('지갑 주소가 복사되었습니다.');
-    target.focus();
+    body.removeChild(tempInput);
   };
 
   return (
@@ -87,7 +90,17 @@ function Deposit({ wallet }) {
       <Styled.Section columns={5}>
         <Styled.Title>내 지갑 주소</Styled.Title>
         <Styled.Group>
-          <Styled.Input value={wallet.publicKey} ref={inputRef} />
+          {wallet.publicKey && (
+            <Styled.Key>
+              <Styled.Em>
+                {wallet.publicKey.slice(0, 5)}
+              </Styled.Em>
+              {wallet.publicKey.slice(5, -5)}
+              <Styled.Em>
+                {wallet.publicKey.slice(-5)}
+              </Styled.Em>
+            </Styled.Key>
+          )}
           <Styled.Copy onClick={handleCopy}>
             주소 복사
           </Styled.Copy>
