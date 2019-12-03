@@ -126,7 +126,10 @@ function Withdraw({ wallet }) {
           invalid={errors.amount}
           ref={register({
             required: '출금 수량을 입력하세요.',
-            min: 1,
+            min: {
+              value: 1,
+              message: '출금 수량을 입력하세요.',
+            },
             max: {
               value: wallet.amount,
               message: 'PXL이 부족합니다.',
