@@ -218,7 +218,7 @@ function Withdraw({ wallet }) {
         />
       )}
       {isSuccess && (
-        <Styled.Modal>
+        <Styled.Modal close={() => {}}>
           출금이 시작되었습니다.
           <br />
           네트워크 상황 및 거래소의 정책에 따라 시간이 좀 더 소요될 수 있습니다.
