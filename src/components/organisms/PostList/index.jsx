@@ -39,7 +39,7 @@ const Styled = {
 };
 
 function PostList({
-  projectId, isSubscribing, ...props
+  projectId, subscription, isMyProject, ...props
 }) {
   const FETCHING_SIZE = 10;
 
@@ -68,7 +68,7 @@ function PostList({
       >
         <PostItem
           {...content}
-          isLocked={!isSubscribing && !!content.fanPass}
+          isLocked={!isMyProject && content.fanPass && (subscription ? content.fanPass.level > subscription.fanPass.level : true)}
         />
       </Link>
     ));
@@ -102,11 +102,8 @@ function PostList({
 
 PostList.propTypes = {
   projectId: PropTypes.string.isRequired,
-  isSubscribing: PropTypes.bool,
-};
-
-PostList.defaultProps = {
-  isSubscribing: false,
+  subscription: PropTypes.object,
+  isMyProject: PropTypes.bool,
 };
 
 export default PostList;

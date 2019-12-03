@@ -18,6 +18,9 @@ const Styled = {
     font-size: var(--font-size--small);
     color: var(--gray--dark);
     line-height: normal;
+    &:disabled {
+      background-color: var(--gray--light);
+    }
   `,
 };
 

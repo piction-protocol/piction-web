@@ -5,6 +5,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 import media from 'styles/media';
+import placeholder from 'styles/placeholder';
 
 import { ReactComponent as ThumbupIcon } from 'images/ic-thumbup.svg';
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
@@ -85,6 +86,7 @@ const Styled = {
     ${media.desktop`
       font-size: var(--font-size--base);
     `}
+    ${placeholder}
   `,
   Text: styled.div`
     display: flex;
@@ -93,6 +95,7 @@ const Styled = {
   PublishedAt: styled.p`
     color: var(--gray--dark);
     font-size: var(--font-size--small);
+    ${placeholder}
   `,
   LikeCount: styled.span`
     display: flex;
@@ -110,7 +113,7 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, ...props
+  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, fanPass, ...props
 }) {
   return (
     <Styled.Item
@@ -120,7 +123,8 @@ function PostItem({
         <Styled.Locked>
           <Styled.LockedText>
             <Styled.LockedIcon />
-            구독자 전용 포스트입니다.
+            {fanPass.subscriptionPrice > 0 && `${fanPass.name} 이상\n`}
+            구독자만 이용 가능한 포스트입니다.
           </Styled.LockedText>
           <Styled.LockedCover
             ratio={960 / 360}
@@ -156,18 +160,6 @@ function PostItem({
   );
 }
 
-const Placeholder = {
-  Title: styled(Styled.Title)`
-    display: inline-block;
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-  `,
-  PublishedAt: styled(Styled.PublishedAt)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-  `,
-};
-
 PostItem.Placeholder = () => (
   <Styled.Item>
     <Styled.CoverWrapper>
@@ -176,11 +168,11 @@ PostItem.Placeholder = () => (
         image={null}
       />
     </Styled.CoverWrapper>
-    <Placeholder.Title>Title</Placeholder.Title>
+    <Styled.Title isPlaceholder>Title</Styled.Title>
     <Styled.Text>
-      <Placeholder.PublishedAt>
+      <Styled.PublishedAt isPlaceholder>
         Published at
-      </Placeholder.PublishedAt>
+      </Styled.PublishedAt>
     </Styled.Text>
   </Styled.Item>
 );
@@ -189,6 +181,7 @@ PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   series: PropTypes.object,
+  fanPass: PropTypes.object,
   publishedAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,

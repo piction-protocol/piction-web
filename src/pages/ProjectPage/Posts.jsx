@@ -34,13 +34,14 @@ const Styled = {
 };
 
 const Posts = ({
-  isDesktop, projectId, subscribed = false, series = [], recommendedProjects = [],
+  isDesktop, projectId, subscription, isMyProject, series = [], recommendedProjects = [],
 }) => (
   <>
     <Styled.Section>
       <PostList
-        isSubscribing={subscribed}
+        subscription={subscription}
         projectId={projectId}
+        isMyProject={isMyProject}
       />
     </Styled.Section>
     {isDesktop && (
@@ -84,8 +85,9 @@ const Posts = ({
 
 Posts.propTypes = {
   projectId: PropTypes.string,
-  subscribed: PropTypes.bool,
+  subscription: PropTypes.object,
   isDesktop: PropTypes.bool,
+  isMyProject: PropTypes.bool,
   series: PropTypes.array,
   recommendedProjects: PropTypes.array,
 };

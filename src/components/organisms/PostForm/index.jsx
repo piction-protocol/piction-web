@@ -92,6 +92,8 @@ function PostForm({ title, projectId, postId = null }) {
     title: '',
     content: '',
     cover: '',
+    seriesId: '',
+    fanPassId: '',
     publishNow: true,
     publishingDate: moment().format('YYYY-MM-DD'),
     publishingTime: moment().format('HH:mm:ss'),
@@ -102,6 +104,7 @@ function PostForm({ title, projectId, postId = null }) {
   const [errorMessage, setErrorMessage] = useState({});
   const [isCreating, setIsCreating] = useState(false);
   const [series, setSeries] = useState([]);
+  const [fanPass, setFanPass] = useState([]);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
@@ -109,17 +112,16 @@ function PostForm({ title, projectId, postId = null }) {
       try {
         const { data } = await API.post(projectId).get({ postId });
         const { data: contentData } = await API.post(projectId).getContent({ postId });
-        const fanPass = await API.fanPass.getAll({ projectId });
-        const fanPassId = fanPass.data[0].id;
         const { cover, ...defaultFormData } = {
           ...data,
           seriesId: data.series ? data.series.id : '',
+          fanPassId: data.fanPass ? data.fanPass.id : '',
           publishNow: false,
           publishingDate: moment(data.publishedAt).format('YYYY-MM-DD'),
           publishingTime: moment(data.publishedAt).format('HH:mm:ss'),
         };
         setIsPublished(data.publishedAt < Date.now());
-        setFormData({ ...defaultFormData, content: contentData.content, fanPassId });
+        setFormData({ ...defaultFormData, content: contentData.content });
         setDefaultImage({
           cover,
         });
@@ -131,7 +133,9 @@ function PostForm({ title, projectId, postId = null }) {
     const getSeries = async () => {
       try {
         const { data: seriesData } = await API.series(projectId).getAll();
+        const { data: fanPassData } = await API.fanPass.getAll({ projectId });
         setSeries(seriesData);
+        setFanPass(fanPassData);
       } catch (error) {
         console.log(error);
       }
@@ -143,6 +147,7 @@ function PostForm({ title, projectId, postId = null }) {
         content: '',
         cover: '',
         seriesId: '',
+        fanPassId: '',
         publishNow: true,
         publishingDate: moment().format('YYYY-MM-DD'),
         publishingTime: moment().format('HH:mm:ss'),
@@ -164,8 +169,6 @@ function PostForm({ title, projectId, postId = null }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const fanPass = await API.fanPass.getAll({ projectId });
-    const fanPassId = fanPass.data[0].id;
     try {
       if (postId) {
         await API.post(projectId).update({
@@ -176,7 +179,7 @@ function PostForm({ title, projectId, postId = null }) {
               : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
           },
           postId,
-          fanPassId: formData.status === 'FAN_PASS' ? fanPassId : null,
+          fanPassId: formData.status === 'FAN_PASS' ? formData.fanPassId : null,
         });
       } else {
         await API.post(projectId).create({
@@ -184,7 +187,7 @@ function PostForm({ title, projectId, postId = null }) {
           publishedAt: formData.publishNow
             ? Date.now()
             : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
-          fanPassId: formData.status === 'FAN_PASS' ? fanPassId : null,
+          fanPassId: formData.status === 'FAN_PASS' ? formData.fanPassId : null,
         });
       }
       navigate(`/dashboard/${projectId}/posts`);
@@ -274,6 +277,20 @@ function PostForm({ title, projectId, postId = null }) {
             checked={formData.status === 'FAN_PASS'}
           >
             구독자 공개
+            <Select
+              name="fanPassId"
+              disabled={formData.status !== 'FAN_PASS'}
+              value={formData.fanPassId}
+              onChange={handleChange}
+              options={[
+                { text: '옵션 선택', value: 'null' },
+                ...fanPass.map(item => ({
+                  text: item.level > 0 ? `티어 ${item.level} 이상` : '무료 티어 이상',
+                  value: item.id,
+                })),
+              ]}
+              style={{ width: 160, marginLeft: 16 }}
+            />
           </Radio>
           <Radio
             name="status"
@@ -283,6 +300,11 @@ function PostForm({ title, projectId, postId = null }) {
           >
             비공개
           </Radio>
+          {errorMessage.fanPassId && (
+            <ErrorMessage>
+              {errorMessage.fanPassId}
+            </ErrorMessage>
+          )}
         </Styled.Group>
         <Styled.Group>
           <Label>

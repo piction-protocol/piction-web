@@ -19,9 +19,12 @@ const GlobalStyle = createGlobalStyle`
     --shadow-color: rgba(0, 0, 0, .15);
 
     --font-size--large: 30px;
+    --font-size--big: 22px;
     --font-size--base: 18px;
     --font-size--small: 14px;
     --font-size--tiny: 12px;
+
+    --poppins: 'Poppins', 'Noto Sans KR', sans-serif;
 
     --line-height--base: normal;
     --line-height--content: 1.75;

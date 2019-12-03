@@ -4,7 +4,7 @@ import { Router, Redirect, navigate } from '@reach/router';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
-import useSWR, { trigger } from 'swr';
+import useSWR, { trigger, mutate } from 'swr';
 
 import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -34,46 +34,41 @@ const Styled = {
 function ProjectPage({ projectId }) {
   const [cookies, setCookie] = useCookies();
   const { currentUser } = useCurrentUser();
-  const [API] = useCallback(useAPI(), []);
+  const [API] = useCallback(useAPI(), [projectId]);
   const isDesktop = useMedia(mediaQuery.desktop);
 
-  const [subscribed, setSubscribed] = useState(false);
-  const [myProject, setMyProject] = useState(false);
+  const [isMyProject, setIsMyProject] = useState(false);
 
   const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
   const { data: recommendedProjects } = useSWR('/recommended/projects?size=5', { revalidateOnFocus: false });
-  const { data: fanPass } = useSWR(`/fan-pass/projects/${projectId}`);
-  const { data: subscription, revalidate: revalidateSubscription } = useSWR(() => (currentUser ? `/fan-pass/projects/${projectId}/subscription` : null));
-
-  useEffect(() => {
-    if (subscription && currentUser) {
-      if (subscription.subscriber) {
-        setSubscribed(true);
-      } else {
-        setSubscribed(false);
-      }
-    }
-  }, [subscription, currentUser]);
+  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-pass`);
+  const {
+    data: subscription,
+    revalidate: revalidateSubscription,
+  } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-pass/subscription` : null));
 
   useEffect(() => {
     if (project && currentUser) {
-      if (currentUser.loginId === project.user.loginId) setMyProject(true);
+      if (currentUser.loginId === project.user.loginId) setIsMyProject(true);
     }
+    return () => setIsMyProject(false);
   }, [project, currentUser]);
 
   const handleSubscribe = async () => {
-    if (subscribed) {
+    if (subscription) {
       try {
         await API.fanPass.unsubscribe({
+          projectId,
           fanPassId: fanPass[0].id,
         });
       } finally {
-        revalidateSubscription();
+        mutate(`/projects/${projectId}/fan-pass/subscription`, null);
       }
     } else {
       try {
         await API.fanPass.subscribe({
+          projectId,
           fanPassId: fanPass[0].id,
           subscriptionPrice: fanPass[0].subscriptionPrice,
         });
@@ -97,8 +92,9 @@ function ProjectPage({ projectId }) {
       hero={project ? (
         <ProjectInfo
           project={project}
-          isMine={myProject}
-          isSubscribing={subscribed}
+          hasFanPasses={fanPass && fanPass.length > 1}
+          isMyProject={isMyProject}
+          subscription={subscription}
           handleSubscribe={handleSubscribe}
         />
       ) : (
@@ -124,7 +120,8 @@ function ProjectPage({ projectId }) {
           {...{
             projectId,
             project,
-            subscribed: (myProject || subscribed),
+            subscription,
+            isMyProject,
             isDesktop,
             series: (series || []),
             recommendedProjects,
