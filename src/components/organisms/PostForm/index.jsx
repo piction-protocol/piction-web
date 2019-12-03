@@ -300,6 +300,11 @@ function PostForm({ title, projectId, postId = null }) {
           >
             비공개
           </Radio>
+          {errorMessage.fanPassId && (
+            <ErrorMessage>
+              {errorMessage.fanPassId}
+            </ErrorMessage>
+          )}
         </Styled.Group>
         <Styled.Group>
           <Label>
