@@ -127,8 +127,8 @@ function DashboardFanPassList({ title, projectId }) {
             <br />
             지금 바로, 부담없이 신청해보세요!
           </p>
-          <Styled.Link target="_blank" href="#">
-            FAN PASS 권한 신청하기
+          <Styled.Link disabled target="_blank" href="#">
+            서비스 준비중
           </Styled.Link>
         </Styled.Center>
       )}

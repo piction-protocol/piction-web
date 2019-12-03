@@ -118,9 +118,6 @@ function DashboardSidebar({ projects, ...props }) {
                     포스트 관리
                   </Styled.Link>
                   <Styled.Link to={`/dashboard/${project.uri}/series`}>시리즈 관리</Styled.Link>
-                  <Styled.Link getProps={isPartiallyActive} to={`/dashboard/${project.uri}/fanpass`}>
-                    FAN PASS 관리
-                  </Styled.Link>
                   <Styled.Link to={`/dashboard/${project.uri}/members`}>구독자 목록</Styled.Link>
                   <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
                   <Styled.Link as="a" target="_blank" href={`/project/${project.uri}`}>
