@@ -13,6 +13,8 @@ import Input from 'components/atoms/Input';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import { PrimaryButton } from 'components/atoms/Button';
 
+import Modal from 'components/externals/Modal';
+
 import CoinOneLogo from 'images/img-logo-coin-one.png';
 import NovaWalletLogo from 'images/img-logo-nova-wallet.png';
 
@@ -89,6 +91,12 @@ const Styled = {
       width: 100%;
     `}
   `,
+  Modal: styled(Modal)`
+    text-align: center;
+    ${PrimaryButton} {
+      margin-top: 16px;
+    }
+  `,
 };
 
 function Withdraw({ wallet }) {
@@ -96,13 +104,15 @@ function Withdraw({ wallet }) {
     register, errors, setError, getValues, handleSubmit,
   } = useForm();
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [API] = useCallback(useAPI(), []);
   const onSubmit = async (data) => {
     if (data.password) {
       try {
         await API.my.withdraw(data);
+        // FIXME : modal 전용 hook으로 관리
         setIsModalOpened(false);
-        window.location.reload(true);
+        setIsSuccess(true);
       } catch ({ response: { data: error } }) {
         setError(error.field, error.status_code, error.message);
         if (error.field !== 'password') {
@@ -206,6 +216,16 @@ function Withdraw({ wallet }) {
           register={register}
           {...getValues()}
         />
+      )}
+      {isSuccess && (
+        <Styled.Modal>
+          출금이 시작되었습니다.
+          <br />
+          네트워크 상황 및 거래소의 정책에 따라 시간이 좀 더 소요될 수 있습니다.
+          <PrimaryButton onClick={() => window.location.reload()}>
+            확인
+          </PrimaryButton>
+        </Styled.Modal>
       )}
     </Styled.Form>
   );

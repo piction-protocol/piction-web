@@ -81,12 +81,12 @@ function Transactions() {
         {transactions ? transactions.map(({
           inOut,
           amountOriginal,
-          createdAt,
+          blockTime,
           transactionType,
           transactionHash,
         }) => (
           <Styled.Row key={transactionHash}>
-            <Styled.Cell>{moment(createdAt).format('YYYY/MM/DD HH:mm:ss')}</Styled.Cell>
+            <Styled.Cell>{moment(blockTime).format('YYYY/MM/DD HH:mm:ss')}</Styled.Cell>
             <Styled.Cell>
               {`${(inOut === 'IN' ? '+' : '-') + amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
             </Styled.Cell>
