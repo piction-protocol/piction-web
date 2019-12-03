@@ -201,7 +201,7 @@ function PurchasePage({ projectId, fanPassId, redirect }) {
         </Styled.SectionTitle>
         <Radio defaultChecked>픽션 지갑</Radio>
         <Styled.Amount>
-          {`${wallet.amount} PXL 보유 중`}
+          {`${wallet.amount.toLocaleString()} PXL 보유 중`}
         </Styled.Amount>
       </Styled.Section>
       <Styled.Purchase>
