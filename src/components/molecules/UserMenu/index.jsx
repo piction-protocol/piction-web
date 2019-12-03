@@ -1,14 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
+import useSWR from 'swr';
 import axios from 'axios';
 
-import { mediaQuery } from 'styles/media';
-
-import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
+
+import { mediaQuery } from 'styles/media';
 
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
 import { SecondaryButton } from 'components/atoms/Button';
@@ -21,8 +21,9 @@ const Styled = {
     border-bottom: 1px solid var(--gray--light);
   `,
   Title: styled.h2`
-    margin-left: 16px;
+    margin-right: auto;
     margin-bottom: 4px;
+    margin-left: 16px;
     color: var(--black);
     font-size: var(--font-size--small);
     font-weight: bold;
@@ -39,6 +40,17 @@ const Styled = {
     margin-left: 16px;
     color: #999999;
     font-size: var(--font-size--small);
+  `,
+  WalletLink: styled.div`
+    display: flex;
+    width: 100%;
+    padding: 16px 12px 0;
+    a {
+      flex: 1;
+      &:last-child:after {
+        border-left: 0;
+      }
+    }
   `,
   Project: styled(Link)`
     display: flex;
@@ -102,53 +114,41 @@ const Styled = {
   `,
 };
 
-function UserMenu({
-  links, PXL,
-}) {
-  const [API] = useCallback(useAPI(), []);
-  const [projects, setProjects] = useState([]);
+function UserMenu({ links }) {
   const { currentUser } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
-  const [won, setWon] = useState(0);
 
-  useEffect(() => {
-    const getProjects = async () => {
-      const { data } = await API.my.projects();
-      setProjects(data);
-    };
-
-    const getWon = async () => {
-      const { data } = await axios.get('https://api.coinone.co.kr/ticker/', {
-        params: {
-          currency: 'PXL',
-        },
-      });
-      setWon(data.last * PXL);
-    };
-
-    getProjects();
-
-    if (PXL) {
-      getWon();
-    }
-  }, [API, PXL]);
+  const { data: projects = [] } = useSWR('/my/projects');
+  const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
+  const { data: rate = 4000 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
+    const response = await axios.get(path);
+    return response.data.last;
+  });
 
   return (
     <>
       {currentUser && (
         <>
           <Styled.Section>
-            <Styled.Title>
-              내 지갑
+            <Styled.Title as={Link} to="/wallet/transactions">
+              내 지갑 &gt;
             </Styled.Title>
             <Styled.PXL>
-              {`${PXL.toLocaleString()} PXL`}
+              {`${wallet.amount.toLocaleString()} PXL`}
             </Styled.PXL>
-            {won > 0 && (
+            {wallet.amount > 0 && (
               <Styled.Won>
-                {`≒ ${Math.floor(won).toLocaleString()} 원`}
+                {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()} 원`}
               </Styled.Won>
             )}
+            <Styled.WalletLink>
+              <SecondaryButton size="mini" as={Link} to="/wallet/deposit">
+                입금
+              </SecondaryButton>
+              <SecondaryButton size="mini" as={Link} to="/wallet/withdraw">
+                출금
+              </SecondaryButton>
+            </Styled.WalletLink>
           </Styled.Section>
           {(isDesktop || projects.length > 0) && (
             <Styled.Section>
@@ -199,9 +199,4 @@ export default UserMenu;
 
 UserMenu.propTypes = {
   links: PropTypes.array.isRequired,
-  PXL: PropTypes.number,
-};
-
-UserMenu.defaultProps = {
-  PXL: 0,
 };

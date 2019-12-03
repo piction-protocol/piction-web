@@ -17,8 +17,9 @@ const Input = styled.input.attrs(({ type }) => ({
     box-shadow: 2px 4px 4px 0 var(--shadow-color);
   }
 
-  &:disabled{
+  &:disabled, &[readonly]{
     background-color: var(--gray--light);
+    color: var(--gray--dark);
   }
 
   &::placeholder {

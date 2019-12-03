@@ -19,6 +19,7 @@ function useAPI() {
 
   const my = {
     wallet: () => API.get('my/wallet'),
+    withdraw: params => API.post('my/withdraw', params),
     projects: () => API.get('my/projects'),
     projectSubscriptions: params => API.get(`my/projects/${params.projectId}/subscriptions`, params),
     posts: params => API.get(`my/projects/${params.projectId}/posts`, params),

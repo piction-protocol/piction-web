@@ -11,7 +11,6 @@ import { LayoutContext } from 'context/LayoutContext';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
-import useWallet from 'hooks/useWallet';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
 import ProjectTitle from 'components/molecules/ProjectTitle';
@@ -153,7 +152,6 @@ function GlobalHeader({ paths, child, ...props }) {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
-  const [wallet] = useWallet();
   const [layout] = useContext(LayoutContext);
 
   const menuRef = useRef();
@@ -234,7 +232,6 @@ function GlobalHeader({ paths, child, ...props }) {
                     </Styled.Toggle>
                     {isMenuOpened && (
                       <UserMenuWithWrapper
-                        PXL={wallet.amount}
                         links={links}
                         isDesktop={isDesktop}
                         close={() => setIsMenuOpened(false)}
