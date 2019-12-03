@@ -30,14 +30,15 @@ const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const WalletPage = React.lazy(() => import('pages/WalletPage'));
-const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
-const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
 const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
-
 const Dashboard = React.lazy(() => import('Dashboard'));
 
 const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
 const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'));
+
+const Hongik = React.lazy(() => import('pages/Campaigns/Hongik'));
+const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
+const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
 
 const StyledRouter = styled(Router)`
   display: flex;
@@ -98,6 +99,7 @@ function App() {
 
               <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
               <CPR path="campaigns/cpr_2019" />
+              <Hongik path="campaigns/hongik_2019" />
 
               <CreatorsGuide path="creatorsguide" />
 
