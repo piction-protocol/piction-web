@@ -52,6 +52,7 @@ function ProjectPage({ projectId }) {
     if (project && currentUser) {
       if (currentUser.loginId === project.user.loginId) setIsMyProject(true);
     }
+    return () => setIsMyProject(false);
   }, [project, currentUser]);
 
   const handleSubscribe = async () => {

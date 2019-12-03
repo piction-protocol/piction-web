@@ -25,6 +25,10 @@ const Styled = {
     text-align: center;
     word-break: break-all;
   `,
+  Em: styled.em`
+    color: var(--blue);
+    font-style: normal;
+  `,
   Label: styled.label`
     display: flex;
     flex-flow: row wrap;
@@ -63,7 +67,13 @@ function WithdrawModal({
         을 전송합니다.
       </Styled.Text>
       <Styled.Address>
-        {withdrawAddress}
+        <Styled.Em>
+          {withdrawAddress.slice(0, 5)}
+        </Styled.Em>
+        {withdrawAddress.slice(5, -5)}
+        <Styled.Em>
+          {withdrawAddress.slice(-5)}
+        </Styled.Em>
       </Styled.Address>
       <Styled.Label>
         <Styled.Checkbox
@@ -77,6 +87,7 @@ function WithdrawModal({
         ref={register({
           required: '비밀번호를 입력하세요.',
         })}
+        placeholder="비밀번호를 입력하세요."
         invalid={errors.password}
       />
       {errors.password && (
@@ -84,7 +95,7 @@ function WithdrawModal({
           {errors.password.message}
         </Styled.ErrorMessage>
       )}
-      <Styled.Submit value="출금" form="withdraw" />
+      <Styled.Submit value="출금" form="withdraw" disabled={!isChecked} />
       <TertiaryButton onClick={close}>
         취소
       </TertiaryButton>
