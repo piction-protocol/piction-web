@@ -55,10 +55,10 @@ function WithdrawModal({
   return (
     <Modal close={close} {...props}>
       <Styled.Text>
-        다음 주소로 
+        다음 주소로
         {' '}
         <Styled.Amount>
-          {`${Number.parseFloat(amount).toLocaleString()} PXL`}
+          {`${Number(amount).toLocaleString()} PXL`}
         </Styled.Amount>
         을 전송합니다.
       </Styled.Text>
