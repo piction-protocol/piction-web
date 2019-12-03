@@ -14,6 +14,7 @@ import ErrorMessage from 'components/atoms/ErrorMessage';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import CoinOneLogo from 'images/img-logo-coin-one.png';
+import BitberryLogo from 'images/img-logo-bitberry.png';
 import NovaWalletLogo from 'images/img-logo-nova-wallet.png';
 
 const Styled = {
@@ -170,6 +171,9 @@ function Withdraw({ wallet }) {
         <Styled.Group>
           <Styled.Link href="https://coinone.co.kr/exchange/trade/pxl/krw" target="_blank">
             <img src={CoinOneLogo} alt="coinone" />
+          </Styled.Link>
+          <Styled.Link href="https://bitberry.app/" target="_blank">
+            <img src={BitberryLogo} alt="Bitberry Wallet" />
           </Styled.Link>
           <Styled.Link href="https://eosnova.io/" target="_blank">
             <img src={NovaWalletLogo} alt="NOVA Wallet" />
