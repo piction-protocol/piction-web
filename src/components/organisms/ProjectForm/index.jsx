@@ -114,7 +114,7 @@ function ProjectForm({
       }
     };
 
-    const defaultTag = queryString.parse(search).tag;
+    const defaultTags = queryString.parse(search).tag ? queryString.parse(search).tag.split(',') : [];
     const clearForm = () => {
       setFormData({
         title: '',
@@ -122,7 +122,7 @@ function ProjectForm({
         synopsis: '',
         thumbnail: '',
         wideThumbnail: '',
-        tags: defaultTag ? [defaultTag] : [],
+        tags: defaultTags,
         status: 'PUBLIC',
       });
       setDefaultImage({
