@@ -16,6 +16,7 @@ import logo from './img-participate-logo-title.png';
 import logo2x from './img-participate-logo-title@2x.png';
 import logo3x from './img-participate-logo-title@3x.png';
 import tag from './img-project-tag.png';
+import tag1 from './img-project-tag-1.png';
 
 import NoticeComponents from '../NoticeComponents';
 
@@ -109,22 +110,39 @@ const Hongik = () => {
           <a href="/creatorsguide" style={{ textDecoration: 'underline', color: 'var(--white)', fontWeight: 'bold' }}>이곳</a>
           에서 확인하세요.
         </p>
-        <a href="/tag/만그내">
-          <img
-            style={{
-              width: isDesktop ? '142px' : '86px',
-            }}
-            src={tag}
-            alt="전체 제출작 보기"
-          />
-        </a>
-        <p style={paragraphStyle}>
+        <div>
+          <a href="/tag/홍익대_영상애니메이션_학부">
+            <img
+              style={{
+                width: isDesktop ? '406px' : '195px',
+                marginRight: '12px',
+              }}
+              src={tag1}
+              alt="홍익대_영상애니메이션_학부 태그 작품"
+            />
+          </a>
+          <a href="/tag/만그내">
+            <img
+              style={{
+                width: isDesktop ? '142px' : '68px',
+              }}
+              src={tag}
+              alt="만그내 태그 작품"
+            />
+          </a>
+        </div>
+        <p
+          style={{
+            ...paragraphStyle,
+            maxWidth: '700px',
+          }}
+        >
           〈만화그래픽내러티브〉 강의를 수강하고 있는 홍대생이라면,
           <br />
-          프로젝트 생성 시 #만그내 태그를 달아주세요.
+          프로젝트 생성 시 #홍익대_영상애니메이션_학부, #만그내 태그를 달아주세요.
         </p>
         <a
-          href="/dashboard/new-project?tag=만그내"
+          href="/dashboard/new-project?tag=만그내,홍익대_영상애니메이션_학부"
           style={buttonStyle}
         >
           제출하기
