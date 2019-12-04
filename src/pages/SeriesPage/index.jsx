@@ -94,13 +94,13 @@ function SeriesPage({ projectId, seriesId }) {
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series } = useSWR(`/projects/${projectId}/series/${seriesId}`, { revalidateOnFocus: false });
-  const { data: fanPass } = useSWR(`/fan-pass/projects/${projectId}`, { revalidateOnFocus: false });
+  const { data: subscription } = useSWR(currentUser ? `/projects/${projectId}/fan-pass/subscription` : null, { revalidateOnFocus: false });
 
   useProjectLayout(project);
 
   const PostsPage = ({ offset, withSWR }) => {
     const { data } = withSWR(
-      useSWR(`/projects/${projectId}/series/${seriesId}/posts?isDescending=${isDescending}&page=${offset + 1}&size=20`),
+      useSWR(`/projects/${projectId}/series/${seriesId}/posts?isDescending=${isDescending}&page=${offset + 1}&size=20`, { revalidateOnFocus: false }),
     );
 
     const calculateIndex = (index) => {
@@ -115,7 +115,7 @@ function SeriesPage({ projectId, seriesId }) {
     const checkIsViewable = (post) => {
       if (!post.fanPass) return true;
       if (!currentUser) return false;
-      const isSubscribing = fanPass && fanPass.level >= post.fanPass.level;
+      const isSubscribing = subscription && subscription.fanPass.level >= post.fanPass.level;
       const isMine = project.user.loginId === currentUser.loginId;
       return isSubscribing || isMine;
     };
@@ -144,7 +144,7 @@ function SeriesPage({ projectId, seriesId }) {
   }
   const {
     pages, isLoadingMore, isReachingEnd, loadMore,
-  } = useSWRPages('series', PostsPage, nextOffset, [isDescending, project]);
+  } = useSWRPages(`projects/${projectId}/series/${seriesId}`, PostsPage, nextOffset, [isDescending, project, subscription, projectId, seriesId]);
 
   useOnScrollToBottom(listRef, () => {
     if (isLoadingMore || isReachingEnd) return;
