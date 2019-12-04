@@ -11,6 +11,7 @@ import Trending from './Trending';
 import Intro from './Intro';
 import Feature from './Feature';
 import Next from './Next';
+import Official from './Official';
 
 const Main = styled.main`
   display: flex;
@@ -49,6 +50,7 @@ function HomePage() {
       <Main>
         <Banner />
         <Choice />
+        <Official />
         <Trending />
         <Intro />
 

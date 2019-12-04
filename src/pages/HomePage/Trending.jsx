@@ -15,7 +15,10 @@ const Styled = {
   Section: styled(MainGrid).attrs({
     as: 'section',
   })`
-    margin: 40px auto 80px;
+    margin: 0 auto 80px; 
+    ${media.desktop`
+      margin: 40px auto 80px; 
+    `}
   `,
   Texts: styled.div`
     ${media.mobile`
