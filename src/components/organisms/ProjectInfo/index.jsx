@@ -8,6 +8,7 @@ import media, { mediaQuery } from 'styles/media';
 
 import useMedia from 'hooks/useMedia';
 import useCurrentUser from 'hooks/useCurrentUser';
+import usePictionChoices from 'hooks/usePictionChoices';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
@@ -181,6 +182,8 @@ const Styled = {
 function ProjectInfo({
   project, hasFanPasses, handleSubscribe, isMyProject = false, subscription, ...props
 }) {
+  const { projects } = usePictionChoices();
+  const isPictionChoice = projects && projects.includes(project.uri);
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { currentUser } = useCurrentUser();
@@ -198,6 +201,7 @@ function ProjectInfo({
       <Styled.MainGrid>
         <Styled.Text>
           <Styled.HeadingWrapper>
+            {isPictionChoice && '픽션 초이스 선정작'}
             <Styled.Heading>
               {project.title}
             </Styled.Heading>
