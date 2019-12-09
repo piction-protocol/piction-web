@@ -16,7 +16,7 @@ const Styled = {
     padding-top: 16px;
     ${media.desktop`
       position: relative;
-      margin-bottom: 120px;
+      margin-bottom: 60px;
       padding-top: 80px;
       &::before {
         content: '';
