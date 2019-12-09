@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Banner from '.';
-// import dnfMobileImage from './dnf-banner-mobile.png';
-// import dnfDesktopImage from './dnf-banner-desktop.png';
 import cprMobileImage from './cpr-banner-mobile.jpg';
 import cprDesktopImage from './cpr-banner-desktop.jpg';
+import hongikMobileImage from './hongik-banner-mobile.jpg';
+import hongikDesktopImage from './hongik-banner-desktop.jpg';
 
 const FeaturedBanner = () => (
   <Banner
@@ -14,6 +14,12 @@ const FeaturedBanner = () => (
       title: '전 국민 창작지원 프로그램, 심폐소생전',
       color: '#f45067',
       link: '/campaigns/cpr_2019',
+    }, {
+      mobileImage: hongikMobileImage,
+      desktopImage: hongikDesktopImage,
+      title: '픽션x홍익대 산학협력 프로젝트',
+      color: '#1A92FF',
+      link: '/campaigns/hongik_2019',
     }]}
   />
 );
