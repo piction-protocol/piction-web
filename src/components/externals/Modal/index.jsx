@@ -66,11 +66,11 @@ function Modal({ close, children, ...props }) {
   return (
     createPortal((
       <Styled.Wrapper ref={modalRef} onClick={handleClose}>
-        <MainGrid style={{ height: '100%' }} onClick={handleClose}>
+        <Styled.MainGrid onClick={handleClose}>
           <Styled.Modal {...props}>
             {children}
           </Styled.Modal>
-        </MainGrid>
+        </Styled.MainGrid>
       </Styled.Wrapper>
     ), root)
   );
