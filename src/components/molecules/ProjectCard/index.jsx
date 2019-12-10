@@ -6,6 +6,8 @@ import moment from 'moment';
 import media from 'styles/media';
 
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
+import useCPR from 'hooks/useCPR';
+import { ReactComponent as CPRIcon } from './ic-cpr.svg';
 
 const Styled = {
   Item: styled.article`
@@ -40,16 +42,31 @@ const Styled = {
     left: 0;
   `,
   UpdateLabel: styled.div`
+    width: 80px;
     padding: 8px 12px;
-    background-color: var(--black);
+    background-color: rgba(51, 51, 51, 0.95); 
     color: var(--white);
     font-size: var(--font-size--small);
+  `,
+  CPRLabel: styled.div`
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    padding: 8px 12px;
+    background-color: rgba(255, 96, 118, 0.95); 
+    color: var(--white);
+    font-size: var(--font-size--small);
+    > svg {
+      margin-right: 4px;
+    }
   `,
 };
 
 function ProjectCard({
-  title, thumbnail, lastPublishedAt, children, ...props
+  uri, title, thumbnail, lastPublishedAt, children, ...props
 }) {
+  const isCPRProject = useCPR(uri);
+
   return (
     <Styled.Item
       {...props}
@@ -63,6 +80,12 @@ function ProjectCard({
             <Styled.UpdateLabel>
               UPDATE
             </Styled.UpdateLabel>
+          )}
+          {isCPRProject && (
+            <Styled.CPRLabel>
+              <CPRIcon />
+              <span>CPR</span>
+            </Styled.CPRLabel>
           )}
         </Styled.Labels>
       </Styled.Text>
@@ -87,6 +110,7 @@ ProjectCard.Placeholder = () => (
 );
 
 ProjectCard.propTypes = {
+  uri: PropTypes.string,
   title: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,
   lastPublishedAt: PropTypes.number,
