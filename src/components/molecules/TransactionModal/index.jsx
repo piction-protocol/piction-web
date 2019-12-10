@@ -106,14 +106,17 @@ function TransactionModal({
           <Styled.SectionTitle>
             후원 정보
           </Styled.SectionTitle>
-          <Styled.Item>
-            <Styled.Name>후원자</Styled.Name>
-            <Styled.Value>{detail.sponsor && detail.sponsor.loginId}</Styled.Value>
-          </Styled.Item>
-          <Styled.Item>
-            <Styled.Name>후원 대상</Styled.Name>
-            <Styled.Value>{detail.creator && detail.creator.loginId}</Styled.Value>
-          </Styled.Item>
+          {inOut === 'IN' ? (
+            <Styled.Item>
+              <Styled.Name>후원자</Styled.Name>
+              <Styled.Value>{detail.sponsor && detail.sponsor.loginId}</Styled.Value>
+            </Styled.Item>
+          ) : (
+            <Styled.Item>
+              <Styled.Name>후원 대상</Styled.Name>
+              <Styled.Value>{detail.creator && detail.creator.loginId}</Styled.Value>
+            </Styled.Item>
+          )}
         </Styled.Section>
       )}
       <Styled.Section>
