@@ -21,12 +21,17 @@ const Styled = {
     justify-content: center;
     background-color: rgba(0, 0, 0, .3);
   `,
+  MainGrid: styled(MainGrid)`
+    height: 100%;
+  `,
   Modal: styled.aside.attrs({
     'aria-modal': 'true',
   })`
     display: flex;
     flex-flow: column;
     grid-column: 1 / -1;
+    margin-top: auto;
+    margin-bottom: auto;
     padding: 24px;
     background-color: var(--white);
     box-shadow: 0 4px 8px 0 var(--shadow-color);
@@ -61,7 +66,7 @@ function Modal({ close, children, ...props }) {
   return (
     createPortal((
       <Styled.Wrapper ref={modalRef} onClick={handleClose}>
-        <MainGrid onClick={handleClose}>
+        <MainGrid style={{ height: '100%' }} onClick={handleClose}>
           <Styled.Modal {...props}>
             {children}
           </Styled.Modal>

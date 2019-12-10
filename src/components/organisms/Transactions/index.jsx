@@ -8,6 +8,7 @@ import media from 'styles/media';
 import Grid from 'styles/Grid';
 
 import Pagination from 'components/molecules/Pagination';
+import TransactionModal from 'components/molecules/TransactionModal';
 
 const Styled = {
   Table: styled.div`
@@ -38,6 +39,10 @@ const Styled = {
     align-items: center;
     height: var(--row-height);
     border-bottom: 1px solid var(--gray--dark);
+    cursor: pointer;
+    &:hover {
+      background-color: #f1f9ff;
+    }
   `,
   Cell: styled.div`
     flex: 1;
@@ -69,6 +74,8 @@ function Transactions() {
     revalidateOnFocus: false,
   });
 
+  const [selected, setSelected] = useState(null);
+
   return (
     <>
       <Styled.Table>
@@ -78,19 +85,13 @@ function Transactions() {
           <Styled.Cell>종류 / 내역</Styled.Cell>
           <Styled.Cell>상태</Styled.Cell>
         </Styled.Thead>
-        {transactions ? transactions.map(({
-          inOut,
-          amountOriginal,
-          blockTime,
-          transactionType,
-          transactionHash,
-        }) => (
-          <Styled.Row key={transactionHash}>
-            <Styled.Cell>{moment(blockTime).format('YYYY/MM/DD HH:mm:ss')}</Styled.Cell>
+        {transactions ? transactions.map(transaction => (
+          <Styled.Row key={transaction.transactionHash} onClick={() => setSelected(transaction)}>
+            <Styled.Cell>{moment(transaction.blockTime).format('YYYY/MM/DD HH:mm:ss')}</Styled.Cell>
             <Styled.Cell>
-              {`${(inOut === 'IN' ? '+' : '-') + amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
+              {`${(transaction.inOut === 'IN' ? '+' : '-') + transaction.amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
             </Styled.Cell>
-            <Styled.Cell>{transactionTypeText(inOut, transactionType)}</Styled.Cell>
+            <Styled.Cell>{transactionTypeText(transaction.inOut, transaction.transactionType)}</Styled.Cell>
             <Styled.Cell>완료</Styled.Cell>
           </Styled.Row>
         )) : (
@@ -110,6 +111,12 @@ function Transactions() {
         setPage={setPage}
         delta={5}
       />
+      {selected && (
+        <TransactionModal
+          transaction={selected}
+          close={() => setSelected(null)}
+        />
+      )}
     </>
   );
 }
