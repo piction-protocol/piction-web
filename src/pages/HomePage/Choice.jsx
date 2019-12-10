@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
-import useSWR from 'swr';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
+
+import usePictionChoices from 'hooks/usePictionChoices';
 
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
 
@@ -132,8 +133,7 @@ const Styled = {
 };
 
 const Choice = (props) => {
-  const FETCHING_SIZE = 4;
-  const { data: collection } = useSWR(`/collections/active?size=${FETCHING_SIZE}`, { revalidateOnFocus: false });
+  const { collection } = usePictionChoices();
 
   return collection ? (
     <Styled.Container {...props}>

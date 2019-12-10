@@ -8,6 +8,7 @@ import media, { mediaQuery } from 'styles/media';
 
 import useMedia from 'hooks/useMedia';
 import useCurrentUser from 'hooks/useCurrentUser';
+import usePictionChoices from 'hooks/usePictionChoices';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
@@ -21,6 +22,7 @@ import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
 import { ReactComponent as SettingIcon } from 'images/ic-setting.svg';
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
+import { ReactComponent as ChoiceIcon } from './ic-piction-symbol-black.svg';
 
 const Styled = {
   Section: styled.section`
@@ -143,13 +145,25 @@ const Styled = {
     border-radius: 50%;
     background-color: var(--gray--light);
   `,
-  Subscribe: styled.div`
-    display: flex;
+  Aside: styled.div`
     grid-column: 1 / -1;
-    align-items: flex-start;
     ${media.desktop`
       grid-column: span 3 / -1;
     `}
+  `,
+  Label: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--charcoal-black);
+    font-size: 16px;
+    > svg {
+      margin-right: 4px;
+    }
+  `,
+  Subscribe: styled.div`
+    display: flex;
+    align-items: flex-start;
   `,
   SubscribeButton: styled(PrimaryButton)`
     flex: 1 0;
@@ -181,6 +195,8 @@ const Styled = {
 function ProjectInfo({
   project, hasFanPasses, handleSubscribe, isMyProject = false, subscription, ...props
 }) {
+  const { projects } = usePictionChoices();
+  const isPictionChoice = projects && projects.includes(project.uri);
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { currentUser } = useCurrentUser();
@@ -243,52 +259,60 @@ function ProjectInfo({
             image={project.user.picture}
           />
         </Styled.UserPictureWrapper>
-        <Styled.Subscribe>
-          {isMyProject ? isDesktop && (
-            <>
-              <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
-                새 포스트 작성
-              </Styled.SubscribeButton>
-              <Styled.SettingButton as={Link} to={`/dashboard/${project.uri}/info`}>
-                <SettingIcon />
-              </Styled.SettingButton>
-            </>
-          ) : subscription ? (
-            hasFanPasses ? (
-              <Styled.UnsubscribeButton as={Link} to="./fanpass">
-                구독 중
-              </Styled.UnsubscribeButton>
-            ) : (
-              <Styled.UnsubscribeButton onClick={handleSubscribe}>
-                구독 중
-              </Styled.UnsubscribeButton>
-            )
-          ) : (currentUser ? (
-            hasFanPasses ? (
-              <Styled.SubscribeButton as={Link} to="./fanpass">
-                구독하기
-              </Styled.SubscribeButton>
-            ) : (
-              <Styled.SubscribeButton onClick={handleSubscribe}>
-                무료로 구독하기
-              </Styled.SubscribeButton>
-            )
-          ) : (
-            <Location>
-              {({ location }) => (
-                <Styled.SubscribeButton
-                  as={Link}
-                  to="/login"
-                  state={{
-                    redirectTo: encodeURIComponent(location.pathname),
-                  }}
-                >
+        <Styled.Aside>
+          <Styled.Subscribe>
+            {isMyProject ? isDesktop && (
+              <>
+                <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
+                  새 포스트 작성
+                </Styled.SubscribeButton>
+                <Styled.SettingButton as={Link} to={`/dashboard/${project.uri}/info`}>
+                  <SettingIcon />
+                </Styled.SettingButton>
+              </>
+            ) : subscription ? (
+              hasFanPasses ? (
+                <Styled.UnsubscribeButton as={Link} to="./fanpass">
+                  구독 중
+                </Styled.UnsubscribeButton>
+              ) : (
+                <Styled.UnsubscribeButton onClick={handleSubscribe}>
+                  구독 중
+                </Styled.UnsubscribeButton>
+              )
+            ) : (currentUser ? (
+              hasFanPasses ? (
+                <Styled.SubscribeButton as={Link} to="./fanpass">
+                  구독하기
+                </Styled.SubscribeButton>
+              ) : (
+                <Styled.SubscribeButton onClick={handleSubscribe}>
                   무료로 구독하기
                 </Styled.SubscribeButton>
-              )}
-            </Location>
-          ))}
-        </Styled.Subscribe>
+              )
+            ) : (
+              <Location>
+                {({ location }) => (
+                  <Styled.SubscribeButton
+                    as={Link}
+                    to="/login"
+                    state={{
+                      redirectTo: encodeURIComponent(location.pathname),
+                    }}
+                  >
+                    무료로 구독하기
+                  </Styled.SubscribeButton>
+                )}
+              </Location>
+            ))}
+          </Styled.Subscribe>
+          {isPictionChoice && (
+            <Styled.Label>
+              <ChoiceIcon />
+              Piction&apos;s Choice
+            </Styled.Label>
+          )}
+        </Styled.Aside>
       </Styled.MainGrid>
     </Styled.Section>
   );
@@ -343,9 +367,11 @@ ProjectInfo.Placeholder = ({ isDesktop }) => (
         <Styled.UserProfile />
       </Styled.UserPictureWrapper>
 
-      <Styled.Subscribe>
-        <Styled.SubscribeButton disabled>구독하기</Styled.SubscribeButton>
-      </Styled.Subscribe>
+      <Styled.Aside>
+        <Styled.Subscribe>
+          <Styled.SubscribeButton disabled>구독하기</Styled.SubscribeButton>
+        </Styled.Subscribe>
+      </Styled.Aside>
     </Styled.MainGrid>
   </Styled.Section>
 );
