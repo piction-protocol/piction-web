@@ -40,20 +40,28 @@ const Styled = {
     position: absolute;
     top: 0;
     left: 0;
+    font-family: var(--poppins);
+    ${media.mobile`
+      > div:not(:first-child) {
+        display: none;
+      }
+    `}
   `,
   UpdateLabel: styled.div`
-    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 8px 12px;
-    background-color: rgba(51, 51, 51, 0.95); 
+    background-color: rgba(51, 51, 51, 0.95);
     color: var(--white);
     font-size: var(--font-size--small);
   `,
   CPRLabel: styled.div`
-    width: 80px;
     display: flex;
+    align-items: center;
     justify-content: center;
     padding: 8px 12px;
-    background-color: rgba(255, 96, 118, 0.95); 
+    background-color: rgba(255, 96, 118, 0.95);
     color: var(--white);
     font-size: var(--font-size--small);
     > svg {
