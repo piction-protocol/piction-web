@@ -20,8 +20,9 @@ const Styled = {
   Button: styled.button`
     display: flex;
     position: absolute;
-    z-index: 10;
+    z-index: 2;
     align-items: center;
+    cursor: pointer;
     &:first-child {
       left: 10%;
     }
