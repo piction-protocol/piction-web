@@ -169,17 +169,21 @@ function FanPassPage({ projectId, location }) {
           </Styled.Post>
         )}
       </Styled.Header>
-      {fanPassList ? fanPassList.filter(fanPass => fanPass.level >= minimum).map((fanPass) => {
+      {fanPassList ? fanPassList.map((fanPass, index) => {
+        const postCount = fanPassList.slice(0, index + 1).reduce((acc, val) => acc + val.postCount, 0);
         const isFree = fanPass.level === 0;
         const isSubscribing = subscription && fanPass.level === subscription.fanPass.level;
         const isDisabled = (subscription && fanPass.level < subscription.fanPass.level);
         const isFull = fanPass.subscriptionLimit && fanPass.subscriptionLimit < fanPass.subscriptionCount;
-        return (
-          <Styled.FanPass {...fanPass} key={fanPass.id}>
+        return fanPass.level >= minimum && (
+          <Styled.FanPass {...fanPass} postCount={postCount} key={fanPass.id}>
             <Styled.FanPassInfo>
               <Styled.Status>
-                {isFull ? '판매 종료' : isDisabled ? '구독 불가능'
-                  : isSubscribing && moment(subscription.expireDate).format('MM월 DD일 만료') }
+                {
+                  isFull ? '판매 종료'
+                    : isDisabled ? '구독 불가능'
+                      : isSubscribing && !isFree && moment(subscription.expireDate).format('YYYY년 M월 DD일 만료')
+                }
               </Styled.Status>
               {isSubscribing ? (
                 <SecondaryButton onClick={() => isFree && handleSubscribe(fanPass)}>
