@@ -71,7 +71,7 @@ const Styled = {
       --column-gap: 16px;
       grid-template-columns: auto;
       grid-auto-flow: column;
-      grid-auto-columns: 200px;
+      grid-auto-columns: 180px;
       margin: 0 calc(-1 * var(--outer-gap));
       padding: 20px 0;
       overflow-x: scroll;
