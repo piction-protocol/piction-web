@@ -24,6 +24,7 @@ const Styled = {
     ${media.mobile`
       z-index: 1;
       grid-column: 1 / -1;
+      text-align: center;
     `}
     ${media.desktop`
       grid-column: span 3;

@@ -68,7 +68,7 @@ const Styled = {
   }))`
     grid-column: 1 / -1;
     ${media.mobile`
-      --column-gap: 24px;
+      --column-gap: 16px;
       grid-template-columns: auto;
       grid-auto-flow: column;
       grid-auto-columns: 200px;
@@ -80,7 +80,7 @@ const Styled = {
       -webkit-overflow-scrolling: touch;
       &::before, &::after {
         content: '';
-        width: 0px;
+        width: 1px;
       }
     `}
     ${media.desktop`

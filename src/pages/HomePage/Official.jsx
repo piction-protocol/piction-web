@@ -13,30 +13,35 @@ const Styled = {
       margin: 0 auto 30px;
     `}
   `,
-  Label: styled.span`
-    font-weight: 600;
-    opacity: 0.5;
-    display: block;
-    font-size: 14px;
-    margin-bottom: 4px;
-    ${media.desktop`
-      font-size: 16px;
-      display: inline;
-      margin-right: 8px;
-    `}
-  `,
   Link: styled(Link)`
+    display: flex;
+    flex-flow: column;
     grid-column: 1 / -1;
+    border-radius: 12px;
+    padding: 20px;
     background-color: rgba(26, 146, 255, 0.1);
     color: var(--blue);
+    font-size: var(--font-size--base);
     font-weight: bold;
-    border-radius: 12px;
-    font-size: 18px;
-    padding: 20px;
     ${media.desktop`
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: center;
       padding: 24px;
-      text-align: center;
       border-radius: 37.5px;
+    `}
+  `,
+  Label: styled.span`
+    opacity: 0.5;
+    font-size: var(--font-size--small);
+    font-family: var(--poppins);
+    font-weight: bold;
+    ${media.mobile`
+      margin-bottom: 4px;
+    `}
+    ${media.desktop`
+      margin-right: 8px;
+      font-size: 16px;
     `}
   `,
 };
