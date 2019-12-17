@@ -1,14 +1,15 @@
-import React, {
-  useEffect, useContext,
-} from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components';
-import useSWR from 'swr';
+import useSWR, { mutate, trigger } from 'swr';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import media from 'styles/media';
 
-import { LayoutContext } from 'context/LayoutContext';
+import useAPI from 'hooks/useAPI';
+import useProjectLayout from 'hooks/useNavigationLayout';
 
 import withLoginChecker from 'components/LoginChecker';
 
@@ -16,7 +17,7 @@ import GridTemplate from 'components/templates/GridTemplate';
 import FanPass from 'components/molecules/FanPass';
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
 import Heading from 'components/atoms/Heading';
-import { PrimaryButton } from 'components/atoms/Button';
+import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 const Styled = {
   Thumbnail: styled(Thumbnail)`
@@ -93,24 +94,41 @@ const Styled = {
 };
 
 function FanPassPage({ projectId, location }) {
-  const [, setLayout] = useContext(LayoutContext);
-
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-pass`, { revalidateOnFocus: false });
   const {
     data: subscription,
   } = useSWR(() => (`/projects/${projectId}/fan-pass/subscription`));
+  const [minimum, setMinimum] = useState(location.state.post ? location.state.post.fanPass.level : 0);
+  useProjectLayout(project);
 
-  useEffect(() => {
-    setLayout({
-      type: 'project',
-      data: { project },
-    });
+  const [API] = useCallback(useAPI(), []);
 
-    return (() => {
-      setLayout({ type: 'default' });
-    });
-  }, [project, setLayout]);
+  const handleSubscribe = async (fanPass) => {
+    if (subscription) {
+      try {
+        await API.fanPass.unsubscribe({
+          projectId,
+          fanPassId: fanPass.id,
+        });
+        mutate(`/projects/${projectId}/fan-pass/subscription`, null);
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    } else {
+      try {
+        await API.fanPass.subscribe({
+          projectId,
+          fanPassId: fanPass.id,
+          subscriptionPrice: fanPass.subscriptionPrice,
+        });
+        trigger(`/projects/${projectId}/fan-pass/subscription`);
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    }
+    trigger(`/projects/${projectId}`);
+  };
 
   return (
     <GridTemplate>
@@ -137,7 +155,7 @@ function FanPassPage({ projectId, location }) {
             </Styled.Notice>
           </Styled.Subscription>
         )}
-        {location.state.post && (
+        {minimum > 0 && location.state.post && (
           <Styled.Post>
             <Styled.Name>
               {location.state.post.title}
@@ -145,18 +163,49 @@ function FanPassPage({ projectId, location }) {
             <Styled.Notice>
               해당 포스트를 볼 수 있는 FAN PASS 상품만 출력됩니다.
             </Styled.Notice>
+            <PrimaryButton onClick={() => setMinimum(0)} size="mini" style={{ marginTop: 16 }}>
+              전체 상품 보기
+            </PrimaryButton>
           </Styled.Post>
         )}
       </Styled.Header>
-      {fanPassList ? fanPassList.map(fanPass => (
-        <Styled.FanPass {...fanPass} key={fanPass.id}>
-          <Styled.FanPassInfo>
-            <PrimaryButton as={Link} to={`purchase/${fanPass.id}`}>
-              {`${fanPass.subscriptionPrice} PXL / 30일`}
-            </PrimaryButton>
-          </Styled.FanPassInfo>
-        </Styled.FanPass>
-      )) : Array.from({ length: 6 }, (_, i) => (
+      {fanPassList ? fanPassList.map((fanPass, index) => {
+        const postCount = fanPassList.slice(0, index + 1).reduce((acc, val) => acc + val.postCount, 0);
+        const isFree = fanPass.level === 0;
+        const isSubscribing = subscription && fanPass.level === subscription.fanPass.level;
+        const isDisabled = (subscription && fanPass.level < subscription.fanPass.level);
+        const isFull = fanPass.subscriptionLimit && fanPass.subscriptionLimit < fanPass.subscriptionCount;
+        return fanPass.level >= minimum && (
+          <Styled.FanPass {...fanPass} postCount={postCount} key={fanPass.id}>
+            <Styled.FanPassInfo>
+              <Styled.Status>
+                {
+                  isFull ? '판매 종료'
+                    : isDisabled ? '구독 불가능'
+                      : isSubscribing && !isFree && moment(subscription.expireDate).format('YYYY년 M월 DD일 만료')
+                }
+              </Styled.Status>
+              {isSubscribing ? (
+                <SecondaryButton onClick={() => isFree && handleSubscribe(fanPass)}>
+                  구독 중
+                </SecondaryButton>
+              ) : (
+                <PrimaryButton
+                  {...isFree ? {
+                    onClick: () => isFree && handleSubscribe(fanPass),
+                  } : {
+                    as: Link,
+                    to: `purchase/${fanPass.id}`,
+                  }}
+                  disabled={isDisabled || isFull}
+                >
+                  {isFree ? '구독하기' : `${fanPass.subscriptionPrice} PXL / 30일`}
+                </PrimaryButton>
+              )}
+            </Styled.FanPassInfo>
+          </Styled.FanPass>
+        );
+      }) : Array.from({ length: 6 }, (_, i) => (
         <Styled.FanPass isPlaceholder key={i}>
           <Styled.FanPassInfo>
             <PrimaryButton disabled />

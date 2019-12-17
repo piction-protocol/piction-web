@@ -117,6 +117,7 @@ function FanPassForm({
         await API.fanPass.create({
           ...data,
           projectId,
+          subscriptionLimit: isUnlimited ? null : data.subscriptionLimit,
         });
       }
       navigate(`/dashboard/${projectId}/fanpass/`);

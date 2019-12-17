@@ -313,7 +313,8 @@ function ProjectInfo({
                       redirectTo: encodeURIComponent(location.pathname),
                     }}
                   >
-                    무료로 구독하기
+                    {!hasFanPasses && '무료로 '}
+                    구독하기
                   </Styled.SubscribeButton>
                 )}
               </Location>
