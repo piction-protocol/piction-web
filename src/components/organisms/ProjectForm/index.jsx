@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 import queryString from 'query-string';
+import useSWR from 'swr';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -45,6 +46,15 @@ const Styled = {
     row-gap: 8px;
     > * {
       grid-column: 1 / -1;
+    }
+  `,
+  Row: styled.div`
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin: 8px 0;
+    > * {
+      margin-right: 24px;
     }
   `,
   ImageUploader: styled(ImageUploader)`
@@ -93,18 +103,23 @@ function ProjectForm({
     thumbnail: '',
     wideThumbnail: '',
     tags: [],
+    categories: [],
     subscriptionPrice: 0,
   });
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
+  const { data: categories = [] } = useSWR('/categories/', { revalidateOnFocus: false });
 
   useEffect(() => {
     const getProjectData = async () => {
       try {
         const { data } = await API.project.get({ projectId });
         const { thumbnail, wideThumbnail, ...defaultFormData } = data;
-        setFormData(defaultFormData);
+        setFormData({
+          ...defaultFormData,
+          categories: defaultFormData.categories.map(category => category.id),
+        });
         setDefaultImage({
           thumbnail,
           wideThumbnail,
@@ -123,6 +138,7 @@ function ProjectForm({
         thumbnail: '',
         wideThumbnail: '',
         tags: defaultTags,
+        categories: [],
         status: 'PUBLIC',
       });
       setDefaultImage({
@@ -196,6 +212,37 @@ function ProjectForm({
           </Styled.Description>
         )}
       </Styled.InputGroup>
+      <Styled.ImageGroup>
+        <Label>
+          카테고리
+        </Label>
+        <Styled.Row>
+          {categories.map(category => (
+            <Styled.CheckboxGroup key={category.id}>
+              <Styled.Checkbox
+                name={category.id}
+                onChange={(event) => {
+                  event.persist();
+                  setFormData((prev) => {
+                    const result = event.target.checked
+                      ? prev.categories.concat(category.id).slice(0, 3)
+                      : prev.categories.filter(item => item !== category.id);
+                    return ({
+                      ...prev,
+                      categories: result,
+                    });
+                  });
+                }}
+                checked={formData.categories.includes(category.id)}
+              />
+              {category.name}
+            </Styled.CheckboxGroup>
+          ))}
+        </Styled.Row>
+        <Styled.Description>
+          카테고리는 최대 3개까지 지정 가능합니다.
+        </Styled.Description>
+      </Styled.ImageGroup>
       <Styled.ImageGroup>
         <Label>
           프로젝트 대표 이미지
