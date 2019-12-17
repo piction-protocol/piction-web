@@ -33,7 +33,7 @@ const Styled = {
     margin-top: 16px;
     font-size: 20px;
     font-weight: bold;
-    font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+    font-family: var(--poppins);
   `,
   Subscriptions: styled.span`
     display: flex;

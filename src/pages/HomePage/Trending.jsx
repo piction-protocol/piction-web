@@ -33,7 +33,7 @@ const Styled = {
   `,
   Title: styled.h2`
     margin-bottom: 8px;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--poppins);
     font-size: 32px;
     ${media.desktop`
       margin-bottom: 20px;

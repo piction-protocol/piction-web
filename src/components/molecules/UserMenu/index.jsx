@@ -31,7 +31,7 @@ const Styled = {
   PXL: styled.span`
     margin-left: 16px;
     color: var(--blue);
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--poppins);
     font-size: 22px;
     font-weight: bold;
   `,
