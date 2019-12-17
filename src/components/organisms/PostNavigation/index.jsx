@@ -184,8 +184,12 @@ const Styled = {
 };
 
 function PostNavigation({ projectId, postId, series }) {
-  const { data: prev } = useSWR(`/projects/${projectId}/posts/${postId}/previous`);
-  const { data: next } = useSWR(`/projects/${projectId}/posts/${postId}/next`);
+  const { data: prev } = useSWR(`/projects/${projectId}/posts/${postId}/previous`, {
+    revalidateOnFocus: false, shouldRetryOnError: false,
+  });
+  const { data: next } = useSWR(`/projects/${projectId}/posts/${postId}/next`, {
+    revalidateOnFocus: false, shouldRetryOnError: false,
+  });
   const { data: postList } = useSWR(series ? `/projects/${projectId}/series/${series.id}/posts/${postId}` : null);
 
   return (
