@@ -15,16 +15,15 @@ const Styled = {
   Section: styled(MainGrid).attrs({
     as: 'section',
   })`
-    margin: 0 auto 80px; 
+    margin: 0 auto 80px;
     ${media.desktop`
-      margin: 40px auto 80px; 
+      margin: 40px auto 80px;
     `}
   `,
   Texts: styled.div`
     ${media.mobile`
       z-index: 1;
       grid-column: 1 / -1;
-      padding-top: 40px;
       text-align: center;
     `}
     ${media.desktop`
@@ -34,7 +33,7 @@ const Styled = {
   `,
   Title: styled.h2`
     margin-bottom: 8px;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--poppins);
     font-size: 32px;
     ${media.desktop`
       margin-bottom: 20px;

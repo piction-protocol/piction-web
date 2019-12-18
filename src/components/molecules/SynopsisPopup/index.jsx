@@ -7,6 +7,7 @@ import { MainGrid } from 'styles/Grid';
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
 import Heading from 'components/atoms/Heading';
 import FullscreenPopup from 'components/atoms/FullscreenPopup';
+import Category from 'components/atoms/Category';
 import Tag from 'components/atoms/Tag';
 
 import { ReactComponent as CloseIcon } from 'images/ic-close.svg';
@@ -45,6 +46,9 @@ const Styled = {
     flex-flow: row wrap;
     justify-content: center;
   `,
+  Category: styled(Category)`
+    margin: 0 4px 8px;
+  `,
   Tag: styled(Tag)`
     margin: 0 4px 8px;
   `,
@@ -60,7 +64,7 @@ const Styled = {
 };
 
 function SynopsisPopup({
-  close, thumbnail, title, user, synopsis, tags, ...props
+  close, thumbnail, title, user, synopsis, categories, tags, ...props
 }) {
   return (
     <FullscreenPopup {...props}>
@@ -74,6 +78,11 @@ function SynopsisPopup({
           <Styled.Title>{user.username}</Styled.Title>
         </div>
         <Styled.Tags>
+          {categories.map(category => (
+            <Styled.Category id={category.id} key={category.id}>
+              {category.name}
+            </Styled.Category>
+          ))}
           {tags.map(tag => <Styled.Tag key={tag}>{tag}</Styled.Tag>)}
         </Styled.Tags>
         <Styled.Synopsis>
@@ -92,5 +101,6 @@ SynopsisPopup.propTypes = {
   title: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired,
   synopsis: PropTypes.string.isRequired,
 };

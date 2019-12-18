@@ -60,8 +60,8 @@ const Styled = {
   `,
   Name: styled.p`
     margin-bottom: 8px;
+    font-family: var(--poppins);
     font-size: 14px;
-    font-family: 'Poppins', sans-serif;
     ${media.desktop`
       font-size: 16px;
     `}

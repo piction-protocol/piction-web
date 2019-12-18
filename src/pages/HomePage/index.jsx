@@ -7,11 +7,12 @@ import media from 'styles/media';
 import Banner from 'components/organisms/Banner/FeaturedBanner';
 
 import Choice from './Choice';
+import Official from './Official';
+import Category from './Category';
 import Trending from './Trending';
 import Intro from './Intro';
 import Feature from './Feature';
 import Next from './Next';
-import Official from './Official';
 
 const Main = styled.main`
   display: flex;
@@ -51,6 +52,7 @@ function HomePage() {
         <Banner />
         <Choice />
         <Official />
+        <Category />
         <Trending />
         <Intro />
 

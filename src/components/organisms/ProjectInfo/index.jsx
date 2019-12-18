@@ -16,6 +16,7 @@ import SynopsisPopup from 'components/molecules/SynopsisPopup';
 import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Heading from 'components/atoms/Heading';
+import Category from 'components/atoms/Category';
 import Tag from 'components/atoms/Tag';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
@@ -120,10 +121,18 @@ const Styled = {
     line-height: var(--line-height--content);
   `,
   Tags: styled.div`
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
     width: 100%;
-    margin-top: 16px;
+    margin-top: 8px;
+  `,
+  Category: styled(Category)`
+    margin-top: 8px;
+    margin-right: 8px;
   `,
   Tag: styled(Tag)`
+    margin-top: 8px;
     margin-right: 8px;
   `,
   InfoButton: styled.button`
@@ -248,8 +257,13 @@ function ProjectInfo({
                   {project.synopsis}
                 </Styled.Synopsis>
               )}
-              {(project.tags.length > 0 && project.status === 'PUBLIC') && (
+              {(project.tags.length + project.categories.length > 0 && project.status === 'PUBLIC') && (
                 <Styled.Tags>
+                  {project.categories.map(category => (
+                    <Styled.Category id={category.id} key={category.id}>
+                      {category.name}
+                    </Styled.Category>
+                  ))}
                   {project.tags.map(tag => (
                     <Styled.Tag key={tag}>{tag}</Styled.Tag>
                   ))}
