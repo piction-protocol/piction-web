@@ -239,9 +239,6 @@ function ProjectForm({
             </Styled.CheckboxGroup>
           ))}
         </Styled.Row>
-        <Styled.Description>
-          카테고리는 최대 3개까지 지정 가능합니다.
-        </Styled.Description>
       </Styled.ImageGroup>
       <Styled.ImageGroup>
         <Label>
