@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 
@@ -8,6 +8,8 @@ import media from 'styles/media';
 import usePictionChoices from 'hooks/usePictionChoices';
 
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
+
+import { ReactComponent as HelpIcon } from 'images/ic-help.svg';
 
 const Styled = {
   Container: styled.section`
@@ -45,6 +47,7 @@ const Styled = {
     `}
   `,
   Texts: styled.div`
+    position: relative;
     ${media.mobile`
       z-index: 1;
       grid-column: 1 / -1;
@@ -59,12 +62,53 @@ const Styled = {
     `}
   `,
   Name: styled.p`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 8px;
     font-family: var(--poppins);
     font-size: 14px;
     ${media.desktop`
+      justify-content: flex-start;
       font-size: 16px;
     `}
+  `,
+  HelpButton: styled.button`
+    display: flex;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    color: var(--gray--dark);
+    cursor: pointer;
+    ${media.desktop`
+      width: 20px;
+      height: 20px;
+    `}
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  `,
+  Tooltip: styled.div`
+    position: absolute;
+    z-index: 10;
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 var(--shadow-color);
+    background-color: rgba(255, 255, 255, .9);
+    font-size: var(--font-size--tiny);
+    ${media.mobile`
+      top: -50px;
+      right: 0;
+    `}
+    ${media.desktop`
+      top: -72px;
+      left: 56px;
+      text-align: center;
+    `}
+  `,
+  PXL: styled.strong`
+    color: var(--blue);
   `,
   Title: styled.h2`
     margin-bottom: 8px;
@@ -134,6 +178,7 @@ const Styled = {
 
 const Choice = (props) => {
   const { collection } = usePictionChoices();
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   return collection ? (
     <Styled.Container {...props}>
@@ -144,6 +189,9 @@ const Choice = (props) => {
         <Styled.Texts>
           <Styled.Name>
             Piction’s Choice
+            <Styled.HelpButton onClick={() => setIsTooltipVisible(prev => !prev)}>
+              <HelpIcon />
+            </Styled.HelpButton>
           </Styled.Name>
           <Styled.Title>
             {collection.title}
@@ -151,6 +199,16 @@ const Choice = (props) => {
           <Styled.SubTitle>
             {collection.subTitle}
           </Styled.SubTitle>
+          {isTooltipVisible && (
+            <Styled.Tooltip onClick={() => setIsTooltipVisible(false)}>
+              매주 화, 금요일마다 선정된
+              <br />
+              5명의 창작자에게
+              {' '}
+              <Styled.PXL>500PXL</Styled.PXL>
+              을 드려요!
+            </Styled.Tooltip>
+          )}
         </Styled.Texts>
         <Styled.ProjectList>
           {collection.projects.map(project => (
