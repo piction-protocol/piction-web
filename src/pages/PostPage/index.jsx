@@ -5,9 +5,9 @@ import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { mutate } from 'swr';
+import { navigate } from '@reach/router';
 
-import media, { mediaQuery } from 'styles/media';
-import useMedia from 'hooks/useMedia';
+import media from 'styles/media';
 
 import useProjectLayout from 'hooks/useNavigationLayout';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -16,12 +16,11 @@ import useLocalStorage from 'hooks/useLocalStorage';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
-
-import Button from 'components/atoms/Button';
 import LikeButton from 'components/atoms/LikeButton';
-import { navigate } from '@reach/router';
+
 import Header from './Header';
 import Content from './Content';
+import ReaderModeControl from './ReaderModeControl';
 
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
@@ -43,21 +42,10 @@ const Styled = {
   LikeButton: styled(LikeButton)`
     margin: 48px auto 24px;
   `,
-  ReaderModeToggle: styled(Button)`
-    font-size: 12px;
-    font-weight: normal;
-    color: var(--gray--dark);
-    background-color: var(--white);
-    box-shadow: 0 1px 2px 0 var(--shadow-color);
-    &:hover {
-      box-shadow: 0 2px 4px 0 var(--shadow-color);
-    }
-  `,
 };
 
 function PostPage({ projectId, postId }) {
-  const isDesktop = useMedia(mediaQuery.desktop);
-  const [textmode, setTextmode] = useLocalStorage(`project/${projectId}/textmode`, false);
+  const [readerMode, setReaderMode] = useLocalStorage(`project/${projectId}/textmode`, false);
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const [API, handleError] = useCallback(useAPI(), []);
 
@@ -125,7 +113,12 @@ function PostPage({ projectId, postId }) {
   const contentLoaded = content && post;
 
   return (
-    <GridTemplate>
+    <GridTemplate
+      style={readerMode ? {
+        backgroundColor: '#e8eff4',
+        marginBottom: '0',
+      } : null}
+    >
       {shouldShowAdultPopup && <AdultPopup close={handleAdultPopupClose} />}
 
       <Styled.Article>
@@ -135,12 +128,16 @@ function PostPage({ projectId, postId }) {
           <Header.Placeholder />
         )}
 
+        {contentLoaded && (
+          <ReaderModeControl readerMode={readerMode} onToggle={mode => setReaderMode(mode)} />
+        )}
+
         {contentLoaded ? (
           <Content
             publishedAt={post && post.publishedAt}
             content={content}
             projectId={projectId}
-            textmode={textmode}
+            readerMode={readerMode}
           />
         ) : (
           // FIXME: needSubscription을 관리하는 코드를 개선
@@ -159,19 +156,6 @@ function PostPage({ projectId, postId }) {
           />
         )}
       </Styled.Article>
-      {contentLoaded && isDesktop && (
-        <div style={{
-          position: 'absolute',
-          right: '1em',
-          top: '5.5em',
-        }}
-        >
-          <Styled.ReaderModeToggle size="mini" onClick={() => setTextmode(prev => !prev)}>
-            {textmode ? '일반 모드' : '읽기 모드'}
-          </Styled.ReaderModeToggle>
-        </div>
-      )}
-
       {post && <PostNavigation projectId={projectId} postId={postId} series={post.series} />}
     </GridTemplate>
   );

@@ -50,8 +50,8 @@ const Styled = {
   `,
 };
 
-function Content({ publishedAt, content, textmode }) {
-  const textModeStyle = {
+function Content({ publishedAt, content, readerMode }) {
+  const readerModeStyle = {
     fontFamily: 'RIDIBatang, serif',
     textAlign: 'justify',
     maxWidth: '600px',
@@ -62,7 +62,7 @@ function Content({ publishedAt, content, textmode }) {
   return (
     <>
       <Styled.Content
-        style={textmode ? textModeStyle : null}
+        style={readerMode ? readerModeStyle : null}
         dangerouslySetInnerHTML={{
           __html: content.content,
         }}
@@ -77,7 +77,7 @@ function Content({ publishedAt, content, textmode }) {
 Content.propTypes = {
   publishedAt: PropTypes.number,
   content: PropTypes.string,
-  textmode: PropTypes.bool,
+  readerMode: PropTypes.bool,
 };
 
 Content.Placeholder = () => {

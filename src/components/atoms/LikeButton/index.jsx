@@ -14,7 +14,6 @@ const Styled = {
     padding: 16px 24px 12px;
     border: 1px solid ${({ isLike }) => (isLike ? 'var(--blue)' : 'var(--gray--light)')};
     border-radius: 50%;
-    background-color: var(--white);
     color: var(--color);
     box-shadow: 0 2px 4px 0 var(--shadow-color);
     cursor: pointer;
