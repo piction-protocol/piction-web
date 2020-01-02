@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
