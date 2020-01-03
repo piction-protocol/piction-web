@@ -56,6 +56,7 @@ const Styled = {
     margin-left: auto;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
+    text-align: right;
   `,
 };
 
@@ -90,7 +91,9 @@ function UserList({ title, projectId }) {
               </Styled.Tier>
             </Styled.Text>
             <Styled.SubscriptionDate>
-              {moment(subscription.subscriptionDate).format('YYYY/MM/DD HH:mm')}
+              {moment(subscription.startedAt).format('YYYY/MM/DD HH:mm')}
+              <br />
+              {subscription.expireDate && moment(subscription.expireDate).format('~ YYYY/MM/DD HH:mm')}
             </Styled.SubscriptionDate>
           </Styled.Item>
         ))) : (
