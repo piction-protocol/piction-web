@@ -44,7 +44,7 @@ const Styled = {
 };
 
 function Search({ location: { search } }) {
-  const { query } = queryString.parse(search);
+  const { query } = queryString.parse(search, { decode: false });
 
   const FETCHING_SIZE = 20;
   const [totalCount, setTotalCount] = useState(0);
@@ -99,7 +99,7 @@ function Search({ location: { search } }) {
       hero={(
         <Styled.Hero>
           <Heading>
-            {`"${query || ''}" 검색 결과`}
+            {`"${decodeURIComponent(query) || ''}" 검색 결과`}
           </Heading>
           <Styled.Count>
             {`${totalCount} 프로젝트`}
