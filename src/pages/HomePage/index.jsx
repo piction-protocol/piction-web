@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import media from 'styles/media';
 
-import Banner from 'components/organisms/Banner/FeaturedBanner';
-
 import Choice from './Choice';
 import Official from './Official';
 import Category from './Category';
@@ -49,7 +47,6 @@ function HomePage() {
       </Helmet>
 
       <Main>
-        <Banner />
         <Choice />
         <Official />
         <Category />
