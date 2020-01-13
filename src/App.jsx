@@ -57,6 +57,15 @@ const NotFound = () => (
   </div>
 );
 
+const swrConfig = {
+  onErrorRetry: (error, key, option, revalidate, { retryCount }) => {
+    if (retryCount >= 3) return;
+    if (error.response && error.response.status === 404) return;
+
+    setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 5000);
+  },
+};
+
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
@@ -70,11 +79,11 @@ function App() {
 
   return (
     <div className="root">
-      <SWRConfig value={{ fetcher }}>
+      <SWRConfig value={{ ...swrConfig, fetcher }}>
         <LayoutProvider>
           <GlobalHeader />
           <Suspense fallback={<Spinner />}>
-            <StyledRouter primary={false}>
+            <StyledRouter>
               <HomePage path="/" />
               <LoginPage path="login" />
               <SignupPage path="signup/*" />
