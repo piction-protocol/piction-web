@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
 import { Router, Redirect } from '@reach/router';
-import styled from 'styled-components';
 import { importMDX } from 'mdx.macro';
 import { SWRConfig } from 'swr';
 import createFetcher from 'config/fetcher';
@@ -41,11 +40,6 @@ const Hongik = React.lazy(() => import('pages/Campaigns/Hongik'));
 const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
 const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
 
-const StyledRouter = styled(Router)`
-  display: flex;
-  flex: 1 0 auto;
-`;
-
 const NotFound = () => (
   <div style={{
     margin: 'auto',
@@ -66,6 +60,13 @@ const swrConfig = {
   },
 };
 
+const ScrollHandler = ({ children, location }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+  return children;
+};
+
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
@@ -83,43 +84,45 @@ function App() {
         <LayoutProvider>
           <GlobalHeader />
           <Suspense fallback={<Spinner />}>
-            <StyledRouter>
-              <HomePage path="/" />
-              <LoginPage path="login" />
-              <SignupPage path="signup/*" />
-              <ForgotPasswordPage path="forgot_password/*" />
+            <Router>
+              <ScrollHandler path="/">
+                <HomePage path="/" />
+                <LoginPage path="login" />
+                <SignupPage path="signup/*" />
+                <ForgotPasswordPage path="forgot_password/*" />
 
-              <SubscriptionsPage path="subscriptions" />
-              <AllProjectsPage path="all" />
+                <SubscriptionsPage path="subscriptions" />
+                <AllProjectsPage path="all" />
 
-              <Search path="search" />
-              <TagPage path="tag/:tagName" />
-              <CategoryPage path="category/:categoryId" />
+                <Search path="search" />
+                <TagPage path="tag/:tagName" />
+                <CategoryPage path="category/:categoryId" />
 
-              <ProjectPage path="project/:projectId/*" />
-              <FanPassPage path="project/:projectId/fanpass" />
-              <PurchasePage path="project/:projectId/fanpass/purchase/:fanPassId" />
-              <SeriesPage path="project/:projectId/series/:seriesId" />
-              <PostPage path="project/:projectId/posts/:postId" />
+                <ProjectPage path="project/:projectId/*" />
+                <FanPassPage path="project/:projectId/fanpass" />
+                <PurchasePage path="project/:projectId/fanpass/purchase/:fanPassId" />
+                <SeriesPage path="project/:projectId/series/:seriesId" />
+                <PostPage path="project/:projectId/posts/:postId" />
 
-              <MyPage path="my/*" />
-              <WalletPage path="wallet/*" />
-              <Dashboard path="dashboard/*" />
+                <MyPage path="my/*" />
+                <WalletPage path="wallet/*" />
+                <Dashboard path="dashboard/*" />
 
-              <Terms components={TermsComponents} path="terms" />
-              <Privacy components={TermsComponents} path="privacy" />
+                <Terms components={TermsComponents} path="terms" />
+                <Privacy components={TermsComponents} path="privacy" />
 
-              <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
-              <CPR path="campaigns/cpr_2019" />
-              <Hongik path="campaigns/hongik_2019" />
+                <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
+                <CPR path="campaigns/cpr_2019" />
+                <Hongik path="campaigns/hongik_2019" />
 
-              <CreatorsGuide path="creatorsguide" />
+                <CreatorsGuide path="creatorsguide" />
 
-              <Redirect from="/en" to="/" noThrow />
-              <Redirect from="/ko" to="/" noThrow />
+                <Redirect from="/en" to="/" noThrow />
+                <Redirect from="/ko" to="/" noThrow />
 
-              <NotFound default />
-            </StyledRouter>
+                <NotFound default />
+              </ScrollHandler>
+            </Router>
           </Suspense>
           <GlobalFooter />
         </LayoutProvider>
