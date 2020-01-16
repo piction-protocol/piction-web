@@ -1,10 +1,12 @@
 import React, { Suspense, useEffect } from 'react';
-import { globalHistory, Router, Redirect } from '@reach/router';
+import { Router, Redirect } from '@reach/router';
 import { importMDX } from 'mdx.macro';
 import { SWRConfig } from 'swr';
+import styled from 'styled-components';
 import createFetcher from 'config/fetcher';
 
 import useCurrentUser from 'hooks/useCurrentUser';
+import useScrollRestoration from 'hooks/useScrollRestoration';
 
 import { LayoutProvider } from 'context/LayoutContext';
 
@@ -51,6 +53,11 @@ const NotFound = () => (
   </div>
 );
 
+const StyledRouter = styled(Router)`
+  display: flex;
+  flex: 1;
+`;
+
 const swrConfig = {
   onErrorRetry: (error, key, option, revalidate, { retryCount }) => {
     if (retryCount >= 3) return;
@@ -64,13 +71,7 @@ function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
 
-  useEffect(() => {
-    globalHistory.listen(({ action }) => {
-      if (action !== 'POP') {
-        window.scrollTo(0, 0);
-      }
-    });
-  }, []);
+  useScrollRestoration();
 
   useEffect(() => {
     async function loading() {
@@ -85,7 +86,7 @@ function App() {
         <LayoutProvider>
           <GlobalHeader />
           <Suspense fallback={<Spinner />}>
-            <Router>
+            <StyledRouter primary={false}>
               <HomePage path="/" />
               <LoginPage path="login" />
               <SignupPage path="signup/*" />
@@ -121,7 +122,7 @@ function App() {
               <Redirect from="/ko" to="/" noThrow />
 
               <NotFound default />
-            </Router>
+            </StyledRouter>
           </Suspense>
           <GlobalFooter />
         </LayoutProvider>

@@ -111,11 +111,6 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
     opacity: 0;
   }
-
-  [tabindex="-1"][role="group"] {
-    display: flex;
-    flex: 1;
-  }
 `;
 
 export default GlobalStyle;
