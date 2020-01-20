@@ -42,11 +42,11 @@ function ProjectPage({ projectId }) {
   const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
   const { data: recommendedProjects } = useSWR('/recommended/projects?size=5', { revalidateOnFocus: false });
-  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-pass`);
+  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-passes`);
   const {
     data: subscription,
     revalidate: revalidateSubscription,
-  } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-pass/subscription` : null));
+  } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-passes/subscription` : null));
 
   useEffect(() => {
     if (project && currentUser) {
@@ -63,7 +63,7 @@ function ProjectPage({ projectId }) {
           fanPassId: fanPass[0].id,
         });
       } finally {
-        mutate(`/projects/${projectId}/fan-pass/subscription`, null);
+        mutate(`/projects/${projectId}/fan-passes/subscription`, null);
       }
     } else {
       try {

@@ -109,7 +109,7 @@ function ProjectForm({
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
-  const { data: categories = [] } = useSWR('/categories/', { revalidateOnFocus: false });
+  const { data: categories = [] } = useSWR('/categories', { revalidateOnFocus: false });
 
   useEffect(() => {
     const getProjectData = async () => {

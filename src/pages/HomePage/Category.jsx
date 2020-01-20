@@ -114,7 +114,7 @@ const Styled = {
 };
 
 const Category = (props) => {
-  const { data: categories } = useSWR('/categories/', { revalidateOnFocus: false });
+  const { data: categories } = useSWR('/categories', { revalidateOnFocus: false });
 
   return (
     <Styled.Container {...props}>

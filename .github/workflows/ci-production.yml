@@ -25,9 +25,8 @@ jobs:
           REACT_APP_API_URL: https://api.piction.network/
           REACT_APP_TAGMANAGER_CONTAINER_ID: GTM-KCZDV3M
       - name: Deploy to S3
-        uses: actions/aws/cli@master
-        with:
-          args: "s3 sync build s3://production.piction.network"
+        run: |
+          aws s3 sync build s3://production.piction.network
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

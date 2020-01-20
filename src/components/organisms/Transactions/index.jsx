@@ -70,7 +70,7 @@ function Transactions() {
 
   const {
     data: { content: transactions, ...pageable } = {},
-  } = useSWR(`/my/transactions?page=${page}&size=${FETCHING_SIZE}`, {
+  } = useSWR(`/my/wallet/transactions?page=${page}&size=${FETCHING_SIZE}`, {
     revalidateOnFocus: false,
   });
 

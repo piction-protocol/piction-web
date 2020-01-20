@@ -95,10 +95,10 @@ const Styled = {
 
 function FanPassPage({ projectId, location }) {
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
-  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-pass`, { revalidateOnFocus: false });
+  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-passes`, { revalidateOnFocus: false });
   const {
     data: subscription,
-  } = useSWR(() => (`/projects/${projectId}/fan-pass/subscription`));
+  } = useSWR(() => (`/projects/${projectId}/fan-passes/subscription`));
   const [minimum, setMinimum] = useState(location.state.post ? location.state.post.fanPass.level : 0);
   useProjectLayout(project);
 
@@ -111,7 +111,7 @@ function FanPassPage({ projectId, location }) {
           projectId,
           fanPassId: fanPass.id,
         });
-        mutate(`/projects/${projectId}/fan-pass/subscription`, null);
+        mutate(`/projects/${projectId}/fan-passes/subscription`, null);
       } catch (error) {
         console.log(error.response.data.message);
       }
@@ -122,7 +122,7 @@ function FanPassPage({ projectId, location }) {
           fanPassId: fanPass.id,
           subscriptionPrice: fanPass.subscriptionPrice,
         });
-        trigger(`/projects/${projectId}/fan-pass/subscription`);
+        trigger(`/projects/${projectId}/fan-passes/subscription`);
       } catch (error) {
         console.log(error.response.data.message);
       }

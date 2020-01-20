@@ -94,7 +94,7 @@ function SeriesPage({ projectId, seriesId }) {
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series } = useSWR(`/projects/${projectId}/series/${seriesId}`, { revalidateOnFocus: false });
-  const { data: subscription } = useSWR(currentUser ? `/projects/${projectId}/fan-pass/subscription` : null, { revalidateOnFocus: false });
+  const { data: subscription } = useSWR(currentUser ? `/projects/${projectId}/fan-passes/subscription` : null, { revalidateOnFocus: false });
 
   useProjectLayout(project);
 

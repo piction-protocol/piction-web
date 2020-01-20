@@ -140,7 +140,7 @@ function PurchasePage({ projectId, fanPassId, redirect }) {
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
 
-  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-pass/${fanPassId}`);
+  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-passes/${fanPassId}`);
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
   const { data: fees } = useSWR(`projects/${projectId}/fees`, {
     revalidateOnFocus: false,

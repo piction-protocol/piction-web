@@ -83,7 +83,7 @@ function DashboardPostList({ title, projectId }) {
 
   // FIXME: suspense 옵션 제거하고 placeholder 추가
   const { data: postList } = useSWR(`my/projects/${projectId}/posts?${query}`, { suspense: true });
-  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-pass`, { suspense: true });
+  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-passes`, { suspense: true });
   const { data: seriesList } = useSWR(`/projects/${projectId}/series`, { suspense: true });
 
   return (
