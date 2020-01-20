@@ -57,7 +57,7 @@ const NotFound = () => (
 );
 
 function Dashboard() {
-  const { data: projects } = useSWR('my/projects', {
+  const { data: projects = [] } = useSWR('my/projects', {
     revalidateOnFocus: false,
   });
 
