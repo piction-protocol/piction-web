@@ -83,7 +83,7 @@ const Styled = {
 
 function DashboardFanPassList({ title, projectId }) {
   const { data: project } = useSWR(`/projects/${projectId}`, { suspense: true });
-  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-pass`, { suspense: true });
+  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-passes`, { suspense: true });
 
   return (
     <Styled.Container>

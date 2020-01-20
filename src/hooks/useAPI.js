@@ -61,13 +61,12 @@ function useAPI() {
   };
 
   const fanPass = {
-    get: params => API.get(`/projects/${params.projectId}`),
-    getAll: params => API.get(`/projects/${params.projectId}/fan-pass`),
-    create: params => API.post(`/projects/${params.projectId}/fan-pass`, params),
-    update: params => API.put(`/projects/${params.projectId}/fan-pass/${params.fanPassId}`, params),
-    delete: params => API.delete(`/projects/${params.projectId}/fan-pass/${params.fanPassId}`, params),
-    subscribe: params => API.post(`/projects/${params.projectId}/fan-pass/${params.fanPassId}/subscription`, params),
-    unsubscribe: params => API.delete(`/projects/${params.projectId}/fan-pass/${params.fanPassId}/subscription`, params),
+    getAll: params => API.get(`/projects/${params.projectId}/fan-passes`),
+    create: params => API.post(`/projects/${params.projectId}/fan-passes`, params),
+    update: params => API.put(`/projects/${params.projectId}/fan-passes/${params.fanPassId}`, params),
+    delete: params => API.delete(`/projects/${params.projectId}/fan-passes/${params.fanPassId}`, params),
+    subscribe: params => API.post(`/projects/${params.projectId}/fan-passes/${params.fanPassId}/subscription`, params),
+    unsubscribe: params => API.delete(`/projects/${params.projectId}/fan-passes/${params.fanPassId}/subscription`, params),
   };
 
   const recommended = {
