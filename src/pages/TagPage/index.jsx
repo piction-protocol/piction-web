@@ -49,7 +49,7 @@ function TagPage({ tagName }) {
 
   function TaggedProjectsPage({ offset, withSWR }) {
     const { data } = withSWR(
-      useSWR(`projects?tagName=${tagName}&size=${FETCHING_SIZE}&page=${offset + 1}`),
+      useSWR(`/search/projects/tags?tag=${tagName}&size=${FETCHING_SIZE}&page=${offset + 1}`),
     );
 
     if (!data) {
