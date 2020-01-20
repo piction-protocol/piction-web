@@ -66,7 +66,7 @@ function TransactionModal({
     fromAddress, toAddress, amountOriginal, blockNumber, txHashWithUrl,
   }, close, ...props
 }) {
-  const { data: detail = {} } = useSWR(`/my/transactions/${transactionType.toLowerCase()}/${transactionHash}`, {
+  const { data: detail = {} } = useSWR(`/my/wallet/transactions/${transactionType.toLowerCase()}/${transactionHash}`, {
     revalidateOnFocus: false,
   });
 
