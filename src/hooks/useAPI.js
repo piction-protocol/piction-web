@@ -19,7 +19,7 @@ function useAPI() {
 
   const my = {
     wallet: () => API.get('my/wallet'),
-    withdraw: params => API.post('my/withdraw', params),
+    withdraw: params => API.post('my/wallet/withdrawals', params),
     projects: () => API.get('my/projects'),
     projectSubscriptions: params => API.get(`my/projects/${params.projectId}/subscriptions`, params),
     posts: params => API.get(`my/projects/${params.projectId}/posts`, params),
@@ -39,8 +39,6 @@ function useAPI() {
     getContent: params => API.get(`/projects/${projectId}/posts/${params.postId}/content`),
     update: params => API.put(`/projects/${projectId}/posts/${params.postId}`, params),
     like: params => API.post(`/projects/${projectId}/posts/${params.postId}/like`),
-    getNextPost: params => API.get(`/projects/${projectId}/posts/${params.postId}/next`),
-    getPreviousPost: params => API.get(`/projects/${projectId}/posts/${params.postId}/previous`),
     uploadContentImage: params => API.patch(`/projects/${projectId}/posts/content`, params, patchConfig),
     uploadCoverImage: params => API.patch(`/projects/${projectId}/posts/cover`, params, patchConfig),
   });

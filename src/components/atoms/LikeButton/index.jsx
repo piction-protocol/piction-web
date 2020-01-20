@@ -6,19 +6,19 @@ import { ReactComponent as HeartIcon } from 'images/ic-heart.svg';
 
 const Styled = {
   Button: styled.button`
-    --color: ${({ isLike }) => (isLike ? 'var(--blue)' : 'var(--gray--dark)')};
+    --color: ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray--dark)')};
 
     display: flex;
     flex-flow: column;
     align-items: center;
     padding: 16px 24px 12px;
-    border: 1px solid ${({ isLike }) => (isLike ? 'var(--blue)' : 'var(--gray--light)')};
+    border: 1px solid ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray--light)')};
     border-radius: 50%;
     color: var(--color);
     box-shadow: 0 2px 4px 0 var(--shadow-color);
     cursor: pointer;
-    pointer-events: ${({ isLike }) => (isLike ? 'none' : 'auto')};
-    ${({ isLike }) => isLike && `
+    pointer-events: ${({ isLiked }) => (isLiked ? 'none' : 'auto')};
+    ${({ isLiked }) => isLiked && `
       svg path {
         stroke: currentColor;
         fill: currentColor;
@@ -34,9 +34,9 @@ const Styled = {
   `,
 };
 
-function LikeButton({ likeCount, isLike, ...props }) {
+function LikeButton({ likeCount, isLiked, ...props }) {
   return (
-    <Styled.Button isLike={isLike} {...props}>
+    <Styled.Button isLiked={isLiked} {...props}>
       <Styled.HeartIcon />
       <Styled.Count>
         {likeCount}
@@ -47,7 +47,7 @@ function LikeButton({ likeCount, isLike, ...props }) {
 
 LikeButton.propTypes = {
   likeCount: PropTypes.number.isRequired,
-  isLike: PropTypes.bool.isRequired,
+  isLiked: PropTypes.bool.isRequired,
 };
 
 export default LikeButton;
