@@ -10,6 +10,7 @@ import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
 
+import { GridStyle } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
@@ -21,6 +22,12 @@ import Posts from './Posts';
 import Series from './Series';
 
 const Styled = {
+  Router: styled(Router).attrs({
+    columns: 'var(--grid-columns)',
+  })`
+    grid-column: 1 / -1;
+    ${GridStyle}
+  `,
   Tabs: styled(Tabs)`
     grid-column: 1 / -1;
     margin-bottom: -24px;
@@ -113,7 +120,7 @@ function ProjectPage({ projectId }) {
         ]}
       />
 
-      <Router primary={false} component={({ children }) => <>{children}</>}>
+      <Styled.Router primary={false}>
         <Redirect from="/" to={`project/${projectId}/posts`} noThrow />
         <Posts
           path="posts"
@@ -131,7 +138,7 @@ function ProjectPage({ projectId }) {
           path="series"
           series={series || []}
         />
-      </Router>
+      </Styled.Router>
     </GridTemplate>
   );
 }
