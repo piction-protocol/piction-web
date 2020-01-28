@@ -1,9 +1,10 @@
 import React, { Suspense, useEffect } from 'react';
-import { Router, Redirect } from '@reach/router';
-import styled from 'styled-components';
+import { Router, Location, Redirect } from '@reach/router';
 import { importMDX } from 'mdx.macro';
 import { SWRConfig } from 'swr';
+import styled from 'styled-components';
 import createFetcher from 'config/fetcher';
+import { ScrollContext } from 'gatsby-react-router-scroll';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -41,11 +42,6 @@ const Hongik = React.lazy(() => import('pages/Campaigns/Hongik'));
 const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
 const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
 
-const StyledRouter = styled(Router)`
-  display: flex;
-  flex: 1 0 auto;
-`;
-
 const NotFound = () => (
   <div style={{
     margin: 'auto',
@@ -56,6 +52,21 @@ const NotFound = () => (
     404
   </div>
 );
+
+const StyledRouter = styled(Router)`
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+`;
+
+const swrConfig = {
+  onErrorRetry: (error, key, option, revalidate, { retryCount }) => {
+    if (retryCount >= 3) return;
+    if (error.response && error.response.status === 404) return;
+
+    setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 5000);
+  },
+};
 
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
@@ -70,51 +81,57 @@ function App() {
 
   return (
     <div className="root">
-      <SWRConfig value={{ fetcher }}>
-        <LayoutProvider>
-          <GlobalHeader />
-          <Suspense fallback={<Spinner />}>
-            <StyledRouter primary={false}>
-              <HomePage path="/" />
-              <LoginPage path="login" />
-              <SignupPage path="signup/*" />
-              <ForgotPasswordPage path="forgot_password/*" />
+      <Location>
+        {locationContext => (
+          <SWRConfig value={{ ...swrConfig, fetcher }}>
+            <LayoutProvider>
+              <GlobalHeader />
+              <Suspense fallback={<Spinner />}>
+                <ScrollContext location={locationContext.location}>
+                  <StyledRouter>
+                    <HomePage path="/" />
+                    <LoginPage path="login" />
+                    <SignupPage path="signup/*" />
+                    <ForgotPasswordPage path="forgot_password/*" />
 
-              <SubscriptionsPage path="subscriptions" />
-              <AllProjectsPage path="all" />
+                    <SubscriptionsPage path="subscriptions" />
+                    <AllProjectsPage path="all" />
 
-              <Search path="search" />
-              <TagPage path="tag/:tagName" />
-              <CategoryPage path="category/:categoryId" />
+                    <Search path="search" />
+                    <TagPage path="tag/:tagName" />
+                    <CategoryPage path="category/:categoryId" />
 
-              <ProjectPage path="project/:projectId/*" />
-              <FanPassPage path="project/:projectId/fanpass" />
-              <PurchasePage path="project/:projectId/fanpass/purchase/:fanPassId" />
-              <SeriesPage path="project/:projectId/series/:seriesId" />
-              <PostPage path="project/:projectId/posts/:postId" />
+                    <ProjectPage path="project/:projectId/*" />
+                    <FanPassPage path="project/:projectId/fanpass" />
+                    <PurchasePage path="project/:projectId/fanpass/purchase/:fanPassId" />
+                    <SeriesPage path="project/:projectId/series/:seriesId" />
+                    <PostPage path="project/:projectId/posts/:postId" />
 
-              <MyPage path="my/*" />
-              <WalletPage path="wallet/*" />
-              <Dashboard path="dashboard/*" />
+                    <MyPage path="my/*" />
+                    <WalletPage path="wallet/*" />
+                    <Dashboard path="dashboard/*" />
 
-              <Terms components={TermsComponents} path="terms" />
-              <Privacy components={TermsComponents} path="privacy" />
+                    <Terms components={TermsComponents} path="terms" />
+                    <Privacy components={TermsComponents} path="privacy" />
 
-              <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
-              <CPR path="campaigns/cpr_2019" />
-              <Hongik path="campaigns/hongik_2019" />
+                    <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
+                    <CPR path="campaigns/cpr_2019" />
+                    <Hongik path="campaigns/hongik_2019" />
 
-              <CreatorsGuide path="creatorsguide" />
+                    <CreatorsGuide path="creatorsguide" />
 
-              <Redirect from="/en" to="/" noThrow />
-              <Redirect from="/ko" to="/" noThrow />
+                    <Redirect from="/en" to="/" noThrow />
+                    <Redirect from="/ko" to="/" noThrow />
 
-              <NotFound default />
-            </StyledRouter>
-          </Suspense>
-          <GlobalFooter />
-        </LayoutProvider>
-      </SWRConfig>
+                    <NotFound default />
+                  </StyledRouter>
+                </ScrollContext>
+              </Suspense>
+              <GlobalFooter />
+            </LayoutProvider>
+          </SWRConfig>
+        )}
+      </Location>
     </div>
   );
 }
