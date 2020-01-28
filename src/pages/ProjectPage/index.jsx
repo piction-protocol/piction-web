@@ -47,13 +47,10 @@ function ProjectPage({ projectId }) {
   const [isMyProject, setIsMyProject] = useState(false);
 
   const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
-  const { data: series } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
+  const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
   const { data: recommendedProjects } = useSWR('/recommended/projects?size=5', { revalidateOnFocus: false });
   const { data: fanPass } = useSWR(`/projects/${projectId}/fan-passes`);
-  const {
-    data: subscription,
-    revalidate: revalidateSubscription,
-  } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-passes/subscription` : null));
+  const { data: subscription } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-passes/subscription` : null));
 
   useEffect(() => {
     if (project && currentUser) {
@@ -80,7 +77,7 @@ function ProjectPage({ projectId }) {
           subscriptionPrice: fanPass[0].subscriptionPrice,
         });
       } finally {
-        revalidateSubscription();
+        trigger(`/projects/${projectId}/fan-passes/subscription`);
       }
     }
     trigger(`/projects/${projectId}`);
@@ -124,19 +121,17 @@ function ProjectPage({ projectId }) {
         <Redirect from="/" to={`project/${projectId}/posts`} noThrow />
         <Posts
           path="posts"
-          {...{
-            projectId,
-            project,
-            subscription,
-            isMyProject,
-            isDesktop,
-            series: (series || []),
-            recommendedProjects,
-          }}
+          projectId={projectId}
+          project={project}
+          subscription={subscription}
+          isMyProject={isMyProject}
+          isDesktop={isDesktop}
+          series={series}
+          recommendedProjects={recommendedProjects}
         />
         <Series
           path="series"
-          series={series || []}
+          series={series}
         />
       </Styled.Router>
     </GridTemplate>

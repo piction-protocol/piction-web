@@ -84,7 +84,7 @@ function PostList({
     isLoadingMore,
     isReachingEnd,
     loadMore,
-  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId]);
+  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId, subscription]);
 
   return (
     <Styled.Container {...props}>
