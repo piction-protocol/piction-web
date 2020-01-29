@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const MainGrid = styled.div`
   display: -ms-grid;

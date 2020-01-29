@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { useSWRPages } from 'swr';

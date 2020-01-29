@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Router, Location, Redirect } from '@reach/router';
 import { importMDX } from 'mdx.macro';
 import { SWRConfig } from 'swr';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import createFetcher from 'config/fetcher';
 import { ScrollContext } from 'gatsby-react-router-scroll';
 

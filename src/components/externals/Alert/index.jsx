@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components/macro';
 
 import media from 'styles/media';
 

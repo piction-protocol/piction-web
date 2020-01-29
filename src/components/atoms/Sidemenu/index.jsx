@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components/macro';
 
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 

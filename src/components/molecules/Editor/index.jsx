@@ -1,7 +1,7 @@
 import React, { useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import useAPI from 'hooks/useAPI';
 

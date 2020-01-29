@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import Label from 'components/atoms/Label';
 import Input from 'components/atoms/Input';

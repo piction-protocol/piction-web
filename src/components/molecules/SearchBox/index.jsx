@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { navigate } from '@reach/router';
 
 import { mediaQuery } from 'styles/media';

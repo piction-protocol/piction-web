@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';

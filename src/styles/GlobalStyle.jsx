@@ -1,5 +1,5 @@
 import 'normalize.css';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components/macro';
 
 import media from 'styles/media';
 

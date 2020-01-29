@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 
 import Grid, { MainGrid } from 'styles/Grid';

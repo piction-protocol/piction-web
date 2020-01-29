@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Redirect } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import useSWR from 'swr';

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 

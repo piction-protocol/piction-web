@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 import useCurrentUser from 'hooks/useCurrentUser';

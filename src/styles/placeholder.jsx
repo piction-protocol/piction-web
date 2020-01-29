@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import { css } from 'styled-components/macro';
 
 const placeholder = style => css`
   ${({ isPlaceholder }) => isPlaceholder && `

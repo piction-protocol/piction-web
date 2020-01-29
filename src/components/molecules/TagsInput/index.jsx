@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import ReactTagsInput from 'react-tagsinput';
 
 import CancelIcon from 'images/ic-cancel-black.svg';

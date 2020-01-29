@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useSWR, { mutate, trigger } from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
