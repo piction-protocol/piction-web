@@ -66,7 +66,11 @@ function TransactionModal({
     fromAddress, toAddress, amountOriginal, blockNumber, txHashWithUrl,
   }, close, ...props
 }) {
-  const { data: detail = {} } = useSWR(`/my/wallet/transactions/${transactionType.toLowerCase()}/${transactionHash}`, {
+  const shouldFetch = transactionType === 'SUBSCRIPTION' || transactionType === 'SPONSORSHIP';
+
+  const { data: detail = {} } = useSWR(() => (
+    shouldFetch ? `/my/wallet/transactions/${transactionType.toLowerCase()}s/${transactionHash}` : null
+  ), {
     revalidateOnFocus: false,
   });
 
