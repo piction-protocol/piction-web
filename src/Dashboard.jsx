@@ -67,7 +67,7 @@ function Dashboard() {
       <DashboardTemplate projects={projects}>
         <Styled.Router primary={false}>
           <Redirect from="/" to={projects.length ? `dashboard/${projects[0].uri}/posts` : 'dashboard/new-project'} noThrow />
-          {projects.length >= 3
+          {projects.length >= 5
             ? <NoMoreProject path="new-project" />
             : <ProjectForm title="새 프로젝트" path="new-project" />
           }
