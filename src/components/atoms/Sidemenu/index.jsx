@@ -35,6 +35,7 @@ const Styled = {
     left: 30%;
     background-color: var(--white);
     animation: 300ms ${slideIn} ease;
+    overflow-y: auto;
   `,
   Button: styled.button`
     display: flex;
