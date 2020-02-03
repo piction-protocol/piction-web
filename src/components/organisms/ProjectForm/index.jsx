@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { navigate } from '@reach/router';
 import queryString from 'query-string';
-import useSWR from 'swr';
+import useSWR, { trigger } from 'swr';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -93,7 +93,6 @@ const Styled = {
 function ProjectForm({
   title,
   projectId = '',
-  setProjects,
   location: { search },
 }) {
   const [formData, { setFormData, handleChange }] = useForm({
@@ -159,13 +158,7 @@ function ProjectForm({
         window.location.reload(true);
       } else {
         await API.project.create(formData);
-        setProjects(prevState => ([
-          ...prevState,
-          {
-            title: formData.title,
-            uri: formData.uri,
-          },
-        ]));
+        trigger('my/projects');
         navigate(`${formData.uri}/posts`);
       }
     } catch (error) {
@@ -321,7 +314,6 @@ function ProjectForm({
 ProjectForm.propTypes = {
   projectId: PropTypes.string,
   title: PropTypes.string.isRequired,
-  setProjects: PropTypes.func,
   location: PropTypes.object,
 };
 
