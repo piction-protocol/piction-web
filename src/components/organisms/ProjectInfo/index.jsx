@@ -109,7 +109,7 @@ const Styled = {
     margin-top: 4px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
-    font-weight: normal
+    font-weight: normal;
     ${media.desktop`
       margin-left: 8px;
     `}
