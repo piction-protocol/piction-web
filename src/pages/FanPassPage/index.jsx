@@ -174,7 +174,7 @@ function FanPassPage({ projectId, location }) {
         const isFree = fanPass.level === 0;
         const isSubscribing = subscription && fanPass.level === subscription.fanPass.level;
         const isDisabled = (subscription && fanPass.level < subscription.fanPass.level);
-        const isFull = fanPass.subscriptionLimit && fanPass.subscriptionLimit <= fanPass.subscriptionCount;
+        const isFull = fanPass.subscriptionLimit !== null && fanPass.subscriptionLimit <= fanPass.subscriptionCount;
         return fanPass.level >= minimum && (
           <Styled.FanPass {...fanPass} postCount={postCount} key={fanPass.id}>
             <Styled.FanPassInfo>
