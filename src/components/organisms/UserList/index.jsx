@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';

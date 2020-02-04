@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Location, Link } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';

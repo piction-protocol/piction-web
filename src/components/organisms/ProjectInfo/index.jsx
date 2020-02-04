@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link, Location } from '@reach/router';
 
 import { MainGrid } from 'styles/Grid';
@@ -109,7 +109,7 @@ const Styled = {
     margin-top: 4px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
-    font-weight: normal
+    font-weight: normal;
     ${media.desktop`
       margin-left: 8px;
     `}

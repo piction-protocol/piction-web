@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from '@reach/router';
 
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import CompactTemplate from 'components/templates/CompactTemplate';
 import Heading from 'components/atoms/Heading';

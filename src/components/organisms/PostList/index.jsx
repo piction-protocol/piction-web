@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR, { useSWRPages } from 'swr';
 
@@ -84,7 +84,7 @@ function PostList({
     isLoadingMore,
     isReachingEnd,
     loadMore,
-  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId]);
+  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId, subscription, isMyProject]);
 
   return (
     <Styled.Container {...props}>

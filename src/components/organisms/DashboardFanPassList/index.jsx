@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
 
@@ -83,7 +83,7 @@ const Styled = {
 
 function DashboardFanPassList({ title, projectId }) {
   const { data: project } = useSWR(`/projects/${projectId}`, { suspense: true });
-  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-pass`, { suspense: true });
+  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-passes`, { suspense: true });
 
   return (
     <Styled.Container>

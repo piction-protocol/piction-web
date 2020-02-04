@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import media, { mediaQuery } from 'styles/media';
 import Grid, { MainGrid } from 'styles/Grid';

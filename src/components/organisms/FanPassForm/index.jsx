@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link, navigate } from '@reach/router';
 import useSWR from 'swr';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import useAPI from 'hooks/useAPI';
 
@@ -88,7 +88,7 @@ function FanPassForm({
       subscriptionPrice: 0,
       subscriptionLimit: 0,
     },
-  } = useSWR(() => (fanPassId ? `/projects/${projectId}/fan-pass/${fanPassId}` : null), { suspense: true });
+  } = useSWR(() => (fanPassId ? `/projects/${projectId}/fan-passes/${fanPassId}` : null), { suspense: true });
 
   const { register, getValues, handleSubmit } = useForm({
     defaultValues,

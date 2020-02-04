@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -76,13 +76,13 @@ function PostPage({ projectId, postId }) {
   }, [contentError]);
 
   const { currentUser } = useCurrentUser();
-  const { data: isLike } = useSWR(currentUser ? `/projects/${projectId}/posts/${postId}/isLike` : null, { revalidateOnFocus: false });
+  const { data: { like } = { like: false } } = useSWR(currentUser ? `/projects/${projectId}/posts/${postId}/like` : null, { revalidateOnFocus: false });
 
   const handleLike = async () => {
     try {
       await API.post(projectId).like({ postId });
       mutate(`/projects/${projectId}/posts/${postId}`, { ...post, likeCount: post.likeCount + 1 });
-      mutate(`/projects/${projectId}/posts/${postId}/isLike`, { ...isLike, like: true });
+      mutate(`/projects/${projectId}/posts/${postId}/like`, true);
     } catch (error) {
       handleError(error.response.data);
     }
@@ -151,7 +151,7 @@ function PostPage({ projectId, postId }) {
         {contentLoaded && (
           <Styled.LikeButton
             likeCount={post && post.likeCount}
-            isLike={isLike && isLike.like}
+            isLiked={like}
             onClick={handleLike}
           />
         )}

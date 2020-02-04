@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
 
@@ -114,7 +114,7 @@ const Styled = {
 };
 
 const Category = (props) => {
-  const { data: categories } = useSWR('/categories/', { revalidateOnFocus: false });
+  const { data: categories } = useSWR('/categories', { revalidateOnFocus: false });
 
   return (
     <Styled.Container {...props}>

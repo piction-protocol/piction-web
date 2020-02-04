@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useSWR, { mutate, trigger } from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -95,10 +95,10 @@ const Styled = {
 
 function FanPassPage({ projectId, location }) {
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
-  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-pass`, { revalidateOnFocus: false });
+  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-passes`, { revalidateOnFocus: false });
   const {
     data: subscription,
-  } = useSWR(() => (`/projects/${projectId}/fan-pass/subscription`));
+  } = useSWR(() => (`/projects/${projectId}/fan-passes/subscription`));
   const [minimum, setMinimum] = useState(location.state.post ? location.state.post.fanPass.level : 0);
   useProjectLayout(project);
 
@@ -111,7 +111,7 @@ function FanPassPage({ projectId, location }) {
           projectId,
           fanPassId: fanPass.id,
         });
-        mutate(`/projects/${projectId}/fan-pass/subscription`, null);
+        mutate(`/projects/${projectId}/fan-passes/subscription`, null);
       } catch (error) {
         console.log(error.response.data.message);
       }
@@ -122,7 +122,7 @@ function FanPassPage({ projectId, location }) {
           fanPassId: fanPass.id,
           subscriptionPrice: fanPass.subscriptionPrice,
         });
-        trigger(`/projects/${projectId}/fan-pass/subscription`);
+        trigger(`/projects/${projectId}/fan-passes/subscription`);
       } catch (error) {
         console.log(error.response.data.message);
       }
@@ -174,7 +174,7 @@ function FanPassPage({ projectId, location }) {
         const isFree = fanPass.level === 0;
         const isSubscribing = subscription && fanPass.level === subscription.fanPass.level;
         const isDisabled = (subscription && fanPass.level < subscription.fanPass.level);
-        const isFull = fanPass.subscriptionLimit && fanPass.subscriptionLimit <= fanPass.subscriptionCount;
+        const isFull = fanPass.subscriptionLimit !== null && fanPass.subscriptionLimit <= fanPass.subscriptionCount;
         return fanPass.level >= minimum && (
           <Styled.FanPass {...fanPass} postCount={postCount} key={fanPass.id}>
             <Styled.FanPassInfo>

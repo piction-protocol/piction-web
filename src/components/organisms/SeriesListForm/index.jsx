@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import update from 'immutability-helper';
 import { useDrop } from 'react-dnd';
 
@@ -114,7 +114,7 @@ function SeriesListForm({ title, projectId }) {
       const seriesListIds = getIdArray(seriesList);
       if (JSON.stringify(seriesListIds) !== JSON.stringify(getIdArray(prevSeriesList))) {
         try {
-          await API.series(projectId).sort(seriesListIds);
+          await API.series(projectId).sort({ ids: seriesListIds });
           setPrevSeriesList(seriesList);
         } catch (error) {
           console.log(error);

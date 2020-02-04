@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import CheckIcon from 'images/ic-check.svg';
 

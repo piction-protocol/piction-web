@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components/macro';
 
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
@@ -35,6 +35,7 @@ const Styled = {
     left: 30%;
     background-color: var(--white);
     animation: 300ms ${slideIn} ease;
+    overflow-y: auto;
   `,
   Button: styled.button`
     display: flex;

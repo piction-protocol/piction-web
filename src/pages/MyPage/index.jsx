@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Redirect } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 

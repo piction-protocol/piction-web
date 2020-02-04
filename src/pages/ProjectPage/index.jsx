@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Redirect, navigate } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import useSWR, { trigger, mutate } from 'swr';
@@ -10,6 +10,7 @@ import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
 
+import { GridStyle } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
@@ -21,6 +22,12 @@ import Posts from './Posts';
 import Series from './Series';
 
 const Styled = {
+  Router: styled(Router).attrs({
+    columns: 'var(--grid-columns)',
+  })`
+    grid-column: 1 / -1;
+    ${GridStyle}
+  `,
   Tabs: styled(Tabs)`
     grid-column: 1 / -1;
     margin-bottom: -24px;
@@ -40,13 +47,10 @@ function ProjectPage({ projectId }) {
   const [isMyProject, setIsMyProject] = useState(false);
 
   const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
-  const { data: series } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
+  const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
   const { data: recommendedProjects } = useSWR('/recommended/projects?size=5', { revalidateOnFocus: false });
-  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-pass`);
-  const {
-    data: subscription,
-    revalidate: revalidateSubscription,
-  } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-pass/subscription` : null));
+  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-passes`);
+  const { data: subscription } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-passes/subscription` : null));
 
   useEffect(() => {
     if (project && currentUser) {
@@ -63,7 +67,7 @@ function ProjectPage({ projectId }) {
           fanPassId: fanPass[0].id,
         });
       } finally {
-        mutate(`/projects/${projectId}/fan-pass/subscription`, null);
+        mutate(`/projects/${projectId}/fan-passes/subscription`, null);
       }
     } else {
       try {
@@ -73,7 +77,7 @@ function ProjectPage({ projectId }) {
           subscriptionPrice: fanPass[0].subscriptionPrice,
         });
       } finally {
-        revalidateSubscription();
+        trigger(`/projects/${projectId}/fan-passes/subscription`);
       }
     }
     trigger(`/projects/${projectId}`);
@@ -113,25 +117,23 @@ function ProjectPage({ projectId }) {
         ]}
       />
 
-      <Router primary={false} component={({ children }) => <>{children}</>}>
+      <Styled.Router primary={false}>
         <Redirect from="/" to={`project/${projectId}/posts`} noThrow />
         <Posts
           path="posts"
-          {...{
-            projectId,
-            project,
-            subscription,
-            isMyProject,
-            isDesktop,
-            series: (series || []),
-            recommendedProjects,
-          }}
+          projectId={projectId}
+          project={project}
+          subscription={subscription}
+          isMyProject={isMyProject}
+          isDesktop={isDesktop}
+          series={series}
+          recommendedProjects={recommendedProjects}
         />
         <Series
           path="series"
-          series={series || []}
+          series={series}
         />
-      </Router>
+      </Styled.Router>
     </GridTemplate>
   );
 }

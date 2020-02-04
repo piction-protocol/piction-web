@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useSWR, { useSWRPages } from 'swr';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';

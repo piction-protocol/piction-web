@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useAPI from 'hooks/useAPI';

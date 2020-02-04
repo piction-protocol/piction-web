@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
 
@@ -184,34 +184,31 @@ const Styled = {
 };
 
 function PostNavigation({ projectId, postId, series }) {
-  const { data: prev } = useSWR(`/projects/${projectId}/posts/${postId}/previous`, {
+  const { data: { nextPost, previousPost } = {} } = useSWR(`/projects/${projectId}/posts/${postId}/links`, {
     revalidateOnFocus: false, shouldRetryOnError: false,
   });
-  const { data: next } = useSWR(`/projects/${projectId}/posts/${postId}/next`, {
-    revalidateOnFocus: false, shouldRetryOnError: false,
-  });
-  const { data: postList } = useSWR(series ? `/projects/${projectId}/series/${series.id}/posts/${postId}` : null);
+  const { data: postList } = useSWR(series ? `/projects/${projectId}/posts/${postId}/series/links` : null);
 
   return (
     <Styled.Container>
       <Styled.PrevNext>
-        {prev && (
-          <Styled.Prev to={`../${prev.id}`}>
+        {previousPost && (
+          <Styled.Prev to={`../${previousPost.id}`}>
             <ChevronIcon />
             <Styled.Text>
               이전 포스트
               <Styled.PrevNextTitle>
-                {prev.title}
+                {previousPost.title}
               </Styled.PrevNextTitle>
             </Styled.Text>
           </Styled.Prev>
         )}
-        {next && (
-          <Styled.Next to={`../${next.id}`}>
+        {nextPost && (
+          <Styled.Next to={`../${nextPost.id}`}>
             <Styled.Text>
               다음 포스트
               <Styled.PrevNextTitle>
-                {next.title}
+                {nextPost.title}
               </Styled.PrevNextTitle>
             </Styled.Text>
             <ChevronIcon />

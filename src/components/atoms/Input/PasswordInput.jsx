@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import { ReactComponent as VisibleIcon } from 'images/ic-visibility-on.svg';
 import { ReactComponent as InvisibleIcon } from 'images/ic-visibility-off.svg';

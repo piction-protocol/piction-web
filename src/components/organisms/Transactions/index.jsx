@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -70,7 +70,7 @@ function Transactions() {
 
   const {
     data: { content: transactions, ...pageable } = {},
-  } = useSWR(`/my/transactions?page=${page}&size=${FETCHING_SIZE}`, {
+  } = useSWR(`/my/wallet/transactions?page=${page}&size=${FETCHING_SIZE}`, {
     revalidateOnFocus: false,
   });
 

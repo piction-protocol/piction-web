@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useSWR from 'swr';
 
 import Modal from 'components/externals/Modal';
@@ -66,7 +66,11 @@ function TransactionModal({
     fromAddress, toAddress, amountOriginal, blockNumber, txHashWithUrl,
   }, close, ...props
 }) {
-  const { data: detail = {} } = useSWR(`/my/transactions/${transactionType.toLowerCase()}/${transactionHash}`, {
+  const shouldFetch = transactionType === 'SUBSCRIPTION' || transactionType === 'SPONSORSHIP';
+
+  const { data: detail = {} } = useSWR(() => (
+    shouldFetch ? `/my/wallet/transactions/${transactionType.toLowerCase()}s/${transactionHash}` : null
+  ), {
     revalidateOnFocus: false,
   });
 

@@ -1,10 +1,14 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components/macro';
 
-const Grid = styled.div`
+export const GridStyle = css`
   display: grid;
   grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
   column-gap: var(--column-gap);
   row-gap: var(--row-gap);
+`;
+
+const Grid = styled.div`
+  ${GridStyle}
 `;
 
 export default Grid;

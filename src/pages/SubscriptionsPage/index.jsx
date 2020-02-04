@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link } from '@reach/router';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { useSWRPages } from 'swr';
@@ -44,7 +44,7 @@ function SubscriptionsPage() {
 
   const SubPage = ({ offset, withSWR }) => {
     const { data } = withSWR(
-      useSWR(`my/subscriptions?page=${offset + 1}&size=20`),
+      useSWR(`my/subscriptions/projects?page=${offset + 1}&size=20`),
     );
 
     if (!data) {
