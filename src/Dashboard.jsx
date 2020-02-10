@@ -66,13 +66,13 @@ function Dashboard() {
     <DndProvider backend={HTML5Backend}>
       <DashboardTemplate projects={projects}>
         <Styled.Router primary={false}>
-          <Redirect from="/" to={projects.length ? `dashboard/${projects[0].uri}/posts` : 'dashboard/new-project'} noThrow />
+          <Redirect from="/" to={projects.length ? `${projects[0].uri}/posts` : 'new-project'} noThrow />
           {projects.length >= 5
             ? <NoMoreProject path="new-project" />
             : <ProjectForm title="새 프로젝트" path="new-project" />
           }
+          <Redirect from="/:projectId" to="/dashboard/:projectId/posts" noThrow />
           <ProjectForm title="프로젝트 정보 수정" path=":projectId/info" />
-          <Redirect from="/:projectId" to="dashboard/:projectId/posts" noThrow />
           <DashboardPostList title="포스트 관리" path=":projectId/posts" />
           <SeriesListForm title="시리즈 관리" path=":projectId/series" />
           <DashboardFanPassList title="FAN PASS 관리" path=":projectId/fanpass" />
