@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import dummyCoverImage from 'images/img-dummy-960x360.jpg';
+import dummyCoverImage from 'images/img-dummy-500x500.jpg';
 
 import ContentImage from '.';
 
 function Cover({
-  width = 960,
-  height = 360,
+  width = 500,
+  height = 500,
   image,
   alt,
   ...props

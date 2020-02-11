@@ -23,7 +23,7 @@ const Styled = {
   CoverWrapper: styled.div`
     position: relative;
     margin-bottom: 16px;
-    padding-bottom: 37.5%;
+    padding-bottom: 100%;
     overflow: hidden;
   `,
   Cover: styled(Cover)`
@@ -62,12 +62,8 @@ const Styled = {
     `}
   `,
   LockedIcon: styled(LockedIcon)`
-    margin-bottom: 8px;
-    ${media.desktop`
-      width: 48px;
-      height: 48px;
-      margin-bottom: 16px;
-    `}
+    width: 80px;
+    height: 80px;
   `,
   LockedCover: styled(Cover)`
     filter: blur(16px);
@@ -82,7 +78,7 @@ const Styled = {
   `,
   Title: styled.h2`
     margin-bottom: 4px;
-    font-size: var(--font-size--small);
+    font-size: var(--font-size--base);
     ${media.desktop`
       font-size: var(--font-size--base);
     `}
@@ -123,23 +119,17 @@ function PostItem({
         <Styled.Locked>
           <Styled.LockedText>
             <Styled.LockedIcon />
-            {fanPass.subscriptionPrice > 0 && `${fanPass.name} 이상\n`}
-            구독자만 이용 가능한 포스트입니다.
           </Styled.LockedText>
           <Styled.LockedCover
-            ratio={960 / 360}
             image={cover}
           />
         </Styled.Locked>
       ) : (
-        cover && (
-          <Styled.CoverWrapper>
-            <Styled.Cover
-              ratio={960 / 360}
-              image={cover}
-            />
-          </Styled.CoverWrapper>
-        )
+        <Styled.CoverWrapper>
+          <Styled.Cover
+            image={cover}
+          />
+        </Styled.CoverWrapper>
       )}
       {series && (
         <Styled.Series>{`시리즈 · ${series.name}`}</Styled.Series>
@@ -164,7 +154,6 @@ PostItem.Placeholder = () => (
   <Styled.Item>
     <Styled.CoverWrapper>
       <Styled.Cover
-        ratio={960 / 360}
         image={null}
       />
     </Styled.CoverWrapper>
