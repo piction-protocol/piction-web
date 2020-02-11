@@ -51,7 +51,7 @@ function MyPage() {
         ]}
       />
       <Router primary={false}>
-        <Redirect from="/" to="my/info" noThrow />
+        <Redirect from="/" to="info" noThrow />
         <UpdateUserForm path="info" />
         <UpdatePasswordForm path="password" />
       </Router>

@@ -118,7 +118,7 @@ function ProjectPage({ projectId }) {
       />
 
       <Styled.Router primary={false}>
-        <Redirect from="/" to={`project/${projectId}/posts`} noThrow />
+        <Redirect from="/" to="posts" noThrow />
         <Posts
           path="posts"
           projectId={projectId}

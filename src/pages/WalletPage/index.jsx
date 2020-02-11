@@ -88,7 +88,7 @@ function WalletPage() {
         ]}
       />
       <Router primary={false} component={({ children }) => <>{children}</>}>
-        <Redirect from="/" to="wallet/transaction" noThrow />
+        <Redirect from="/" to="transactions" noThrow />
         <Transactions path="transactions" />
         <Deposit path="deposit" wallet={wallet} />
         <Withdraw path="withdraw" wallet={wallet} />
