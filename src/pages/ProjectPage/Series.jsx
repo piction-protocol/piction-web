@@ -12,7 +12,6 @@ import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
 const Styled = {
   Section: styled(Grid).attrs({
-    columns: 'var(--grid-columns)',
     as: 'section',
   })`
     grid-column: 1 / -1;

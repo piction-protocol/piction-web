@@ -14,7 +14,6 @@ import InputGroup from 'components/molecules/InputGroup';
 const Styled = {
   Form: styled(Grid).attrs({
     as: 'form',
-    columns: 'var(--grid-columns)',
   })`
     font-size: var(--font-size--small);
   `,

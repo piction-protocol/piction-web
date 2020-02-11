@@ -18,7 +18,6 @@ import ImageUploader from 'components/atoms/ImageUploader';
 const Styled = {
   Form: styled(Grid).attrs({
     as: 'form',
-    columns: 'var(--grid-columns)',
   })`
     font-size: var(--font-size--small);
   `,
@@ -29,9 +28,7 @@ const Styled = {
       white-space: nowrap;
     `}
   `,
-  ImageGroup: styled(Grid).attrs({
-    columns: 'var(--grid-columns)',
-  })`
+  ImageGroup: styled(Grid)`
     grid-column: 1 / -1;
     row-gap: 8px;
   `,

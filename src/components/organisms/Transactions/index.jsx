@@ -31,9 +31,7 @@ const Styled = {
       display: none;
     `}
   `,
-  Row: styled(Grid).attrs({
-    column: 'var(--grid-columns)',
-  })`
+  Row: styled(Grid)`
     display: flex;
     flex-flow: row wrap;
     align-items: center;
