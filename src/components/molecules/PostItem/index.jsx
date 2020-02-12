@@ -16,7 +16,7 @@ const Styled = {
   Item: styled.article`
     display: flex;
     flex-flow: column;
-    padding-bottom: var(--row-gap);
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
   `,
@@ -53,40 +53,40 @@ const Styled = {
     justify-content: center;
     background-color: rgba(0, 0, 0, .3);
     color: var(--white);
-    font-size: var(--font-size--small);
-    text-align: center;
-    white-space: pre-line;
-    ${media.desktop`
-      font-size: var(--font-size--base);
-      line-height: var(--line-height--content);
-    `}
   `,
   LockedIcon: styled(LockedIcon)`
     width: 80px;
     height: 80px;
   `,
   LockedCover: styled(Cover)`
-    filter: blur(16px);
-    ${media.desktop`
-      filter: blur(24px);
-    `}
+    filter: blur(24px);
   `,
   Series: styled.p`
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
   `,
   Title: styled.h2`
-    margin-bottom: 4px;
+    max-height: 3em;
+    margin-bottom: 8px;
+    padding-right: 8px;
+    overflow: hidden;
     font-size: var(--font-size--base);
+    line-height: 1.5;
+    text-overflow: ellipsis;
     ${media.desktop`
-      font-size: var(--font-size--base);
+      margin-bottom: 10px;
     `}
+    p + & {
+      white-space: nowrap;
+    }
     ${placeholder}
   `,
   Text: styled.div`
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    margin-top: auto;
+    height: 24px;
   `,
   PublishedAt: styled.p`
     color: var(--gray--dark);
@@ -100,7 +100,7 @@ const Styled = {
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${media.desktop`
-      margin-right: 24px;
+      margin-right: 8px;
     `}
   `,
   ThumbupIcon: styled(ThumbupIcon)`
@@ -131,9 +131,7 @@ function PostItem({
           />
         </Styled.CoverWrapper>
       )}
-      {series && (
-        <Styled.Series>{`시리즈 · ${series.name}`}</Styled.Series>
-      )}
+      {series && <Styled.Series>{series.name}</Styled.Series>}
       <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
         <Styled.PublishedAt>

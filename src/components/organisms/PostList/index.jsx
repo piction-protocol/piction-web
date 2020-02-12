@@ -4,23 +4,19 @@ import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR, { useSWRPages } from 'swr';
 
+import Grid from 'styles/Grid';
+import media from 'styles/media';
+
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
 import PostItem from 'components/molecules/PostItem';
 import { PrimaryButton } from 'components/atoms/Button';
 
 const Styled = {
-  Container: styled.div`
+  Container: styled.section`
     display: flex;
     flex-flow: column;
-    flex: 1;
-  `,
-  List: styled.div`
-    display: flex;
-    flex-flow: column;
-    > * {
-      margin-bottom: var(--row-gap);
-    }
+    grid-column: 1 / -1;
   `,
   Empty: styled.div`
     margin: 80px auto;
@@ -32,6 +28,17 @@ const Styled = {
     width: 160px;
     height: 160px;
   `,
+  Link: styled(Link)`
+    display: flex;
+    flex-flow: column;
+    grid-column: 1 / -1;
+    ${media.desktop`
+      grid-column : span 3;
+    `}
+  `,
+  PostItem: styled(PostItem)`
+    flex: 1;
+  `,
   More: styled(PrimaryButton)`
     margin-right: auto;
     margin-left: auto;
@@ -41,14 +48,20 @@ const Styled = {
 function PostList({
   projectId, subscription, isMyProject, ...props
 }) {
-  const FETCHING_SIZE = 10;
+  const FETCHING_SIZE = 40;
 
   function PostsPage({ offset, withSWR }) {
     const { data } = withSWR(
       useSWR(`/projects/${projectId}/posts?size=${FETCHING_SIZE}&page=${offset + 1}`),
     );
 
-    if (!data) return [...new Array(FETCHING_SIZE)].map(() => <PostItem.Placeholder />);
+    if (!data) {
+      return [...new Array(FETCHING_SIZE)].map(() => (
+        <Styled.Link to="#">
+          <PostItem.Placeholder />
+        </Styled.Link>
+      ));
+    }
 
     if (data.content.length === 0) {
       return (
@@ -62,15 +75,15 @@ function PostList({
     }
 
     return data.content.map(content => (
-      <Link
+      <Styled.Link
         to={`${content.id}`}
         key={content.id}
       >
-        <PostItem
+        <Styled.PostItem
           {...content}
           isLocked={!isMyProject && content.fanPass && (subscription ? content.fanPass.level > subscription.fanPass.level : true)}
         />
-      </Link>
+      </Styled.Link>
     ));
   }
 
@@ -87,15 +100,15 @@ function PostList({
   } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId, subscription, isMyProject]);
 
   return (
-    <Styled.Container {...props}>
-      <Styled.List>
+    <Styled.Container>
+      <Grid {...props}>
         {pages}
-        {!(isLoadingMore || isReachingEnd) && (
-        <Styled.More onClick={() => loadMore()}>
-          포스트 더 보기
-        </Styled.More>
-        )}
-      </Styled.List>
+      </Grid>
+      {!(isLoadingMore || isReachingEnd) && (
+      <Styled.More onClick={() => loadMore()}>
+        포스트 더 보기
+      </Styled.More>
+      )}
     </Styled.Container>
   );
 }
