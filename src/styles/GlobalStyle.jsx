@@ -29,7 +29,7 @@ const GlobalStyle = createGlobalStyle`
     --line-height--base: normal;
     --line-height--content: 1.75;
 
-    --max-width: 1280px;
+    --max-width: 1124px;
 
     --outer-gap: 16px;
     --column-gap: 8px;
@@ -39,8 +39,8 @@ const GlobalStyle = createGlobalStyle`
 
     --transition--form: 200ms ease;
     ${media.desktop`
-      --outer-gap: 20px;
-      --column-gap: 20px;
+      --outer-gap: 24px;
+      --column-gap: 16px;
       --grid-columns: 12;
     `}
   }
