@@ -15,11 +15,10 @@ import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import PostList from 'components/organisms/PostList';
+import SeriesList from 'components/organisms/SeriesList';
 import ProjectInfo from 'components/organisms/ProjectInfo';
 import AdultPopup from 'components/organisms/AdultPopup';
 import Tabs from 'components/molecules/Tabs';
-
-import Series from './Series';
 
 const Styled = {
   Router: styled(Router)`
@@ -103,7 +102,7 @@ function ProjectPage({ projectId }) {
         links={[
           { text: '포스트', to: 'posts' },
           { text: '시리즈', to: 'series' },
-          { text: '후원', to: 'series' },
+          { text: '후원', to: 'sponsorships' },
         ]}
       />
 
@@ -116,7 +115,7 @@ function ProjectPage({ projectId }) {
           subscription={subscription}
           isMyProject={currentUser?.loginId === project?.user.loginId}
         />
-        <Series
+        <SeriesList
           path="series"
           series={series}
         />
@@ -126,6 +125,7 @@ function ProjectPage({ projectId }) {
 }
 
 export default ProjectPage;
+
 ProjectPage.propTypes = {
   projectId: PropTypes.string.isRequired,
 };
