@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components/macro';
+import styled, { ThemeProvider } from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR, { useSWRPages } from 'swr';
 
@@ -19,6 +19,7 @@ const Styled = {
     grid-column: 1 / -1;
   `,
   Empty: styled.div`
+    grid-column: 1 / -1;
     margin: 80px auto;
     color: var(--gray--dark);
     font-size: var(--font-size--base);
@@ -33,7 +34,8 @@ const Styled = {
     flex-flow: column;
     grid-column: 1 / -1;
     ${media.desktop`
-      grid-column : span 3;
+      grid-column: ${({ theme }) => (theme.layout === 'list' ? '1 / -1' : 'span 3')};
+      margin-bottom: 16px;
     `}
   `,
   PostItem: styled(PostItem)`
@@ -46,7 +48,7 @@ const Styled = {
 };
 
 function PostList({
-  projectId, subscription, isMyProject, ...props
+  projectId, project, subscription, isMyProject, ...props
 }) {
   const FETCHING_SIZE = 40;
 
@@ -102,7 +104,9 @@ function PostList({
   return (
     <Styled.Container>
       <Grid {...props}>
-        {pages}
+        <ThemeProvider theme={{ layout: 'grid' }}>
+          {pages}
+        </ThemeProvider>
       </Grid>
       {!(isLoadingMore || isReachingEnd) && (
       <Styled.More onClick={() => loadMore()}>
@@ -115,6 +119,7 @@ function PostList({
 
 PostList.propTypes = {
   projectId: PropTypes.string.isRequired,
+  project: PropTypes.object,
   subscription: PropTypes.object,
   isMyProject: PropTypes.bool,
 };

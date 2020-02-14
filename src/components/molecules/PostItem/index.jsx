@@ -15,16 +15,23 @@ import Cover from 'components/atoms/ContentImage/Cover';
 const Styled = {
   Item: styled.article`
     display: flex;
-    flex-flow: column;
+    position: relative;
+    flex-flow: ${props => (props.theme.layout === 'list' ? 'row wrap' : 'column')};
     padding-bottom: 20px;
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
   `,
   CoverWrapper: styled.div`
     position: relative;
-    margin-bottom: 16px;
-    padding-bottom: 100%;
     overflow: hidden;
+    ${props => (props.theme.layout === 'list' ? `
+      width: 80px;
+      height: 80px;
+      margin-right: 24px;
+    ` : `
+      margin-bottom: 16px;
+      padding-bottom: 100%;
+    `)};
   `,
   Cover: styled(Cover)`
     position: absolute;
@@ -61,10 +68,15 @@ const Styled = {
   LockedCover: styled(Cover)`
     filter: blur(24px);
   `,
+  Text: styled.div`
+    display: flex;
+    flex-flow: column;
+  `,
   Series: styled.p`
-    margin-bottom: 4px;
+    margin-bottom: ${props => (props.theme.layout === 'list' ? '2px' : '4px')};
     color: var(--gray--dark);
     font-size: var(--font-size--small);
+    ${placeholder}
   `,
   Title: styled.h2`
     max-height: 3em;
@@ -75,32 +87,29 @@ const Styled = {
     line-height: 1.5;
     text-overflow: ellipsis;
     ${media.desktop`
-      margin-bottom: 10px;
+      margin-bottom: ${props => (props.theme.layout === 'list' ? '8px' : '12px')};
     `}
     p + & {
       white-space: nowrap;
     }
     ${placeholder}
   `,
-  Text: styled.div`
-    display: flex;
-    align-items: center;
-    margin-top: auto;
-    height: 24px;
-  `,
   PublishedAt: styled.p`
+    margin-top: auto;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
   LikeCount: styled.span`
     display: flex;
+    position: absolute;
     align-items: center;
-    margin-left: auto;
+    bottom: 20px;
+    right: 0;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${media.desktop`
-      margin-right: 8px;
+      right: 8px;
     `}
   `,
   ThumbupIcon: styled(ThumbupIcon)`
@@ -131,9 +140,9 @@ function PostItem({
           />
         </Styled.CoverWrapper>
       )}
-      {series && <Styled.Series>{series.name}</Styled.Series>}
-      <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
+        {series && <Styled.Series>{series.name}</Styled.Series>}
+        <Styled.Title>{title}</Styled.Title>
         <Styled.PublishedAt>
           {moment(publishedAt).format('MMMM Do')}
         </Styled.PublishedAt>
@@ -155,8 +164,9 @@ PostItem.Placeholder = () => (
         image={null}
       />
     </Styled.CoverWrapper>
-    <Styled.Title isPlaceholder>Title</Styled.Title>
     <Styled.Text>
+      <Styled.Series isPlaceholder>Series</Styled.Series>
+      <Styled.Title isPlaceholder>Title</Styled.Title>
       <Styled.PublishedAt isPlaceholder>
         Published at
       </Styled.PublishedAt>
