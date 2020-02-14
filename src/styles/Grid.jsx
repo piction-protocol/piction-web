@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/macro';
 
 export const GridStyle = css`
   display: grid;
-  grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
+  grid-template-columns: repeat(${({ columns }) => columns}, minmax(0, 1fr));
   column-gap: var(--column-gap);
   row-gap: var(--row-gap);
 `;
