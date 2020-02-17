@@ -45,7 +45,7 @@ const Styled = {
   `,
 };
 
-function FanPass({
+function Sponsorship({
   level, name, postCount, description, className, children,
 }) {
   return (
@@ -72,7 +72,7 @@ function FanPass({
   );
 }
 
-FanPass.propTypes = {
+Sponsorship.propTypes = {
   level: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   postCount: PropTypes.number,
@@ -81,7 +81,7 @@ FanPass.propTypes = {
   children: PropTypes.node,
 };
 
-FanPass.Placeholder = ({ className, children }) => (
+Sponsorship.Placeholder = ({ className, children }) => (
   <Styled.Item
     className={className}
   >
@@ -102,9 +102,9 @@ FanPass.Placeholder = ({ className, children }) => (
   </Styled.Item>
 );
 
-FanPass.Placeholder.propTypes = {
+Sponsorship.Placeholder.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
 };
 
-export default FanPass;
+export default Sponsorship;
