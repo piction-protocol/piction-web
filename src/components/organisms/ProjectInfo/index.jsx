@@ -69,7 +69,7 @@ const Styled = {
     display: inline;
     margin-right: 8px;
   `,
-  SubscriptionCount: styled.div`
+  SponsorCount: styled.div`
     display: inline-flex;
     align-items: center;
     color: var(--gray--dark);
@@ -239,10 +239,10 @@ function ProjectInfo({
             <Styled.Heading>
               {project.title}
             </Styled.Heading>
-            <Styled.SubscriptionCount>
+            <Styled.SponsorCount>
               <Styled.PeopleIcon />
-              {`구독자 수 ${project.subscriptionUserCount}`}
-            </Styled.SubscriptionCount>
+              {`구독자 수 ${project.sponsorCount}`}
+            </Styled.SponsorCount>
           </Styled.HeadingWrapper>
           <Styled.User>
             {project.user.username}
