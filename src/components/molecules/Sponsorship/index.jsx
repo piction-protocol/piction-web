@@ -27,7 +27,7 @@ const Styled = {
   `,
   Name: styled.h2`
     margin-bottom: 8px;
-    font-size: var(--font-size--big);
+    font-size: var(--font-size--large);
     font-weight: bold;
     ${placeholder}
   `,

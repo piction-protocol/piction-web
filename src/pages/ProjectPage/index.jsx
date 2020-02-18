@@ -11,14 +11,16 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
 
 import { GridStyle } from 'styles/Grid';
-import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
-import PostList from 'components/organisms/PostList';
-import SeriesList from 'components/organisms/SeriesList';
 import ProjectInfo from 'components/organisms/ProjectInfo';
-import AdultPopup from 'components/organisms/AdultPopup';
 import Tabs from 'components/molecules/Tabs';
+import media, { mediaQuery } from 'styles/media';
+
+const PostList = React.lazy(() => import('components/organisms/PostList'));
+const SeriesList = React.lazy(() => import('components/organisms/SeriesList'));
+const SponsorshipList = React.lazy(() => import('components/organisms/SponsorshipList'));
+const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
   Router: styled(Router)`
@@ -31,7 +33,6 @@ const Styled = {
     ${media.mobile`
       margin-right: calc(var(--outer-gap) * -1);
       margin-left: calc(var(--outer-gap) * -1);
-      padding: 0 var(--outer-gap);
     `}
   `,
 };
@@ -44,15 +45,15 @@ function ProjectPage({ projectId }) {
 
   const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
-  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-passes`);
-  const { data: subscription } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-passes/subscription` : null));
+  const { data: [subscription, ...sponsorships] = [] } = useSWR(`/projects/${projectId}/plans`);
+  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/plans/sponsorship` : null));
 
   const handleSubscribe = async () => {
     if (subscription) {
       try {
         await API.fanPass.unsubscribe({
           projectId,
-          fanPassId: fanPass[0].id,
+          fanPassId: subscription.id,
         });
       } finally {
         mutate(`/projects/${projectId}/fan-passes/subscription`, null);
@@ -61,8 +62,8 @@ function ProjectPage({ projectId }) {
       try {
         await API.fanPass.subscribe({
           projectId,
-          fanPassId: fanPass[0].id,
-          subscriptionPrice: fanPass[0].subscriptionPrice,
+          fanPassId: subscription.id,
+          sponsorshipPrice: subscription.sponsorshipPrice,
         });
       } finally {
         trigger(`/projects/${projectId}/fan-passes/subscription`);
@@ -84,7 +85,6 @@ function ProjectPage({ projectId }) {
       hero={project ? (
         <ProjectInfo
           project={project}
-          hasFanPasses={fanPass && fanPass.length > 1}
           isMyProject={currentUser?.loginId === project?.user.loginId}
           subscription={subscription}
           handleSubscribe={handleSubscribe}
@@ -102,7 +102,7 @@ function ProjectPage({ projectId }) {
         links={[
           { text: '포스트', to: 'posts' },
           { text: '시리즈', to: 'series' },
-          { text: '후원', to: 'sponsorships' },
+          ...project?.activePlan ? [{ text: '후원', to: 'sponsorships' }] : [],
         ]}
       />
 
@@ -112,12 +112,17 @@ function ProjectPage({ projectId }) {
           path="posts"
           projectId={projectId}
           project={project}
-          subscription={subscription}
+          sponsored={sponsored}
           isMyProject={currentUser?.loginId === project?.user.loginId}
         />
         <SeriesList
           path="series"
           series={series}
+        />
+        <SponsorshipList
+          path="sponsorships"
+          sponsorships={sponsorships}
+          sponsored={sponsored}
         />
       </Styled.Router>
     </GridTemplate>
