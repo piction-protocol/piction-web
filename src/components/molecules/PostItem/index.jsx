@@ -71,6 +71,7 @@ const Styled = {
   Text: styled.div`
     display: flex;
     flex-flow: column;
+    flex: 1;
   `,
   Series: styled.p`
     margin-bottom: ${props => (props.theme.layout === 'list' ? '2px' : '4px')};
@@ -118,7 +119,7 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, fanPass, ...props
+  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, ...props
 }) {
   return (
     <Styled.Item
@@ -178,7 +179,6 @@ PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   series: PropTypes.object,
-  fanPass: PropTypes.object,
   publishedAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,

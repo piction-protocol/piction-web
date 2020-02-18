@@ -44,7 +44,7 @@ function SubscriptionsPage() {
 
   const SubPage = ({ offset, withSWR }) => {
     const { data } = withSWR(
-      useSWR(`my/subscriptions/projects?page=${offset + 1}&size=20`),
+      useSWR(`my/sponsorships/projects?page=${offset + 1}&size=20`),
     );
 
     if (!data) {
@@ -77,7 +77,7 @@ function SubscriptionsPage() {
   const {
     pages, isLoadingMore, isReachingEnd, loadMore,
   } = useSWRPages(
-    'my/subscripitions',
+    'my/sponsorships',
     SubPage,
     nextOffset,
     [],

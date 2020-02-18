@@ -48,7 +48,7 @@ const Styled = {
 };
 
 function PostList({
-  projectId, project, subscription, isMyProject, ...props
+  projectId, project, sponsored, isMyProject, ...props
 }) {
   const FETCHING_SIZE = 40;
 
@@ -83,7 +83,7 @@ function PostList({
       >
         <Styled.PostItem
           {...content}
-          isLocked={!isMyProject && content.fanPass && (subscription ? content.fanPass.level > subscription.fanPass.level : true)}
+          isLocked={!isMyProject && content.plan && (sponsored ? content.plan.level > sponsored.plan.level : true)}
         />
       </Styled.Link>
     ));
@@ -99,7 +99,7 @@ function PostList({
     isLoadingMore,
     isReachingEnd,
     loadMore,
-  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId, subscription, isMyProject]);
+  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId, sponsored, isMyProject]);
 
   return (
     <Styled.Container>
@@ -120,7 +120,7 @@ function PostList({
 PostList.propTypes = {
   projectId: PropTypes.string.isRequired,
   project: PropTypes.object,
-  subscription: PropTypes.object,
+  sponsored: PropTypes.object,
   isMyProject: PropTypes.bool,
 };
 
