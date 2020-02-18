@@ -47,6 +47,7 @@ function ProjectPage({ projectId }) {
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
   const { data: [subscription, ...sponsorships] = [] } = useSWR(`/projects/${projectId}/plans`);
   const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/plans/sponsorship` : null));
+  const isMyProject = currentUser?.loginId === project?.user.loginId;
 
   const handleSubscribe = async () => {
     if (subscription) {
@@ -85,7 +86,7 @@ function ProjectPage({ projectId }) {
       hero={project ? (
         <ProjectInfo
           project={project}
-          isMyProject={currentUser?.loginId === project?.user.loginId}
+          isMyProject={isMyProject}
           subscription={subscription}
           handleSubscribe={handleSubscribe}
         />
@@ -113,7 +114,7 @@ function ProjectPage({ projectId }) {
           projectId={projectId}
           project={project}
           sponsored={sponsored}
-          isMyProject={currentUser?.loginId === project?.user.loginId}
+          isMyProject={isMyProject}
         />
         <SeriesList
           path="series"
@@ -123,6 +124,7 @@ function ProjectPage({ projectId }) {
           path="sponsorships"
           sponsorships={sponsorships}
           sponsored={sponsored}
+          isMyProject={isMyProject}
         />
       </Styled.Router>
     </GridTemplate>

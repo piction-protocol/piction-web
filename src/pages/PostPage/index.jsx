@@ -141,7 +141,7 @@ function PostPage({ projectId, postId }) {
           />
         ) : (
           // FIXME: needSubscription을 관리하는 코드를 개선
-          post && post.fanPass && needSubscription ? (
+          post && post.plan && needSubscription ? (
             <Content.Locked handleSubscription={handleSubscription} post={post} />
           ) : (
             <Content.Placeholder />

@@ -5,7 +5,7 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 
-import Plan from 'components/molecules/Sponsorship';
+import Sponsorship from 'components/molecules/Sponsorship';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 const Styled = {
@@ -18,7 +18,7 @@ const Styled = {
     color: var(--gray--dark);
     font-size: var(--font-size--small);
   `,
-  Sponsorship: styled.div`
+  Sponsored: styled.div`
     margin-bottom: 12px;
     padding: 24px;
     background-color: #ffe7e8;
@@ -41,12 +41,12 @@ const Styled = {
     color: #a3a3a3;
     font-size: var(--font-size--tiny);
   `,
-  Plan: styled(Plan).attrs(({ isPlaceholder }) => isPlaceholder && {
-    as: Plan.Placeholder,
+  Sponsorship: styled(Sponsorship).attrs(({ isPlaceholder }) => isPlaceholder && {
+    as: Sponsorship.Placeholder,
   })`
     margin-bottom: 24px;
   `,
-  PlanInfo: styled.div`
+  SponsorshipInfo: styled.div`
     display: flex;
     flex-flow: column;
     width: 100%;
@@ -69,14 +69,14 @@ function SponsorshipList({ sponsorships, sponsored, location }) {
   return (
     <Styled.Section>
       {sponsored && sponsored.plan.level > 0 && (
-        <Styled.Sponsorship>
+        <Styled.Sponsored>
           <Styled.Name>
             {`티어 ${sponsored.plan.level} - ${sponsored.plan.name} 후원 중`}
           </Styled.Name>
           <Styled.Notice>
             후원 플랜을 업그레이드 하는 경우, 현재 후원 중인 플랜의 남은 기간은 환불되지 않습니다.
           </Styled.Notice>
-        </Styled.Sponsorship>
+        </Styled.Sponsored>
       )}
       {minimum > 0 && location.state.post && (
         <Styled.Post>
@@ -97,8 +97,8 @@ function SponsorshipList({ sponsorships, sponsored, location }) {
         const isDisabled = (sponsored && plan.level < sponsored.plan.level);
         const isFull = plan.sponsorshipLimit !== null && plan.sponsorshipLimit <= plan.sponsorshipCount;
         return plan.level >= minimum && (
-          <Styled.Plan {...plan} postCount={postCount} key={plan.id}>
-            <Styled.PlanInfo>
+          <Styled.Sponsorship {...plan} postCount={postCount} key={plan.id}>
+            <Styled.SponsorshipInfo>
               <Styled.Status>
                 {
                   isFull ? '후원 불가능'
@@ -118,15 +118,15 @@ function SponsorshipList({ sponsorships, sponsored, location }) {
                   {`${plan.sponsorshipPrice} PXL / 30일`}
                 </PrimaryButton>
               )}
-            </Styled.PlanInfo>
-          </Styled.Plan>
+            </Styled.SponsorshipInfo>
+          </Styled.Sponsorship>
         );
       }) : Array.from({ length: 6 }, (_, i) => (
-        <Styled.Plan isPlaceholder key={i}>
-          <Styled.PlanInfo>
+        <Styled.Sponsorship isPlaceholder key={i}>
+          <Styled.SponsorshipInfo>
             <PrimaryButton disabled />
-          </Styled.PlanInfo>
-        </Styled.Plan>
+          </Styled.SponsorshipInfo>
+        </Styled.Sponsorship>
       ))}
     </Styled.Section>
   );

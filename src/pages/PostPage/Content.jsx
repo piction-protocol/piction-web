@@ -18,12 +18,16 @@ const Styled = {
     ${ContentStyle}
   `,
   Subscription: styled(PrimaryButton)`
-    margin-top: 16px;
+    margin-top: 24px;
   `,
   Date: styled.p`
     margin-top: var(--row-gap);
     color: var(--gray--dark);
     font-size: var(--font-size--small);
+  `,
+  Required: styled.strong`
+    color: var(--black);
+    font-weight: bold;
   `,
   Locked: styled.div`
     display: flex;
@@ -106,32 +110,45 @@ Content.Placeholder = () => {
 
 function LockedContent({ handleSubscription, post }) {
   const { currentUser } = useCurrentUser();
-  const hasPrice = post.fanPass.subscriptionPrice > 0;
+  const hasPrice = post?.plan.sponsorshipPrice > 0;
 
   return (
     <Styled.Locked>
       <Styled.LockedIcon />
-      {hasPrice && (
-        <>
-          {hasPrice && `${post.fanPass.name} 이상\n`}
+      {hasPrice ? (
+        <p>
+          <Styled.Required>
+            {post.plan.name}
+          </Styled.Required>
+          {' '}
+          이상
           <br />
-        </>
+          후원자만 이용 가능한 포스트입니다.
+        </p>
+      ) : (
+        <p>
+          <Styled.Required>
+            구독자
+          </Styled.Required>
+          만 이용 가능한
+          <br />
+          포스트입니다.
+        </p>
       )}
-      구독자만 이용 가능한 포스트입니다.
       {currentUser ? (
         hasPrice ? (
           <Styled.Subscription
             as={Link}
-            to="../../fanpass"
+            to="../../sponsorships"
             state={{ post }}
           >
-            구독하기
+            후원하기
           </Styled.Subscription>
         ) : (
           <Styled.Subscription
             onClick={handleSubscription}
           >
-            무료로 구독하기
+            구독하기
           </Styled.Subscription>
         )
       ) : (
@@ -144,7 +161,7 @@ function LockedContent({ handleSubscription, post }) {
                 redirectTo: encodeURIComponent(location.pathname),
               }}
             >
-              {hasPrice ? '구독하기' : '무료로 구독하기'}
+              {hasPrice ? '후원하기' : '구독하기'}
             </Styled.Subscription>
           )}
         </Location>
