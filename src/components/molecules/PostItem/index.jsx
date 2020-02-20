@@ -16,7 +16,7 @@ const Styled = {
   Item: styled.article`
     display: flex;
     position: relative;
-    flex-flow: ${props => (props.theme.layout === 'list' ? 'row wrap' : 'column')};
+    flex-flow: ${props => (props.theme.viewType === 'LIST' ? 'row wrap' : 'column')};
     padding-bottom: 20px;
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
@@ -24,7 +24,7 @@ const Styled = {
   CoverWrapper: styled.div`
     position: relative;
     overflow: hidden;
-    ${props => (props.theme.layout === 'list' ? `
+    ${props => (props.theme.viewType === 'LIST' ? `
       width: 80px;
       height: 80px;
       margin-right: 24px;
@@ -74,7 +74,7 @@ const Styled = {
     flex: 1;
   `,
   Series: styled.p`
-    margin-bottom: ${props => (props.theme.layout === 'list' ? '2px' : '4px')};
+    margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '2px' : '4px')};
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${placeholder}
@@ -88,7 +88,7 @@ const Styled = {
     line-height: 1.5;
     text-overflow: ellipsis;
     ${media.desktop`
-      margin-bottom: ${props => (props.theme.layout === 'list' ? '8px' : '12px')};
+      margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '8px' : '12px')};
     `}
     p + & {
       white-space: nowrap;

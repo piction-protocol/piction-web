@@ -34,7 +34,7 @@ const Styled = {
     flex-flow: column;
     grid-column: 1 / -1;
     ${media.desktop`
-      grid-column: ${({ theme }) => (theme.layout === 'list' ? '1 / -1' : 'span 3')};
+      grid-column: ${({ theme }) => (theme.viewType === 'LIST' ? '1 / -1' : 'span 3')};
       margin-bottom: 16px;
     `}
   `,
@@ -104,7 +104,7 @@ function PostList({
   return (
     <Styled.Container>
       <Grid {...props}>
-        <ThemeProvider theme={{ layout: 'grid' }}>
+        <ThemeProvider theme={{ viewType: project.viewType }}>
           {pages}
         </ThemeProvider>
       </Grid>
