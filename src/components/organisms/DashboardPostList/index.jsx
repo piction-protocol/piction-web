@@ -62,28 +62,28 @@ function DashboardPostList({ title, projectId }) {
   const [seriesId, setSeriesId] = useState('');
   const [page, setPage] = useState(1);
   const [condition, setCondition] = useState(null);
-  const [fanPassLevel, setFanPassLevel] = useState(null);
+  const [membershipLevel, setMembershipLevel] = useState(null);
 
   const query = queryString.stringify({
-    page, seriesId, condition, fanPassLevel,
+    page, seriesId, condition, membershipLevel,
   });
 
   const handleQuery = (value) => {
     if (value === 'PUBLIC') {
       setCondition('PUBLIC');
-      setFanPassLevel(null);
+      setMembershipLevel(null);
     } else if (value === '') {
       setCondition(null);
-      setFanPassLevel(null);
+      setMembershipLevel(null);
     } else {
-      setCondition('FAN_PASS');
-      setFanPassLevel(value);
+      setCondition('MEMBERSHIP');
+      setMembershipLevel(value);
     }
   };
 
   // FIXME: suspense 옵션 제거하고 placeholder 추가
   const { data: postList } = useSWR(`my/projects/${projectId}/posts?${query}`, { suspense: true });
-  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-passes`, { suspense: true });
+  const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
   const { data: seriesList } = useSWR(`/projects/${projectId}/series`, { suspense: true });
 
   return (
@@ -93,11 +93,11 @@ function DashboardPostList({ title, projectId }) {
         <Styled.Select
           onChange={event => handleQuery(event.target.value)}
           options={[
-            { text: 'FAN PASS 필터', value: '' },
+            { text: '권한 필터', value: '' },
             { text: '전체 공개', value: 'PUBLIC' },
-            ...fanPassList.map(fanPass => ({
-              text: fanPass.level > 0 ? `티어 ${fanPass.level}` : '무료 티어',
-              value: fanPass.level,
+            ...membershipList.map(membership => ({
+              text: membership.level > 0 ? `티어 ${membership.level}` : '구독자 공개',
+              value: membership.level,
             })),
           ]}
         />
