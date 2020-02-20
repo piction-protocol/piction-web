@@ -14,7 +14,7 @@ import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 const ProjectForm = React.lazy(() => import('components/organisms/ProjectForm'));
 const PostForm = React.lazy(() => import('components/organisms/PostForm'));
 const DashboardPostList = React.lazy(() => import('components/organisms/DashboardPostList'));
-const UserList = React.lazy(() => import('components/organisms/UserList'));
+const SponsorList = React.lazy(() => import('components/organisms/SponsorList'));
 const SeriesListForm = React.lazy(() => import('components/organisms/SeriesListForm'));
 const DashboardMembershipList = React.lazy(() => import('components/organisms/DashboardMembershipList'));
 const MembershipForm = React.lazy(() => import('components/organisms/MembershipForm'));
@@ -78,7 +78,7 @@ function Dashboard() {
           <DashboardMembershipList title="후원 플랜 관리" path=":projectId/memberships" />
           <MembershipForm title="새 후원 플랜" path=":projectId/memberships/new" />
           <MembershipForm title="후원 플랜 수정" path=":projectId/memberships/:membershipId/edit" />
-          <UserList title="구독자 목록" path=":projectId/members" />
+          <SponsorList title="구독자 목록" path=":projectId/members" />
           <PostForm title="새 포스트" path=":projectId/posts/new" />
           <PostForm title="포스트 수정" path=":projectId/posts/:postId/edit" />
           <NotFound default />

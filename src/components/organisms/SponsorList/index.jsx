@@ -5,6 +5,8 @@ import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
 
+import placeholder from 'styles/placeholder';
+
 import Pagination from 'components/molecules/Pagination';
 import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Heading from 'components/atoms/Heading';
@@ -42,52 +44,55 @@ const Styled = {
     display: flex;
     align-items: center;
     margin-bottom: 4px;
+    ${placeholder}
   `,
   UserId: styled.span`
     margin-left: 4px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
+    ${placeholder}
   `,
   Tier: styled.span`
     font-size: var(--font-size--small);
     color: #999999;
+    ${placeholder}
   `,
   SubscriptionDate: styled.span`
     margin-left: auto;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     text-align: right;
+    ${placeholder}
   `,
 };
 
-function UserList({ title, projectId }) {
+function SponsorList({ title, projectId }) {
   const [page, setPage] = useState(1);
 
-  const { data: { content: subscriptions, ...pageable } } = useSWR(
-    `/my/projects/${projectId}/subscriptions?page=${page}`,
-    { suspense: true },
+  const { data: { content: sponsors, ...pageable } = {} } = useSWR(
+    `/my/projects/${projectId}/sponsors?page=${page}`,
   );
 
   return (
     <Styled.Container>
       <Heading>
-        {`${title}(${pageable.totalElements})`}
+        {`${title}(${pageable.totalElements || '-'})`}
       </Heading>
       <Styled.List>
-        {subscriptions ? (subscriptions.map(subscription => (
-          <Styled.Item key={subscription.subscriber.username}>
+        {sponsors ? (sponsors.map(subscription => (
+          <Styled.Item key={subscription.sponsor.username}>
             <Styled.UserProfile
-              image={subscription.subscriber.picture}
+              image={subscription.sponsor.picture}
             />
             <Styled.Text>
               <Styled.UserName>
-                {subscription.subscriber.username}
+                {subscription.sponsor.username}
                 <Styled.UserId>
-                  {`@${subscription.subscriber.loginId}`}
+                  {`@${subscription.sponsor.loginId}`}
                 </Styled.UserId>
               </Styled.UserName>
               <Styled.Tier>
-                {`${subscription.fanPass.level ? `티어 ${subscription.fanPass.level}` : '무료 티어'} - ${subscription.fanPass.name}`}
+                {subscription.membership.level ? `티어 ${subscription.membership.level} - ${subscription.membership.name}` : '구독'}
               </Styled.Tier>
             </Styled.Text>
             <Styled.SubscriptionDate>
@@ -96,11 +101,25 @@ function UserList({ title, projectId }) {
               {subscription.expireDate && moment(subscription.expireDate).format('~ YYYY/MM/DD HH:mm')}
             </Styled.SubscriptionDate>
           </Styled.Item>
-        ))) : (
-          <div>
-            placeholder temp
-          </div>
-        )}
+        ))) : Array.from({ length: 10 }, (_, i) => (
+          <Styled.Item key={i}>
+            <Styled.UserProfile />
+            <Styled.Text>
+              <Styled.UserName isPlaceholder>
+                userName
+                <Styled.UserId isPlaceholder>
+                  userId
+                </Styled.UserId>
+              </Styled.UserName>
+              <Styled.Tier isPlaceholder>
+                tier
+              </Styled.Tier>
+            </Styled.Text>
+            <Styled.SubscriptionDate isPlaceholder>
+              0000/00/00 00:00
+            </Styled.SubscriptionDate>
+          </Styled.Item>
+        ))}
       </Styled.List>
       <Pagination
         number={pageable.number}
@@ -112,9 +131,9 @@ function UserList({ title, projectId }) {
   );
 }
 
-UserList.propTypes = {
+SponsorList.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
 };
 
-export default UserList;
+export default SponsorList;
