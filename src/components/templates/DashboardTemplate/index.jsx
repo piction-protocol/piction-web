@@ -8,6 +8,10 @@ import { MainGrid } from 'styles/Grid';
 import DashboardSidebar from 'components/organisms/DashboardSidebar';
 
 const Styled = {
+  MainGrid: styled(MainGrid)`
+    flex: 1;
+    grid-auto-rows: 100%;
+  `,
   Sidebar: styled(DashboardSidebar)`
     grid-column: 1 / -1;
     ${media.desktop`
@@ -20,18 +24,19 @@ const Styled = {
     grid-column: 1 / -1;
     ${media.desktop`
       grid-column: span 9;
+      margin-left: 20px;
     `}
   `,
 };
 
 function DashboardTemplate({ projects, children }) {
   return (
-    <MainGrid as="main" role="main">
+    <Styled.MainGrid as="main" role="main">
       <Styled.Sidebar projects={projects} />
       <Styled.Content>
         {children}
       </Styled.Content>
-    </MainGrid>
+    </Styled.MainGrid>
   );
 }
 

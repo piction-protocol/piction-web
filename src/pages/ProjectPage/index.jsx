@@ -45,8 +45,8 @@ function ProjectPage({ projectId }) {
 
   const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
-  const { data: [subscription, ...sponsorships] = [] } = useSWR(`/projects/${projectId}/plans`);
-  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/plans/sponsorship` : null));
+  const { data: [subscription, ...sponsorships] = [] } = useSWR(`/projects/${projectId}/memberships`);
+  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
   const isMyProject = currentUser?.loginId === project?.user.loginId;
 
   const handleSubscribe = async () => {
@@ -103,7 +103,7 @@ function ProjectPage({ projectId }) {
         links={[
           { text: '포스트', to: 'posts' },
           { text: '시리즈', to: 'series' },
-          ...project?.activePlan ? [{ text: '후원', to: 'sponsorships' }] : [],
+          ...project?.activeMembership ? [{ text: '후원', to: 'sponsorships' }] : [],
         ]}
       />
 

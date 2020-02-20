@@ -6,13 +6,12 @@ import useSWR from 'swr';
 
 import Grid from 'styles/Grid';
 
-import FanPass from 'components/molecules/FanPass';
+import FanPass from 'components/molecules/Sponsorship';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
 import { ReactComponent as EditIcon } from 'images/ic-edit.svg';
-import { ReactComponent as FanPassImage } from './img-fanpass-null.svg';
 
 const Styled = {
   Container: styled.div`
@@ -116,9 +115,8 @@ function DashboardFanPassList({ title, projectId }) {
         </Grid>
       ) : (
         <Styled.Center>
-          <FanPassImage />
           <Styled.Strong>
-            아직 유료 FAN PASS 관리 권한이 없습니다.
+            후원 플랜 관리 권한이 없습니다.
           </Styled.Strong>
           <p>
             내 창작물로 수익을 얻는 가장 쉬운 방법, FAN PASS.
@@ -127,8 +125,8 @@ function DashboardFanPassList({ title, projectId }) {
             <br />
             지금 바로, 부담없이 신청해보세요!
           </p>
-          <Styled.Link disabled target="_blank" href="#">
-            서비스 준비중
+          <Styled.Link target="_blank" href="#http://bit.ly/piction_sponsorship_plan">
+            후원 플랜 관리
           </Styled.Link>
         </Styled.Center>
       )}

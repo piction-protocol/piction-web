@@ -64,14 +64,14 @@ const Styled = {
 };
 
 function SponsorshipList({ sponsorships, sponsored, location }) {
-  const [minimum, setMinimum] = useState(location.state.post ? location.state.post.plan.level : 0);
+  const [minimum, setMinimum] = useState(location.state.post ? location.state.post.membership.level : 0);
 
   return (
     <Styled.Section>
-      {sponsored && sponsored.plan.level > 0 && (
+      {sponsored && sponsored.membership.level > 0 && (
         <Styled.Sponsored>
           <Styled.Name>
-            {`티어 ${sponsored.plan.level} - ${sponsored.plan.name} 후원 중`}
+            {`티어 ${sponsored.membership.level} - ${sponsored.membership.name} 후원 중`}
           </Styled.Name>
           <Styled.Notice>
             후원 플랜을 업그레이드 하는 경우, 현재 후원 중인 플랜의 남은 기간은 환불되지 않습니다.
@@ -91,13 +91,13 @@ function SponsorshipList({ sponsorships, sponsored, location }) {
           </PrimaryButton>
         </Styled.Post>
       )}
-      {sponsorships ? sponsorships.map((plan, index) => {
+      {sponsorships ? sponsorships.map((membership, index) => {
         const postCount = sponsorships.slice(0, index + 1).reduce((acc, val) => acc + val.postCount, 0);
-        const isSubscribing = sponsored && plan.level === sponsored.plan.level;
-        const isDisabled = (sponsored && plan.level < sponsored.plan.level);
-        const isFull = plan.sponsorshipLimit !== null && plan.sponsorshipLimit <= plan.sponsorshipCount;
-        return plan.level >= minimum && (
-          <Styled.Sponsorship {...plan} postCount={postCount} key={plan.id}>
+        const isSubscribing = sponsored && membership.level === sponsored.membership.level;
+        const isDisabled = (sponsored && membership.level < sponsored.membership.level);
+        const isFull = membership.sponsorshipLimit !== null && membership.sponsorshipLimit <= membership.sponsorshipCount;
+        return membership.level >= minimum && (
+          <Styled.Sponsorship {...membership} postCount={postCount} key={membership.id}>
             <Styled.SponsorshipInfo>
               <Styled.Status>
                 {
@@ -112,10 +112,10 @@ function SponsorshipList({ sponsorships, sponsored, location }) {
               ) : (
                 <PrimaryButton
                   as={Link}
-                  to={`purchase/${plan.id}`}
+                  to={`purchase/${membership.id}`}
                   disabled={isDisabled || isFull}
                 >
-                  {`${plan.sponsorshipPrice} PXL / 30일`}
+                  {`${membership.sponsorshipPrice} PXL / 30일`}
                 </PrimaryButton>
               )}
             </Styled.SponsorshipInfo>
