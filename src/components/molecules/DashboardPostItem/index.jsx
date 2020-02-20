@@ -120,7 +120,7 @@ function DashboardPostItem({
         <Styled.Text>
           <Styled.Series>
             {series ? series.name : '미지정'}
-            {membership && ` · ${membership.level > 0 ? `티어 ${membership.level}` : '구독자 전용'}`}
+            {membership && ` · ${membership.level > 0 ? `티어 ${membership.level}` : '구독자 공개'}`}
           </Styled.Series>
           <Styled.Title>
             {title}
