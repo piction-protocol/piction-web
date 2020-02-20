@@ -28,32 +28,29 @@ const Styled = {
     grid-row: 1;
     margin-top: 24px;
     font-family: var(--poppins);
-    font-size: 36px;
-    text-align: center;
-    ${media.desktop`
-      font-size: 40px;
-    `}
+    font-size: var(--font-size--large);
   `,
   Section: styled.section`
     grid-column: 1 / -1;
     padding-bottom: var(--row-gap);
     border-bottom: 1px solid var(--gray--light);
     ${media.desktop`
-      grid-column: 3 / 7;
+      grid-column: 1 / 7;
     `}
   `,
   SectionTitle: styled.h2`
-    margin-bottom: var(--row-gap);
-    font-size: 20px;
-    font-weight: bold;
+    color: #bababa;
+    font-size: var(--font-size--small);
+    font-weight: normal;
   `,
   Name: styled.p`
-    font-size: 16px;
+    font-size: var(--font-size--base);
+    font-weight: bold;
     ${placeholder}
   `,
   Description: styled.p`
     margin-top: 16px;
-    color: #999999;
+    color: #bababa;
     font-size: var(--font-size--small);
     ${placeholder}
   `,
@@ -69,12 +66,14 @@ const Styled = {
     padding-bottom: var(--row-gap);
     border-bottom: 1px solid var(--gray--light);
     ${media.desktop`
-      grid-column: 7 / -3;
+      grid-column: 7 / -1;
       grid-row: 2 / 5;
       margin-bottom: auto;
       border: 1px solid var(--gray--light);
       padding: 40px;
     `}
+  `,
+  PurchaseTitle: styled.p`
   `,
   Subscription: styled.div`
     padding-bottom: var(--row-gap);
@@ -112,7 +111,7 @@ const Styled = {
     color: #999999;
     font-size: var(--font-size--small);
     ${media.desktop`
-      grid-column: 3 / 7;
+      grid-column: 1 / 7;
     `}
   `,
   FeesTitle: styled.h2`
@@ -133,14 +132,14 @@ const Styled = {
   `,
 };
 
-function PurchasePage({ projectId, fanPassId, redirect }) {
+function PurchasePage({ projectId, membershipId, redirect }) {
   const [isAgreed, setIsAgreed] = useState(false);
-  const [API] = useCallback(useAPI(), [projectId, fanPassId]);
+  const [API] = useCallback(useAPI(), [projectId, membershipId]);
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
 
-  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-passes/${fanPassId}`);
+  const { data: membership } = useSWR(`/projects/${projectId}/memberships/${membershipId}`);
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
   const { data: fees } = useSWR(`projects/${projectId}/fees`, {
     revalidateOnFocus: false,
@@ -153,10 +152,10 @@ function PurchasePage({ projectId, fanPassId, redirect }) {
   const handleSubscribe = async (event) => {
     event.preventDefault();
     try {
-      await API.fanPass.subscribe({
+      await API.membership.subscribe({
         projectId,
-        fanPassId,
-        subscriptionPrice: fanPass.subscriptionPrice,
+        membershipId,
+        price: membership.price,
       });
       navigate(redirect || `/project/${projectId}`);
     } catch (error) {
@@ -167,20 +166,20 @@ function PurchasePage({ projectId, fanPassId, redirect }) {
   return (
     <GridTemplate>
       <Styled.Heading>
-       FAN PASS 구매
+        후원 플랜 결제
       </Styled.Heading>
       <Styled.Section>
         <Styled.SectionTitle>
-          선택한 구독 상품
+          선택한 후원 플랜
         </Styled.SectionTitle>
-        {fanPass ? (
+        {membership ? (
           <>
             <Styled.Name>
-              {`티어 ${fanPass.level} - ${fanPass.name}`}
+              {`티어 ${membership.level} - ${membership.name}`}
             </Styled.Name>
-            {fanPass.description && (
+            {membership.description && (
               <Styled.Description>
-                {fanPass.description}
+                {membership.description}
               </Styled.Description>
             )}
           </>
@@ -209,10 +208,10 @@ function PurchasePage({ projectId, fanPassId, redirect }) {
           <Styled.SectionTitle>
             결제 금액
           </Styled.SectionTitle>
-          {fanPass ? (
+          {membership ? (
             <Styled.Subscription>
               <Styled.Price>
-                {`${fanPass.subscriptionPrice} PXL`}
+                {`${membership.price} PXL`}
               </Styled.Price>
               <Styled.Date>
                 <b>제공 기간</b>
@@ -233,20 +232,20 @@ function PurchasePage({ projectId, fanPassId, redirect }) {
           <Styled.Submit value="구매" disabled={!isAgreed} />
         </form>
       </Styled.Purchase>
-      {fees && project && fanPass && (
+      {fees && project && membership && (
         <Styled.Fees>
           <Styled.FeesTitle>송금 안내</Styled.FeesTitle>
           <Styled.Ul>
             <Styled.Li>
               {`기본 수수료 ${fees.contentsDistributorRate}%`}
               <Styled.FeesAmount>
-                {`${fanPass.subscriptionPrice * (fees.contentsDistributorRate) / 100} PXL`}
+                {`${membership.price * (fees.contentsDistributorRate) / 100} PXL`}
               </Styled.FeesAmount>
             </Styled.Li>
             <Styled.Li>
               {project.user.username}
               <Styled.FeesAmount>
-                {`${fanPass.subscriptionPrice * (100 - fees.contentsDistributorRate) / 100} PXL`}
+                {`${membership.price * (100 - fees.contentsDistributorRate) / 100} PXL`}
               </Styled.FeesAmount>
             </Styled.Li>
           </Styled.Ul>
@@ -268,6 +267,6 @@ export default withLoginChecker(PurchasePage);
 
 PurchasePage.propTypes = {
   projectId: PropTypes.string.isRequired,
-  fanPassId: PropTypes.string.isRequired,
+  membershipId: PropTypes.string.isRequired,
   redirect: PropTypes.string,
 };

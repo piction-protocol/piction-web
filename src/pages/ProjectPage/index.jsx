@@ -19,7 +19,7 @@ import media, { mediaQuery } from 'styles/media';
 
 const PostList = React.lazy(() => import('components/organisms/PostList'));
 const SeriesList = React.lazy(() => import('components/organisms/SeriesList'));
-const SponsorshipList = React.lazy(() => import('components/organisms/SponsorshipList'));
+const MembershipList = React.lazy(() => import('components/organisms/MembershipList'));
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
@@ -45,8 +45,8 @@ function ProjectPage({ projectId }) {
 
   const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
-  const { data: [subscription, ...sponsorships] = [] } = useSWR(`/projects/${projectId}/memberships`);
-  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
+  const { data: [subscription, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
+  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/membership` : null));
   const isMyProject = currentUser?.loginId === project?.user.loginId;
 
   const handleSubscribe = async () => {
@@ -64,7 +64,7 @@ function ProjectPage({ projectId }) {
         await API.fanPass.subscribe({
           projectId,
           fanPassId: subscription.id,
-          sponsorshipPrice: subscription.sponsorshipPrice,
+          membershipPrice: subscription.membershipPrice,
         });
       } finally {
         trigger(`/projects/${projectId}/fan-passes/subscription`);
@@ -103,7 +103,7 @@ function ProjectPage({ projectId }) {
         links={[
           { text: '포스트', to: 'posts' },
           { text: '시리즈', to: 'series' },
-          ...project?.activeMembership ? [{ text: '후원', to: 'sponsorships' }] : [],
+          ...project?.activeMembership ? [{ text: '후원', to: 'memberships' }] : [],
         ]}
       />
 
@@ -120,9 +120,9 @@ function ProjectPage({ projectId }) {
           path="series"
           series={series}
         />
-        <SponsorshipList
-          path="sponsorships"
-          sponsorships={sponsorships}
+        <MembershipList
+          path="memberships"
+          memberships={memberships}
           sponsored={sponsored}
           isMyProject={isMyProject}
         />

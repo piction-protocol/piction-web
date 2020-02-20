@@ -45,7 +45,7 @@ const Styled = {
   `,
 };
 
-function Sponsorship({
+function Membership({
   level, name, postCount, description, className, children,
 }) {
   return (
@@ -72,7 +72,7 @@ function Sponsorship({
   );
 }
 
-Sponsorship.propTypes = {
+Membership.propTypes = {
   level: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   postCount: PropTypes.number,
@@ -81,7 +81,7 @@ Sponsorship.propTypes = {
   children: PropTypes.node,
 };
 
-Sponsorship.Placeholder = ({ className, children }) => (
+Membership.Placeholder = ({ className, children }) => (
   <Styled.Item
     className={className}
   >
@@ -102,9 +102,9 @@ Sponsorship.Placeholder = ({ className, children }) => (
   </Styled.Item>
 );
 
-Sponsorship.Placeholder.propTypes = {
+Membership.Placeholder.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
 };
 
-export default Sponsorship;
+export default Membership;

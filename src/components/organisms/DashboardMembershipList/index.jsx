@@ -6,7 +6,7 @@ import useSWR from 'swr';
 
 import Grid from 'styles/Grid';
 
-import FanPass from 'components/molecules/Sponsorship';
+import Membership from 'components/molecules/Membership';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
@@ -23,7 +23,7 @@ const Styled = {
       margin-bottom: var(--row-gap);
     }
   `,
-  FanPass: styled(FanPass)`
+  Membership: styled(Membership)`
     grid-column: 1 / -1;
   `,
   Price: styled.p`
@@ -80,36 +80,36 @@ const Styled = {
   `,
 };
 
-function DashboardFanPassList({ title, projectId }) {
+function DashboardMembershipList({ title, projectId }) {
   const { data: project } = useSWR(`/projects/${projectId}`, { suspense: true });
-  const { data: fanPassList } = useSWR(`/projects/${projectId}/fan-passes`, { suspense: true });
+  const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
 
   return (
     <Styled.Container>
       <Heading>{title}</Heading>
-      {project.activeFanPass ? (
+      {project.activeMembership ? (
         <Grid columns={9}>
-          {fanPassList.map(fanPass => (
-            <Styled.FanPass {...fanPass} key={fanPass.id}>
+          {membershipList.map(membership => membership.price > 0 && (
+            <Styled.Membership {...membership} key={membership.id}>
               <Styled.Price>
-                {fanPass.subscriptionPrice > 0 ? `${fanPass.subscriptionPrice} PXL` : '무료'}
+                {`${membership.price} PXL`}
                 <Styled.Subscriptions>
                   <Styled.PeopleIcon />
-                  {fanPass.subscriptionLimit !== null
-                    ? `${fanPass.subscriptionCount}/${fanPass.subscriptionLimit}`
-                    : fanPass.subscriptionCount
+                  {membership.sponsorLimit !== null
+                    ? `${membership.sponsorCount}/${membership.sponsorLimit}`
+                    : membership.sponsorCount
                   }
                   명 구독 중
                 </Styled.Subscriptions>
               </Styled.Price>
-              <Styled.Edit to={`${fanPass.id}/edit`}>
+              <Styled.Edit to={`${membership.id}/edit`}>
                 <EditIcon />
               </Styled.Edit>
-            </Styled.FanPass>
+            </Styled.Membership>
           ))}
-          {fanPassList.length <= 5 && (
+          {membershipList.length <= 5 && (
             <Styled.Create to="new">
-              {`+ 티어 ${fanPassList.length} 상품 추가`}
+              {`+ 티어 ${membershipList.length} 상품 추가`}
             </Styled.Create>
           )}
         </Grid>
@@ -118,15 +118,8 @@ function DashboardFanPassList({ title, projectId }) {
           <Styled.Strong>
             후원 플랜 관리 권한이 없습니다.
           </Styled.Strong>
-          <p>
-            내 창작물로 수익을 얻는 가장 쉬운 방법, FAN PASS.
-            <br />
-            창작자라면 누구나 FAN PASS 생성이 가능합니다.
-            <br />
-            지금 바로, 부담없이 신청해보세요!
-          </p>
           <Styled.Link target="_blank" href="#http://bit.ly/piction_sponsorship_plan">
-            후원 플랜 관리
+            권한 신청하기
           </Styled.Link>
         </Styled.Center>
       )}
@@ -134,9 +127,9 @@ function DashboardFanPassList({ title, projectId }) {
   );
 }
 
-DashboardFanPassList.propTypes = {
+DashboardMembershipList.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
 };
 
-export default DashboardFanPassList;
+export default DashboardMembershipList;

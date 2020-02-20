@@ -127,7 +127,7 @@ function DashboardSidebar({ projects, ...props }) {
                   <Styled.Link to={`/dashboard/${project.uri}/series`}>시리즈 관리</Styled.Link>
                   <Styled.Link
                     getProps={isPartiallyActive}
-                    to={`/dashboard/${project.uri}/sponsorships`}
+                    to={`/dashboard/${project.uri}/memberships`}
                   >
                     후원 플랜 관리
                   </Styled.Link>

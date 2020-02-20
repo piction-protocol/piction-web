@@ -101,7 +101,7 @@ function App() {
                     <CategoryPage path="category/:categoryId" />
 
                     <ProjectPage path="project/:projectId/*" />
-                    <PurchasePage path="project/:projectId/sponsorships/purchase/:membershipId" />
+                    <PurchasePage path="project/:projectId/memberships/purchase/:membershipId" />
                     <SeriesPage path="project/:projectId/series/:seriesId" />
                     <PostPage path="project/:projectId/posts/:postId" />
 

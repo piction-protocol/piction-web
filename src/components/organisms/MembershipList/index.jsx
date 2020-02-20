@@ -5,7 +5,7 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 
-import Sponsorship from 'components/molecules/Sponsorship';
+import Membership from 'components/molecules/Membership';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 const Styled = {
@@ -41,12 +41,12 @@ const Styled = {
     color: #a3a3a3;
     font-size: var(--font-size--tiny);
   `,
-  Sponsorship: styled(Sponsorship).attrs(({ isPlaceholder }) => isPlaceholder && {
-    as: Sponsorship.Placeholder,
+  Membership: styled(Membership).attrs(({ isPlaceholder }) => isPlaceholder && {
+    as: Membership.Placeholder,
   })`
     margin-bottom: 24px;
   `,
-  SponsorshipInfo: styled.div`
+  MembershipInfo: styled.div`
     display: flex;
     flex-flow: column;
     width: 100%;
@@ -63,7 +63,7 @@ const Styled = {
   `,
 };
 
-function SponsorshipList({ sponsorships, sponsored, location }) {
+function MembershipList({ memberships, sponsored, location }) {
   const [minimum, setMinimum] = useState(location.state.post ? location.state.post.membership.level : 0);
 
   return (
@@ -91,14 +91,14 @@ function SponsorshipList({ sponsorships, sponsored, location }) {
           </PrimaryButton>
         </Styled.Post>
       )}
-      {sponsorships ? sponsorships.map((membership, index) => {
-        const postCount = sponsorships.slice(0, index + 1).reduce((acc, val) => acc + val.postCount, 0);
+      {memberships ? memberships.map((membership, index) => {
+        const postCount = memberships.slice(0, index + 1).reduce((acc, val) => acc + val.postCount, 0);
         const isSubscribing = sponsored && membership.level === sponsored.membership.level;
         const isDisabled = (sponsored && membership.level < sponsored.membership.level);
-        const isFull = membership.sponsorshipLimit !== null && membership.sponsorshipLimit <= membership.sponsorshipCount;
+        const isFull = membership.membershipLimit !== null && membership.membershipLimit <= membership.membershipCount;
         return membership.level >= minimum && (
-          <Styled.Sponsorship {...membership} postCount={postCount} key={membership.id}>
-            <Styled.SponsorshipInfo>
+          <Styled.Membership {...membership} postCount={postCount} key={membership.id}>
+            <Styled.MembershipInfo>
               <Styled.Status>
                 {
                   isFull ? '후원 불가능'
@@ -115,27 +115,27 @@ function SponsorshipList({ sponsorships, sponsored, location }) {
                   to={`purchase/${membership.id}`}
                   disabled={isDisabled || isFull}
                 >
-                  {`${membership.sponsorshipPrice} PXL / 30일`}
+                  {`${membership.membershipPrice} PXL / 30일`}
                 </PrimaryButton>
               )}
-            </Styled.SponsorshipInfo>
-          </Styled.Sponsorship>
+            </Styled.MembershipInfo>
+          </Styled.Membership>
         );
       }) : Array.from({ length: 6 }, (_, i) => (
-        <Styled.Sponsorship isPlaceholder key={i}>
-          <Styled.SponsorshipInfo>
+        <Styled.Membership isPlaceholder key={i}>
+          <Styled.MembershipInfo>
             <PrimaryButton disabled />
-          </Styled.SponsorshipInfo>
-        </Styled.Sponsorship>
+          </Styled.MembershipInfo>
+        </Styled.Membership>
       ))}
     </Styled.Section>
   );
 }
 
-export default SponsorshipList;
+export default MembershipList;
 
-SponsorshipList.propTypes = {
-  sponsorships: PropTypes.array,
+MembershipList.propTypes = {
+  memberships: PropTypes.array,
   sponsored: PropTypes.object,
   location: PropTypes.object,
 };

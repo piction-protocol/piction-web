@@ -16,8 +16,8 @@ const PostForm = React.lazy(() => import('components/organisms/PostForm'));
 const DashboardPostList = React.lazy(() => import('components/organisms/DashboardPostList'));
 const UserList = React.lazy(() => import('components/organisms/UserList'));
 const SeriesListForm = React.lazy(() => import('components/organisms/SeriesListForm'));
-const DashboardSponsorshipList = React.lazy(() => import('components/organisms/DashboardSponsorshipList'));
-const SponsorshipForm = React.lazy(() => import('components/organisms/SponsorshipForm'));
+const DashboardMembershipList = React.lazy(() => import('components/organisms/DashboardMembershipList'));
+const MembershipForm = React.lazy(() => import('components/organisms/MembershipForm'));
 
 const Styled = {
   Router: styled(Router)`
@@ -75,9 +75,9 @@ function Dashboard() {
           <ProjectForm title="프로젝트 정보 수정" path=":projectId/info" />
           <DashboardPostList title="포스트 관리" path=":projectId/posts" />
           <SeriesListForm title="시리즈 관리" path=":projectId/series" />
-          <DashboardSponsorshipList title="후원 플랜 관리" path=":projectId/sponsorships" />
-          <SponsorshipForm title="새 후원 플랜" path=":projectId/sponsorships/new" />
-          <SponsorshipForm title="후원 플랜 수정" path=":projectId/sponsorships/:membershipId/edit" />
+          <DashboardMembershipList title="후원 플랜 관리" path=":projectId/memberships" />
+          <MembershipForm title="새 후원 플랜" path=":projectId/memberships/new" />
+          <MembershipForm title="후원 플랜 수정" path=":projectId/memberships/:membershipId/edit" />
           <UserList title="구독자 목록" path=":projectId/members" />
           <PostForm title="새 포스트" path=":projectId/posts/new" />
           <PostForm title="포스트 수정" path=":projectId/posts/:postId/edit" />

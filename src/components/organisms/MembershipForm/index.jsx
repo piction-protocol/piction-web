@@ -55,7 +55,7 @@ const Styled = {
     grid-column : 1 / -1;
     color: var(--blue);
   `,
-  SubscriptionLimit: styled.label`
+  SponsorLimit: styled.label`
     display: flex;
     grid-row: 2;
     align-items: center;
@@ -74,10 +74,10 @@ const Styled = {
   `,
 };
 
-function FanPassForm({
+function MembershipForm({
   title,
   projectId,
-  fanPassId,
+  membershipId,
 }) {
   const { data: fees } = useSWR(`projects/${projectId}/fees`, {
     revalidateOnFocus: false,
@@ -85,20 +85,20 @@ function FanPassForm({
 
   const {
     data: defaultValues = {
-      subscriptionPrice: 0,
-      subscriptionLimit: 0,
+      price: 0,
+      sponsorLimit: 0,
     },
-  } = useSWR(() => (fanPassId ? `/projects/${projectId}/fan-passes/${fanPassId}` : null), { suspense: true });
+  } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), { suspense: true });
 
   const { register, getValues, handleSubmit } = useForm({
     defaultValues,
   });
 
   const [amount, setAmount] = useState(0);
-  const [isUnlimited, setIsUnlimited] = useState(!defaultValues.subscriptionLimit);
+  const [isUnlimited, setIsUnlimited] = useState(!defaultValues.sponsorLimit);
 
   const handleAmount = () => {
-    const value = getValues().subscriptionPrice * (1 - fees.contentsDistributorRate / 100);
+    const value = getValues().price * (1 - fees.contentsDistributorRate / 100);
     setAmount(parseFloat(value.toFixed(2)));
   };
 
@@ -106,21 +106,21 @@ function FanPassForm({
 
   const onSubmit = async (data) => {
     try {
-      if (fanPassId) {
-        await API.fanPass.update({
+      if (membershipId) {
+        await API.membership.update({
           ...data,
           projectId,
-          fanPassId,
-          subscriptionLimit: isUnlimited ? null : data.subscriptionLimit,
+          membershipId,
+          sponsorLimit: isUnlimited ? null : data.sponsorLimit,
         });
       } else {
-        await API.fanPass.create({
+        await API.membership.create({
           ...data,
           projectId,
-          subscriptionLimit: isUnlimited ? null : data.subscriptionLimit,
+          sponsorLimit: isUnlimited ? null : data.sponsorLimit,
         });
       }
-      navigate(`/dashboard/${projectId}/fanpass/`);
+      navigate(`/dashboard/${projectId}/membership/`);
     } catch (error) {
       console.log(error);
     }
@@ -129,7 +129,7 @@ function FanPassForm({
   return (
     <Styled.Form onSubmit={handleSubmit(onSubmit)}>
       <Heading>{title}</Heading>
-      {fanPassId && (
+      {membershipId && (
         <div>
           <Label>
             티어
@@ -140,10 +140,10 @@ function FanPassForm({
         </div>
       )}
       <Styled.InputGroup inputRef={register} name="name" label="상품명" required />
-      {(!fanPassId || defaultValues.level > 0) && (
+      {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           inputRef={register}
-          name="subscriptionPrice"
+          name="price"
           type="number"
           label="가격"
           columns={3}
@@ -167,11 +167,11 @@ function FanPassForm({
         </Styled.InputGroup>
       )}
       <Styled.InputGroup inputRef={register} name="description" label="설명" placeholder="최대 100자" />
-      {(!fanPassId || defaultValues.level > 0) && (
+      {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
           inputRef={register}
-          name="subscriptionLimit"
+          name="sponsorLimit"
           label="구독자 수 제한"
           required={!isUnlimited}
           placeholder="0"
@@ -181,21 +181,21 @@ function FanPassForm({
             gridRow: 3,
           }}
         >
-          <Styled.SubscriptionLimit>
+          <Styled.SponsorLimit>
             <Checkbox
               checked={isUnlimited}
               onChange={() => setIsUnlimited(prev => !prev)}
               style={{ marginRight: 16 }}
             />
             제한 없음
-          </Styled.SubscriptionLimit>
+          </Styled.SponsorLimit>
         </Styled.InputGroup>
       )}
       <Styled.SubmitGroup>
         <Styled.Submit value="저장" />
         <SecondaryButton
           as={Link}
-          to={`/dashboard/${projectId}/fanpass/`}
+          to={`/dashboard/${projectId}/membership/`}
         >
           취소
         </SecondaryButton>
@@ -204,10 +204,10 @@ function FanPassForm({
   );
 }
 
-FanPassForm.propTypes = {
+MembershipForm.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
-  fanPassId: PropTypes.string,
+  membershipId: PropTypes.string,
 };
 
-export default FanPassForm;
+export default MembershipForm;

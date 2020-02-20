@@ -110,7 +110,7 @@ Content.Placeholder = () => {
 
 function LockedContent({ handleSubscription, post }) {
   const { currentUser } = useCurrentUser();
-  const hasPrice = post?.plan.sponsorshipPrice > 0;
+  const hasPrice = post?.membership.price > 0;
 
   return (
     <Styled.Locked>
@@ -118,7 +118,7 @@ function LockedContent({ handleSubscription, post }) {
       {hasPrice ? (
         <p>
           <Styled.Required>
-            {post.plan.name}
+            {post.membership.name}
           </Styled.Required>
           {' '}
           이상
@@ -139,7 +139,7 @@ function LockedContent({ handleSubscription, post }) {
         hasPrice ? (
           <Styled.Subscription
             as={Link}
-            to="../../sponsorships"
+            to="../../memberships"
             state={{ post }}
           >
             후원하기
