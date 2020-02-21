@@ -155,7 +155,7 @@ function PurchasePage({ projectId, membershipId, redirect }) {
       await API.membership.subscribe({
         projectId,
         membershipId,
-        price: membership.price,
+        sponsorshipPrice: membership.price,
       });
       navigate(redirect || `/project/${projectId}`);
     } catch (error) {

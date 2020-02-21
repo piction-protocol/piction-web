@@ -95,7 +95,7 @@ function MembershipList({ memberships, sponsored, location }) {
         const postCount = memberships.slice(0, index + 1).reduce((acc, val) => acc + val.postCount, 0);
         const isSubscribing = sponsored && membership.level === sponsored.membership.level;
         const isDisabled = (sponsored && membership.level < sponsored.membership.level);
-        const isFull = membership.membershipLimit !== null && membership.membershipLimit <= membership.membershipCount;
+        const isFull = membership.sponsorLimit !== null && membership.sponsorLimit <= membership.sponsorCount;
         return membership.level >= minimum && (
           <Styled.Membership {...membership} postCount={postCount} key={membership.id}>
             <Styled.MembershipInfo>
@@ -115,7 +115,7 @@ function MembershipList({ memberships, sponsored, location }) {
                   to={`purchase/${membership.id}`}
                   disabled={isDisabled || isFull}
                 >
-                  {`${membership.membershipPrice} PXL / 30일`}
+                  {`${membership.price} PXL / 30일`}
                 </PrimaryButton>
               )}
             </Styled.MembershipInfo>

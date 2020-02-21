@@ -63,8 +63,8 @@ function useAPI() {
     create: params => API.post(`/projects/${params.projectId}/memberships`, params),
     update: params => API.put(`/projects/${params.projectId}/memberships/${params.membershipId}`, params),
     delete: params => API.delete(`/projects/${params.projectId}/memberships/${params.membershipId}`, params),
-    subscribe: params => API.post(`/projects/${params.projectId}/memberships/${params.membershipId}/subscription`, params),
-    unsubscribe: params => API.delete(`/projects/${params.projectId}/memberships/${params.membershipId}/subscription`, params),
+    subscribe: params => API.post(`/projects/${params.projectId}/memberships/${params.membershipId}/sponsorship`, params),
+    unsubscribe: params => API.delete(`/projects/${params.projectId}/memberships/${params.membershipId}/sponsorship`, params),
   };
 
   const recommended = {
