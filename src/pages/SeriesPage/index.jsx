@@ -113,9 +113,9 @@ function SeriesPage({ projectId, seriesId }) {
     };
 
     const checkIsViewable = (post) => {
-      if (!post.fanPass) return true;
+      if (!post.membership) return true;
       if (!currentUser) return false;
-      const isSubscribing = subscription && subscription.fanPass.level >= post.fanPass.level;
+      const isSubscribing = subscription && subscription.membership.level >= post.membership.level;
       const isMine = project.user.loginId === currentUser.loginId;
       return isSubscribing || isMine;
     };
