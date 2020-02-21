@@ -104,7 +104,7 @@ function PostList({
   return (
     <Styled.Container>
       <Grid {...props}>
-        <ThemeProvider theme={{ viewType: project.viewType }}>
+        <ThemeProvider theme={{ viewType: project?.viewType || 'CARD' }}>
           {pages}
         </ThemeProvider>
       </Grid>

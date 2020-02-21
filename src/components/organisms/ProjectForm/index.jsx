@@ -17,10 +17,14 @@ import Label from 'components/atoms/Label';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import ImageUploader from 'components/atoms/ImageUploader';
 import Checkbox from 'components/atoms/Checkbox';
+import RadioWithImage from 'components/atoms/RadioWithImage';
 import { PrimaryButton } from 'components/atoms/Button';
 
 import dummyWideThumbnailImage from 'images/img-dummy-1440x450.jpg';
 import dummyThumbnailImage from 'images/img-dummy-500x500.jpg';
+
+import { ReactComponent as CardTypeIcon } from 'images/ic-card-type.svg';
+import { ReactComponent as ListTypeIcon } from 'images/ic-list-type.svg';
 
 const Styled = {
   Form: styled(Grid).attrs({
@@ -103,7 +107,8 @@ function ProjectForm({
     wideThumbnail: null,
     tags: [],
     categories: [],
-    subscriptionPrice: 0,
+    status: 'PUBLIC',
+    viewType: 'CARD',
   });
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
@@ -139,6 +144,7 @@ function ProjectForm({
         tags: defaultTags,
         categories: [],
         status: 'PUBLIC',
+        viewType: 'CARD',
       });
       setDefaultImage({
         thumbnail: '',
@@ -231,6 +237,29 @@ function ProjectForm({
               {category.name}
             </Styled.CheckboxGroup>
           ))}
+        </Styled.Row>
+      </Styled.ImageGroup>
+      <Styled.ImageGroup>
+        <Label>
+          포스트 목록 타입
+        </Label>
+        <Styled.Row>
+          <RadioWithImage
+            name="viewType"
+            value="CARD"
+            onChange={handleChange}
+            checked={formData.viewType === 'CARD'}
+          >
+            <CardTypeIcon />
+          </RadioWithImage>
+          <RadioWithImage
+            name="viewType"
+            value="LIST"
+            onChange={handleChange}
+            checked={formData.viewType === 'LIST'}
+          >
+            <ListTypeIcon />
+          </RadioWithImage>
         </Styled.Row>
       </Styled.ImageGroup>
       <Styled.ImageGroup>
