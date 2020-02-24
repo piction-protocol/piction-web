@@ -5,11 +5,11 @@ import { Link, Location } from '@reach/router';
 
 import { MainGrid } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
+import placeholder from 'styles/placeholder';
 
 import useMedia from 'hooks/useMedia';
 import useCurrentUser from 'hooks/useCurrentUser';
 import usePictionChoices from 'hooks/usePictionChoices';
-import useCPR from 'hooks/useCPR';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
@@ -22,10 +22,8 @@ import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
-import { ReactComponent as SettingIcon } from 'images/ic-setting.svg';
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
 import { ReactComponent as ChoiceIcon } from './ic-piction-symbol-black.svg';
-import { ReactComponent as CRPIcon } from './ic-cpr.svg';
 
 const Styled = {
   Section: styled.section`
@@ -40,50 +38,62 @@ const Styled = {
     `}
   `,
   MainGrid: styled(MainGrid)`
-    row-gap: 16px;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    position: relative;
+    row-gap: 4px;
+    padding-top: 20px;
+    padding-bottom: 32px;
     ${media.desktop`
-      padding-top: 24px;
-      padding-bottom: 24px;
-    `}
-  `,
-  Text: styled.div`
-    display: flex;
-    flex-flow: column;
-    grid-column: 1 / 6;
-    ${media.desktop`
-      flex-flow: row wrap;
-      grid-column: 2 / 10;
-    `}
-  `,
-  HeadingWrapper: styled.div`
-    grid-column: 1 / 6;
-    margin-bottom: 4px;
-    ${media.desktop`
-      width: 100%;
-      margin-bottom: 8px;
+      padding-top: 40px;
+      padding-bottom: 40px;
     `}
   `,
   Heading: styled(Heading)`
-    display: inline;
-    margin-right: 8px;
+    grid-column: 1 / -2;
+    margin-right: 6px;
+    ${placeholder}
+    ${media.desktop`
+      grid-column: 1 / -3;
+      margin-right: 1px;
+    `}
+  `,
+  User: styled.p`
+    display: flex;
+    flex-flow: column;
+    grid-column: 1 / -2;
+    margin-bottom: 12px;
+    font-size: var(--font-size--small);
+    font-weight: bold;
+    ${media.desktop`
+      grid-column: 1 / -3;
+      flex-flow: row wrap;
+      align-items: center;
+      font-size: var(--font-size--base);
+    `}
+    ${placeholder}
+  `,
+  UserId: styled.span`
+    margin-top: 4px;
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+    font-weight: normal;
+    ${media.desktop`
+      margin-top: 0;
+      margin-left: 8px;
+    `}
   `,
   SponsorCount: styled.div`
     display: inline-flex;
+    position: absolute;
     align-items: center;
-    color: var(--gray--dark);
+    top: -16px;
+    right: var(--outer-gap);
+    padding: 8px 12px;
+    border-radius: 18px;
+    background-color: rgba(0, 0, 0, .3);
+    color: var(--white);
     font-size: var(--font-size--small);
-    ${media.mobile`
-      position: absolute;
-      top: 0;
-      right: var(--outer-gap);
-      margin-top: calc(50% - 16px);
-      padding: 8px 12px;
-      border-radius: 18px;
-      background-color: rgba(0, 0, 0, .3);
-      color: var(--white);
-      transform: translateY(-100%);
+    transform: translateY(-100%);
+    ${media.desktop`
     `}
   `,
   PeopleIcon: styled(PeopleIcon)`
@@ -95,40 +105,22 @@ const Styled = {
       fill: currentColor;
     }
   `,
-  User: styled.p`
-    display: flex;
-    flex-flow: column;
-    font-size: var(--font-size--small);
-    font-weight: bold;
-    ${media.desktop`
-      flex-flow: row wrap;
-      font-size: var(--font-size--base);
-    `}
-  `,
-  UserId: styled.span`
-    margin-top: 4px;
-    color: var(--gray--dark);
-    font-size: var(--font-size--small);
-    font-weight: normal;
-    ${media.desktop`
-      margin-left: 8px;
-    `}
-  `,
   Synopsis: styled.p`
+    grid-column: 1 / -3;
     width: 100%;
-    margin-top: 8px;
     color: var(--gray--dark);
     line-height: var(--line-height--content);
+    ${placeholder}
   `,
   Tags: styled.div`
     display: flex;
     align-items: center;
     flex-flow: row wrap;
+    grid-column: 1 / -3;
     width: 100%;
     margin-top: 8px;
   `,
   Category: styled(Category)`
-    margin-top: 8px;
     margin-right: 8px;
   `,
   Tag: styled(Tag)`
@@ -142,45 +134,43 @@ const Styled = {
     right: 16px;
     width: 24px;
     height: 24px;
+    margin-top: -50%;
     border-radius: 50%;
     box-shadow: 0 2px 4px 0 var(--shadow-color);
   `,
-  UserPictureWrapper: styled.div`
-    grid-column: -2 / -1;
-    ${media.desktop`
-      grid-column: 1 / 2;
-      grid-row: 1;
-    `}
-  `,
   UserProfile: styled(UserProfile)`
+    grid-column: -2 / -1;
+    grid-row: span 2;
+    align-self: flex-start;
     border-radius: 50%;
     background-color: var(--gray--light);
+    ${media.desktop`
+      width: 24px;
+      margin-right: 8px;
+    `}
   `,
   Aside: styled.div`
     grid-column: 1 / -1;
     ${media.desktop`
-      grid-column: span 3 / -1;
+      grid-column: span 2 / -1;
+      grid-row: 1 / span 2;
     `}
   `,
   Label: styled.div`
-    margin-bottom: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--charcoal-black);
     font-size: 14px;
-    ${media.desktop`
-      font-size: 16px;
-    `}
+    font-weight: normal;
     > svg {
       margin-right: 4px;
-      width: 18px;
-      height: 18px;
-      ${media.desktop`
-        width: 24px;
-        height: 24px;
-      `}
+      width: 20px;
+      height: 20px;
     }
+    ${media.desktop`
+      margin-left: 24px;
+    `}
   `,
   Subscribe: styled.div`
     display: flex;
@@ -214,11 +204,10 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, hasFanPasses, handleSubscribe, isMyProject = false, subscription, ...props
+  project, handleSubscribe, isMyProject = false, sponsored, ...props
 }) {
   const { projects } = usePictionChoices();
   const isPictionChoice = projects && projects.includes(project.uri);
-  const isCPRProject = useCPR(project.uri);
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { currentUser } = useCurrentUser();
@@ -234,89 +223,92 @@ function ProjectInfo({
         image={project.wideThumbnail}
       />
       <Styled.MainGrid>
-        <Styled.Text>
-          <Styled.HeadingWrapper>
+        {isDesktop ? (
+          <>
+            {project.categories.length > 0 && (
+              <Styled.Tags>
+                {project.categories.map(category => (
+                  <Styled.Category key={category.id}>{category.name}</Styled.Category>
+                ))}
+              </Styled.Tags>
+            )}
             <Styled.Heading>
               {project.title}
             </Styled.Heading>
+            <Styled.User>
+              <Styled.UserProfile
+                image={project.user.picture}
+              />
+              {project.user.username}
+              <Styled.UserId>
+                {`@${project.user.loginId}`}
+              </Styled.UserId>
+              {isPictionChoice && (
+                <Styled.Label>
+                  <ChoiceIcon />
+                  Piction&apos;s Choice
+                </Styled.Label>
+              )}
+            </Styled.User>
+            {project.synopsis && (
+              <Styled.Synopsis>
+                {project.synopsis}
+              </Styled.Synopsis>
+            )}
+            {(project.tags.length > 0 && project.status === 'PUBLIC') && (
+              <Styled.Tags>
+                {project.tags.map(tag => (
+                  <Styled.Tag key={tag}>{tag}</Styled.Tag>
+                ))}
+              </Styled.Tags>
+            )}
+          </>
+        ) : (
+          <>
+            <Styled.Heading>
+              {project.title}
+            </Styled.Heading>
+            <Styled.UserProfile
+              image={project.user.picture}
+            />
+            <Styled.User>
+              {project.user.username}
+              <Styled.UserId>
+                {`@${project.user.loginId}`}
+              </Styled.UserId>
+            </Styled.User>
             <Styled.SponsorCount>
               <Styled.PeopleIcon />
               {`구독자 수 ${project.sponsorCount}`}
             </Styled.SponsorCount>
-          </Styled.HeadingWrapper>
-          <Styled.User>
-            {project.user.username}
-            <Styled.UserId>
-              {`@${project.user.loginId}`}
-            </Styled.UserId>
-          </Styled.User>
-          {isDesktop ? (
-            <>
-              {project.synopsis && (
-                <Styled.Synopsis>
-                  {project.synopsis}
-                </Styled.Synopsis>
-              )}
-              {(project.tags.length + project.categories.length > 0 && project.status === 'PUBLIC') && (
-                <Styled.Tags>
-                  {project.categories.map(category => (
-                    <Styled.Category id={category.id} key={category.id}>
-                      {category.name}
-                    </Styled.Category>
-                  ))}
-                  {project.tags.map(tag => (
-                    <Styled.Tag key={tag}>{tag}</Styled.Tag>
-                  ))}
-                </Styled.Tags>
-              )}
-            </>
-          ) : (
-            <>
-              <Styled.InfoButton onClick={() => setIsPopupVisible(true)}>
-                <InfoIcon />
-              </Styled.InfoButton>
-              {isPopupVisible && (
-                <SynopsisPopup {...project} close={() => setIsPopupVisible(false)} />
-              )}
-            </>
-          )}
-        </Styled.Text>
-        <Styled.UserPictureWrapper>
-          <Styled.UserProfile
-            image={project.user.picture}
-          />
-        </Styled.UserPictureWrapper>
+            <Styled.InfoButton onClick={() => setIsPopupVisible(true)}>
+              <InfoIcon />
+            </Styled.InfoButton>
+            {isPopupVisible && (
+              <SynopsisPopup {...project} close={() => setIsPopupVisible(false)} />
+            )}
+          </>
+        )}
         <Styled.Aside>
           <Styled.Subscribe>
             {isMyProject ? isDesktop && (
-              <>
-                <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts/new`}>
-                  새 포스트 작성
+              <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/info`}>
+                관리
+              </Styled.SubscribeButton>
+            ) : sponsored ? (
+              sponsored.membership.price > 0 ? (
+                <Styled.SubscribeButton disabled>
+                  후원 중
                 </Styled.SubscribeButton>
-                <Styled.SettingButton as={Link} to={`/dashboard/${project.uri}/info`}>
-                  <SettingIcon />
-                </Styled.SettingButton>
-              </>
-            ) : subscription ? (
-              hasFanPasses ? (
-                <Styled.UnsubscribeButton as={Link} to="./fanpass">
-                  구독 중
-                </Styled.UnsubscribeButton>
               ) : (
                 <Styled.UnsubscribeButton onClick={handleSubscribe}>
                   구독 중
                 </Styled.UnsubscribeButton>
               )
             ) : (currentUser ? (
-              hasFanPasses ? (
-                <Styled.SubscribeButton as={Link} to="./fanpass">
-                  구독하기
-                </Styled.SubscribeButton>
-              ) : (
-                <Styled.SubscribeButton onClick={handleSubscribe}>
-                  무료로 구독하기
-                </Styled.SubscribeButton>
-              )
+              <Styled.SubscribeButton onClick={handleSubscribe}>
+                구독
+              </Styled.SubscribeButton>
             ) : (
               <Location>
                 {({ location }) => (
@@ -327,23 +319,16 @@ function ProjectInfo({
                       redirectTo: encodeURIComponent(location.pathname),
                     }}
                   >
-                    {!hasFanPasses && '무료로 '}
-                    구독하기
+                    구독
                   </Styled.SubscribeButton>
                 )}
               </Location>
             ))}
           </Styled.Subscribe>
-          {isPictionChoice && (
+          {isPictionChoice && !isDesktop && (
             <Styled.Label>
               <ChoiceIcon />
               Piction&apos;s Choice
-            </Styled.Label>
-          )}
-          {isCPRProject && (
-            <Styled.Label>
-              <CRPIcon />
-              심폐소생전 지원 프로젝트
             </Styled.Label>
           )}
         </Styled.Aside>
@@ -354,28 +339,10 @@ function ProjectInfo({
 
 ProjectInfo.propTypes = {
   isMyProject: PropTypes.bool,
-  subscription: PropTypes.object,
+  sponsored: PropTypes.object,
   project: PropTypes.object.isRequired,
   handleSubscribe: PropTypes.func.isRequired,
   hasFanPasses: PropTypes.bool,
-};
-
-const Placeholder = {
-  Heading: styled(Styled.Heading)`
-    display: inline-block;
-    width: 50%;
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-  `,
-  User: styled(Styled.User)`
-    width: 20%;
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-  `,
-  Synopsis: styled(Styled.Synopsis)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
-  `,
 };
 
 ProjectInfo.Placeholder = ({ isDesktop }) => (
@@ -389,17 +356,11 @@ ProjectInfo.Placeholder = ({ isDesktop }) => (
       image={null}
     />
     <Styled.MainGrid>
-      <Styled.Text>
-        <Styled.HeadingWrapper>
-          <Placeholder.Heading>Title</Placeholder.Heading>
-        </Styled.HeadingWrapper>
-        <Placeholder.User>Author</Placeholder.User>
-        <Placeholder.Synopsis>Synopsis</Placeholder.Synopsis>
-      </Styled.Text>
+      <Styled.Heading isPlaceholder>Title</Styled.Heading>
+      <Styled.User isPlaceholder>Author</Styled.User>
+      <Styled.Synopsis isPlaceholder>Synopsis</Styled.Synopsis>
 
-      <Styled.UserPictureWrapper>
-        <Styled.UserProfile />
-      </Styled.UserPictureWrapper>
+      <Styled.UserProfile />
 
       <Styled.Aside>
         <Styled.Subscribe>

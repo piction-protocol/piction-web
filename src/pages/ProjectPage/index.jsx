@@ -43,31 +43,33 @@ function ProjectPage({ projectId }) {
   const [API] = useCallback(useAPI(), [projectId]);
   const isDesktop = useMedia(mediaQuery.desktop);
 
-  const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
+  const { data: project, projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
-  const { data: [subscription, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
-  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/membership` : null));
+  const { data: [membership, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
+  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
   const isMyProject = currentUser?.loginId === project?.user.loginId;
 
   const handleSubscribe = async () => {
-    if (subscription) {
+    if (sponsored) {
       try {
-        await API.fanPass.unsubscribe({
+        await API.membership.unsubscribe({
           projectId,
-          fanPassId: subscription.id,
+          membershipId: membership.id,
         });
-      } finally {
-        mutate(`/projects/${projectId}/fan-passes/subscription`, null);
+        mutate(`/projects/${projectId}/memberships/sponsorship`, null);
+      } catch (error) {
+        console.log(error);
       }
     } else {
       try {
-        await API.fanPass.subscribe({
+        const { data } = await API.membership.subscribe({
           projectId,
-          fanPassId: subscription.id,
-          membershipPrice: subscription.membershipPrice,
+          membershipId: membership.id,
+          sponsorshipPrice: membership.price,
         });
-      } finally {
-        trigger(`/projects/${projectId}/fan-passes/subscription`);
+        mutate(`/projects/${projectId}/memberships/sponsorship`, data.membership);
+      } catch (error) {
+        console.log(error);
       }
     }
     trigger(`/projects/${projectId}`);
@@ -77,7 +79,7 @@ function ProjectPage({ projectId }) {
     setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
   };
 
-  if (error) {
+  if (projectError) {
     navigate('/404', { replace: true });
   }
 
@@ -87,7 +89,8 @@ function ProjectPage({ projectId }) {
         <ProjectInfo
           project={project}
           isMyProject={isMyProject}
-          subscription={subscription}
+          membership={membership}
+          sponsored={sponsored}
           handleSubscribe={handleSubscribe}
         />
       ) : (
