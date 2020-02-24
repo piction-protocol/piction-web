@@ -72,6 +72,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     flex: 1;
+    overflow: hidden;
   `,
   Series: styled.p`
     margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '2px' : '4px')};
