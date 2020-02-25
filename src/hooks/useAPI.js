@@ -18,12 +18,7 @@ function useAPI() {
   };
 
   const my = {
-    wallet: () => API.get('my/wallet'),
     withdraw: params => API.post('my/wallet/withdrawals', params),
-    projects: () => API.get('my/projects'),
-    projectSubscriptions: params => API.get(`my/projects/${params.projectId}/subscriptions`, params),
-    posts: params => API.get(`my/projects/${params.projectId}/posts`, params),
-    subscriptions: params => API.get('my/subscriptions', params),
   };
 
   const resetPassword = {
@@ -52,10 +47,6 @@ function useAPI() {
     update: params => API.put(`/projects/${params.projectId}`, params),
     uploadThumbnail: params => API.patch('/projects/thumbnail', params, patchConfig),
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
-  };
-
-  const collection = {
-    getActive: params => API.get('/collections/active', params),
   };
 
   const membership = {
@@ -95,6 +86,11 @@ function useAPI() {
     uploadPicture: params => API.patch('/users/me/picture', params, patchConfig),
   };
 
+  const creatorProfile = {
+    create: params => API.post('/my/creator-profiles', params),
+    update: params => API.put('/my/creator-profiles', params),
+  };
+
   const token = {
     get: () => accessToken,
     create: (value, params) => setCookie('access_token', value, { ...params, path: '/' }),
@@ -111,12 +107,12 @@ function useAPI() {
     resetPassword,
     post,
     project,
-    collection,
     membership,
     recommended,
     series,
     session,
     user,
+    creatorProfile,
     token,
   }, handleCommonError];
 }
