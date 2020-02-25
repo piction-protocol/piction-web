@@ -45,7 +45,7 @@ function ProjectPage({ projectId }) {
 
   const { data: project, projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
-  const { data: [membership, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
+  const { data: [subscription, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
   const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
   const isMyProject = currentUser?.loginId === project?.user.loginId;
 
@@ -54,7 +54,7 @@ function ProjectPage({ projectId }) {
       try {
         await API.membership.unsubscribe({
           projectId,
-          membershipId: membership.id,
+          membershipId: subscription.id,
         });
         mutate(`/projects/${projectId}/memberships/sponsorship`, null);
       } catch (error) {
@@ -64,8 +64,8 @@ function ProjectPage({ projectId }) {
       try {
         const { data } = await API.membership.subscribe({
           projectId,
-          membershipId: membership.id,
-          sponsorshipPrice: membership.price,
+          membershipId: subscription.id,
+          sponsorshipPrice: subscription.price,
         });
         mutate(`/projects/${projectId}/memberships/sponsorship`, data.membership);
       } catch (error) {
@@ -89,7 +89,6 @@ function ProjectPage({ projectId }) {
         <ProjectInfo
           project={project}
           isMyProject={isMyProject}
-          membership={membership}
           sponsored={sponsored}
           handleSubscribe={handleSubscribe}
         />

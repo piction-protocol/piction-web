@@ -296,7 +296,7 @@ function ProjectInfo({
                 관리
               </Styled.SubscribeButton>
             ) : sponsored ? (
-              sponsored.membership.price > 0 ? (
+              sponsored.membership?.price > 0 ? (
                 <Styled.SubscribeButton disabled>
                   후원 중
                 </Styled.SubscribeButton>
