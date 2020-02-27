@@ -39,7 +39,6 @@ const Styled = {
   `,
   MainGrid: styled(MainGrid)`
     position: relative;
-    row-gap: 4px;
     padding-top: 20px;
     padding-bottom: 32px;
     ${media.desktop`
@@ -47,27 +46,29 @@ const Styled = {
       padding-bottom: 40px;
     `}
   `,
-  Heading: styled(Heading)`
+  Main: styled.div`
+    display: flex;
+    flex-flow: column;
     grid-column: 1 / -2;
+    ${media.desktop`
+      grid-column: 2 / -3;
+    `}
+  `,
+  Heading: styled(Heading)`
     margin-right: 6px;
     ${placeholder}
-    ${media.desktop`
-      grid-column: 1 / -3;
-      margin-right: 1px;
-    `}
   `,
   User: styled(Link)`
     display: flex;
     flex-flow: column;
-    grid-column: 1 / -2;
+    margin-top: 4px;
     margin-right: auto;
-    margin-bottom: 12px;
     font-size: var(--font-size--small);
     font-weight: bold;
     ${media.desktop`
-      grid-column: 1 / -3;
       flex-flow: row wrap;
       align-items: center;
+      margin-top: 12px;
       font-size: var(--font-size--base);
     `}
     ${placeholder}
@@ -107,8 +108,8 @@ const Styled = {
     }
   `,
   Synopsis: styled.p`
-    grid-column: 1 / -3;
     width: 100%;
+    margin-top: 8px;
     color: var(--gray--dark);
     line-height: var(--line-height--content);
     ${placeholder}
@@ -117,11 +118,11 @@ const Styled = {
     display: flex;
     align-items: center;
     flex-flow: row wrap;
-    grid-column: 1 / -3;
     width: 100%;
     margin-top: 8px;
   `,
   Category: styled(Category)`
+    margin-top: 8px;
     margin-right: 8px;
   `,
   Tag: styled(Tag)`
@@ -141,19 +142,19 @@ const Styled = {
   `,
   UserProfile: styled(UserProfile)`
     grid-column: -2 / -1;
-    grid-row: span 2;
+    grid-row: 1;
+    margin-bottom: auto;
     border-radius: 50%;
     background-color: var(--gray--light);
     ${media.desktop`
-      width: 24px;
-      margin-right: 8px;
+      grid-column: 1 / 2;
     `}
   `,
   Aside: styled.div`
     grid-column: 1 / -1;
     ${media.desktop`
       grid-column: span 2 / -1;
-      grid-row: 1 / span 2;
+      grid-row: 1;
     `}
   `,
   Label: styled.div`
@@ -223,72 +224,58 @@ function ProjectInfo({
         image={project.wideThumbnail}
       />
       <Styled.MainGrid>
-        {isDesktop ? (
-          <>
-            {project.categories.length > 0 && (
-              <Styled.Tags>
-                {project.categories.map(category => (
-                  <Styled.Category key={category.id}>{category.name}</Styled.Category>
-                ))}
-              </Styled.Tags>
+        <Styled.Main>
+          <Styled.Heading>
+            {project.title}
+          </Styled.Heading>
+          <Styled.User to={`creator-profile/${project.user.loginId}`}>
+            {project.user.username}
+            <Styled.UserId>
+              {`@${project.user.loginId}`}
+            </Styled.UserId>
+            {isPictionChoice && (
+              <Styled.Label>
+                <ChoiceIcon />
+                Piction&apos;s Choice
+              </Styled.Label>
             )}
-            <Styled.Heading>
-              {project.title}
-            </Styled.Heading>
-            <Styled.User to={`/creator-profile/${project.user.loginId}`}>
-              <Styled.UserProfile
-                image={project.user.picture}
-              />
-              {project.user.username}
-              <Styled.UserId>
-                {`@${project.user.loginId}`}
-              </Styled.UserId>
-              {isPictionChoice && (
-                <Styled.Label>
-                  <ChoiceIcon />
-                  Piction&apos;s Choice
-                </Styled.Label>
+          </Styled.User>
+          <Styled.SponsorCount>
+            <Styled.PeopleIcon />
+            {`구독자 수 ${project.sponsorCount}`}
+          </Styled.SponsorCount>
+          {isDesktop ? (
+            <>
+              {project.synopsis && (
+                <Styled.Synopsis>
+                  {project.synopsis}
+                </Styled.Synopsis>
               )}
-            </Styled.User>
-            {project.synopsis && (
-              <Styled.Synopsis>
-                {project.synopsis}
-              </Styled.Synopsis>
-            )}
-            {(project.tags.length > 0 && project.status === 'PUBLIC') && (
-              <Styled.Tags>
-                {project.tags.map(tag => (
-                  <Styled.Tag key={tag}>{tag}</Styled.Tag>
-                ))}
-              </Styled.Tags>
-            )}
-          </>
-        ) : (
-          <>
-            <Styled.Heading>
-              {project.title}
-            </Styled.Heading>
-            <Styled.UserProfile
-              image={project.user.picture}
-            />
-            <Styled.User to={`creator-profile/${project.user.loginId}`}>
-              {project.user.username}
-              <Styled.UserId>
-                {`@${project.user.loginId}`}
-              </Styled.UserId>
-            </Styled.User>
-            <Styled.SponsorCount>
-              <Styled.PeopleIcon />
-              {`구독자 수 ${project.sponsorCount}`}
-            </Styled.SponsorCount>
-            <Styled.InfoButton onClick={() => setIsPopupVisible(true)}>
-              <InfoIcon />
-            </Styled.InfoButton>
-            {isPopupVisible && (
-              <SynopsisPopup {...project} close={() => setIsPopupVisible(false)} />
-            )}
-          </>
-        )}
+              {(project.tags.length + project.categories.length > 0 && project.status === 'PUBLIC') && (
+                <Styled.Tags>
+                  {project.categories.map(category => (
+                    <Styled.Category key={category.id}>{category.name}</Styled.Category>
+                  ))}
+                  {project.tags.map(tag => (
+                    <Styled.Tag key={tag}>{tag}</Styled.Tag>
+                  ))}
+                </Styled.Tags>
+              )}
+            </>
+          ) : (
+            <>
+              <Styled.InfoButton onClick={() => setIsPopupVisible(true)}>
+                <InfoIcon />
+              </Styled.InfoButton>
+              {isPopupVisible && (
+                <SynopsisPopup {...project} close={() => setIsPopupVisible(false)} />
+              )}
+            </>
+          )}
+        </Styled.Main>
+        <Styled.UserProfile
+          image={project.user.picture}
+        />
         <Styled.Aside>
           <Styled.Subscribe>
             {isMyProject ? isDesktop && (
@@ -356,9 +343,11 @@ ProjectInfo.Placeholder = ({ isDesktop }) => (
       image={null}
     />
     <Styled.MainGrid>
-      <Styled.Heading isPlaceholder>Title</Styled.Heading>
-      <Styled.User to="" isPlaceholder>Author</Styled.User>
-      <Styled.Synopsis isPlaceholder>Synopsis</Styled.Synopsis>
+      <Styled.Main>
+        <Styled.Heading isPlaceholder>Title</Styled.Heading>
+        <Styled.User to="" isPlaceholder>Author</Styled.User>
+        <Styled.Synopsis isPlaceholder>Synopsis</Styled.Synopsis>
+      </Styled.Main>
 
       <Styled.UserProfile />
 
