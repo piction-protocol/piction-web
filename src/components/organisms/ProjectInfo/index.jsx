@@ -228,7 +228,7 @@ function ProjectInfo({
           <Styled.Heading>
             {project.title}
           </Styled.Heading>
-          <Styled.User to={`creator-profile/${project.user.loginId}`}>
+          <Styled.User to={`/creator-profile/${project.user.loginId}`}>
             {project.user.username}
             <Styled.UserId>
               {`@${project.user.loginId}`}
