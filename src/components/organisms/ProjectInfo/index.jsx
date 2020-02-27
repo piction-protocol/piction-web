@@ -56,10 +56,11 @@ const Styled = {
       margin-right: 1px;
     `}
   `,
-  User: styled.p`
+  User: styled(Link)`
     display: flex;
     flex-flow: column;
     grid-column: 1 / -2;
+    margin-right: auto;
     margin-bottom: 12px;
     font-size: var(--font-size--small);
     font-weight: bold;
@@ -141,7 +142,6 @@ const Styled = {
   UserProfile: styled(UserProfile)`
     grid-column: -2 / -1;
     grid-row: span 2;
-    align-self: flex-start;
     border-radius: 50%;
     background-color: var(--gray--light);
     ${media.desktop`
@@ -235,7 +235,7 @@ function ProjectInfo({
             <Styled.Heading>
               {project.title}
             </Styled.Heading>
-            <Styled.User>
+            <Styled.User to={`/creator-profile/${project.user.loginId}`}>
               <Styled.UserProfile
                 image={project.user.picture}
               />
@@ -271,7 +271,7 @@ function ProjectInfo({
             <Styled.UserProfile
               image={project.user.picture}
             />
-            <Styled.User>
+            <Styled.User to={`creator-profile/${project.user.loginId}`}>
               {project.user.username}
               <Styled.UserId>
                 {`@${project.user.loginId}`}
@@ -357,7 +357,7 @@ ProjectInfo.Placeholder = ({ isDesktop }) => (
     />
     <Styled.MainGrid>
       <Styled.Heading isPlaceholder>Title</Styled.Heading>
-      <Styled.User isPlaceholder>Author</Styled.User>
+      <Styled.User to="" isPlaceholder>Author</Styled.User>
       <Styled.Synopsis isPlaceholder>Synopsis</Styled.Synopsis>
 
       <Styled.UserProfile />

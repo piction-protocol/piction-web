@@ -29,6 +29,7 @@ const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
 const PurchasePage = React.lazy(() => import('pages/PurchasePage'));
 const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
+const CreatorProfilePage = React.lazy(() => import('pages/CreatorProfilePage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const WalletPage = React.lazy(() => import('pages/WalletPage'));
 const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
@@ -104,6 +105,7 @@ function App() {
                     <PurchasePage path="project/:projectId/memberships/purchase/:membershipId" />
                     <SeriesPage path="project/:projectId/series/:seriesId" />
                     <PostPage path="project/:projectId/posts/:postId" />
+                    <CreatorProfilePage path="creator-profile/:creatorId" />
 
                     <MyPage path="my/*" />
                     <WalletPage path="wallet/*" />
