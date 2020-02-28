@@ -118,7 +118,7 @@ function DashboardMembershipList({ title, projectId }) {
           <Styled.Strong>
             후원 플랜 관리 권한이 없습니다.
           </Styled.Strong>
-          <Styled.Link target="_blank" href="#http://bit.ly/piction_sponsorship_plan">
+          <Styled.Link target="_blank" href="http://bit.ly/piction_sponsorship_plan">
             권한 신청하기
           </Styled.Link>
         </Styled.Center>

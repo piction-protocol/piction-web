@@ -120,7 +120,7 @@ function MembershipForm({
           sponsorLimit: isUnlimited ? null : data.sponsorLimit,
         });
       }
-      navigate(`/dashboard/${projectId}/membership/`);
+      navigate(`/dashboard/${projectId}/memberships/`);
     } catch (error) {
       console.log(error);
     }
