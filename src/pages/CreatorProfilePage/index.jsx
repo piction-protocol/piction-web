@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -47,17 +47,21 @@ const Styled = {
 };
 
 function CreatorProfilePage({ creatorId }) {
-  const { data: user } = useSWR(`users/${creatorId}`);
-  const { data: profile } = useSWR(`creator-profiles/users/${creatorId}`, {
+  const { data: user, error: userError } = useSWR(`users/${creatorId}`);
+  const { data: profile = { greetings: '', links: [] } } = useSWR(`creator-profiles/users/${creatorId}`, {
     shouldRetryOnError: false,
   });
   const { data: projects = [] } = useSWR(`creator-profiles/users/${creatorId}/projects`, {
     shouldRetryOnError: false,
   });
 
+  if (userError) {
+    navigate('/404');
+  }
+
   return (
     <GridTemplate>
-      {(user && profile) ? (
+      {user ? (
         <CreatorProfile
           user={user}
           profile={profile}
