@@ -91,6 +91,11 @@ function useAPI() {
     update: params => API.put('/my/creator-profiles', params),
   };
 
+  const newsletter = {
+    create: params => API.post('/users/newsletter', params),
+    delete: params => API.delete('/users/newsletter', params),
+  };
+
   const token = {
     get: () => accessToken,
     create: (value, params) => setCookie('access_token', value, { ...params, path: '/' }),
@@ -113,6 +118,7 @@ function useAPI() {
     session,
     user,
     creatorProfile,
+    newsletter,
     token,
   }, handleCommonError];
 }

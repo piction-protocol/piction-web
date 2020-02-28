@@ -13,6 +13,7 @@ import media from 'styles/media';
 import withLoginChecker from 'components/LoginChecker';
 import GridTemplate from 'components/templates/GridTemplate';
 import UserInfo from 'components/organisms/UserInfo';
+import NewsletterManager from 'components/organisms/NewsletterManager';
 import ProjectCard from 'components/molecules/ProjectCard';
 import Heading from 'components/atoms/Heading';
 
@@ -22,9 +23,18 @@ const Styled = {
     margin-top: var(--row-gap);
     text-align: center;
     ${media.desktop`
+      grid-row: 1;
       padding-bottom: var(--row-gap);
       border-bottom: 1px solid var(--black);
       text-align: left;
+    `}
+  `,
+  NewsletterManager: styled(NewsletterManager)`
+    grid-column: 1 / -1;
+    margin: 0 auto;
+    ${media.desktop`
+      grid-row: 1;
+      margin: auto 0 auto auto;
     `}
   `,
   Link: styled(Link)`
@@ -96,6 +106,7 @@ function SubscriptionsPage() {
       <Styled.Heading>
         {`구독 중인 프로젝트(${totalSubscriptionCount})`}
       </Styled.Heading>
+      <Styled.NewsletterManager currentUser={currentUser} />
       {pages}
     </GridTemplate>
   );
