@@ -86,6 +86,7 @@ function CreatorProfileForm({ title }) {
   const { data: profile } = useSWR(() => 'my/creator-profiles', {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
+    suspense: true,
   });
   const {
     control, register, handleSubmit,
