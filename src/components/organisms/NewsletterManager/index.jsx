@@ -23,8 +23,7 @@ const Styled = {
     word-break: keep-all;
   `,
   Email: styled.p`
-    font-size: var(--font-size--small);
-    margin: 24px 0 32px;
+    margin: 24px 0 16px;
     padding: 16px;
     background-color: var(--gray--light);
   `,
