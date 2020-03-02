@@ -83,7 +83,7 @@ function PostList({
       >
         <Styled.PostItem
           {...content}
-          isLocked={!isMyProject && content.plan && (sponsored ? content.plan.level > sponsored.plan.level : true)}
+          isLocked={!isMyProject && content.membership && (sponsored ? content.membership.level > sponsored.membership.level : true)}
         />
       </Styled.Link>
     ));
