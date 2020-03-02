@@ -94,6 +94,7 @@ function useAPI() {
   const newsletter = {
     create: params => API.post('/users/newsletter', params),
     delete: params => API.delete('/users/newsletter', params),
+    deleteByToken: params => API.delete(`/users/newsletter/token/${params.token}`, params),
   };
 
   const token = {

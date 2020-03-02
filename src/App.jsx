@@ -33,6 +33,7 @@ const CreatorProfilePage = React.lazy(() => import('pages/CreatorProfilePage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const WalletPage = React.lazy(() => import('pages/WalletPage'));
 const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
+const OptOut = React.lazy(() => import('pages/OptOut'));
 const Dashboard = React.lazy(() => import('Dashboard'));
 
 const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
@@ -119,6 +120,8 @@ function App() {
                     <Hongik path="campaigns/hongik_2019" />
 
                     <CreatorsGuide path="creatorsguide" />
+
+                    <OptOut path="newsletter/unsubscribe" />
 
                     <Redirect from="/en" to="/" noThrow />
                     <Redirect from="/ko" to="/" noThrow />
