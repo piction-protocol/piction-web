@@ -140,15 +140,17 @@ const Styled = {
     border-radius: 50%;
     box-shadow: 0 2px 4px 0 var(--shadow-color);
   `,
-  UserProfile: styled(UserProfile)`
+  UserProfileWrapper: styled.div`
     grid-column: -2 / -1;
     grid-row: 1;
     margin-bottom: auto;
-    border-radius: 50%;
-    background-color: var(--gray--light);
     ${media.desktop`
       grid-column: 1 / 2;
     `}
+  `,
+  UserProfile: styled(UserProfile)`
+    border-radius: 50%;
+    background-color: var(--gray--light);
   `,
   Aside: styled.div`
     grid-column: 1 / -1;
@@ -212,6 +214,7 @@ function ProjectInfo({
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { currentUser } = useCurrentUser();
+  const creatorsProfileLink = `/creator-profile/${project.user.loginId}`;
 
   return (
     <Styled.Section {...props}>
@@ -228,7 +231,7 @@ function ProjectInfo({
           <Styled.Heading>
             {project.title}
           </Styled.Heading>
-          <Styled.User to={`/creator-profile/${project.user.loginId}`}>
+          <Styled.User to={creatorsProfileLink}>
             {project.user.username}
             <Styled.UserId>
               {`@${project.user.loginId}`}
@@ -273,9 +276,11 @@ function ProjectInfo({
             </>
           )}
         </Styled.Main>
-        <Styled.UserProfile
-          image={project.user.picture}
-        />
+        <Styled.UserProfileWrapper>
+          <Link to={creatorsProfileLink}>
+            <Styled.UserProfile image={project.user.picture} />
+          </Link>
+        </Styled.UserProfileWrapper>
         <Styled.Aside>
           <Styled.Subscribe>
             {isMyProject ? isDesktop && (
