@@ -6,8 +6,6 @@ import moment from 'moment';
 import media from 'styles/media';
 
 import Thumbnail from 'components/atoms/ContentImage/Thumbnail';
-import useCPR from 'hooks/useCPR';
-import { ReactComponent as CPRIcon } from './ic-cpr.svg';
 
 const Styled = {
   Item: styled.article`
@@ -73,8 +71,6 @@ const Styled = {
 function ProjectCard({
   uri, title, thumbnail, lastPublishedAt, children, ...props
 }) {
-  const isCPRProject = useCPR(uri);
-
   return (
     <Styled.Item
       {...props}
@@ -88,12 +84,6 @@ function ProjectCard({
             <Styled.UpdateLabel>
               UPDATE
             </Styled.UpdateLabel>
-          )}
-          {isCPRProject && (
-            <Styled.CPRLabel>
-              <CPRIcon />
-              <span>CPR</span>
-            </Styled.CPRLabel>
           )}
         </Styled.Labels>
       </Styled.Text>
