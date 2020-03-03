@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link, navigate } from '@reach/router';
@@ -90,17 +90,21 @@ function MembershipForm({
     },
   } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), { suspense: true });
 
-  const { register, getValues, handleSubmit } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     defaultValues,
   });
+  const watchingPrice = watch('price');
 
-  const [amount, setAmount] = useState(0);
+  const [settlementAmount, setSettlementAmount] = useState(0);
   const [isUnlimited, setIsUnlimited] = useState(!defaultValues.sponsorLimit);
 
-  const handleAmount = () => {
-    const value = getValues().price * (1 - fees.contentsDistributorRate / 100);
-    setAmount(parseFloat(value.toFixed(2)));
-  };
+  // Compute settlement amount when watching price or fees changed
+  useEffect(() => {
+    if (!fees) return;
+
+    const value = watchingPrice * (1 - fees.contentsDistributorRate / 100);
+    setSettlementAmount(parseFloat(value.toFixed(2)));
+  }, [watchingPrice, fees]);
 
   const [API] = useAPI();
 
@@ -122,6 +126,7 @@ function MembershipForm({
       }
       navigate(`/dashboard/${projectId}/memberships/`);
     } catch (error) {
+      // FIXME: Notify user when request failed
       console.log(error);
     }
   };
@@ -147,7 +152,6 @@ function MembershipForm({
           type="number"
           label="가격"
           columns={3}
-          onBlur={handleAmount}
           style={{
             gridColumn: '1 / -2',
           }}
@@ -159,7 +163,7 @@ function MembershipForm({
             <Styled.Fee>
               상품 판매 시 정산 금액 :
               <strong>
-                {` ${amount} PXL`}
+                {` ${settlementAmount} PXL`}
               </strong>
               {`(기본 수수료 ${fees.contentsDistributorRate}% 제외)`}
             </Styled.Fee>
