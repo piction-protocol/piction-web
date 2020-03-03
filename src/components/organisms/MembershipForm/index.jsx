@@ -136,7 +136,6 @@ function MembershipForm({
       console.log(error);
     }
   };
-  console.log(errors);
 
   return (
     <Styled.Form onSubmit={handleSubmit(onSubmit)}>
