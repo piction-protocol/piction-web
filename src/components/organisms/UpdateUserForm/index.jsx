@@ -79,6 +79,7 @@ function UpdateUserForm() {
   const { currentUser } = useCurrentUser();
   const [formData, { handleChange }] = useForm({
     username: currentUser.username,
+    email: currentUser.email,
     password: '',
     picture: '',
   });
@@ -102,8 +103,8 @@ function UpdateUserForm() {
       <Styled.InputGroup
         name="email"
         label="이메일"
-        value={currentUser.email}
-        disabled
+        value={formData.email}
+        onChange={handleChange}
       />
       <Styled.InputGroup
         name="username"
