@@ -9,6 +9,7 @@ import useAPI from 'hooks/useAPI';
 
 import Grid from 'styles/Grid';
 
+import ErrorMessage from 'components/atoms/ErrorMessage';
 import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
 import Heading from 'components/atoms/Heading';
@@ -90,7 +91,12 @@ function MembershipForm({
     },
   } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), { suspense: true });
 
-  const { register, handleSubmit, watch } = useForm({
+  const {
+    register,
+    errors,
+    handleSubmit,
+    watch,
+  } = useForm({
     defaultValues,
   });
   const watchingPrice = watch('price');
@@ -130,6 +136,7 @@ function MembershipForm({
       console.log(error);
     }
   };
+  console.log(errors);
 
   return (
     <Styled.Form onSubmit={handleSubmit(onSubmit)}>
@@ -170,7 +177,22 @@ function MembershipForm({
           )}
         </Styled.InputGroup>
       )}
-      <Styled.InputGroup inputRef={register} name="description" label="설명" placeholder="최대 100자" />
+      <Styled.InputGroup
+        inputRef={register({
+          maxLength: {
+            value: 100,
+            message: '설명은 최대 100자까지 입력 가능합니다.',
+          },
+        })}
+        name="description"
+        label="설명"
+        placeholder="최대 100자"
+      />
+      {errors.description && (
+        <ErrorMessage>
+          {errors.description.message}
+        </ErrorMessage>
+      )}
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
