@@ -9,7 +9,6 @@ import media, { mediaQuery } from 'styles/media';
 import useMedia from 'hooks/useMedia';
 import useCurrentUser from 'hooks/useCurrentUser';
 import usePictionChoices from 'hooks/usePictionChoices';
-import useCPR from 'hooks/useCPR';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
 
@@ -25,7 +24,6 @@ import { ReactComponent as InfoIcon } from 'images/ic-info.svg';
 import { ReactComponent as SettingIcon } from 'images/ic-setting.svg';
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
 import { ReactComponent as ChoiceIcon } from './ic-piction-symbol-black.svg';
-import { ReactComponent as CRPIcon } from './ic-cpr.svg';
 
 const Styled = {
   Section: styled.section`
@@ -218,7 +216,6 @@ function ProjectInfo({
 }) {
   const { projects } = usePictionChoices();
   const isPictionChoice = projects && projects.includes(project.uri);
-  const isCPRProject = useCPR(project.uri);
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { currentUser } = useCurrentUser();
@@ -338,12 +335,6 @@ function ProjectInfo({
             <Styled.Label>
               <ChoiceIcon />
               Piction&apos;s Choice
-            </Styled.Label>
-          )}
-          {isCPRProject && (
-            <Styled.Label>
-              <CRPIcon />
-              심폐소생전 지원 프로젝트
             </Styled.Label>
           )}
         </Styled.Aside>
