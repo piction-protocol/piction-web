@@ -103,7 +103,8 @@ function MembershipList({
             <Styled.MembershipInfo>
               <Styled.Status>
                 {
-                  isFull ? '후원 불가능'
+                  (isFull && !isSubscribing)
+                    ? '후원 불가능'
                     : isSubscribing && moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료')
                 }
               </Styled.Status>
