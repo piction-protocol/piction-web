@@ -254,7 +254,7 @@ function ProjectInfo({
               {(project.tags.length + project.categories.length > 0 && project.status === 'PUBLIC') && (
                 <Styled.Tags>
                   {project.categories.map(category => (
-                    <Styled.Category key={category.id}>{category.name}</Styled.Category>
+                    <Styled.Category key={category.id} id={category.id}>{category.name}</Styled.Category>
                   ))}
                   {project.tags.map(tag => (
                     <Styled.Tag key={tag}>{tag}</Styled.Tag>
