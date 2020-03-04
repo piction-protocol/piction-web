@@ -88,7 +88,7 @@ function PostPage({ projectId, postId }) {
     }
   };
 
-  const handleSponsorship = async () => {
+  const handleSubscription = async () => {
     try {
       const response = await API.membership.subscribe({
         projectId,
@@ -142,7 +142,7 @@ function PostPage({ projectId, postId }) {
         ) : (
           // FIXME: needSponsorship을 관리하는 코드를 개선
           post && post.membership && needSponsorship ? (
-            <Content.Locked handleSponsorship={handleSponsorship} post={post} />
+            <Content.Locked handleSubscription={handleSubscription} post={post} />
           ) : (
             <Content.Placeholder />
           )
