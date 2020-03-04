@@ -12,7 +12,7 @@ const Styled = {
     position: relative;
     width: 190px;
     height: 190px;
-    background-color: ${({ checked }) => (checked ? 'var(--blue)' : 'var(--gray--light)')};
+    background-color: ${({ checked }) => (checked ? 'var(--blue)' : '#d9d9d9')};
     cursor: pointer;
     color: var(--white);
   `,

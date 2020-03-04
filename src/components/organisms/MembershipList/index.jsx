@@ -63,7 +63,9 @@ const Styled = {
   `,
 };
 
-function MembershipList({ memberships, sponsored, location }) {
+function MembershipList({
+  isMyProject, memberships, sponsored, location,
+}) {
   const [minimum, setMinimum] = useState(location.state.post ? location.state.post.membership.level : 0);
 
   return (
@@ -101,7 +103,8 @@ function MembershipList({ memberships, sponsored, location }) {
             <Styled.MembershipInfo>
               <Styled.Status>
                 {
-                  isFull ? '후원 불가능'
+                  (isFull && !isSubscribing)
+                    ? '후원 불가능'
                     : isSubscribing && moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료')
                 }
               </Styled.Status>
@@ -110,13 +113,15 @@ function MembershipList({ memberships, sponsored, location }) {
                   후원 중
                 </SecondaryButton>
               ) : (
-                <PrimaryButton
-                  as={Link}
-                  to={`purchase/${membership.id}`}
-                  disabled={isDisabled || isFull}
-                >
-                  {`${membership.price} PXL / 30일`}
-                </PrimaryButton>
+                !isMyProject && (
+                  <PrimaryButton
+                    as={Link}
+                    to={`purchase/${membership.id}`}
+                    disabled={isDisabled || isFull}
+                  >
+                    {`${membership.price} PXL / 30일`}
+                  </PrimaryButton>
+                )
               )}
             </Styled.MembershipInfo>
           </Styled.Membership>
@@ -135,6 +140,7 @@ function MembershipList({ memberships, sponsored, location }) {
 export default MembershipList;
 
 MembershipList.propTypes = {
+  isMyProject: PropTypes.bool,
   memberships: PropTypes.array,
   sponsored: PropTypes.object,
   location: PropTypes.object,
