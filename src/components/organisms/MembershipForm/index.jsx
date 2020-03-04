@@ -94,6 +94,7 @@ function MembershipForm({
   const {
     register,
     errors,
+    setError,
     handleSubmit,
     watch,
   } = useForm({
@@ -133,6 +134,7 @@ function MembershipForm({
       navigate(`/dashboard/${projectId}/memberships/`);
     } catch (error) {
       // FIXME: Notify user when request failed
+      setError(error?.response?.data?.field, 'validation', error?.response?.data?.message);
       console.log(error);
     }
   };
@@ -150,10 +152,25 @@ function MembershipForm({
           </Styled.Level>
         </div>
       )}
-      <Styled.InputGroup inputRef={register} name="name" label="상품명" required />
+      <Styled.InputGroup inputRef={register} name="name" label="상품명" required>
+        {errors.name && (
+          <ErrorMessage>
+            {errors.name.message}
+          </ErrorMessage>
+        )}
+      </Styled.InputGroup>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
-          inputRef={register}
+          inputRef={register({
+            min: {
+              value: 1,
+              message: '1 이상 99,999 이하의 숫자를 입력해 주세요.',
+            },
+            max: {
+              value: 99999,
+              message: '1 이상 99,999 이하의 숫자를 입력해 주세요.',
+            },
+          })}
           name="price"
           type="number"
           label="가격"
@@ -173,6 +190,11 @@ function MembershipForm({
               </strong>
               {`(기본 수수료 ${fees.contentsDistributorRate}% 제외)`}
             </Styled.Fee>
+          )}
+          {errors.price && (
+            <ErrorMessage>
+              {errors.price.message}
+            </ErrorMessage>
           )}
         </Styled.InputGroup>
       )}
