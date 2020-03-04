@@ -27,7 +27,7 @@ const Styled = {
   `,
   Name: styled.h2`
     margin-bottom: 8px;
-    font-size: var(--font-size--big);
+    font-size: var(--font-size--large);
     font-weight: bold;
     ${placeholder}
   `,
@@ -45,7 +45,7 @@ const Styled = {
   `,
 };
 
-function FanPass({
+function Membership({
   level, name, postCount, description, className, children,
 }) {
   return (
@@ -72,7 +72,7 @@ function FanPass({
   );
 }
 
-FanPass.propTypes = {
+Membership.propTypes = {
   level: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   postCount: PropTypes.number,
@@ -81,7 +81,7 @@ FanPass.propTypes = {
   children: PropTypes.node,
 };
 
-FanPass.Placeholder = ({ className, children }) => (
+Membership.Placeholder = ({ className, children }) => (
   <Styled.Item
     className={className}
   >
@@ -102,9 +102,9 @@ FanPass.Placeholder = ({ className, children }) => (
   </Styled.Item>
 );
 
-FanPass.Placeholder.propTypes = {
+Membership.Placeholder.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
 };
 
-export default FanPass;
+export default Membership;

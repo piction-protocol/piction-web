@@ -14,10 +14,11 @@ import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 const ProjectForm = React.lazy(() => import('components/organisms/ProjectForm'));
 const PostForm = React.lazy(() => import('components/organisms/PostForm'));
 const DashboardPostList = React.lazy(() => import('components/organisms/DashboardPostList'));
-const UserList = React.lazy(() => import('components/organisms/UserList'));
+const SponsorList = React.lazy(() => import('components/organisms/SponsorList'));
 const SeriesListForm = React.lazy(() => import('components/organisms/SeriesListForm'));
-const DashboardFanPassList = React.lazy(() => import('components/organisms/DashboardFanPassList'));
-const FanPassForm = React.lazy(() => import('components/organisms/FanPassForm'));
+const DashboardMembershipList = React.lazy(() => import('components/organisms/DashboardMembershipList'));
+const MembershipForm = React.lazy(() => import('components/organisms/MembershipForm'));
+const CreatorProfileForm = React.lazy(() => import('components/organisms/CreatorProfileForm'));
 
 const Styled = {
   Router: styled(Router)`
@@ -75,12 +76,13 @@ function Dashboard() {
           <ProjectForm title="프로젝트 정보 수정" path=":projectId/info" />
           <DashboardPostList title="포스트 관리" path=":projectId/posts" />
           <SeriesListForm title="시리즈 관리" path=":projectId/series" />
-          <DashboardFanPassList title="FAN PASS 관리" path=":projectId/fanpass" />
-          <FanPassForm title="새 FAN PASS" path=":projectId/fanpass/new" />
-          <FanPassForm title="FAN PASS 수정" path=":projectId/fanpass/:fanPassId/edit" />
-          <UserList title="구독자 목록" path=":projectId/members" />
+          <DashboardMembershipList title="후원 플랜 관리" path=":projectId/memberships" />
+          <MembershipForm title="새 후원 플랜" path=":projectId/memberships/new" />
+          <MembershipForm title="후원 플랜 수정" path=":projectId/memberships/:membershipId/edit" />
+          <SponsorList title="구독자 목록" path=":projectId/members" />
           <PostForm title="새 포스트" path=":projectId/posts/new" />
           <PostForm title="포스트 수정" path=":projectId/posts/:postId/edit" />
+          <CreatorProfileForm title="크리에이터 정보 설정" path="creator-profile" />
           <NotFound default />
         </Styled.Router>
       </DashboardTemplate>

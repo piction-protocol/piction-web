@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Redirect, navigate } from '@reach/router';
 import styled from 'styled-components/macro';
@@ -11,20 +11,19 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
 
 import { GridStyle } from 'styles/Grid';
-import media, { mediaQuery } from 'styles/media';
 
 import GridTemplate from 'components/templates/GridTemplate';
-import Tabs from 'components/molecules/Tabs';
 import ProjectInfo from 'components/organisms/ProjectInfo';
-import AdultPopup from 'components/organisms/AdultPopup';
+import Tabs from 'components/molecules/Tabs';
+import media, { mediaQuery } from 'styles/media';
 
-import Posts from './Posts';
-import Series from './Series';
+const PostList = React.lazy(() => import('components/organisms/PostList'));
+const SeriesList = React.lazy(() => import('components/organisms/SeriesList'));
+const MembershipList = React.lazy(() => import('components/organisms/MembershipList'));
+const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
-  Router: styled(Router).attrs({
-    columns: 'var(--grid-columns)',
-  })`
+  Router: styled(Router)`
     grid-column: 1 / -1;
     ${GridStyle}
   `,
@@ -44,40 +43,33 @@ function ProjectPage({ projectId }) {
   const [API] = useCallback(useAPI(), [projectId]);
   const isDesktop = useMedia(mediaQuery.desktop);
 
-  const [isMyProject, setIsMyProject] = useState(false);
-
-  const { data: project, error } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
+  const { data: project, projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
-  const { data: recommendedProjects } = useSWR('/recommended/projects?size=5', { revalidateOnFocus: false });
-  const { data: fanPass } = useSWR(`/projects/${projectId}/fan-passes`);
-  const { data: subscription } = useSWR(() => (currentUser ? `/projects/${projectId}/fan-passes/subscription` : null));
-
-  useEffect(() => {
-    if (project && currentUser) {
-      if (currentUser.loginId === project.user.loginId) setIsMyProject(true);
-    }
-    return () => setIsMyProject(false);
-  }, [project, currentUser]);
+  const { data: [subscription, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
+  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
+  const isMyProject = currentUser?.loginId === project?.user.loginId;
 
   const handleSubscribe = async () => {
-    if (subscription) {
+    if (sponsored) {
       try {
-        await API.fanPass.unsubscribe({
+        await API.membership.unsubscribe({
           projectId,
-          fanPassId: fanPass[0].id,
+          membershipId: subscription.id,
         });
-      } finally {
-        mutate(`/projects/${projectId}/fan-passes/subscription`, null);
+        mutate(`/projects/${projectId}/memberships/sponsorship`, null);
+      } catch (error) {
+        console.log(error);
       }
     } else {
       try {
-        await API.fanPass.subscribe({
+        const { data } = await API.membership.subscribe({
           projectId,
-          fanPassId: fanPass[0].id,
-          subscriptionPrice: fanPass[0].subscriptionPrice,
+          membershipId: subscription.id,
+          sponsorshipPrice: subscription.price,
         });
-      } finally {
-        trigger(`/projects/${projectId}/fan-passes/subscription`);
+        mutate(`/projects/${projectId}/memberships/sponsorship`, data.membership);
+      } catch (error) {
+        console.log(error);
       }
     }
     trigger(`/projects/${projectId}`);
@@ -87,7 +79,7 @@ function ProjectPage({ projectId }) {
     setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
   };
 
-  if (error) {
+  if (projectError) {
     navigate('/404', { replace: true });
   }
 
@@ -96,9 +88,8 @@ function ProjectPage({ projectId }) {
       hero={project ? (
         <ProjectInfo
           project={project}
-          hasFanPasses={fanPass && fanPass.length > 1}
           isMyProject={isMyProject}
-          subscription={subscription}
+          sponsored={sponsored}
           handleSubscribe={handleSubscribe}
         />
       ) : (
@@ -114,24 +105,28 @@ function ProjectPage({ projectId }) {
         links={[
           { text: '포스트', to: 'posts' },
           { text: '시리즈', to: 'series' },
+          ...project?.activeMembership ? [{ text: '후원', to: 'memberships' }] : [],
         ]}
       />
 
       <Styled.Router primary={false}>
         <Redirect from="/" to="posts" noThrow />
-        <Posts
+        <PostList
           path="posts"
           projectId={projectId}
           project={project}
-          subscription={subscription}
+          sponsored={sponsored}
           isMyProject={isMyProject}
-          isDesktop={isDesktop}
-          series={series}
-          recommendedProjects={recommendedProjects}
         />
-        <Series
+        <SeriesList
           path="series"
           series={series}
+        />
+        <MembershipList
+          path="memberships"
+          memberships={memberships}
+          sponsored={sponsored}
+          isMyProject={isMyProject}
         />
       </Styled.Router>
     </GridTemplate>

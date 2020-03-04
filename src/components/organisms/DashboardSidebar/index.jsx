@@ -7,7 +7,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
-import { TertiaryButton } from 'components/atoms/Button';
+import { PrimaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as ExpandIcon } from 'images/ic-expand-more.svg';
 import { ReactComponent as OpenInNewIcon } from 'images/ic-open-in-new.svg';
@@ -72,12 +72,19 @@ const Styled = {
       margin-left: 4px;
     }
   `,
-  Button: styled(TertiaryButton)`
+  Buttons: styled.div`
+    display: flex;
+    flex-flow: column;
+    padding: 24px;
     ${media.mobile`
       display: none;
     `}
-    margin: 24px;
+  `,
+  Button: styled(PrimaryButton)`
     text-align: center;
+    & + & {
+      margin-top: 12px;
+    }
   `,
 };
 
@@ -118,7 +125,13 @@ function DashboardSidebar({ projects, ...props }) {
                     포스트 관리
                   </Styled.Link>
                   <Styled.Link to={`/dashboard/${project.uri}/series`}>시리즈 관리</Styled.Link>
-                  <Styled.Link to={`/dashboard/${project.uri}/members`}>구독자 목록</Styled.Link>
+                  <Styled.Link
+                    getProps={isPartiallyActive}
+                    to={`/dashboard/${project.uri}/memberships`}
+                  >
+                    후원 플랜 관리
+                  </Styled.Link>
+                  <Styled.Link to={`/dashboard/${project.uri}/members`}>구독/후원자 목록</Styled.Link>
                   <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
                   <Styled.Link as="a" target="_blank" href={`/project/${project.uri}`}>
                     프로젝트로 이동
@@ -130,9 +143,16 @@ function DashboardSidebar({ projects, ...props }) {
           ))
         )}
       </Location>
-      <Styled.Button as={Link} to="new-project">
-        새 프로젝트 만들기
-      </Styled.Button>
+      <Styled.Buttons>
+        <Styled.Button as={Link} to="new-project">
+          새 프로젝트 만들기
+        </Styled.Button>
+        {projects.length && (
+          <Styled.Button as={Link} to="creator-profile">
+            크리에이터 정보 설정
+          </Styled.Button>
+        )}
+      </Styled.Buttons>
     </Styled.Sidebar>
   );
 }

@@ -18,7 +18,6 @@ import ImageUploader from 'components/atoms/ImageUploader';
 const Styled = {
   Form: styled(Grid).attrs({
     as: 'form',
-    columns: 'var(--grid-columns)',
   })`
     font-size: var(--font-size--small);
   `,
@@ -29,9 +28,7 @@ const Styled = {
       white-space: nowrap;
     `}
   `,
-  ImageGroup: styled(Grid).attrs({
-    columns: 'var(--grid-columns)',
-  })`
+  ImageGroup: styled(Grid)`
     grid-column: 1 / -1;
     row-gap: 8px;
   `,
@@ -78,6 +75,7 @@ const Styled = {
 function UpdateUserForm() {
   const { currentUser } = useCurrentUser();
   const [formData, { handleChange }] = useForm({
+    email: currentUser.email,
     username: currentUser.username,
     email: currentUser.email,
     password: '',
@@ -105,6 +103,8 @@ function UpdateUserForm() {
         label="이메일"
         value={formData.email}
         onChange={handleChange}
+        autoComplete="email"
+        errorMessage={errorMessage.email}
       />
       <Styled.InputGroup
         name="username"

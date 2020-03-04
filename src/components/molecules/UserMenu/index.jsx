@@ -165,7 +165,7 @@ function UserMenu({ links }) {
                           {project.title}
                         </Styled.ProjectTitle>
                         <Styled.ProjectInfo>
-                          {`구독자 ${project.subscriptionUserCount}`}
+                          {`구독자 ${project.sponsorCount}`}
                         </Styled.ProjectInfo>
                       </Styled.ProjectTexts>
                     </Styled.Project>

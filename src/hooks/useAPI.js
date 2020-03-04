@@ -18,12 +18,7 @@ function useAPI() {
   };
 
   const my = {
-    wallet: () => API.get('my/wallet'),
     withdraw: params => API.post('my/wallet/withdrawals', params),
-    projects: () => API.get('my/projects'),
-    projectSubscriptions: params => API.get(`my/projects/${params.projectId}/subscriptions`, params),
-    posts: params => API.get(`my/projects/${params.projectId}/posts`, params),
-    subscriptions: params => API.get('my/subscriptions', params),
   };
 
   const resetPassword = {
@@ -54,17 +49,13 @@ function useAPI() {
     uploadWideThumbnail: params => API.patch('/projects/wide-thumbnail', params, patchConfig),
   };
 
-  const collection = {
-    getActive: params => API.get('/collections/active', params),
-  };
-
-  const fanPass = {
-    getAll: params => API.get(`/projects/${params.projectId}/fan-passes`),
-    create: params => API.post(`/projects/${params.projectId}/fan-passes`, params),
-    update: params => API.put(`/projects/${params.projectId}/fan-passes/${params.fanPassId}`, params),
-    delete: params => API.delete(`/projects/${params.projectId}/fan-passes/${params.fanPassId}`, params),
-    subscribe: params => API.post(`/projects/${params.projectId}/fan-passes/${params.fanPassId}/subscription`, params),
-    unsubscribe: params => API.delete(`/projects/${params.projectId}/fan-passes/${params.fanPassId}/subscription`, params),
+  const membership = {
+    getAll: params => API.get(`/projects/${params.projectId}/memberships`),
+    create: params => API.post(`/projects/${params.projectId}/memberships`, params),
+    update: params => API.put(`/projects/${params.projectId}/memberships/${params.membershipId}`, params),
+    delete: params => API.delete(`/projects/${params.projectId}/memberships/${params.membershipId}`, params),
+    subscribe: params => API.post(`/projects/${params.projectId}/memberships/${params.membershipId}/sponsorship`, params),
+    unsubscribe: params => API.delete(`/projects/${params.projectId}/memberships/${params.membershipId}/sponsorship`, params),
   };
 
   const recommended = {
@@ -95,6 +86,17 @@ function useAPI() {
     uploadPicture: params => API.patch('/users/me/picture', params, patchConfig),
   };
 
+  const creatorProfile = {
+    create: params => API.post('/my/creator-profiles', params),
+    update: params => API.put('/my/creator-profiles', params),
+  };
+
+  const newsletter = {
+    create: params => API.post('/users/newsletter', params),
+    delete: params => API.delete('/users/newsletter', params),
+    deleteByToken: params => API.delete(`/users/newsletter/token/${params.token}`, params),
+  };
+
   const token = {
     get: () => accessToken,
     create: (value, params) => setCookie('access_token', value, { ...params, path: '/' }),
@@ -111,12 +113,13 @@ function useAPI() {
     resetPassword,
     post,
     project,
-    collection,
-    fanPass,
+    membership,
     recommended,
     series,
     session,
     user,
+    creatorProfile,
+    newsletter,
     token,
   }, handleCommonError];
 }

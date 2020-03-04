@@ -12,9 +12,6 @@ const Styled = {
     position: relative;
     flex-flow: column;
     background-color: var(--white);
-    ${media.mobile`
-      text-align: center;
-    `}
   `,
   Covers: styled.div`
     display: flex;
@@ -26,6 +23,9 @@ const Styled = {
       z-index: 1;
       margin: 16px 16px 0 0;
       background-color: var(--white);
+      ${media.desktop`
+        margin: 24px 24px 0 0;
+      `}
     }
     &:last-child {
       position: absolute;
@@ -34,20 +34,20 @@ const Styled = {
       left: 16px;
       background-color: rgba(0, 0, 0, .1);
       filter: brightness(0.8);
+      ${media.desktop`
+        left: 24px;
+      `}
     }
   `,
   Title: styled.h3`
     margin-bottom: 8px;
-    font-size: var(--font-size--small);
+    font-size: var(--font-size--base);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    ${media.desktop`
-      font-weight: normal;
-    `}
   `,
   Text: styled.p`
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
   `,

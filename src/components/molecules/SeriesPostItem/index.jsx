@@ -61,7 +61,7 @@ const Styled = {
       font-size: var(--font-size--base);
     `}
   `,
-  FanPass: styled.p`
+  Membership: styled.p`
     color: var(--red);
     font-size: var(--font-size--small);
   `,
@@ -72,7 +72,7 @@ const Styled = {
 };
 
 function SeriesPostItem({
-  index, title, cover = null, publishedAt, fanPass, isViewable, ...props
+  index, title, cover = null, publishedAt, membership, isViewable, ...props
 }) {
   return (
     <Styled.Item
@@ -90,10 +90,9 @@ function SeriesPostItem({
             {moment(publishedAt).format('YYYY년 MMMM Do hh:mm 발행')}
           </Styled.PublishedAt>
         ) : (
-          <Styled.FanPass>
-            {fanPass.subscriptionPrice > 0 && `${fanPass.name} 이상 `}
-            구독자 전용
-          </Styled.FanPass>
+          <Styled.Membership>
+            {membership.price > 0 ? `${membership.name} 이상 후원자 전용` : '구독자 전용'}
+          </Styled.Membership>
         )}
       </Styled.Text>
     </Styled.Item>
@@ -105,7 +104,7 @@ SeriesPostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   publishedAt: PropTypes.number.isRequired,
-  fanPass: PropTypes.object,
+  membership: PropTypes.object,
   isViewable: PropTypes.bool.isRequired,
 };
 

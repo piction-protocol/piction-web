@@ -21,7 +21,6 @@ import NovaWalletLogo from 'images/img-logo-nova-wallet.png';
 const Styled = {
   Form: styled(Grid).attrs({
     as: 'form',
-    columns: 'var(--grid-columns)',
   })`
     grid-column: 1 / -1;
   `,

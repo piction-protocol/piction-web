@@ -5,18 +5,15 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 
-import Grid from 'styles/Grid';
-
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
 import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 
 import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
-  Item: styled(Grid).attrs({
-    columns: 9,
-    as: 'article',
-  })`
+  Item: styled.article`
+    display: flex;
+    flex-flow: row wrap;
     position: relative;
     border: 1px solid var(--gray--light);
     background-color: var(--white);
@@ -45,31 +42,33 @@ const Styled = {
       }
     }
   `,
-  Link: styled(Grid).attrs({
-    columns: 7,
-    as: 'a',
-  })`
-    grid-column: span 7;
+  Link: styled.a`
+    display: flex;
+    flex: 1;
+    flex-flow: row wrap;
   `,
   Cover: styled(Cover)`
-    grid-column: span 3;
+    width: 111px;
+    margin-right: 20px;
   `,
   Text: styled.div`
     display: flex;
+    flex: 1;
     flex-flow: column;
-    grid-column: span 4;
     justify-content: center;
+    overflow: hidden;
+    margin-right: 16px;
   `,
   Series: styled.p`
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
   `,
   Title: styled.h2`
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     overflow: hidden;
     font-size: var(--font-size--base);
-    font-weight: normal;
+    font-weight: bold;
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
@@ -78,7 +77,6 @@ const Styled = {
     font-size: var(--font-size--small);
   `,
   Buttons: styled.div`
-    grid-column: span 2;
     display: flex;
     align-items: center;
     margin-left: auto;
@@ -96,7 +94,7 @@ const Styled = {
 };
 
 function DashboardPostItem({
-  id, projectId, title, cover, series, fanPass,
+  id, projectId, title, cover, series, membership,
   createdAt, publishedAt, status, handleDelete, ...props
 }) {
   return (
@@ -122,7 +120,7 @@ function DashboardPostItem({
         <Styled.Text>
           <Styled.Series>
             {series ? series.name : '미지정'}
-            {fanPass && ` · ${fanPass.level > 0 ? `티어 ${fanPass.level}` : '무료 티어'}`}
+            {membership && ` · ${membership.level > 0 ? `티어 ${membership.level}` : '구독자 공개'}`}
           </Styled.Series>
           <Styled.Title>
             {title}
@@ -150,7 +148,7 @@ DashboardPostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   series: PropTypes.object,
-  fanPass: PropTypes.object,
+  membership: PropTypes.object,
   createdAt: PropTypes.number.isRequired,
   publishedAt: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,

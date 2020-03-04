@@ -15,16 +15,23 @@ import Cover from 'components/atoms/ContentImage/Cover';
 const Styled = {
   Item: styled.article`
     display: flex;
-    flex-flow: column;
-    padding-bottom: var(--row-gap);
+    position: relative;
+    flex-flow: ${props => (props.theme.viewType === 'LIST' ? 'row wrap' : 'column')};
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
   `,
   CoverWrapper: styled.div`
     position: relative;
-    margin-bottom: 16px;
-    padding-bottom: 37.5%;
     overflow: hidden;
+    ${props => (props.theme.viewType === 'LIST' ? `
+      width: 80px;
+      height: 80px;
+      margin-right: 24px;
+    ` : `
+      margin-bottom: 16px;
+      padding-bottom: 100%;
+    `)};
   `,
   Cover: styled(Cover)`
     position: absolute;
@@ -53,58 +60,58 @@ const Styled = {
     justify-content: center;
     background-color: rgba(0, 0, 0, .3);
     color: var(--white);
-    font-size: var(--font-size--small);
-    text-align: center;
-    white-space: pre-line;
-    ${media.desktop`
-      font-size: var(--font-size--base);
-      line-height: var(--line-height--content);
-    `}
   `,
   LockedIcon: styled(LockedIcon)`
-    margin-bottom: 8px;
-    ${media.desktop`
-      width: 48px;
-      height: 48px;
-      margin-bottom: 16px;
-    `}
+    width: 80px;
+    height: 80px;
   `,
   LockedCover: styled(Cover)`
-    filter: blur(16px);
-    ${media.desktop`
-      filter: blur(24px);
-    `}
-  `,
-  Series: styled.p`
-    margin-bottom: 8px;
-    color: var(--gray--dark);
-    font-size: var(--font-size--small);
-  `,
-  Title: styled.h2`
-    margin-bottom: 4px;
-    font-size: var(--font-size--small);
-    ${media.desktop`
-      font-size: var(--font-size--base);
-    `}
-    ${placeholder}
+    filter: blur(24px);
   `,
   Text: styled.div`
     display: flex;
-    align-items: flex-end;
+    flex-flow: column;
+    flex: 1;
+    overflow: hidden;
+  `,
+  Series: styled.p`
+    margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '2px' : '4px')};
+    color: var(--gray--dark);
+    font-size: var(--font-size--small);
+    ${placeholder}
+  `,
+  Title: styled.h2`
+    max-height: 3em;
+    margin-bottom: 8px;
+    padding-right: 8px;
+    overflow: hidden;
+    font-size: var(--font-size--base);
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    ${media.desktop`
+      margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '8px' : '12px')};
+    `}
+    p + & {
+      white-space: nowrap;
+    }
+    ${placeholder}
   `,
   PublishedAt: styled.p`
+    margin-top: auto;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
   LikeCount: styled.span`
     display: flex;
+    position: absolute;
     align-items: center;
-    margin-left: auto;
+    bottom: 20px;
+    right: 0;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     ${media.desktop`
-      margin-right: 24px;
+      right: 8px;
     `}
   `,
   ThumbupIcon: styled(ThumbupIcon)`
@@ -113,7 +120,7 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, fanPass, ...props
+  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, ...props
 }) {
   return (
     <Styled.Item
@@ -123,29 +130,21 @@ function PostItem({
         <Styled.Locked>
           <Styled.LockedText>
             <Styled.LockedIcon />
-            {fanPass.subscriptionPrice > 0 && `${fanPass.name} 이상\n`}
-            구독자만 이용 가능한 포스트입니다.
           </Styled.LockedText>
           <Styled.LockedCover
-            ratio={960 / 360}
             image={cover}
           />
         </Styled.Locked>
       ) : (
-        cover && (
-          <Styled.CoverWrapper>
-            <Styled.Cover
-              ratio={960 / 360}
-              image={cover}
-            />
-          </Styled.CoverWrapper>
-        )
+        <Styled.CoverWrapper>
+          <Styled.Cover
+            image={cover}
+          />
+        </Styled.CoverWrapper>
       )}
-      {series && (
-        <Styled.Series>{`시리즈 · ${series.name}`}</Styled.Series>
-      )}
-      <Styled.Title>{title}</Styled.Title>
       <Styled.Text>
+        {series && <Styled.Series>{series.name}</Styled.Series>}
+        <Styled.Title>{title}</Styled.Title>
         <Styled.PublishedAt>
           {moment(publishedAt).format('MMMM Do')}
         </Styled.PublishedAt>
@@ -164,12 +163,12 @@ PostItem.Placeholder = () => (
   <Styled.Item>
     <Styled.CoverWrapper>
       <Styled.Cover
-        ratio={960 / 360}
         image={null}
       />
     </Styled.CoverWrapper>
-    <Styled.Title isPlaceholder>Title</Styled.Title>
     <Styled.Text>
+      <Styled.Series isPlaceholder>Series</Styled.Series>
+      <Styled.Title isPlaceholder>Title</Styled.Title>
       <Styled.PublishedAt isPlaceholder>
         Published at
       </Styled.PublishedAt>
@@ -181,7 +180,6 @@ PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   series: PropTypes.object,
-  fanPass: PropTypes.object,
   publishedAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,

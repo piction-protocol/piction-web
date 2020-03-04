@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link, navigate } from '@reach/router';
@@ -9,6 +9,7 @@ import useAPI from 'hooks/useAPI';
 
 import Grid from 'styles/Grid';
 
+import ErrorMessage from 'components/atoms/ErrorMessage';
 import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
 import Heading from 'components/atoms/Heading';
@@ -55,7 +56,7 @@ const Styled = {
     grid-column : 1 / -1;
     color: var(--blue);
   `,
-  SubscriptionLimit: styled.label`
+  SponsorLimit: styled.label`
     display: flex;
     grid-row: 2;
     align-items: center;
@@ -74,10 +75,10 @@ const Styled = {
   `,
 };
 
-function FanPassForm({
+function MembershipForm({
   title,
   projectId,
-  fanPassId,
+  membershipId,
 }) {
   const { data: fees } = useSWR(`projects/${projectId}/fees`, {
     revalidateOnFocus: false,
@@ -85,43 +86,53 @@ function FanPassForm({
 
   const {
     data: defaultValues = {
-      subscriptionPrice: 0,
-      subscriptionLimit: 0,
+      price: 0,
+      sponsorLimit: 0,
     },
-  } = useSWR(() => (fanPassId ? `/projects/${projectId}/fan-passes/${fanPassId}` : null), { suspense: true });
+  } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), { suspense: true });
 
-  const { register, getValues, handleSubmit } = useForm({
+  const {
+    register,
+    errors,
+    handleSubmit,
+    watch,
+  } = useForm({
     defaultValues,
   });
+  const watchingPrice = watch('price');
 
-  const [amount, setAmount] = useState(0);
-  const [isUnlimited, setIsUnlimited] = useState(!defaultValues.subscriptionLimit);
+  const [settlementAmount, setSettlementAmount] = useState(0);
+  const [isUnlimited, setIsUnlimited] = useState(!defaultValues.sponsorLimit);
 
-  const handleAmount = () => {
-    const value = getValues().subscriptionPrice * (1 - fees.contentsDistributorRate / 100);
-    setAmount(parseFloat(value.toFixed(2)));
-  };
+  // Compute settlement amount when watching price or fees changed
+  useEffect(() => {
+    if (!fees) return;
+
+    const value = watchingPrice * (1 - fees.contentsDistributorRate / 100);
+    setSettlementAmount(parseFloat(value.toFixed(2)));
+  }, [watchingPrice, fees]);
 
   const [API] = useAPI();
 
   const onSubmit = async (data) => {
     try {
-      if (fanPassId) {
-        await API.fanPass.update({
+      if (membershipId) {
+        await API.membership.update({
           ...data,
           projectId,
-          fanPassId,
-          subscriptionLimit: isUnlimited ? null : data.subscriptionLimit,
+          membershipId,
+          sponsorLimit: isUnlimited ? null : data.sponsorLimit,
         });
       } else {
-        await API.fanPass.create({
+        await API.membership.create({
           ...data,
           projectId,
-          subscriptionLimit: isUnlimited ? null : data.subscriptionLimit,
+          sponsorLimit: isUnlimited ? null : data.sponsorLimit,
         });
       }
-      navigate(`/dashboard/${projectId}/fanpass/`);
+      navigate(`/dashboard/${projectId}/memberships/`);
     } catch (error) {
+      // FIXME: Notify user when request failed
       console.log(error);
     }
   };
@@ -129,7 +140,7 @@ function FanPassForm({
   return (
     <Styled.Form onSubmit={handleSubmit(onSubmit)}>
       <Heading>{title}</Heading>
-      {fanPassId && (
+      {membershipId && (
         <div>
           <Label>
             티어
@@ -140,14 +151,13 @@ function FanPassForm({
         </div>
       )}
       <Styled.InputGroup inputRef={register} name="name" label="상품명" required />
-      {(!fanPassId || defaultValues.level > 0) && (
+      {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           inputRef={register}
-          name="subscriptionPrice"
+          name="price"
           type="number"
           label="가격"
           columns={3}
-          onBlur={handleAmount}
           style={{
             gridColumn: '1 / -2',
           }}
@@ -159,19 +169,34 @@ function FanPassForm({
             <Styled.Fee>
               상품 판매 시 정산 금액 :
               <strong>
-                {` ${amount} PXL`}
+                {` ${settlementAmount} PXL`}
               </strong>
               {`(기본 수수료 ${fees.contentsDistributorRate}% 제외)`}
             </Styled.Fee>
           )}
         </Styled.InputGroup>
       )}
-      <Styled.InputGroup inputRef={register} name="description" label="설명" placeholder="최대 100자" />
-      {(!fanPassId || defaultValues.level > 0) && (
+      <Styled.InputGroup
+        inputRef={register({
+          maxLength: {
+            value: 100,
+            message: '설명은 최대 100자까지 입력 가능합니다.',
+          },
+        })}
+        name="description"
+        label="설명"
+        placeholder="최대 100자"
+      />
+      {errors.description && (
+        <ErrorMessage>
+          {errors.description.message}
+        </ErrorMessage>
+      )}
+      {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
           inputRef={register}
-          name="subscriptionLimit"
+          name="sponsorLimit"
           label="구독자 수 제한"
           required={!isUnlimited}
           placeholder="0"
@@ -181,21 +206,21 @@ function FanPassForm({
             gridRow: 3,
           }}
         >
-          <Styled.SubscriptionLimit>
+          <Styled.SponsorLimit>
             <Checkbox
               checked={isUnlimited}
               onChange={() => setIsUnlimited(prev => !prev)}
               style={{ marginRight: 16 }}
             />
             제한 없음
-          </Styled.SubscriptionLimit>
+          </Styled.SponsorLimit>
         </Styled.InputGroup>
       )}
       <Styled.SubmitGroup>
         <Styled.Submit value="저장" />
         <SecondaryButton
           as={Link}
-          to={`/dashboard/${projectId}/fanpass/`}
+          to={`/dashboard/${projectId}/membership/`}
         >
           취소
         </SecondaryButton>
@@ -204,10 +229,10 @@ function FanPassForm({
   );
 }
 
-FanPassForm.propTypes = {
+MembershipForm.propTypes = {
   title: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
-  fanPassId: PropTypes.string,
+  membershipId: PropTypes.string,
 };
 
-export default FanPassForm;
+export default MembershipForm;

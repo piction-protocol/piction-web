@@ -26,13 +26,14 @@ const Search = React.lazy(() => import('pages/Search'));
 const TagPage = React.lazy(() => import('pages/TagPage'));
 const CategoryPage = React.lazy(() => import('pages/CategoryPage'));
 const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
-const FanPassPage = React.lazy(() => import('pages/FanPassPage'));
 const PurchasePage = React.lazy(() => import('pages/PurchasePage'));
 const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
 const PostPage = React.lazy(() => import('pages/PostPage'));
+const CreatorProfilePage = React.lazy(() => import('pages/CreatorProfilePage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const WalletPage = React.lazy(() => import('pages/WalletPage'));
 const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
+const OptOut = React.lazy(() => import('pages/OptOut'));
 const Dashboard = React.lazy(() => import('Dashboard'));
 
 const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
@@ -102,10 +103,10 @@ function App() {
                     <CategoryPage path="category/:categoryId" />
 
                     <ProjectPage path="project/:projectId/*" />
-                    <FanPassPage path="project/:projectId/fanpass" />
-                    <PurchasePage path="project/:projectId/fanpass/purchase/:fanPassId" />
+                    <PurchasePage path="project/:projectId/memberships/purchase/:membershipId" />
                     <SeriesPage path="project/:projectId/series/:seriesId" />
                     <PostPage path="project/:projectId/posts/:postId" />
+                    <CreatorProfilePage path="creator-profile/:creatorId" />
 
                     <MyPage path="my/*" />
                     <WalletPage path="wallet/*" />
@@ -119,6 +120,8 @@ function App() {
                     <Hongik path="campaigns/hongik_2019" />
 
                     <CreatorsGuide path="creatorsguide" />
+
+                    <OptOut path="newsletter/unsubscribe" />
 
                     <Redirect from="/en" to="/" noThrow />
                     <Redirect from="/ko" to="/" noThrow />

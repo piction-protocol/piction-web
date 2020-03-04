@@ -27,7 +27,7 @@
     "react-tagsinput": "^3.19.0",
     "styled-components": "^5.0.0",
     "swiper": "^5.2.0",
-    "swr": "0.1.9"
+    "swr": "^0.1.17"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

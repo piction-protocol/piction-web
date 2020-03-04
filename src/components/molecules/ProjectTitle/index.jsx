@@ -29,7 +29,7 @@ const Styled = {
       font-size: var(--font-size--small);
     `}
   `,
-  SubscriptionCount: styled.div`
+  SponsorCount: styled.div`
     display: inline-flex;
     flex: 0 0 auto;
     align-items: center;
@@ -62,10 +62,10 @@ function ProjectTitle({ project = {} }) {
           {project.title}
         </Link>
       </Styled.Title>
-      <Styled.SubscriptionCount>
+      <Styled.SponsorCount>
         <Styled.PeopleIcon />
-        {`구독자 수 ${project.subscriptionUserCount}`}
-      </Styled.SubscriptionCount>
+        {`구독자 수 ${project.sponsorCount}`}
+      </Styled.SponsorCount>
     </>
   );
 }

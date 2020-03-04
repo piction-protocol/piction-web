@@ -87,13 +87,14 @@ const Styled = {
   `,
 };
 
+// FIXME: SWR, react-hook-form을 사용하는 방향으로 리팩토링
 function PostForm({ title, projectId, postId = null }) {
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     content: '',
     cover: '',
     seriesId: '',
-    fanPassId: '',
+    membershipId: '',
     publishNow: true,
     publishingDate: moment().format('YYYY-MM-DD'),
     publishingTime: moment().format('HH:mm:ss'),
@@ -104,7 +105,7 @@ function PostForm({ title, projectId, postId = null }) {
   const [errorMessage, setErrorMessage] = useState({});
   const [isCreating, setIsCreating] = useState(false);
   const [series, setSeries] = useState([]);
-  const [fanPass, setFanPass] = useState([]);
+  const [membership, setMembership] = useState([]);
   const [API] = useCallback(useAPI(), []);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ function PostForm({ title, projectId, postId = null }) {
         const { cover, ...defaultFormData } = {
           ...data,
           seriesId: data.series ? data.series.id : '',
-          fanPassId: data.fanPass ? data.fanPass.id : '',
+          membershipId: data.membership ? data.membership.id : '',
           publishNow: false,
           publishingDate: moment(data.publishedAt).format('YYYY-MM-DD'),
           publishingTime: moment(data.publishedAt).format('HH:mm:ss'),
@@ -133,9 +134,9 @@ function PostForm({ title, projectId, postId = null }) {
     const getSeries = async () => {
       try {
         const { data: seriesData } = await API.series(projectId).getAll();
-        const { data: fanPassData } = await API.fanPass.getAll({ projectId });
+        const { data: membershipData } = await API.membership.getAll({ projectId });
         setSeries(seriesData);
-        setFanPass(fanPassData);
+        setMembership(membershipData);
       } catch (error) {
         console.log(error);
       }
@@ -147,7 +148,7 @@ function PostForm({ title, projectId, postId = null }) {
         content: '',
         cover: '',
         seriesId: '',
-        fanPassId: '',
+        membershipId: '',
         publishNow: true,
         publishingDate: moment().format('YYYY-MM-DD'),
         publishingTime: moment().format('HH:mm:ss'),
@@ -179,7 +180,7 @@ function PostForm({ title, projectId, postId = null }) {
               : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
           },
           postId,
-          fanPassId: formData.status === 'FAN_PASS' ? formData.fanPassId : null,
+          membershipId: formData.status === 'MEMBERSHIP' ? formData.membershipId : null,
         });
       } else {
         await API.post(projectId).create({
@@ -187,7 +188,7 @@ function PostForm({ title, projectId, postId = null }) {
           publishedAt: formData.publishNow
             ? Date.now()
             : moment(formData.publishingDate) + moment.duration(formData.publishingTime),
-          fanPassId: formData.status === 'FAN_PASS' ? formData.fanPassId : null,
+          membershipId: formData.status === 'MEMBERSHIP' ? formData.membershipId : null,
         });
       }
       navigate(`/dashboard/${projectId}/posts`);
@@ -273,19 +274,20 @@ function PostForm({ title, projectId, postId = null }) {
           <Radio
             name="status"
             onChange={handleChange}
-            value="FAN_PASS"
-            checked={formData.status === 'FAN_PASS'}
+            value="MEMBERSHIP"
+            checked={formData.status === 'MEMBERSHIP'}
           >
-            구독자 공개
+            구독/후원자 공개
+            <br />
             <Select
-              name="fanPassId"
-              disabled={formData.status !== 'FAN_PASS'}
-              value={formData.fanPassId}
+              name="membershipId"
+              disabled={formData.status !== 'MEMBERSHIP'}
+              value={formData.membershipId}
               onChange={handleChange}
               options={[
                 { text: '옵션 선택', value: 'null' },
-                ...fanPass.map(item => ({
-                  text: item.level > 0 ? `티어 ${item.level} 이상` : '무료 티어 이상',
+                ...membership.map(item => ({
+                  text: item.level > 0 ? `티어 ${item.level} 이상` : '구독자 공개',
                   value: item.id,
                 })),
               ]}
@@ -300,9 +302,9 @@ function PostForm({ title, projectId, postId = null }) {
           >
             비공개
           </Radio>
-          {errorMessage.fanPassId && (
+          {errorMessage.membershipId && (
             <ErrorMessage>
-              {errorMessage.fanPassId}
+              {errorMessage.membershipId}
             </ErrorMessage>
           )}
         </Styled.Group>
