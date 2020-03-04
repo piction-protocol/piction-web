@@ -17,6 +17,7 @@ const Styled = {
     display: flex;
     position: relative;
     flex-flow: ${props => (props.theme.viewType === 'LIST' ? 'row wrap' : 'column')};
+    align-items: ${props => (props.theme.viewType === 'LIST' ? 'center' : 'stretch')};
     padding-bottom: 20px;
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
@@ -91,9 +92,11 @@ const Styled = {
     ${media.desktop`
       margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '8px' : '12px')};
     `}
-    p + & {
-      white-space: nowrap;
-    }
+    ${props => (props.theme.viewType === 'LIST' ? 'white-space: nowrap;' : `
+      p + & {
+        white-space: nowrap;
+      }
+    `)}
     ${placeholder}
   `,
   PublishedAt: styled.p`
