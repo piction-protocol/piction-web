@@ -100,10 +100,12 @@ function MembershipList({ memberships, sponsored, location }) {
           <Styled.Membership {...membership} postCount={postCount} key={membership.id}>
             <Styled.MembershipInfo>
               <Styled.Status>
-                {
-                  isFull ? '후원 불가능'
-                    : isSubscribing && moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료')
-                }
+                {isSubscribing
+                  ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료')
+                  : membership.sponsorLimit && (
+                    isFull ? '후원 불가능'
+                      : `${membership.sponsorLimit - membership.sponsorCount}명 남음`
+                  )}
               </Styled.Status>
               {isSubscribing ? (
                 <SecondaryButton>
