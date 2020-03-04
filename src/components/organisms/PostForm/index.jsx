@@ -273,7 +273,12 @@ function PostForm({ title, projectId, postId = null }) {
           </Radio>
           <Radio
             name="status"
-            onChange={handleChange}
+            onChange={(event) => {
+              handleChange(event);
+              if (!formData.membershipId) {
+                setFormData(prevFormData => ({ ...prevFormData, membershipId: membership[0].id }));
+              }
+            }}
             value="MEMBERSHIP"
             checked={formData.status === 'MEMBERSHIP'}
           >
