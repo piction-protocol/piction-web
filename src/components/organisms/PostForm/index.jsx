@@ -285,7 +285,6 @@ function PostForm({ title, projectId, postId = null }) {
               value={formData.membershipId}
               onChange={handleChange}
               options={[
-                { text: '옵션 선택', value: 'null' },
                 ...membership.map(item => ({
                   text: item.level > 0 ? `티어 ${item.level} 이상` : '구독자 공개',
                   value: item.id,
