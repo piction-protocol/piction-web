@@ -14,7 +14,10 @@ import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
 import Heading from 'components/atoms/Heading';
 import Checkbox from 'components/atoms/Checkbox';
-import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
+import { PrimaryButton, SecondaryButton, TertiaryButton } from 'components/atoms/Button';
+import Modal from 'components/externals/Modal';
+
+import { ReactComponent as TrashbinIcon } from './ic-trashbin.svg';
 
 const Styled = {
   Form: styled(Grid).attrs({
@@ -73,6 +76,20 @@ const Styled = {
   }))`
     margin-right: 16px;
   `,
+  DeleteMembershipButton: styled(TertiaryButton).attrs(() => ({
+    type: 'button',
+  }))`
+    display: flex;
+    margin-left: auto;
+    color: var(--red);
+    font-weight: normal;
+  `,
+  DangerousButton: styled(PrimaryButton)`
+    background-color: var(--red);
+  `,
+  ModalBody: styled.div`
+    margin-bottom: 24px;
+  `,
 };
 
 function MembershipForm({
@@ -94,6 +111,7 @@ function MembershipForm({
   const {
     register,
     errors,
+    setError,
     handleSubmit,
     watch,
   } = useForm({
@@ -103,6 +121,8 @@ function MembershipForm({
 
   const [settlementAmount, setSettlementAmount] = useState(0);
   const [isUnlimited, setIsUnlimited] = useState(!defaultValues.sponsorLimit);
+  const [isDeletingMembership, setIsDeletingMembership] = useState(false);
+  const [canDeleteMembership, setCanDeleteMembership] = useState(true);
 
   // Compute settlement amount when watching price or fees changed
   useEffect(() => {
@@ -113,6 +133,15 @@ function MembershipForm({
   }, [watchingPrice, fees]);
 
   const [API] = useAPI();
+
+  const deleteMembership = async () => {
+    try {
+      await API.membership.delete({ projectId, membershipId });
+      navigate(`/dashboard/${projectId}/memberships/`);
+    } catch (ex) {
+      setCanDeleteMembership(false);
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -132,7 +161,7 @@ function MembershipForm({
       }
       navigate(`/dashboard/${projectId}/memberships/`);
     } catch (error) {
-      // FIXME: Notify user when request failed
+      setError(error?.response?.data?.field, 'validation', error?.response?.data?.message);
       console.log(error);
     }
   };
@@ -150,10 +179,25 @@ function MembershipForm({
           </Styled.Level>
         </div>
       )}
-      <Styled.InputGroup inputRef={register} name="name" label="상품명" required />
+      <Styled.InputGroup inputRef={register} name="name" label="상품명" required>
+        {errors.name && (
+          <ErrorMessage>
+            {errors.name.message}
+          </ErrorMessage>
+        )}
+      </Styled.InputGroup>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
-          inputRef={register}
+          inputRef={register({
+            min: {
+              value: 1,
+              message: '1 이상 99,999 이하의 숫자를 입력해 주세요.',
+            },
+            max: {
+              value: 99999,
+              message: '1 이상 99,999 이하의 숫자를 입력해 주세요.',
+            },
+          })}
           name="price"
           type="number"
           label="가격"
@@ -174,6 +218,11 @@ function MembershipForm({
               {`(기본 수수료 ${fees.contentsDistributorRate}% 제외)`}
             </Styled.Fee>
           )}
+          {errors.price && (
+            <ErrorMessage>
+              {errors.price.message}
+            </ErrorMessage>
+          )}
         </Styled.InputGroup>
       )}
       <Styled.InputGroup
@@ -186,12 +235,13 @@ function MembershipForm({
         name="description"
         label="설명"
         placeholder="최대 100자"
-      />
-      {errors.description && (
-        <ErrorMessage>
-          {errors.description.message}
-        </ErrorMessage>
-      )}
+      >
+        {errors.description && (
+          <ErrorMessage>
+            {errors.description.message}
+          </ErrorMessage>
+        )}
+      </Styled.InputGroup>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
@@ -216,7 +266,7 @@ function MembershipForm({
           </Styled.SponsorLimit>
         </Styled.InputGroup>
       )}
-      <Styled.SubmitGroup>
+      <Styled.SubmitGroup style={{ display: 'flex' }}>
         <Styled.Submit value="저장" />
         <SecondaryButton
           as={Link}
@@ -224,7 +274,29 @@ function MembershipForm({
         >
           취소
         </SecondaryButton>
+        <Styled.DeleteMembershipButton onClick={() => setIsDeletingMembership(true)}>
+          <TrashbinIcon />
+          플랜 삭제
+        </Styled.DeleteMembershipButton>
       </Styled.SubmitGroup>
+
+
+      {isDeletingMembership && (
+        <Modal close={() => setIsDeletingMembership(false)}>
+          {canDeleteMembership ? (
+            <>
+              <Styled.ModalBody>선택한 후원 플랜을 삭제하시겠습니까?</Styled.ModalBody>
+              <Styled.DangerousButton onClick={deleteMembership}>삭제</Styled.DangerousButton>
+              <TertiaryButton onClick={() => setIsDeletingMembership(false)}>취소</TertiaryButton>
+            </>
+          ) : (
+            <>
+              <Styled.ModalBody>선택한 후원 플랜과 연결된 포스트가 있거나 1명 이상의 구독자가 있어서 삭제가 불가능합니다.</Styled.ModalBody>
+              <PrimaryButton onClick={() => setIsDeletingMembership(false)}>확인</PrimaryButton>
+            </>
+          )}
+        </Modal>
+      )}
     </Styled.Form>
   );
 }
