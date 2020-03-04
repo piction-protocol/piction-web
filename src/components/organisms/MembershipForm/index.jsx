@@ -235,12 +235,13 @@ function MembershipForm({
         name="description"
         label="설명"
         placeholder="최대 100자"
-      />
-      {errors.description && (
-        <ErrorMessage>
-          {errors.description.message}
-        </ErrorMessage>
-      )}
+      >
+        {errors.description && (
+          <ErrorMessage>
+            {errors.description.message}
+          </ErrorMessage>
+        )}
+      </Styled.InputGroup>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
