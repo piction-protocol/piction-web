@@ -77,6 +77,7 @@ function UpdateUserForm() {
   const [formData, { handleChange }] = useForm({
     email: currentUser.email,
     username: currentUser.username,
+    email: currentUser.email,
     password: '',
     picture: '',
   });
@@ -100,9 +101,9 @@ function UpdateUserForm() {
       <Styled.InputGroup
         name="email"
         label="이메일"
-        autoComplete="email"
+        value={formData.email}
         onChange={handleChange}
-        value={currentUser.email}
+        autoComplete="email"
         errorMessage={errorMessage.email}
       />
       <Styled.InputGroup
