@@ -53,7 +53,13 @@ const Styled = {
     font-size: var(--font-size--small);
     font-weight: normal;
   `,
+  SectionLabel: styled.h2`
+    color: #bababa;
+    font-size: var(--font-size--base);
+    margin-bottom: 4px;
+  `,
   Name: styled.p`
+    margin-bottom: 16px;
     font-size: var(--font-size--base);
     font-weight: bold;
     ${placeholder}
@@ -91,18 +97,22 @@ const Styled = {
   `,
   Price: styled.p`
     margin-bottom: 8px;
+    font-size: var(--font-size--large);
     font-family: var(--poppins);
     ${placeholder}
   `,
   Date: styled.p`
-    color: #999999;
-    font-size: var(--font-size--small);
+    color: var(--black);
+    font-weight: bold;
+    font-size: var(--font-size--base);
+    margin-bottom: 16px;
   `,
   Notice: styled.p`
-    font-size: var(--font-size--tiny);
+    font-size: var(--font-size--small);
   `,
   CheckboxLabel: styled.label`
     display: flex;
+    align-items: center;
     margin-top: var(--row-gap);
   `,
   Checkbox: styled(Checkbox)`
@@ -215,9 +225,9 @@ function PurchasePage({ projectId, membershipId, redirect }) {
           )}
         </Styled.Section>
         <Styled.Section>
-          <Styled.SectionTitle>
+          <Styled.Name>
             결제 방법
-          </Styled.SectionTitle>
+          </Styled.Name>
           <Radio defaultChecked>픽션 지갑</Radio>
           <Styled.Amount>
             {`${wallet.amount.toLocaleString()} PXL 보유 중`}
@@ -225,18 +235,20 @@ function PurchasePage({ projectId, membershipId, redirect }) {
         </Styled.Section>
         <Styled.Purchase>
           <form onSubmit={handleSubscribe}>
-            <Styled.SectionTitle>
+            <Styled.SectionLabel>
+              혜택 제공 기간
+            </Styled.SectionLabel>
+            <Styled.Date>
+              {moment().add(30, 'days').format(' YYYY년 MM월 DD일까지 (30일)')}
+            </Styled.Date>
+            <Styled.SectionLabel>
               결제 금액
-            </Styled.SectionTitle>
+            </Styled.SectionLabel>
             {membership ? (
               <Styled.Subscription>
                 <Styled.Price>
                   {`${membership.price} PXL`}
                 </Styled.Price>
-                <Styled.Date>
-                  <b>제공 기간</b>
-                  {moment().add(30, 'days').format(' YYYY년 MM월 DD일까지 (30일)')}
-                </Styled.Date>
               </Styled.Subscription>
             ) : (
               <Styled.Price isPlaceholder>
