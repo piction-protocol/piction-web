@@ -54,9 +54,9 @@ const Styled = {
 
 const transactionTypeText = (inOut, transactionType) => (
   inOut === 'IN' ? ({
-    MEMBERSHIP: '후원 수익',
+    SPONSORSHIP: '후원 수익',
   }[transactionType] || '입금') : ({
-    MEMBERSHIP: '후원 플랜',
+    SPONSORSHIP: '후원 플랜',
   }[transactionType] || '출금')
 );
 
