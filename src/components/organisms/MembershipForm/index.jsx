@@ -271,12 +271,14 @@ function MembershipForm({
         >
           취소
         </SecondaryButton>
-        <Styled.DeleteMembershipButton onClick={() => setIsDeletingMembership(true)}>
-          <TrashbinIcon />
-          플랜 삭제
-        </Styled.DeleteMembershipButton>
+        {/* membershipId가 없는 경우는 신규 플랜 작성으로 볼 수 있으며 이 경우 삭제 버튼을 감춥니다. */}
+        {membershipId && (
+          <Styled.DeleteMembershipButton onClick={() => setIsDeletingMembership(true)}>
+            <TrashbinIcon />
+            플랜 삭제
+          </Styled.DeleteMembershipButton>
+        )}
       </Styled.SubmitGroup>
-
 
       {isDeletingMembership && (
         <Modal close={() => setIsDeletingMembership(false)}>
