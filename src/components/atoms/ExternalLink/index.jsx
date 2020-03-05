@@ -12,22 +12,15 @@ const Link = styled.a`
   font-size: var(--font-size--small);
 `;
 
-const Icon = styled.svg`
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-`;
-
-const ExternalLink = ({ url, name, ...props }) => (
+const ExternalLink = ({ url, children, ...props }) => (
   <Link href={url} {...props}>
-    <Icon />
-    {name}
+    {children}
   </Link>
 );
 
 ExternalLink.propTypes = {
   url: PropTypes.array.isRequired,
-  name: PropTypes.string.isRequired,
+  children: PropTypes.node,
 };
 
 export default ExternalLink;

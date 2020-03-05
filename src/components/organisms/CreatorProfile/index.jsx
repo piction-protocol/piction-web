@@ -9,6 +9,7 @@ import Grid from 'styles/Grid';
 import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Heading from 'components/atoms/Heading';
 import ExternalLink from 'components/atoms/ExternalLink';
+import ExternalFavicon from 'components/atoms/ExternalFavicon';
 
 const Styled = {
   CreatorProfile: styled(Grid).attrs({
@@ -60,6 +61,11 @@ const Styled = {
     align-items: center;
     justify-content: center;
   `,
+  ExternalFavicon: styled(ExternalFavicon)`
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  `,
   ExternalLink: styled(ExternalLink)`
     margin: 8px 4px 0;
   `,
@@ -80,8 +86,11 @@ function CreatorProfile({ user, profile }) {
         {profile.greetings}
       </Styled.Greetings>
       <Styled.Links>
-        {profile.links.map(link => (
-          <Styled.ExternalLink {...link} />
+        {profile.links.map(({ id, url, name }) => (
+          <Styled.ExternalLink key={id} url={url}>
+            <Styled.ExternalFavicon url={url} />
+            {name}
+          </Styled.ExternalLink>
         ))}
       </Styled.Links>
     </Styled.CreatorProfile>
