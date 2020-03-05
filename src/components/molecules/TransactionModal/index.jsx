@@ -66,7 +66,7 @@ function TransactionModal({
     fromAddress, toAddress, amountOriginal, blockNumber, txHashWithUrl,
   }, close, ...props
 }) {
-  const shouldFetch = transactionType === 'MEMBERSHIP';
+  const shouldFetch = transactionType === 'SPONSORSHIP';
 
   const { data: detail = {} } = useSWR(() => (
     shouldFetch ? `/my/wallet/transactions/sponsorships/${transactionHash}` : null
@@ -82,7 +82,7 @@ function TransactionModal({
       <Styled.Close onClick={close}>
         <CloseIcon />
       </Styled.Close>
-      {transactionType === 'MEMBERSHIP' && (inOut === 'IN' ? (
+      {shouldFetch && (inOut === 'IN' ? (
         <Styled.Section>
           <Styled.SectionTitle>
             후원 수익 정보
