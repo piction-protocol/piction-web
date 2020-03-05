@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import useSWR from 'swr';
@@ -86,13 +86,15 @@ function CreatorProfileForm({ title }) {
   const { data: profile } = useSWR(() => 'my/creator-profiles', {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
-    suspense: true,
   });
   const {
-    control, register, handleSubmit,
-  } = useForm({
-    defaultValues: profile,
-  });
+    control, register, handleSubmit, reset,
+  } = useForm();
+
+  useEffect(() => {
+    reset(profile);
+  }, [reset, profile]);
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'links',
