@@ -46,14 +46,14 @@ const Styled = {
 };
 
 function Membership({
-  level, name, postCount, description, className, children,
+  level, name, postCount, description, className, children, sponsorLimit,
 }) {
   return (
     <Styled.Item
       className={className}
     >
       <Styled.Level>
-        {level ? `티어 ${level}` : '무료 티어'}
+        {level ? `티어 ${level} ${sponsorLimit ? `- ${sponsorLimit}명 한정` : ''} ` : '무료 티어'}
       </Styled.Level>
       <Styled.Name>
         {name}
@@ -79,6 +79,7 @@ Membership.propTypes = {
   description: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.node,
+  sponsorLimit: PropTypes.number,
 };
 
 Membership.Placeholder = ({ className, children }) => (
