@@ -5,6 +5,8 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 
+import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
+
 import Membership from 'components/molecules/Membership';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
@@ -31,6 +33,17 @@ const Styled = {
     border-radius: 4px;
     background-color: #f1f9ff;
     text-align: center;
+  `,
+  Empty: styled.div`
+    grid-column: 1 / -1;
+    margin: 80px auto;
+    color: var(--gray--dark);
+    font-size: var(--font-size--base);
+    text-align: center;
+  `,
+  BadMoodIcon: styled(BadMoodIcon)`
+    width: 160px;
+    height: 160px;
   `,
   Name: styled.p`
     margin-bottom: 8px;
@@ -66,7 +79,7 @@ const Styled = {
 function MembershipList({
   isMyProject, memberships, sponsored, location,
 }) {
-  const [minimum, setMinimum] = useState(location.state.post ? location.state.post.membership.level : 0);
+  const [minimum, setMinimum] = useState(location?.state?.post ? location.state.post.membership.level : 0);
 
   return (
     <Styled.Section>
@@ -92,6 +105,14 @@ function MembershipList({
             전체 후원 플랜 보기
           </PrimaryButton>
         </Styled.Post>
+      )}
+      {memberships.length === 0 && (
+        <Styled.Empty>
+          <Styled.BadMoodIcon />
+          <p>
+            등록된 후원 플랜이 없습니다.
+          </p>
+        </Styled.Empty>
       )}
       {memberships ? memberships.map((membership, index) => {
         const postCount = memberships.slice(0, index + 1).reduce((acc, val) => acc + val.postCount, 0);
