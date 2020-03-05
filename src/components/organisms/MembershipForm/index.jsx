@@ -15,7 +15,7 @@ import Label from 'components/atoms/Label';
 import Heading from 'components/atoms/Heading';
 import Checkbox from 'components/atoms/Checkbox';
 import { PrimaryButton, SecondaryButton, TertiaryButton } from 'components/atoms/Button';
-import Modal from 'components/externals/Modal';
+import Modal, { ModalBody } from 'components/externals/Modal';
 
 import { ReactComponent as TrashbinIcon } from './ic-trashbin.svg';
 
@@ -86,9 +86,6 @@ const Styled = {
   `,
   DangerousButton: styled(PrimaryButton)`
     background-color: var(--red);
-  `,
-  ModalBody: styled.div`
-    margin-bottom: 24px;
   `,
 };
 
@@ -285,13 +282,13 @@ function MembershipForm({
         <Modal close={() => setIsDeletingMembership(false)}>
           {canDeleteMembership ? (
             <>
-              <Styled.ModalBody>선택한 후원 플랜을 삭제하시겠습니까?</Styled.ModalBody>
+              <ModalBody>선택한 후원 플랜을 삭제하시겠습니까?</ModalBody>
               <Styled.DangerousButton onClick={deleteMembership}>삭제</Styled.DangerousButton>
               <TertiaryButton onClick={() => setIsDeletingMembership(false)}>취소</TertiaryButton>
             </>
           ) : (
             <>
-              <Styled.ModalBody>선택한 후원 플랜과 연결된 포스트가 있거나 1명 이상의 구독자가 있어서 삭제가 불가능합니다.</Styled.ModalBody>
+              <ModalBody>선택한 후원 플랜과 연결된 포스트가 있거나 1명 이상의 구독자가 있어서 삭제가 불가능합니다.</ModalBody>
               <PrimaryButton onClick={() => setIsDeletingMembership(false)}>확인</PrimaryButton>
             </>
           )}

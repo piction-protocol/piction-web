@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import useSWR from 'swr';
@@ -14,6 +14,7 @@ import Heading from 'components/atoms/Heading';
 import Input from 'components/atoms/Input';
 import Label from 'components/atoms/Label';
 import { PrimaryButton } from 'components/atoms/Button';
+import Modal, { ModalBody } from 'components/externals/Modal';
 
 const Styled = {
   Form: styled(Grid).attrs({
@@ -82,6 +83,7 @@ const Styled = {
 
 function CreatorProfileForm({ title }) {
   const [API] = useAPI();
+  const [modalBody, setModalBody] = useState(null);
 
   const { data: profile } = useSWR(() => 'my/creator-profiles', {
     revalidateOnFocus: false,
@@ -107,57 +109,67 @@ function CreatorProfileForm({ title }) {
       } else {
         await API.creatorProfile.create(data);
       }
+      setModalBody('입력하신 내용이 저장되었습니다.');
     } catch (error) {
-      console.log(error);
+      setModalBody('서버가 응답하지 않습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
   return (
-    <Styled.Form onSubmit={handleSubmit(onSubmit)}>
-      <Heading>{title}</Heading>
-      <Styled.InputGroup>
-        <Label htmlFor="greetings">소개</Label>
-        <Styled.Textarea
-          id="greetings"
-          name="greetings"
-          ref={register}
-        />
-      </Styled.InputGroup>
-      <Styled.InputGroup>
-        <Label>외부 링크</Label>
-        {fields.map((field, index) => (
-          <Styled.Field key={field.id}>
-            <Styled.Url>
-              <Input
-                name={`links[${index}].url`}
+    <>
+      {modalBody && (
+        <Modal close={() => setModalBody(null)}>
+          <ModalBody>{modalBody}</ModalBody>
+          <PrimaryButton onClick={() => setModalBody(null)}>확인</PrimaryButton>
+        </Modal>
+      )}
+
+      <Styled.Form onSubmit={handleSubmit(onSubmit)}>
+        <Heading>{title}</Heading>
+        <Styled.InputGroup>
+          <Label htmlFor="greetings">소개</Label>
+          <Styled.Textarea
+            id="greetings"
+            name="greetings"
+            ref={register}
+          />
+        </Styled.InputGroup>
+        <Styled.InputGroup>
+          <Label>외부 링크</Label>
+          {fields.map((field, index) => (
+            <Styled.Field key={field.id}>
+              <Styled.Url>
+                <Input
+                  name={`links[${index}].url`}
+                  ref={register()}
+                  required
+                  placeholder="주소 입력"
+                />
+              </Styled.Url>
+              <Styled.Name
+                name={`links[${index}].name`}
                 ref={register()}
+                maxLength="10"
+                placeholder="이름"
                 required
-                placeholder="주소 입력"
               />
-            </Styled.Url>
-            <Styled.Name
-              name={`links[${index}].name`}
-              ref={register()}
-              maxLength="10"
-              placeholder="이름"
-              required
-            />
-            <Styled.Delete type="button" onClick={() => remove(index)}>
-              <DeleteIcon />
-            </Styled.Delete>
-          </Styled.Field>
-        ))}
-        <Styled.AddLink
-          disabled={fields.length >= 5}
-          onClick={() => append({ name: 'links' })}
-        >
-          + 외부 링크 추가
-        </Styled.AddLink>
-      </Styled.InputGroup>
-      <Styled.SubmitGroup>
-        <Styled.Submit value="저장" />
-      </Styled.SubmitGroup>
-    </Styled.Form>
+              <Styled.Delete type="button" onClick={() => remove(index)}>
+                <DeleteIcon />
+              </Styled.Delete>
+            </Styled.Field>
+          ))}
+          <Styled.AddLink
+            disabled={fields.length >= 5}
+            onClick={() => append({ name: 'links' })}
+          >
+            + 외부 링크 추가
+          </Styled.AddLink>
+        </Styled.InputGroup>
+        <Styled.SubmitGroup>
+          <Styled.Submit value="저장" />
+        </Styled.SubmitGroup>
+      </Styled.Form>
+    </>
   );
 }
 
