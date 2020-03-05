@@ -45,8 +45,14 @@ const Styled = {
   `,
   Locked: styled.div`
     position: relative;
-    margin-bottom: 16px;
     overflow: hidden;
+    ${props => (props.theme.viewType === 'LIST' ? `
+      width: 80px;
+      height: 80px;
+      margin-right: 24px;
+    ` : `
+      margin-bottom: 16px;
+    `)};
   `,
   LockedText: styled.p`
     display: flex;
@@ -63,8 +69,13 @@ const Styled = {
     color: var(--white);
   `,
   LockedIcon: styled(LockedIcon)`
-    width: 80px;
-    height: 80px;
+    ${props => (props.theme.viewType === 'LIST' ? `
+      width: 32px;
+      height: 32px;
+    ` : `
+      width: 80px;
+      height: 80px;
+    `)};
   `,
   LockedCover: styled(Cover)`
     filter: blur(24px);
