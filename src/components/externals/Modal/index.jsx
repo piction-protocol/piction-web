@@ -82,3 +82,11 @@ Modal.propTypes = {
 };
 
 export default Modal;
+
+const ModalBody = styled.div`
+  margin-bottom: 24px;
+`;
+
+export {
+  ModalBody,
+};
