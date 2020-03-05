@@ -14,6 +14,7 @@ import Heading from 'components/atoms/Heading';
 import Input from 'components/atoms/Input';
 import Label from 'components/atoms/Label';
 import { PrimaryButton } from 'components/atoms/Button';
+import ExternalFavicon from 'components/atoms/ExternalFavicon';
 import Modal, { ModalBody } from 'components/externals/Modal';
 
 const Styled = {
@@ -50,11 +51,18 @@ const Styled = {
     display: flex;
     position: relative;
     flex: 10;
+    align-items: center;
     margin-right: 10px;
     ${Input} {
       flex: 1;
       padding-left: 48px;
     }
+  `,
+  ExternalFavicon: styled(ExternalFavicon)`
+    position: absolute;
+    left: 12px;
+    width: 24px;
+    height: 24px;
   `,
   Name: styled(Input)`
     flex: 4;
@@ -89,8 +97,9 @@ function CreatorProfileForm({ title }) {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
   });
+
   const {
-    control, register, handleSubmit, reset,
+    control, register, handleSubmit, reset, watch,
   } = useForm();
 
   useEffect(() => {
@@ -114,6 +123,8 @@ function CreatorProfileForm({ title }) {
       setModalBody('서버가 응답하지 않습니다. 잠시 후 다시 시도해주세요.');
     }
   };
+
+  const watchLinks = watch('links');
 
   return (
     <>
@@ -139,6 +150,7 @@ function CreatorProfileForm({ title }) {
           {fields.map((field, index) => (
             <Styled.Field key={field.id}>
               <Styled.Url>
+                <Styled.ExternalFavicon url={watchLinks[index]?.url} />
                 <Input
                   name={`links[${index}].url`}
                   ref={register()}
