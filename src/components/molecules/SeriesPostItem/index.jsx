@@ -5,21 +5,15 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 import media from 'styles/media';
-import Grid from 'styles/Grid';
 
 import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
-  Item: styled(Grid).attrs({
-    as: 'article',
-    columns: '8',
-  })`
+  Item: styled.article`
+    display: flex;
     padding: var(--row-gap) 0;
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
-    ${media.mobile`
-      display: flex;
-    `}
   `,
   Index: styled.div`
     margin-top: auto;
@@ -29,24 +23,24 @@ const Styled = {
     font-size: 22px;
     font-weight: bold;
     ${media.desktop`
-      grid-column: -2;
-      grid-row: 1;
-      margin: auto;
+      order: 1;
+      margin: auto 0 auto auto;
       font-size: var(--font-size--large);
     `}
   `,
   Cover: styled(Cover)`
-      grid-column: span 3;
+    width: 111px;
     ${media.mobile`
       display: none;
     `}
   `,
   Text: styled.div`
     display: flex;
+    flex: 1;
     flex-flow: column;
     overflow: hidden;
     ${media.desktop`
-      grid-column: span 4;
+      margin: auto 40px;
       justify-content: center;
     `}
   `,
