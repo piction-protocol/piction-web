@@ -267,7 +267,7 @@ function MembershipForm({
         <Styled.Submit value="저장" />
         <SecondaryButton
           as={Link}
-          to={`/dashboard/${projectId}/membership/`}
+          to={`/dashboard/${projectId}/memberships/`}
         >
           취소
         </SecondaryButton>
