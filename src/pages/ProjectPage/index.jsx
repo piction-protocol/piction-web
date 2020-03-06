@@ -67,7 +67,7 @@ function ProjectPage({ projectId }) {
           membershipId: subscription.id,
           sponsorshipPrice: subscription.price,
         });
-        mutate(`/projects/${projectId}/memberships/sponsorship`, data.membership);
+        mutate(`/projects/${projectId}/memberships/sponsorship`, data);
       } catch (error) {
         console.log(error);
       }
