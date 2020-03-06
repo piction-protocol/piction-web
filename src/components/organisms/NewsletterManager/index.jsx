@@ -7,6 +7,7 @@ import useAPI from 'hooks/useAPI';
 
 import { PrimaryButton, SecondaryButton, TertiaryButton } from 'components/atoms/Button';
 import Modal from 'components/externals/Modal';
+import Alert from 'components/externals/Alert';
 
 import { ReactComponent as PostboxIcon } from 'images/ic-postbox.svg';
 
@@ -33,16 +34,29 @@ function NewsletterManager({ currentUser, ...props }) {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const { data: newsletter } = useSWR('/users/newsletter');
   const [API] = useAPI();
+  const [alert, setAlert] = useState(null);
 
   const subscribe = async () => {
-    const { data } = await API.newsletter.create();
-    mutate('/users/newsletter', data);
-    setIsModalOpened(false);
+    try {
+      const { data } = await API.newsletter.create();
+      mutate('/users/newsletter', data);
+      setIsModalOpened(false);
+      setAlert({ text: '업데이트 알림 메일을 발송합니다.', type: 'success' });
+    } catch (error) {
+      console.log(error);
+      setAlert({ text: '서버가 응답하지 않습니다.', type: 'error' });
+    }
   };
 
   const unsubscribe = async () => {
-    await API.newsletter.delete();
-    mutate('/users/newsletter', null);
+    try {
+      await API.newsletter.delete();
+      mutate('/users/newsletter', null);
+      setAlert({ text: '업데이트 알림 메일을 발송하지 않습니다.' });
+    } catch (error) {
+      console.log(error);
+      setAlert({ text: '서버가 응답하지 않습니다.', type: 'error' });
+    }
   };
 
   return (
@@ -79,6 +93,11 @@ function NewsletterManager({ currentUser, ...props }) {
             취소
           </TertiaryButton>
         </Styled.Modal>
+      )}
+      {alert && (
+        <Alert type={alert.type}>
+          {alert.text}
+        </Alert>
       )}
     </>
   );

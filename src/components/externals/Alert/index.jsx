@@ -3,48 +3,65 @@ import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import styled, { css, keyframes } from 'styled-components/macro';
 
-import media from 'styles/media';
-
 const fadeOutKeyframes = keyframes`
-  from { opacity: .9; }
-  to { opacity: 0; }
+  from {
+    top: 30px;
+    opacity: 0;
+  }
+  10.5% {
+    top: 60px;
+    opacity: 1;
+  }
+  89.5% {
+    top: 60px;
+    opacity: 1;
+  }
+  to {
+    top: 90px;
+    opacity: 0;
+  }
 `;
 
 const fadeOutAnimation = css`
-  500ms ease-in 5000ms forwards ${fadeOutKeyframes}
+  3800ms ease-in 1 both ${fadeOutKeyframes}
 `;
+
+const palette = {
+  base: 'var(--charcoal-black)',
+  error: 'var(--red--dark)',
+  success: 'var(--blue)',
+};
 
 const Styled = {
   Wrapper: styled.div`
     display: flex;
     position: fixed;
     z-index: 10000;
-    top: 74px;
+    top: 60px;
     right: 0;
     left: 0;
-    ${media.desktop`
-      top: 104px;
-    `}
+    animation: ${fadeOutAnimation};
   `,
   Alert: styled.div`
     margin: 0 auto;
     padding: 16px 24px;
-    background-color: ${({ isError }) => (isError ? 'var(--red)' : 'var(--blue)')};
-    opacity: .9;
-    color: var(--white);
+    background-color: var(--white);
+    border-top: 5px solid;
+    border-color: ${({ type }) => palette[type]};
+    box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.15);
+    color: var(--black);
     font-size: var(--font-size--small);
     font-weight: bold;
-    animation: ${fadeOutAnimation};
   `,
 };
 
-function Alert({ isError, children }) {
+function Alert({ type = 'base', children }) {
   const root = document.getElementById('external-root');
 
   return (
     createPortal((
       <Styled.Wrapper>
-        <Styled.Alert isError={isError}>
+        <Styled.Alert type={type}>
           {children}
         </Styled.Alert>
       </Styled.Wrapper>
@@ -53,11 +70,7 @@ function Alert({ isError, children }) {
 }
 
 Alert.propTypes = {
-  isError: PropTypes.bool,
-};
-
-Alert.defaultProps = {
-  isError: false,
+  type: PropTypes.string,
 };
 
 export default Alert;
