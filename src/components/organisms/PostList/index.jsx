@@ -83,6 +83,7 @@ function PostList({
       >
         <Styled.PostItem
           {...content}
+          viewType={project?.viewType}
           isLocked={!isMyProject && content.membership && (sponsored ? content.membership.level > sponsored.membership.level : true)}
         />
       </Styled.Link>

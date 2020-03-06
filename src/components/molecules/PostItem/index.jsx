@@ -80,6 +80,20 @@ const Styled = {
   LockedCover: styled(Cover)`
     filter: blur(24px);
   `,
+  GrayLockedIcon: styled(LockedIcon)`
+    align-self: flex-start;
+    width: 20px;
+    height: 20px;
+    margin-top: ${({ hasSeries }) => (hasSeries ? '26px' : '4px')};
+    color: #d9d9d9;
+    ${media.mobile`
+      margin-right: 12px;
+      margin-left: 12px;
+    `}
+    ${media.desktop`
+      margin-right: 8px;
+    `}
+  `,
   Text: styled.div`
     display: flex;
     flex-flow: column;
@@ -134,27 +148,35 @@ const Styled = {
 };
 
 function PostItem({
-  title, cover = null, series, publishedAt, likeCount = 0, isLocked = false, ...props
+  title, cover = null, viewType, series, publishedAt, likeCount = 0, isLocked = false, ...props
 }) {
   return (
     <Styled.Item
       {...props}
     >
-      {isLocked ? (
-        <Styled.Locked>
-          <Styled.LockedText>
-            <Styled.LockedIcon />
-          </Styled.LockedText>
-          <Styled.LockedCover
-            image={cover}
-          />
-        </Styled.Locked>
+      {(viewType === 'CARD' || cover) ? (
+        isLocked ? (
+          <Styled.Locked>
+            <Styled.LockedText>
+              <Styled.LockedIcon />
+            </Styled.LockedText>
+            <Styled.LockedCover
+              image={cover}
+            />
+          </Styled.Locked>
+        ) : (
+          <Styled.CoverWrapper>
+            <Styled.Cover
+              image={cover}
+            />
+          </Styled.CoverWrapper>
+        )
       ) : (
-        <Styled.CoverWrapper>
-          <Styled.Cover
-            image={cover}
+        isLocked ? (
+          <Styled.GrayLockedIcon
+            hasSeries={!!series}
           />
-        </Styled.CoverWrapper>
+        ) : null
       )}
       <Styled.Text>
         {series && <Styled.Series>{series.name}</Styled.Series>}
@@ -194,6 +216,7 @@ PostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   series: PropTypes.object,
+  viewType: PropTypes.string,
   publishedAt: PropTypes.number.isRequired,
   likeCount: PropTypes.number,
   isLocked: PropTypes.bool,
