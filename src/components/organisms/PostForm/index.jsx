@@ -22,7 +22,7 @@ import Checkbox from 'components/atoms/Checkbox';
 import Select from 'components/atoms/Select';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
-import dummyCoverImage from 'images/img-dummy-960x360.jpg';
+import dummyCoverImage from 'images/img-dummy-500x500.jpg';
 
 const Styled = {
   Form: styled(Grid).attrs({
@@ -242,11 +242,11 @@ function PostForm({ title, projectId, postId = null }) {
             커버이미지
           </Label>
           <Styled.Spec>
-            JPG 또는 PNG 파일, 최대 5MB, 권장 사이즈 960*360 px
+            JPG 또는 PNG 파일, 최대 5MB, 권장 사이즈 960*960 px
           </Styled.Spec>
           <Styled.ImageUploader
             name="cover"
-            ratio={960 / 360}
+            ratio={960 / 960}
             defaultImage={defaultImage.cover}
             backgroundImage={dummyCoverImage}
             onChange={handleChange}

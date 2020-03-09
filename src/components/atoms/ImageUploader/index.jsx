@@ -40,8 +40,8 @@ const Styled = {
     z-index: 1;
     top: 0;
     right: 0;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     background-color: var(--black);
     background-image: url(${CancelIcon});
     background-size: cover;
