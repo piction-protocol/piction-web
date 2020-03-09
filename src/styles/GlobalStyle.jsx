@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
 
     --blue: #1A92FF;
     --red: #D51315;
+    --red--dark: #BF1113;
 
     --primary-color: var(--blue);
 
