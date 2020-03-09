@@ -100,7 +100,7 @@ function PostList({
     isLoadingMore,
     isReachingEnd,
     loadMore,
-  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId, sponsored, isMyProject]);
+  } = useSWRPages(`projects/${projectId}/posts`, PostsPage, nextOffset, [projectId, project, sponsored, isMyProject]);
 
   return (
     <Styled.Container>
