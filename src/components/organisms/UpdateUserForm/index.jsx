@@ -77,7 +77,6 @@ function UpdateUserForm() {
   const [formData, { handleChange }] = useForm({
     email: currentUser.email,
     username: currentUser.username,
-    email: currentUser.email,
     password: '',
     picture: '',
   });
