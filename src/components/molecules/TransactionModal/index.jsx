@@ -66,10 +66,10 @@ function TransactionModal({
     fromAddress, toAddress, amountOriginal, blockNumber, txHashWithUrl,
   }, close, ...props
 }) {
-  const shouldFetch = transactionType === 'SUBSCRIPTION' || transactionType === 'SPONSORSHIP';
+  const shouldFetch = transactionType === 'SPONSORSHIP';
 
   const { data: detail = {} } = useSWR(() => (
-    shouldFetch ? `/my/wallet/transactions/${transactionType.toLowerCase()}s/${transactionHash}` : null
+    shouldFetch ? `/my/wallet/transactions/sponsorships/${transactionHash}` : null
   ), {
     revalidateOnFocus: false,
   });
@@ -82,10 +82,10 @@ function TransactionModal({
       <Styled.Close onClick={close}>
         <CloseIcon />
       </Styled.Close>
-      {transactionType === 'SUBSCRIPTION' && (
+      {shouldFetch && (inOut === 'IN' ? (
         <Styled.Section>
           <Styled.SectionTitle>
-            FAN PASS 판매 정보
+            후원 수익 정보
           </Styled.SectionTitle>
           <Styled.Item>
             <Styled.Name>주문 번호</Styled.Name>
@@ -96,33 +96,37 @@ function TransactionModal({
             <Styled.Value>{detail.projectName}</Styled.Value>
           </Styled.Item>
           <Styled.Item>
-            <Styled.Name>FAN PASS</Styled.Name>
-            <Styled.Value>{detail.fanPassName}</Styled.Value>
+            <Styled.Name>후원 플랜</Styled.Name>
+            <Styled.Value>{detail.membershipName}</Styled.Value>
           </Styled.Item>
           <Styled.Item>
-            <Styled.Name>구매자</Styled.Name>
-            <Styled.Value>{detail.subscriber && detail.subscriber.loginId}</Styled.Value>
+            <Styled.Name>후원자</Styled.Name>
+            <Styled.Value>{detail.sponsor?.loginId}</Styled.Value>
           </Styled.Item>
         </Styled.Section>
-      )}
-      {transactionType === 'SPONSORSHIP' && (
+      ) : (
         <Styled.Section>
           <Styled.SectionTitle>
-            후원 정보
+            후원 플랜 정보
           </Styled.SectionTitle>
-          {inOut === 'IN' ? (
-            <Styled.Item>
-              <Styled.Name>후원자</Styled.Name>
-              <Styled.Value>{detail.sponsor && detail.sponsor.loginId}</Styled.Value>
-            </Styled.Item>
-          ) : (
-            <Styled.Item>
-              <Styled.Name>후원 대상</Styled.Name>
-              <Styled.Value>{detail.creator && detail.creator.loginId}</Styled.Value>
-            </Styled.Item>
-          )}
+          <Styled.Item>
+            <Styled.Name>주문 번호</Styled.Name>
+            <Styled.Value>{detail.orderNo}</Styled.Value>
+          </Styled.Item>
+          <Styled.Item>
+            <Styled.Name>프로젝트</Styled.Name>
+            <Styled.Value>{detail.projectName}</Styled.Value>
+          </Styled.Item>
+          <Styled.Item>
+            <Styled.Name>후원 플랜</Styled.Name>
+            <Styled.Value>{detail.membershipName}</Styled.Value>
+          </Styled.Item>
+          <Styled.Item>
+            <Styled.Name>후원 대상</Styled.Name>
+            <Styled.Value>{detail.creator?.loginId}</Styled.Value>
+          </Styled.Item>
         </Styled.Section>
-      )}
+      ))}
       <Styled.Section>
         <Styled.SectionTitle>
           트랜잭션 정보

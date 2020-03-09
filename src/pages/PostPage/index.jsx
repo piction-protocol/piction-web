@@ -66,13 +66,13 @@ function PostPage({ projectId, postId }) {
     revalidate: revalidateContent,
   } = useSWR(`/projects/${projectId}/posts/${postId}/content`, { revalidateOnFocus: false, shouldRetryOnError: false });
 
-  const [needSubscription, setNeedSubscription] = useState(false);
+  const [needSponsorship, setNeedSponsorship] = useState(false);
 
   useEffect(() => {
     if (contentError && contentError.response.data.code === 4003) {
-      setNeedSubscription(true);
+      setNeedSponsorship(true);
     }
-    return () => setNeedSubscription(false);
+    return () => setNeedSponsorship(false);
   }, [contentError]);
 
   const { currentUser } = useCurrentUser();
@@ -90,14 +90,14 @@ function PostPage({ projectId, postId }) {
 
   const handleSubscription = async () => {
     try {
-      const response = await API.fanPass.subscribe({
+      const response = await API.membership.subscribe({
         projectId,
-        fanPassId: post.fanPass.id,
-        subscriptionPrice: post.fanPass.subscriptionPrice,
+        membershipId: post.membership.id,
+        sponsorshipPrice: post.membership.price,
       });
       if (response.status === 200) {
         revalidateContent();
-        setNeedSubscription(false);
+        setNeedSponsorship(false);
       }
     } catch (error) {
       console.log(error);
@@ -140,8 +140,8 @@ function PostPage({ projectId, postId }) {
             readerMode={readerMode}
           />
         ) : (
-          // FIXME: needSubscription을 관리하는 코드를 개선
-          post && post.fanPass && needSubscription ? (
+          // FIXME: needSponsorship을 관리하는 코드를 개선
+          post && post.membership && needSponsorship ? (
             <Content.Locked handleSubscription={handleSubscription} post={post} />
           ) : (
             <Content.Placeholder />

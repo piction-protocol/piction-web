@@ -54,10 +54,12 @@ const Header = ({ title, user, series }) => (
       </Styled.SeriesName>
     )}
     <Heading>{title}</Heading>
-    <Styled.User>
-      <Styled.UserProfile image={user.picture} />
-      {user.username}
-    </Styled.User>
+    <Link to={`/creator-profile/${user.loginId}`}>
+      <Styled.User>
+        <Styled.UserProfile image={user.picture} />
+        {user.username}
+      </Styled.User>
+    </Link>
   </Styled.Info>
 );
 
@@ -66,6 +68,7 @@ Header.propTypes = {
   user: PropTypes.shape({
     picture: PropTypes.string,
     username: PropTypes.string,
+    loginId: PropTypes.string,
   }).isRequired,
   series: PropTypes.shape({
     id: PropTypes.string.isRequired,

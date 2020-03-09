@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/macro';
 
 export const GridStyle = css`
   display: grid;
-  grid-template-columns: repeat(${({ columns }) => columns}, minmax(0, 1fr));
+  grid-template-columns: repeat(${({ columns = 'var(--grid-columns)' }) => columns}, minmax(0, 1fr));
   column-gap: var(--column-gap);
   row-gap: var(--row-gap);
 `;
@@ -13,9 +13,7 @@ const Grid = styled.div`
 
 export default Grid;
 
-export const MainGrid = styled(Grid).attrs({
-  columns: 'var(--grid-columns)',
-})`
+export const MainGrid = styled(Grid)`
   width: 100%;
   max-width: var(--max-width);
   margin-right: auto;

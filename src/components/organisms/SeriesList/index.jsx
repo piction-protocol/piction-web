@@ -12,17 +12,14 @@ import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
 const Styled = {
   Section: styled(Grid).attrs({
-    columns: 'var(--grid-columns)',
     as: 'section',
   })`
     grid-column: 1 / -1;
   `,
   Link: styled(Link)`
-    grid-column: span 6;
+    grid-column: 1 / -1;
     ${media.desktop`
-      h3 {
-        font-size: var(--font-size--base);
-      }
+      grid-column: span 3;
     `}
   `,
   Empty: styled.div`
@@ -38,9 +35,7 @@ const Styled = {
   `,
 };
 
-const Series = ({
-  series,
-}) => (
+const SeriesList = ({ series }) => (
   <Styled.Section>
     {series.reduce((acc, item) => acc + item.postCount, 0) === 0 ? (
       <Styled.Empty>
@@ -60,8 +55,8 @@ const Series = ({
   </Styled.Section>
 );
 
-Series.propTypes = {
+SeriesList.propTypes = {
   series: PropTypes.array,
 };
 
-export default Series;
+export default SeriesList;

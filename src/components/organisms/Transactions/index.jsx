@@ -31,9 +31,7 @@ const Styled = {
       display: none;
     `}
   `,
-  Row: styled(Grid).attrs({
-    column: 'var(--grid-columns)',
-  })`
+  Row: styled(Grid)`
     display: flex;
     flex-flow: row wrap;
     align-items: center;
@@ -56,11 +54,9 @@ const Styled = {
 
 const transactionTypeText = (inOut, transactionType) => (
   inOut === 'IN' ? ({
-    SPONSORSHIP: '후원금 수령',
-    SUBSCRIPTION: 'FAN PASS 판매',
+    SPONSORSHIP: '후원 수익',
   }[transactionType] || '입금') : ({
-    SPONSORSHIP: '후원',
-    SUBSCRIPTION: 'FAN PASS 구매',
+    SPONSORSHIP: '후원 플랜',
   }[transactionType] || '출금')
 );
 

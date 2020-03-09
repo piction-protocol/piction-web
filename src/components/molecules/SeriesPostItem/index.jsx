@@ -5,21 +5,15 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 import media from 'styles/media';
-import Grid from 'styles/Grid';
 
 import Cover from 'components/atoms/ContentImage/Cover';
 
 const Styled = {
-  Item: styled(Grid).attrs({
-    as: 'article',
-    columns: '8',
-  })`
+  Item: styled.article`
+    display: flex;
     padding: var(--row-gap) 0;
     border-bottom: 1px solid var(--gray--light);
     background-color: var(--white);
-    ${media.mobile`
-      display: flex;
-    `}
   `,
   Index: styled.div`
     margin-top: auto;
@@ -29,24 +23,24 @@ const Styled = {
     font-size: 22px;
     font-weight: bold;
     ${media.desktop`
-      grid-column: -2;
-      grid-row: 1;
-      margin: auto;
+      order: 1;
+      margin: auto 0 auto auto;
       font-size: var(--font-size--large);
     `}
   `,
   Cover: styled(Cover)`
-      grid-column: span 3;
+    width: 111px;
     ${media.mobile`
       display: none;
     `}
   `,
   Text: styled.div`
     display: flex;
+    flex: 1;
     flex-flow: column;
     overflow: hidden;
     ${media.desktop`
-      grid-column: span 4;
+      margin: auto 40px;
       justify-content: center;
     `}
   `,
@@ -61,7 +55,7 @@ const Styled = {
       font-size: var(--font-size--base);
     `}
   `,
-  FanPass: styled.p`
+  Membership: styled.p`
     color: var(--red);
     font-size: var(--font-size--small);
   `,
@@ -72,7 +66,7 @@ const Styled = {
 };
 
 function SeriesPostItem({
-  index, title, cover = null, publishedAt, fanPass, isViewable, ...props
+  index, title, cover = null, publishedAt, membership, isViewable, ...props
 }) {
   return (
     <Styled.Item
@@ -90,10 +84,9 @@ function SeriesPostItem({
             {moment(publishedAt).format('YYYY년 MMMM Do hh:mm 발행')}
           </Styled.PublishedAt>
         ) : (
-          <Styled.FanPass>
-            {fanPass.subscriptionPrice > 0 && `${fanPass.name} 이상 `}
-            구독자 전용
-          </Styled.FanPass>
+          <Styled.Membership>
+            {membership.price > 0 ? `${membership.name} 이상 후원자 전용` : '구독자 전용'}
+          </Styled.Membership>
         )}
       </Styled.Text>
     </Styled.Item>
@@ -105,7 +98,7 @@ SeriesPostItem.propTypes = {
   title: PropTypes.string.isRequired,
   cover: PropTypes.string,
   publishedAt: PropTypes.number.isRequired,
-  fanPass: PropTypes.object,
+  membership: PropTypes.object,
   isViewable: PropTypes.bool.isRequired,
 };
 

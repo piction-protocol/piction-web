@@ -27,7 +27,7 @@ const Styled = {
   `,
   Name: styled.h2`
     margin-bottom: 8px;
-    font-size: var(--font-size--big);
+    font-size: var(--font-size--large);
     font-weight: bold;
     ${placeholder}
   `,
@@ -45,15 +45,15 @@ const Styled = {
   `,
 };
 
-function FanPass({
-  level, name, postCount, description, className, children,
+function Membership({
+  level, name, postCount, description, className, children, sponsorLimit,
 }) {
   return (
     <Styled.Item
       className={className}
     >
       <Styled.Level>
-        {level ? `티어 ${level}` : '무료 티어'}
+        {level ? `티어 ${level} ${sponsorLimit ? `- ${sponsorLimit}명 한정` : ''} ` : '무료 티어'}
       </Styled.Level>
       <Styled.Name>
         {name}
@@ -72,16 +72,17 @@ function FanPass({
   );
 }
 
-FanPass.propTypes = {
+Membership.propTypes = {
   level: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   postCount: PropTypes.number,
   description: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.node,
+  sponsorLimit: PropTypes.number,
 };
 
-FanPass.Placeholder = ({ className, children }) => (
+Membership.Placeholder = ({ className, children }) => (
   <Styled.Item
     className={className}
   >
@@ -102,9 +103,9 @@ FanPass.Placeholder = ({ className, children }) => (
   </Styled.Item>
 );
 
-FanPass.Placeholder.propTypes = {
+Membership.Placeholder.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
 };
 
-export default FanPass;
+export default Membership;

@@ -11,8 +11,10 @@ const Styled = {
     padding: 6px;
     border: 2px solid var(--gray--dark);
     background-color: var(--white);
+    overflow-x: auto;
     font-size: var(--font-size--small);
     line-height: normal;
+    white-space: nowrap;
     transition: box-shadow var(--transition--form), border-color var(--transition--form);
     cursor: text;
 

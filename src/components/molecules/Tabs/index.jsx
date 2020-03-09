@@ -41,7 +41,7 @@ const Styled = {
   `,
 };
 
-function Tabs({ links, ...props }) {
+function Tabs({ links = [], ...props }) {
   return (
     <Styled.Tabs {...props}>
       {links.map(({
@@ -62,8 +62,4 @@ export default Tabs;
 
 Tabs.propTypes = {
   links: PropTypes.array,
-};
-
-Tabs.defaultProps = {
-  links: [],
 };
