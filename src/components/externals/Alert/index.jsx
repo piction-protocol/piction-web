@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import styled, { css, keyframes } from 'styled-components/macro';
@@ -57,10 +57,17 @@ const Styled = {
 
 function Alert({ type = 'base', children }) {
   const root = document.getElementById('external-root');
+  const [key, setKey] = useState(+new Date());
+
+  // change key for replay animation
+  useEffect(() => {
+    setKey(+new Date());
+  }, [type, children]);
+
 
   return (
     createPortal((
-      <Styled.Wrapper>
+      <Styled.Wrapper key={key}>
         <Styled.Alert type={type}>
           {children}
         </Styled.Alert>
