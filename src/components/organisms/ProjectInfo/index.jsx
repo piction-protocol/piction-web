@@ -279,7 +279,7 @@ function ProjectInfo({
         <Styled.Aside>
           <Styled.Subscribe>
             {isMyProject ? isDesktop && (
-              <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/info`}>
+              <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts`}>
                 관리
               </Styled.SubscribeButton>
             ) : sponsored ? (
