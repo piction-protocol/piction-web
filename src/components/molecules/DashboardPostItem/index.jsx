@@ -6,7 +6,6 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
-import { ReactComponent as AccessTimeIcon } from 'images/ic-access-time.svg';
 
 import Cover from 'components/atoms/ContentImage/Cover';
 
@@ -21,25 +20,26 @@ const Styled = {
     &:hover {
       box-shadow: 0 4px 8px var(--shadow-color);
     }
+    --cover-width: 111px;
   `,
   Labels: styled.div`
     display: flex;
     position: absolute;
-    top: 0;
-    left: 0;
+    flex-flow: column;
     z-index: 1;
+    bottom: 0;
+    left: 0;
+    width: var(--cover-width);
   `,
   Label: styled.span`
     display: flex;
+    justify-content: center;
     padding: 8px 12px;
     color: var(--white);
     svg {
       width: 20px;
       height: 20px;
       margin-right: 4px;
-      path {
-        fill: currentColor
-      }
     }
   `,
   Link: styled.a`
@@ -48,7 +48,7 @@ const Styled = {
     flex-flow: row wrap;
   `,
   Cover: styled(Cover)`
-    width: 111px;
+    width: var(--cover-width);
     margin-right: 20px;
   `,
   Text: styled.div`
@@ -72,8 +72,12 @@ const Styled = {
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
-  CreatedAt: styled.p`
+  PublishedAt: styled.p`
     color: var(--gray--dark);
+    font-size: var(--font-size--small);
+  `,
+  PrePublishedAt: styled.p`
+    color: var(--blue);
     font-size: var(--font-size--small);
   `,
   Buttons: styled.div`
@@ -95,7 +99,7 @@ const Styled = {
 
 function DashboardPostItem({
   id, projectId, title, cover, series, membership,
-  createdAt, publishedAt, status, handleDelete, ...props
+  publishedAt, status, handleDelete, ...props
 }) {
   return (
     <Styled.Item
@@ -103,12 +107,6 @@ function DashboardPostItem({
     >
       <Styled.Link target="_blank" href={`/project/${projectId}/posts/${id}`}>
         <Styled.Labels>
-          {publishedAt > Date.now() && (
-            <Styled.Label style={{ backgroundColor: 'var(--blue)' }}>
-              <AccessTimeIcon />
-              예약
-            </Styled.Label>
-          )}
           {status === 'PRIVATE' && (
             <Styled.Label style={{ backgroundColor: 'var(--black)' }}>
               <LockedIcon />
@@ -125,9 +123,15 @@ function DashboardPostItem({
           <Styled.Title>
             {title}
           </Styled.Title>
-          <Styled.CreatedAt>
-            {moment(createdAt).format('YYYY/MM/DD HH:mm')}
-          </Styled.CreatedAt>
+          {publishedAt > Date.now() ? (
+            <Styled.PrePublishedAt>
+              {moment(publishedAt).format('YYYY/MM/DD HH:mm 예약')}
+            </Styled.PrePublishedAt>
+          ) : (
+            <Styled.PublishedAt>
+              {moment(publishedAt).format('YYYY/MM/DD HH:mm 발행')}
+            </Styled.PublishedAt>
+          )}
         </Styled.Text>
       </Styled.Link>
       <Styled.Buttons>
@@ -149,7 +153,6 @@ DashboardPostItem.propTypes = {
   cover: PropTypes.string,
   series: PropTypes.object,
   membership: PropTypes.object,
-  createdAt: PropTypes.number.isRequired,
   publishedAt: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   handleDelete: PropTypes.func.isRequired,
