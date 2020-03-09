@@ -236,7 +236,7 @@ function ProjectInfo({
             <Styled.UserId>
               {`@${project.user.loginId}`}
             </Styled.UserId>
-            {isPictionChoice && (
+            {isDesktop && isPictionChoice && (
               <Styled.Label>
                 <ChoiceIcon />
                 Piction&apos;s Choice
