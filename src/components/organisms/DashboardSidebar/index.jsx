@@ -147,11 +147,6 @@ function DashboardSidebar({ projects, ...props }) {
         <Styled.Button as={Link} to="new-project">
           새 프로젝트 만들기
         </Styled.Button>
-        {projects.length > 0 && (
-          <Styled.Button as={Link} to="creator-profile">
-            크리에이터 정보 설정
-          </Styled.Button>
-        )}
       </Styled.Buttons>
     </Styled.Sidebar>
   );
