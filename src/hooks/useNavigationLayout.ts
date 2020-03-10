@@ -1,8 +1,8 @@
 import { useEffect, useContext } from 'react';
 import { LayoutContext } from 'context/LayoutContext';
 
-function useProjectLayout(project) {
-  const [, setLayout] = useContext(LayoutContext);
+function useProjectLayout(project: any) {
+  const { setLayout } = useContext(LayoutContext);
 
   useEffect(() => {
     if (!project) return () => setLayout({ type: 'default' });

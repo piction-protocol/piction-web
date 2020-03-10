@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
 
-function handleScroll(element, handler) {
+interface UseOnScrollToBottomEventHandler {
+  (): void
+}
+
+function handleScroll(element: HTMLElement | null, handler: UseOnScrollToBottomEventHandler) {
+  if (!element) return;
   const scrollPosition = document.documentElement.scrollTop + document.documentElement.offsetHeight;
   const elementBottomPosition = element.offsetTop + element.offsetHeight;
 
@@ -10,7 +15,7 @@ function handleScroll(element, handler) {
   handler();
 }
 
-function useOnScrollToBottom(ref, handler) {
+function useOnScrollToBottom(ref: React.RefObject<HTMLElement>, handler: UseOnScrollToBottomEventHandler) {
   useEffect(() => {
     const eventListener = () => handleScroll(ref.current, handler);
     if (ref.current) {

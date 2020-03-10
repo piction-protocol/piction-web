@@ -1,6 +1,9 @@
 import styled, { css } from 'styled-components/macro';
 
-export const GridStyle = css`
+interface GridStyleProps {
+  columns?: number 
+}
+export const GridStyle = css<GridStyleProps>`
   display: grid;
   grid-template-columns: repeat(${({ columns = 'var(--grid-columns)' }) => columns}, minmax(0, 1fr));
   column-gap: var(--column-gap);

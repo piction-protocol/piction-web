@@ -1,7 +1,6 @@
 import React, {
   useState, useEffect, useRef, useContext,
 } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link, Location } from '@reach/router';
 
@@ -124,37 +123,46 @@ const Styled = {
   `,
 };
 
-function UserMenuWithWrapper({ isDesktop, close, ...props }) {
+interface UserMenuWithWrapperProps {
+  isDesktop: boolean
+  close: () => void
+  links: any
+}
+
+function UserMenuWithWrapper({ isDesktop, close, links }: UserMenuWithWrapperProps) {
   return (
     isDesktop ? (
       <Styled.Dropdown>
-        <UserMenu {...props} />
+        <UserMenu links={links} />
       </Styled.Dropdown>
     ) : (
       <Sidemenu close={close}>
-        <UserMenu {...props} />
+        <UserMenu links={links} />
       </Sidemenu>
     )
   );
 }
 
-UserMenuWithWrapper.propTypes = {
-  isDesktop: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-};
+interface NavigateListenerProps {
+  location: any
+  event: () => void
+}
 
-const NavigateListener = ({ location, event }) => {
+const NavigateListener = ({ location, event }: NavigateListenerProps) => {
   useEffect(event, [location]);
   return null;
 };
 
-function GlobalHeader({ paths, child, ...props }) {
+interface GlobalHeaderProps {
+}
+
+function GlobalHeader() {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
-  const [layout] = useContext(LayoutContext);
+  const { layout } = useContext(LayoutContext);
 
-  const menuRef = useRef();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(menuRef, () => setIsMenuOpened(false));
 
@@ -178,13 +186,13 @@ function GlobalHeader({ paths, child, ...props }) {
     ] : [
       {
         text: '로그인',
-        to: paths.login,
+        to: '/login',
         icon: <AccountIcon />,
         state: { redirectTo: encodeURIComponent(window.location.pathname) },
       },
       {
         text: '회원가입',
-        to: paths.signup,
+        to: '/signup',
         icon: <PictionIcon />,
         state: { redirectTo: encodeURIComponent(window.location.pathname) },
       },
@@ -192,7 +200,7 @@ function GlobalHeader({ paths, child, ...props }) {
   ];
 
   return (
-    <Styled.Header {...props}>
+    <Styled.Header>
       <Location>
         {({ location }) => (
           <Styled.Nav>
@@ -201,7 +209,7 @@ function GlobalHeader({ paths, child, ...props }) {
               <ProjectTitle project={layout.data.project} />
             ) : (
               <>
-                <Styled.Link to={paths.home}>
+                <Styled.Link to="/">
                   <Styled.Logo />
                 </Styled.Link>
                 {isDesktop && (
@@ -241,7 +249,7 @@ function GlobalHeader({ paths, child, ...props }) {
                 ) : (
                   <>
                     <Styled.Login
-                      to={paths.login}
+                      to="/login"
                       state={{
                         redirectTo: encodeURIComponent(location.pathname),
                       }}
@@ -249,7 +257,7 @@ function GlobalHeader({ paths, child, ...props }) {
                       로그인
                     </Styled.Login>
                     <Styled.Signup
-                      to={paths.signup}
+                      to="/signup"
                       state={{
                         redirectTo: encodeURIComponent(location.pathname),
                       }}
@@ -266,18 +274,5 @@ function GlobalHeader({ paths, child, ...props }) {
     </Styled.Header>
   );
 }
-
-GlobalHeader.propTypes = {
-  paths: PropTypes.object,
-  child: PropTypes.node,
-};
-
-GlobalHeader.defaultProps = {
-  paths: {
-    home: '/',
-    login: '/login',
-    signup: '/signup',
-  },
-};
 
 export default GlobalHeader;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export default function createFetcher(accessToken) {
-  return async function fetcher(args) {
+export default function createFetcher(accessToken: string) {
+  return async function fetcher(args: any) {
     const API = axios.create({
       baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
       headers: {

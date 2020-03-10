@@ -1,39 +1,41 @@
 import { useContext, useCallback } from 'react';
 import { navigate } from '@reach/router';
 
-import useAPI from 'hooks/useAPI';
-
 import DefaultPicture from 'images/img-user-profile.svg';
 
 import { CurrentUserContext } from 'context/CurrentUserContext';
+import useAuth from './useAuth';
 
 function useCurrentUser() {
-  const [currentUser, setCurrentUser] = useContext(CurrentUserContext);
-  const [API] = useAPI();
-  const accessToken = API.token.get();
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+
+  const auth = useAuth();
+
+  const accessToken = auth.token.get();
   const getCurrentUser = useCallback(async () => {
     try {
-      const { data } = await API.user.me();
+      const { data } = await auth.user.me();
       setCurrentUser({
         ...data,
         picture: data.picture || DefaultPicture,
       });
     } catch (error) {
-      setCurrentUser(null);
-      API.token.delete();
+      setCurrentUser(undefined);
+      auth.token.delete();
     }
     // eslint-disable-next-line
   }, [accessToken, setCurrentUser]);
 
   const deleteSession = useCallback(async () => {
     try {
+      // Side effect
       navigate('/');
-      await API.session.delete();
+      await auth.session.delete();
     } finally {
-      API.token.delete();
+      auth.token.delete();
       window.location.reload();
     }
-  }, [API]);
+  }, [auth]);
 
   return {
     currentUser,
