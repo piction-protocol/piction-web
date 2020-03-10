@@ -21,7 +21,7 @@ const urlRegexes = [
   { name: 'tumblr', regex: /(https?:\/\/)?(www\.)?(tumblr\.com).*/ },
   { name: 'youtube', regex: /(https?:\/\/)?(www\.)?(youtube\.com).*/ },
   { name: 'pixiv', regex: /(https?:\/\/)?(www\.)?(pixiv\.net).*/ },
-  { name: 'devianart', regex: /(https?:\/\/)?(www\.)?(devianart\.com).*/ },
+  { name: 'deviantart', regex: /(https?:\/\/)?(www\.)?(deviantart\.com).*/ },
   { name: 'soundcloud', regex: /(https?:\/\/)?(www\.)?(soundcloud\.com).*/ },
   { name: 'twitch', regex: /(https?:\/\/)?(www\.)?(twitch.tv).*/ },
 ];
