@@ -18,6 +18,7 @@ import useAPI from 'hooks/useAPI';
 import withLoginChecker from 'components/LoginChecker';
 
 import GridTemplate from 'components/templates/GridTemplate';
+import LinkaPayment from 'components/molecules/LinkaPayment';
 import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 import Checkbox from 'components/atoms/Checkbox';
 import Radio from 'components/atoms/Radio';
@@ -153,7 +154,9 @@ const Styled = {
   `,
 };
 
-function PurchasePage({ projectId, membershipId, redirect = `/project/${projectId}` }) {
+function PurchasePage({
+  projectId, membershipId, location, redirectTo = `/project/${projectId}`,
+}) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isAgreed, setIsAgreed] = useState(false);
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
@@ -182,11 +185,10 @@ function PurchasePage({ projectId, membershipId, redirect = `/project/${projectI
           projectId,
           membershipId,
           sponsorshipPrice: membership.price,
-          nextUrl: redirect,
+          nextUrl: `${location.host}${redirectTo}`,
         });
         setLinkaPayment(data);
       } catch (error) {
-        console.log(error);
         handleError(error);
       }
     } else {
@@ -196,7 +198,7 @@ function PurchasePage({ projectId, membershipId, redirect = `/project/${projectI
           membershipId,
           sponsorshipPrice: membership.price,
         });
-        navigate(redirect);
+        navigate(redirectTo);
       } catch (error) {
         handleError(error);
       }
@@ -332,12 +334,7 @@ function PurchasePage({ projectId, membershipId, redirect = `/project/${projectI
         </Alert>
       )}
       {linkaPayment && (
-        <form method="post" action={linkaPayment.requestUrl}>
-          {Object.entries(linkaPayment.linkaPaymentFormView).map(([key, value]) => (
-            <input type="hidden" name={key} value={value} key={key} />
-          ))}
-          <input type="submit" value="test" />
-        </form>
+        <LinkaPayment {...linkaPayment} />
       )}
     </>
   );
@@ -348,5 +345,6 @@ export default withLoginChecker(PurchasePage);
 PurchasePage.propTypes = {
   projectId: PropTypes.string.isRequired,
   membershipId: PropTypes.string.isRequired,
-  redirect: PropTypes.string,
+  location: PropTypes.object,
+  redirectTo: PropTypes.string,
 };
