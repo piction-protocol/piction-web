@@ -23,6 +23,7 @@ import Checkbox from 'components/atoms/Checkbox';
 import Radio from 'components/atoms/Radio';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton } from 'components/atoms/Button';
+import Alert from 'components/externals/Alert';
 
 const Styled = {
   WideThumbnail: styled(WideThumbnail)`
@@ -71,7 +72,7 @@ const Styled = {
     ${placeholder}
   `,
   Amount: styled.p`
-    margin-top: 8px;
+    margin: 8px 0;
     padding-left: 24px;
     color: #999999;
     font-size: var(--font-size--tiny);
@@ -152,10 +153,13 @@ const Styled = {
   `,
 };
 
-function PurchasePage({ projectId, membershipId, redirect }) {
+function PurchasePage({ projectId, membershipId, redirect = `/project/${projectId}` }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isAgreed, setIsAgreed] = useState(false);
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
+  const [alert, setAlert] = useState(null);
+  const [payment, setPayment] = useState('piction');
+  const [linkaPayment, setLinkaPayment] = useState(null);
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
@@ -167,20 +171,35 @@ function PurchasePage({ projectId, membershipId, redirect }) {
   });
 
   const handleError = (error) => {
-    alert(error.response.data.message);
+    setAlert({ text: error.response.data.message, type: 'error' });
   };
 
   const handleSubscribe = async (event) => {
     event.preventDefault();
-    try {
-      await API.membership.subscribe({
-        projectId,
-        membershipId,
-        sponsorshipPrice: membership.price,
-      });
-      navigate(redirect || `/project/${projectId}`);
-    } catch (error) {
-      handleError(error);
+    if (payment === 'linka') {
+      try {
+        const { data } = await API.linka.getLinkaPayment({
+          projectId,
+          membershipId,
+          sponsorshipPrice: membership.price,
+          nextUrl: redirect,
+        });
+        setLinkaPayment(data);
+      } catch (error) {
+        console.log(error);
+        handleError(error);
+      }
+    } else {
+      try {
+        await API.membership.subscribe({
+          projectId,
+          membershipId,
+          sponsorshipPrice: membership.price,
+        });
+        navigate(redirect);
+      } catch (error) {
+        handleError(error);
+      }
     }
   };
 
@@ -228,10 +247,25 @@ function PurchasePage({ projectId, membershipId, redirect }) {
           <Styled.Name>
             결제 방법
           </Styled.Name>
-          <Radio defaultChecked>픽션 지갑</Radio>
+          <Radio
+            name="payment"
+            value="piction"
+            checked={payment === 'piction'}
+            onChange={() => setPayment('piction')}
+          >
+            픽션 지갑
+          </Radio>
           <Styled.Amount>
             {`${wallet.amount.toLocaleString()} PXL 보유 중`}
           </Styled.Amount>
+          <Radio
+            name="payment"
+            value="linka"
+            checked={payment === 'linka'}
+            onChange={() => setPayment('linka')}
+          >
+            신용카드
+          </Radio>
         </Styled.Section>
         <Styled.Purchase>
           <form onSubmit={handleSubscribe}>
@@ -292,6 +326,19 @@ function PurchasePage({ projectId, membershipId, redirect }) {
           </Styled.Fees>
         )}
       </GridTemplate>
+      {alert && (
+        <Alert type={alert.type}>
+          {alert.text}
+        </Alert>
+      )}
+      {linkaPayment && (
+        <form method="post" action={linkaPayment.requestUrl}>
+          {Object.entries(linkaPayment.linkaPaymentFormView).map(([key, value]) => (
+            <input type="hidden" name={key} value={value} key={key} />
+          ))}
+          <input type="submit" value="test" />
+        </form>
+      )}
     </>
   );
 }
