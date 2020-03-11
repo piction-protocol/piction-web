@@ -185,7 +185,7 @@ function PurchasePage({
           projectId,
           membershipId,
           sponsorshipPrice: membership.price,
-          nextUrl: `${location.host}${redirectTo}`,
+          nextUrl: `${location.origin}${redirectTo}`,
         });
         setLinkaPayment(data);
       } catch (error) {
