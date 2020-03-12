@@ -6,10 +6,12 @@ import { createPortal } from 'react-dom';
 function LinkaPayment({
   requestUrl, linkaPaymentFormView,
 }) {
+  const formRef = useRef(null);
   const container = document.createElement('div');
   const popup = window.open('', '', 'width=800,height=600');
-  popup.document.body.appendChild(container);
-  const formRef = useRef(null);
+  if (popup) {
+    popup.document.body.appendChild(container);
+  }
 
   useEffect(() => {
     formRef.current.submit();
