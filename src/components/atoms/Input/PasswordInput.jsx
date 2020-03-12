@@ -8,6 +8,7 @@ import Input from '.';
 
 const Styled = {
   Wrapper: styled.div`
+    min-width: 0;
     display: flex;
     position: relative;
     align-items: center;
