@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 const Input = styled.input.attrs(({ type }) => ({
   type,
 }))`
+  min-width: 0;
   padding: 14px;
   border: 2px solid var(--gray--dark);
   background-color: var(--white);
