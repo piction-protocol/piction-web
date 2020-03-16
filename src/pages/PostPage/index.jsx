@@ -142,7 +142,7 @@ function PostPage({ projectId, postId }) {
         ) : (
           // FIXME: needSponsorship을 관리하는 코드를 개선
           post && post.membership && needSponsorship ? (
-            <Content.Locked handleSubscription={handleSubscription} post={post} />
+            <Content.Locked handleSubscription={handleSubscription} post={post} redirectTo={window.location.href} />
           ) : (
             <Content.Placeholder />
           )
