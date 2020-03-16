@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { mutate } from 'swr';
-import { navigate } from '@reach/router';
+import { navigate, useLocation } from '@reach/router';
 
 import media from 'styles/media';
 
@@ -14,6 +14,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import useAPI from 'hooks/useAPI';
 import useLocalStorage from 'hooks/useLocalStorage';
 
+import Alert from 'components/externals/Alert';
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
 import LikeButton from 'components/atoms/LikeButton';
@@ -53,6 +54,9 @@ function PostPage({ projectId, postId }) {
   useProjectLayout(project);
 
   const { data: post, error: postError } = useSWR(`/projects/${projectId}/posts/${postId}`, { revalidateOnFocus: false });
+  const postLocation = useLocation();
+  const purchasePay = postLocation.search;
+  const didCompletePurchase = (purchasePay === '?purchasePay');
 
   useEffect(() => {
     if (projectError || postError) {
@@ -132,6 +136,12 @@ function PostPage({ projectId, postId }) {
           <ReaderModeControl readerMode={readerMode} onToggle={mode => setReaderMode(mode)} />
         )}
 
+        { didCompletePurchase && (
+        <Alert>
+          후원 플랜 결제가 완료되었습니다.
+        </Alert>
+        ) }
+
         {contentLoaded ? (
           <Content
             publishedAt={post && post.publishedAt}
@@ -142,7 +152,7 @@ function PostPage({ projectId, postId }) {
         ) : (
           // FIXME: needSponsorship을 관리하는 코드를 개선
           post && post.membership && needSponsorship ? (
-            <Content.Locked handleSubscription={handleSubscription} post={post} />
+            <Content.Locked handleSubscription={handleSubscription} post={post} redirectTo={window.location.href} />
           ) : (
             <Content.Placeholder />
           )

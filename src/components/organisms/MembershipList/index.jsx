@@ -77,7 +77,7 @@ const Styled = {
 };
 
 function MembershipList({
-  isMyProject, memberships, sponsored, location,
+  isMyProject, memberships, sponsored, location, projectId,
 }) {
   const [minimum, setMinimum] = useState(location?.state?.post ? location.state.post.membership.level : 0);
 
@@ -140,6 +140,10 @@ function MembershipList({
                     as={Link}
                     to={`purchase/${membership.id}`}
                     disabled={isDisabled || isFull}
+                    state={{
+                      postId: location?.state?.post?.id,
+                      redirectTo: location.state.redirectTo ? `${location?.state?.redirectTo}?purchasePay` : `${location.origin}/project/${projectId}/posts?purchasePay`,
+                    }}
                   >
                     {`${membership.price} PXL / 30일`}
                   </PrimaryButton>
@@ -166,4 +170,5 @@ MembershipList.propTypes = {
   memberships: PropTypes.array,
   sponsored: PropTypes.object,
   location: PropTypes.object,
+  projectId: PropTypes.object,
 };

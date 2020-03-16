@@ -159,13 +159,14 @@ const Styled = {
 };
 
 function PurchasePage({
-  projectId, membershipId, location, redirectTo = `/project/${projectId}`,
+  projectId, membershipId, location,
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isAgreed, setIsAgreed] = useState(false);
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
   const [alert, setAlert] = useState(null);
   const [linkaPayment, setLinkaPayment] = useState(null);
+  const redirectPage = location.state.redirectTo;
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
@@ -186,13 +187,14 @@ function PurchasePage({
         projectId,
         membershipId,
         sponsorshipPrice: membership.price,
-        nextUrl: `${location.origin}${redirectTo}`,
+        nextUrl: redirectPage,
       });
       setLinkaPayment(data);
     } catch (error) {
       handleError(error);
     }
   };
+
 
   return (
     <>
@@ -315,5 +317,5 @@ PurchasePage.propTypes = {
   projectId: PropTypes.string.isRequired,
   membershipId: PropTypes.string.isRequired,
   location: PropTypes.object,
-  redirectTo: PropTypes.string,
+  redirectTo: PropTypes.object,
 };

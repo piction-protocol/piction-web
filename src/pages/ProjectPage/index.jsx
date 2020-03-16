@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Router, Redirect, navigate } from '@reach/router';
+import {
+  Router, Redirect, navigate, useLocation,
+} from '@reach/router';
 import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
@@ -12,6 +14,7 @@ import useMedia from 'hooks/useMedia';
 
 import { GridStyle } from 'styles/Grid';
 
+import Alert from 'components/externals/Alert';
 import GridTemplate from 'components/templates/GridTemplate';
 import ProjectInfo from 'components/organisms/ProjectInfo';
 import Tabs from 'components/molecules/Tabs';
@@ -48,6 +51,9 @@ function ProjectPage({ projectId }) {
   const { data: [subscription, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
   const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
   const isMyProject = currentUser?.loginId === project?.user.loginId;
+  const postLocation = useLocation();
+  const purchasePay = postLocation.search;
+  const didCompletePurchase = (purchasePay === '?purchasePay');
 
   const handleSubscribe = async () => {
     if (sponsored) {
@@ -108,6 +114,12 @@ function ProjectPage({ projectId }) {
           ...project?.activeMembership ? [{ text: '후원', to: 'memberships' }] : [],
         ]}
       />
+
+      { didCompletePurchase && (
+        <Alert>
+          후원 플랜 결제가 완료되었습니다.
+        </Alert>
+      ) }
 
       <Styled.Router primary={false}>
         <Redirect from="/" to="posts" noThrow />
