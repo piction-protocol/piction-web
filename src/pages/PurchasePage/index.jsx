@@ -191,6 +191,8 @@ function PurchasePage({
       setLinkaPayment(data);
     } catch (error) {
       handleError(error);
+    } finally {
+      setLinkaPayment(null);
     }
   };
 
