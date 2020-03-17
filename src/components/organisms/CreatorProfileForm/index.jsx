@@ -114,7 +114,7 @@ function CreatorProfileForm({ title }) {
   });
 
   const onSubmit = async (data) => {
-    const { links } = data;
+    const { links = [] } = data;
     const refinedData = {
       ...data,
       links: links.map(link => (/^https?:\/\//i.test(link.url) ? link : {
