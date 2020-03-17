@@ -111,7 +111,6 @@ Content.Placeholder = () => {
 function LockedContent({ handleSubscription, post }) {
   const { currentUser } = useCurrentUser();
   const hasPrice = post?.membership.price > 0;
-
   return (
     <Styled.Locked>
       <Styled.LockedIcon />
@@ -140,7 +139,10 @@ function LockedContent({ handleSubscription, post }) {
           <Styled.Subscription
             as={Link}
             to="../../memberships"
-            state={{ post }}
+            state={{
+              post,
+              redirectTo: window.location.href,
+            }}
           >
             후원하기
           </Styled.Subscription>
