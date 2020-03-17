@@ -7,7 +7,7 @@ import CompactTemplate from 'components/templates/CompactTemplate';
 import LoginForm from 'components/organisms/LoginForm';
 
 function LoginPage({ location }) {
-  const redirectTo = decodeURIComponent(location.state ? location.state.redirectTo : '/');
+  const redirectTo = decodeURIComponent(location?.state?.redirectTo ? location.state.redirectTo : '/');
 
   useRedirectWhenSignedIn(redirectTo);
 
