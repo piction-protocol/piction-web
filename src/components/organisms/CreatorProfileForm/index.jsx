@@ -93,14 +93,16 @@ function CreatorProfileForm({ title }) {
   const [API] = useAPI();
   const [modalBody, setModalBody] = useState(null);
 
-  const { data: profile } = useSWR(() => 'my/creator-profiles', {
+  const { data: profile, revalidate } = useSWR(() => 'my/creator-profiles', {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
   });
 
   const {
     control, register, handleSubmit, reset, watch,
-  } = useForm();
+  } = useForm({
+    defaultValues: profile,
+  });
 
   useEffect(() => {
     reset(profile);
@@ -112,15 +114,25 @@ function CreatorProfileForm({ title }) {
   });
 
   const onSubmit = async (data) => {
+    const { links } = data;
+    const refinedData = {
+      ...data,
+      links: links.map(link => (/^https?:\/\//i.test(link.url) ? link : {
+        ...link,
+        url: `http://${link.url}`,
+      })),
+    };
     try {
       if (profile) {
-        await API.creatorProfile.update(data);
+        await API.creatorProfile.update(refinedData);
       } else {
-        await API.creatorProfile.create(data);
+        await API.creatorProfile.create(refinedData);
       }
       setModalBody('입력하신 내용이 저장되었습니다.');
+      revalidate();
     } catch (error) {
-      setModalBody('서버가 응답하지 않습니다. 잠시 후 다시 시도해주세요.');
+      const { message } = error?.response?.data;
+      setModalBody(message || '서버가 응답하지 않습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -153,16 +165,18 @@ function CreatorProfileForm({ title }) {
                 <Styled.ExternalFavicon url={watchLinks[index]?.url} />
                 <Input
                   name={`links[${index}].url`}
-                  ref={register()}
+                  ref={register}
+                  defaultValue={field.url}
                   required
                   placeholder="주소 입력"
                 />
               </Styled.Url>
               <Styled.Name
                 name={`links[${index}].name`}
-                ref={register()}
+                ref={register}
                 maxLength="10"
                 placeholder="이름"
+                defaultValue={field.name}
                 required
               />
               <Styled.Delete type="button" onClick={() => remove(index)}>
@@ -172,7 +186,7 @@ function CreatorProfileForm({ title }) {
           ))}
           <Styled.AddLink
             disabled={fields.length >= 5}
-            onClick={() => append({ name: 'links' })}
+            onClick={() => append({ url: '', name: '' })}
           >
             + 외부 링크 추가
           </Styled.AddLink>
