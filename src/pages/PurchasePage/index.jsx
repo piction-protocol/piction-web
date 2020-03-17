@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useLocation } from '@reach/router';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -159,13 +160,14 @@ const Styled = {
 };
 
 function PurchasePage({
-  projectId, membershipId, location,
+  projectId, membershipId,
 }) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isAgreed, setIsAgreed] = useState(false);
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
   const [alert, setAlert] = useState(null);
   const [linkaPayment, setLinkaPayment] = useState(null);
+  const location = useLocation();
   const redirectPage = location.state.redirectTo;
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
@@ -196,7 +198,6 @@ function PurchasePage({
       setLinkaPayment(null);
     }
   };
-
 
   return (
     <>
