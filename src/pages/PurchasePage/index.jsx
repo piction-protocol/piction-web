@@ -2,8 +2,8 @@ import React, {
   useState, useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
-import { navigate } from '@reach/router';
 import styled from 'styled-components/macro';
+import { useLocation } from '@reach/router';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -18,16 +18,17 @@ import useAPI from 'hooks/useAPI';
 import withLoginChecker from 'components/LoginChecker';
 
 import GridTemplate from 'components/templates/GridTemplate';
+import LinkaPayment from 'components/molecules/LinkaPayment';
 import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 import Checkbox from 'components/atoms/Checkbox';
-import Radio from 'components/atoms/Radio';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton } from 'components/atoms/Button';
+import Alert from 'components/externals/Alert';
+
+import { ReactComponent as LinkaPayIcon } from 'images/ic-linkapay.svg';
 
 const Styled = {
   WideThumbnail: styled(WideThumbnail)`
-    grid-column: 1 / -1;
-    grid-row: 1;
     background-color: var(--gray--light);
     ${media.desktop`
       max-height: 450px;
@@ -35,28 +36,35 @@ const Styled = {
   `,
   Heading: styled(Heading)`
     grid-column: 1 / -1;
-    grid-row: 1;
-    margin-top: 24px;
+    margin-bottom: 16px;
     font-family: var(--poppins);
     font-size: var(--font-size--large);
   `,
-  Section: styled.section`
+  Wrapper: styled.form`
     grid-column: 1 / -1;
-    padding-bottom: var(--row-gap);
-    border-bottom: 1px solid var(--gray--light);
+    padding: 32px 8px;
     ${media.desktop`
-      grid-column: 1 / 7;
+      grid-column: 4 / -4;
+      margin-top: 40px;
+      padding: 40px;
+      border: 1px solid #e8e8e8;
     `}
   `,
+  Section: styled.section`
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--gray--light);
+  `,
   SectionTitle: styled.h2`
+    margin-bottom: 4px;
     color: #bababa;
     font-size: var(--font-size--small);
     font-weight: normal;
   `,
   SectionLabel: styled.h2`
+    margin-bottom: 4px;
     color: #bababa;
     font-size: var(--font-size--base);
-    margin-bottom: 4px;
   `,
   Name: styled.p`
     margin-bottom: 16px;
@@ -71,32 +79,13 @@ const Styled = {
     ${placeholder}
   `,
   Amount: styled.p`
-    margin-top: 8px;
+    margin: 8px 0;
     padding-left: 24px;
     color: #999999;
     font-size: var(--font-size--tiny);
     font-weight: bold;
   `,
-  Purchase: styled.section`
-    grid-column: 1 / -1;
-    padding-bottom: var(--row-gap);
-    border-bottom: 1px solid var(--gray--light);
-    ${media.desktop`
-      grid-column: 7 / -1;
-      grid-row: 2 / 5;
-      margin-bottom: auto;
-      border: 1px solid var(--gray--light);
-      padding: 40px;
-    `}
-  `,
-  PurchaseTitle: styled.p`
-  `,
-  Subscription: styled.div`
-    padding-bottom: var(--row-gap);
-    border-bottom: 1px solid var(--gray--light);
-  `,
   Price: styled.p`
-    margin-bottom: 8px;
     font-size: var(--font-size--large);
     font-family: var(--poppins);
     ${placeholder}
@@ -108,12 +97,13 @@ const Styled = {
     margin-bottom: 16px;
   `,
   Notice: styled.p`
-    font-size: var(--font-size--small);
+    font-size: var(--font-size--tiny);
   `,
   CheckboxLabel: styled.label`
     display: flex;
     align-items: center;
     margin-top: var(--row-gap);
+    font-size: var(--font-size--small);
   `,
   Checkbox: styled(Checkbox)`
     flex: 0 0 auto;
@@ -139,48 +129,73 @@ const Styled = {
   `,
   FeesAmount: styled.b`
     margin-left: 8px;
-    font-size: var(--font-size--tiny);
   `,
   Ul: styled.ul`
     padding: 16px;
   `,
   Li: styled.li`
+    color: #bababa;
     list-style: disc;
     & + & {
       margin-top: 8px;
     }
   `,
+  Em: styled.em`
+    color: #bf1113;
+    font-style: normal;
+  `,
+  PaymentBy: styled.p`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    color: #bababa;
+    font-size: var(--font-size--tiny);
+  `,
+  LinkaPayIcon: styled(LinkaPayIcon)`
+    margin-left: 6px;
+    width: auto;
+    height: 10px;
+  `,
 };
 
-function PurchasePage({ projectId, membershipId, redirect }) {
+function PurchasePage({
+  projectId, membershipId,
+}) {
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isAgreed, setIsAgreed] = useState(false);
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
+  const [alert, setAlert] = useState(null);
+  const [linkaPayment, setLinkaPayment] = useState(null);
+  const location = useLocation();
+  const redirectPage = location.state.redirectTo;
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
 
   const { data: membership } = useSWR(`/projects/${projectId}/memberships/${membershipId}`);
-  const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
   const { data: fees } = useSWR(`projects/${projectId}/fees`, {
     revalidateOnFocus: false,
   });
 
   const handleError = (error) => {
-    alert(error.response.data.message);
+    setAlert({ text: error.response.data.message, type: 'error' });
   };
 
   const handleSubscribe = async (event) => {
     event.preventDefault();
     try {
-      await API.membership.subscribe({
+      const { data } = await API.linka.getLinkaPayment({
         projectId,
         membershipId,
         sponsorshipPrice: membership.price,
+        nextUrl: redirectPage,
       });
-      navigate(redirect || `/project/${projectId}`);
+      setLinkaPayment(data);
     } catch (error) {
       handleError(error);
+    } finally {
+      setLinkaPayment(null);
     }
   };
 
@@ -195,46 +210,37 @@ function PurchasePage({ projectId, membershipId, redirect }) {
         image={project?.wideThumbnail}
       />
       <GridTemplate>
-        <Styled.Heading>
-          후원 플랜 결제
-        </Styled.Heading>
-        <Styled.Section>
-          <Styled.SectionTitle>
-            선택한 후원 플랜
-          </Styled.SectionTitle>
-          {membership ? (
-            <>
-              <Styled.Name>
-                {`티어 ${membership.level} - ${membership.name}`}
-              </Styled.Name>
-              {membership.description && (
-                <Styled.Description>
-                  {membership.description}
+        <Styled.Wrapper onSubmit={handleSubscribe}>
+          <Styled.Heading>
+            후원 플랜 결제
+          </Styled.Heading>
+          <Styled.Section>
+            <Styled.SectionTitle>
+              선택한 후원 플랜
+            </Styled.SectionTitle>
+            {membership ? (
+              <>
+                <Styled.Name>
+                  {`티어 ${membership.level} - ${membership.name}`}
+                </Styled.Name>
+                {membership.description && (
+                  <Styled.Description>
+                    {membership.description}
+                  </Styled.Description>
+                )}
+              </>
+            ) : (
+              <>
+                <Styled.Name isPlaceholder>
+                  티어 level - name
+                </Styled.Name>
+                <Styled.Description isPlaceholder>
+                  description
                 </Styled.Description>
-              )}
-            </>
-          ) : (
-            <>
-              <Styled.Name isPlaceholder>
-                티어 level - name
-              </Styled.Name>
-              <Styled.Description isPlaceholder>
-                description
-              </Styled.Description>
-            </>
-          )}
-        </Styled.Section>
-        <Styled.Section>
-          <Styled.Name>
-            결제 방법
-          </Styled.Name>
-          <Radio defaultChecked>픽션 지갑</Radio>
-          <Styled.Amount>
-            {`${wallet.amount.toLocaleString()} PXL 보유 중`}
-          </Styled.Amount>
-        </Styled.Section>
-        <Styled.Purchase>
-          <form onSubmit={handleSubscribe}>
+              </>
+            )}
+          </Styled.Section>
+          <Styled.Section>
             <Styled.SectionLabel>
               혜택 제공 기간
             </Styled.SectionLabel>
@@ -245,53 +251,65 @@ function PurchasePage({ projectId, membershipId, redirect }) {
               결제 금액
             </Styled.SectionLabel>
             {membership ? (
-              <Styled.Subscription>
-                <Styled.Price>
-                  {`${membership.price} PXL`}
-                </Styled.Price>
-              </Styled.Subscription>
+              <Styled.Price>
+                {`${membership.price} PXL`}
+              </Styled.Price>
             ) : (
               <Styled.Price isPlaceholder>
                 1000 PXL
               </Styled.Price>
             )}
-            <Styled.CheckboxLabel>
-              <Styled.Checkbox checked={isAgreed} onChange={e => setIsAgreed(e.target.checked)} />
+          </Styled.Section>
+          {fees && project && membership && (
+            <Styled.Fees>
+              <Styled.FeesTitle>송금 안내</Styled.FeesTitle>
+              <Styled.Ul>
+                <Styled.Li>
+                  {`기본 수수료 ${fees.contentsDistributorRate}%`}
+                  <Styled.FeesAmount>
+                    {`${membership.price * (fees.contentsDistributorRate) / 100} PXL`}
+                  </Styled.FeesAmount>
+                </Styled.Li>
+                <Styled.Li>
+                  {project.user.username}
+                  <Styled.FeesAmount>
+                    {`${membership.price * (100 - fees.contentsDistributorRate) / 100} PXL`}
+                  </Styled.FeesAmount>
+                </Styled.Li>
+              </Styled.Ul>
               <Styled.Notice>
-                상품 설명 및 환불에 대한 내용을 확인하였으며, 이에 동의합니다.
+                결제 완료 시 결제 금액이 즉시
+                {' '}
+                <strong>
+                  {project.user.username}
+                </strong>
+                님의 계좌로 송금되며,
+                {' '}
+                <Styled.Em>
+                  환불은 불가능합니다.
+                </Styled.Em>
               </Styled.Notice>
-            </Styled.CheckboxLabel>
-            <Styled.Submit value="구매" disabled={!isAgreed} />
-          </form>
-        </Styled.Purchase>
-        {fees && project && membership && (
-          <Styled.Fees>
-            <Styled.FeesTitle>송금 안내</Styled.FeesTitle>
-            <Styled.Ul>
-              <Styled.Li>
-                {`기본 수수료 ${fees.contentsDistributorRate}%`}
-                <Styled.FeesAmount>
-                  {`${membership.price * (fees.contentsDistributorRate) / 100} PXL`}
-                </Styled.FeesAmount>
-              </Styled.Li>
-              <Styled.Li>
-                {project.user.username}
-                <Styled.FeesAmount>
-                  {`${membership.price * (100 - fees.contentsDistributorRate) / 100} PXL`}
-                </Styled.FeesAmount>
-              </Styled.Li>
-            </Styled.Ul>
-            <Styled.Notice>
-              결제 완료 시 결제 금액이 즉시
-              {' '}
-              <strong>
-                {project.user.username}
-              </strong>
-              님의 계좌로 송금되며, 환불은 불가능합니다.
-            </Styled.Notice>
-          </Styled.Fees>
-        )}
+            </Styled.Fees>
+          )}
+          <Styled.CheckboxLabel>
+            <Styled.Checkbox checked={isAgreed} onChange={e => setIsAgreed(e.target.checked)} />
+            상품 설명 및 환불에 대한 내용을 확인하였으며, 이에 동의합니다.
+          </Styled.CheckboxLabel>
+          <Styled.Submit value="결제" disabled={!isAgreed} />
+          <Styled.PaymentBy>
+            Payment by
+            <Styled.LinkaPayIcon />
+          </Styled.PaymentBy>
+        </Styled.Wrapper>
       </GridTemplate>
+      {alert && (
+        <Alert type={alert.type}>
+          {alert.text}
+        </Alert>
+      )}
+      {linkaPayment && (
+        <LinkaPayment {...linkaPayment} />
+      )}
     </>
   );
 }
@@ -301,5 +319,6 @@ export default withLoginChecker(PurchasePage);
 PurchasePage.propTypes = {
   projectId: PropTypes.string.isRequired,
   membershipId: PropTypes.string.isRequired,
-  redirect: PropTypes.string,
+  location: PropTypes.object,
+  redirectTo: PropTypes.object,
 };

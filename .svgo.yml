@@ -10,7 +10,7 @@ plugins:
   - minifyStyles
   - convertStyleToAttrs
   - cleanupIDs
-  - prefixIds
+  - prefixIds: true
   - removeRasterImages
   - removeUselessDefs
   - cleanupNumericValues

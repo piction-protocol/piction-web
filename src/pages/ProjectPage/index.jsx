@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Router, Redirect, navigate } from '@reach/router';
+import {
+  Router, Redirect, navigate,
+} from '@reach/router';
 import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';

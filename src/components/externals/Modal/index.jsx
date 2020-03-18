@@ -85,6 +85,7 @@ export default Modal;
 
 const ModalBody = styled.div`
   margin-bottom: 24px;
+  text-align: center;
 `;
 
 export {

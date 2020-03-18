@@ -31,9 +31,9 @@ function useCurrentUser() {
       await API.session.delete();
     } finally {
       API.token.delete();
-      setCurrentUser(null);
+      window.location.reload();
     }
-  }, [API, setCurrentUser]);
+  }, [API]);
 
   return {
     currentUser,

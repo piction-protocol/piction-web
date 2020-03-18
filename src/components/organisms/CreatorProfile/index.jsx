@@ -52,6 +52,7 @@ const Styled = {
     grid-column: 1 / -1;
     margin-top: 12px;
     font-size: var(--font-size--small);
+    white-space: pre-line;
     ${placeholder}
   `,
   Links: styled.div`

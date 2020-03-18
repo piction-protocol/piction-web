@@ -81,8 +81,8 @@ function PostPage({ projectId, postId }) {
   const handleLike = async () => {
     try {
       await API.post(projectId).like({ postId });
+      mutate(`/projects/${projectId}/posts/${postId}/like`, { like: true });
       mutate(`/projects/${projectId}/posts/${postId}`, { ...post, likeCount: post.likeCount + 1 });
-      mutate(`/projects/${projectId}/posts/${postId}/like`, true);
     } catch (error) {
       handleError(error.response.data);
     }
@@ -142,7 +142,7 @@ function PostPage({ projectId, postId }) {
         ) : (
           // FIXME: needSponsorship을 관리하는 코드를 개선
           post && post.membership && needSponsorship ? (
-            <Content.Locked handleSubscription={handleSubscription} post={post} />
+            <Content.Locked handleSubscription={handleSubscription} post={post} redirectTo={window.location.href} />
           ) : (
             <Content.Placeholder />
           )

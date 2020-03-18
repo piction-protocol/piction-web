@@ -58,6 +58,10 @@ function useAPI() {
     unsubscribe: params => API.delete(`/projects/${params.projectId}/memberships/${params.membershipId}/sponsorship`, params),
   };
 
+  const linka = {
+    getLinkaPayment: params => API.post(`linka-payments/projects/${params.projectId}/memberships/${params.membershipId}`, params),
+  };
+
   const recommended = {
     getProjects: params => API.get('/recommended/projects', params),
   };
@@ -114,6 +118,7 @@ function useAPI() {
     post,
     project,
     membership,
+    linka,
     recommended,
     series,
     session,

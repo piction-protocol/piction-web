@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Link, useLocation } from '@reach/router';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -77,8 +77,9 @@ const Styled = {
 };
 
 function MembershipList({
-  isMyProject, memberships, sponsored, location,
+  isMyProject, memberships, sponsored, projectId,
 }) {
+  const location = useLocation();
   const [minimum, setMinimum] = useState(location?.state?.post ? location.state.post.membership.level : 0);
 
   return (
@@ -140,6 +141,10 @@ function MembershipList({
                     as={Link}
                     to={`purchase/${membership.id}`}
                     disabled={isDisabled || isFull}
+                    state={{
+                      postId: location?.state?.post?.id,
+                      redirectTo: location?.state?.redirectTo || `${location.origin}/project/${projectId}/posts`,
+                    }}
                   >
                     {`${membership.price} PXL / 30일`}
                   </PrimaryButton>
@@ -166,4 +171,5 @@ MembershipList.propTypes = {
   memberships: PropTypes.array,
   sponsored: PropTypes.object,
   location: PropTypes.object,
+  projectId: PropTypes.object,
 };
