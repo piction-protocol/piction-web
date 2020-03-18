@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet';
 import { Link } from '@reach/router';
 
+import useCurrentUser from 'hooks/useCurrentUser';
 import media from 'styles/media';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
@@ -208,6 +209,9 @@ const Promotion = styled.div`
 `;
 
 function CreatorsGuide() {
+  const { currentUser } = useCurrentUser();
+  const gettingStartPath = currentUser ? '/dashboard' : '/signup';
+
   return (
     <Main>
       <Helmet>
@@ -221,7 +225,7 @@ function CreatorsGuide() {
           픽션 네트워크는 창작자의 다양한 창작활동을 후원 할 수 있는 오픈 생태계입니다.
           콘텐츠가 만들어지는 과정을 팬과 함께 응원하고 즐기는 실험적인 시도를 함께하실 수 있습니다.
         </IntroParagraph>
-        <PrimaryButtonLink to="/signup">시작하기</PrimaryButtonLink>
+        <PrimaryButtonLink to={gettingStartPath}>시작하기</PrimaryButtonLink>
         <SecondaryButtonLink href="http://bit.ly/piction_sponsorship_plan" target="_blank">후원플랜 신청</SecondaryButtonLink>
 
       </IntroSection>
@@ -286,7 +290,7 @@ function CreatorsGuide() {
       </Section>
       <Section>
         <SectionHeading>픽션에서 새로운 창작활동을 시작해보세요, 창작자 여러분을 환영합니다.</SectionHeading>
-        <PrimaryButtonLink to="/signup">시작하기</PrimaryButtonLink>
+        <PrimaryButtonLink to={gettingStartPath}>시작하기</PrimaryButtonLink>
       </Section>
 
       <DarkBackground>
