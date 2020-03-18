@@ -16,6 +16,7 @@ import { PrimaryButton } from 'components/atoms/Button';
 import Modal from 'components/externals/Modal';
 
 import CoinOneLogo from 'images/img-logo-coin-one.png';
+import UpbitLogo from 'images/img-logo-upbit.png';
 import NovaWalletLogo from 'images/img-logo-nova-wallet.png';
 
 const Styled = {
@@ -62,6 +63,10 @@ const Styled = {
     ${media.desktop`
       margin-right: 24px;
     `}
+    img {
+      width: auto;
+      height: 24px;
+    }
   `,
   List: styled.ul`
     padding-left: 16px;
@@ -180,6 +185,9 @@ function Withdraw({ wallet }) {
         <Styled.Group>
           <Styled.Link href="https://coinone.co.kr/exchange/trade/pxl/krw" target="_blank">
             <img src={CoinOneLogo} alt="coinone" />
+          </Styled.Link>
+          <Styled.Link href="https://upbit.com/exchange?code=CRIX.UPBIT.BTC-PXL/" target="_blank">
+            <img src={UpbitLogo} alt="upbit" />
           </Styled.Link>
           <Styled.Link href="https://eosnova.io/" target="_blank">
             <img src={NovaWalletLogo} alt="NOVA Wallet" />
