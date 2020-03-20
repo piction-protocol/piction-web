@@ -244,7 +244,7 @@ function MembershipForm({
           type="number"
           inputRef={register}
           name="sponsorLimit"
-          label="구독자 수 제한"
+          label="후원자 수 제한"
           required={!isUnlimited}
           placeholder="0"
           columns={2}
@@ -290,7 +290,7 @@ function MembershipForm({
             </>
           ) : (
             <>
-              <ModalBody>선택한 후원 플랜을 삭제할 수 없습니다. 해당 플랜과 연결된 포스트가 있거나 1명 이상의 구독자가 있는 경우, 또는 제일 높은 티어의 플랜이 아닌 경우 삭제할 수 없습니다.</ModalBody>
+              <ModalBody>선택한 후원 플랜을 삭제할 수 없습니다. 해당 플랜과 연결된 포스트가 있거나 1명 이상의 후원자가 있는 경우, 또는 제일 높은 티어의 플랜이 아닌 경우 삭제할 수 없습니다.</ModalBody>
               <PrimaryButton onClick={() => setIsDeletingMembership(false)}>확인</PrimaryButton>
             </>
           )}
