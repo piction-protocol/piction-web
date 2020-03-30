@@ -31,6 +31,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
+    "@storybook/addon-actions": "^5.3.17",
+    "@storybook/addon-knobs": "^5.3.17",
+    "@storybook/addon-links": "^5.3.17",
+    "@storybook/addon-viewport": "^5.3.17",
+    "@storybook/addons": "^5.3.17",
+    "@storybook/preset-create-react-app": "^2.1.1",
+    "@storybook/react": "^5.3.17",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "husky": "^2.3.0",
@@ -47,7 +54,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "svgo": "svgo --config=.svgo.yml --indent=2 ./src/ -r",
-    "lint": "eslint --ext jsx --ext js src"
+    "lint": "eslint --ext jsx --ext js src",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "husky": {
     "hooks": {
