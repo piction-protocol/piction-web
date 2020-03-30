@@ -1,5 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
-import { Router, Location, Redirect } from '@reach/router';
+import {
+  Router, Location, Redirect, globalHistory,
+} from '@reach/router';
 import { importMDX } from 'mdx.macro';
 import { SWRConfig } from 'swr';
 import styled from 'styled-components/macro';
@@ -79,6 +81,13 @@ function App() {
     }
     loading();
   }, [getCurrentUser]);
+
+  useEffect(() => globalHistory.listen(() => {
+    const { SMPCTracking } = window;
+    if (SMPCTracking) {
+      SMPCTracking.active();
+    }
+  }), []);
 
   return (
     <div className="root">
