@@ -14,6 +14,7 @@ import placeholder from 'styles/placeholder';
 import useMedia from 'hooks/useMedia';
 import useProjectLayout from 'hooks/useNavigationLayout';
 import useAPI from 'hooks/useAPI';
+import useAlert from 'hooks/useAlert';
 
 import withLoginChecker from 'components/LoginChecker';
 
@@ -23,7 +24,6 @@ import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 import Checkbox from 'components/atoms/Checkbox';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton } from 'components/atoms/Button';
-import Alert from 'components/externals/Alert';
 
 import { ReactComponent as LinkaPayIcon } from 'images/ic-linkapay.svg';
 
@@ -165,7 +165,7 @@ function PurchasePage({
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isAgreed, setIsAgreed] = useState(false);
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
-  const [alert, setAlert] = useState(null);
+  const { setErrorAlert } = useAlert();
   const [linkaPayment, setLinkaPayment] = useState(null);
   const location = useLocation();
   const redirectPage = location.state.redirectTo;
@@ -179,7 +179,7 @@ function PurchasePage({
   });
 
   const handleError = (error) => {
-    setAlert({ text: error.response.data.message, type: 'error' });
+    setErrorAlert(error.response.data.message);
   };
 
   const handleSubscribe = async (event) => {
@@ -302,11 +302,6 @@ function PurchasePage({
           </Styled.PaymentBy>
         </Styled.Wrapper>
       </GridTemplate>
-      {alert && (
-        <Alert type={alert.type}>
-          {alert.text}
-        </Alert>
-      )}
       {linkaPayment && (
         <LinkaPayment {...linkaPayment} />
       )}

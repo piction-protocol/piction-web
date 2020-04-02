@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import useSWR from 'swr';
 
 import useAPI from 'hooks/useAPI';
+import useAlert from 'hooks/useAlert';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import { PrimaryButton } from 'components/atoms/Button';
@@ -46,6 +47,7 @@ function OptOut({ location: { search } }) {
     errorOnRetry: false,
   });
   const [API] = useAPI();
+  const { setSuccessAlert } = useAlert();
 
   if (newsletterError) {
     navigate('/404');
@@ -54,8 +56,7 @@ function OptOut({ location: { search } }) {
   const unsubscribe = async () => {
     try {
       await API.newsletter.deleteByToken({ token });
-      // FIXME: 토스트 메시지로 변경
-      alert('업데이트 알림 메일을 발송하지 않습니다.');
+      setSuccessAlert('업데이트 알림 메일을 발송하지 않습니다.');
       navigate('/');
     } catch (error) {
       console.log(error);

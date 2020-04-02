@@ -9,6 +9,7 @@ import { PrimaryButton } from 'components/atoms/Button';
 import CoinOneLogo from 'images/img-logo-coin-one.png';
 import UpbitLogo from 'images/img-logo-upbit.png';
 import NovaWalletLogo from 'images/img-logo-nova-wallet.png';
+import useAlert from 'hooks/useAlert';
 
 const Styled = {
   Section: styled.section`
@@ -79,6 +80,7 @@ const Styled = {
 };
 
 function Deposit({ wallet }) {
+  const { setSuccessAlert } = useAlert();
   const handleCopy = () => {
     const tempInput = document.createElement('input');
     const { body } = document;
@@ -86,7 +88,7 @@ function Deposit({ wallet }) {
     tempInput.setAttribute('value', wallet.publicKey);
     tempInput.select();
     document.execCommand('copy');
-    alert('지갑 주소가 복사되었습니다.');
+    setSuccessAlert('지갑 주소가 복사되었습니다.');
     body.removeChild(tempInput);
   };
 

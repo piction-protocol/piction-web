@@ -6,10 +6,12 @@ import styled from 'styled-components/macro';
 import createFetcher from 'config/fetcher';
 import { ScrollContext } from 'gatsby-react-router-scroll';
 
+import useAlert from 'hooks/useAlert';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 import { LayoutProvider } from 'context/LayoutContext';
 
+import Alert from 'components/externals/Alert';
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
 import Spinner from 'components/atoms/Spinner';
@@ -72,6 +74,7 @@ const swrConfig = {
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
+  const { flash } = useAlert();
 
   useEffect(() => {
     async function loading() {
@@ -82,6 +85,11 @@ function App() {
 
   return (
     <div className="root">
+      {flash.visible && (
+        <Alert type={flash.type}>
+          {flash.message}
+        </Alert>
+      )}
       <Location>
         {locationContext => (
           <SWRConfig value={{ ...swrConfig, fetcher }}>

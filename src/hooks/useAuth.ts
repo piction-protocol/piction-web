@@ -1,5 +1,4 @@
 import { useCookies } from 'react-cookie';
-import { AxiosResponse } from 'axios';
 import useAxiosClient from './useAxiosClient';
 
 export interface UserResponse {
