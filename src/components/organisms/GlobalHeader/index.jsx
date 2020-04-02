@@ -7,7 +7,7 @@ import { Link, Location } from '@reach/router';
 
 import media, { mediaQuery } from 'styles/media';
 
-import { LayoutContext } from 'context/LayoutContext';
+import { LayoutContext } from 'contexts/LayoutContext';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';

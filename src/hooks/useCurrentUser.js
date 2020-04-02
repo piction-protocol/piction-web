@@ -5,7 +5,7 @@ import useAPI from 'hooks/useAPI';
 
 import DefaultPicture from 'images/img-user-profile.svg';
 
-import { CurrentUserContext } from 'context/CurrentUserContext';
+import { CurrentUserContext } from 'contexts/CurrentUserContext';
 
 function useCurrentUser() {
   const [currentUser, setCurrentUser] = useContext(CurrentUserContext);

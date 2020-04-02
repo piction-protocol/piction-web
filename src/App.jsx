@@ -10,7 +10,7 @@ import { ScrollContext } from 'gatsby-react-router-scroll';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
-import { LayoutProvider } from 'context/LayoutContext';
+import { LayoutProvider } from 'contexts/LayoutContext';
 
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
