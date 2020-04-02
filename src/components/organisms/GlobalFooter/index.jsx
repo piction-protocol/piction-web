@@ -123,7 +123,7 @@ function GlobalFooter() {
         </Styled.Links>
         <Styled.Texts>
           <Styled.Item>Contact | help@piction.network</Styled.Item>
-          <Styled.Item>© 2018-2019 Piction Network. All rights reserved</Styled.Item>
+          <Styled.Item>© 2018-2020 Piction Network. All rights reserved</Styled.Item>
         </Styled.Texts>
         <Styled.Logo />
       </Styled.Wrapper>
