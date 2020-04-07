@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { mutate } from 'swr';
-import { navigate, useLocation } from '@reach/router';
+import { useLocation, Navigate as navigate } from 'react-router-dom';
 
 import media from 'styles/media';
 

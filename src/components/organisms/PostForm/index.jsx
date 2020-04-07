@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, navigate } from '@reach/router';
 import moment from 'moment';
+import { Link, Navigate as navigate } from 'react-router-dom';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';

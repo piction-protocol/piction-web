@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, navigate } from '@reach/router';
+import { Link, Navigate as navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR from 'swr';
 

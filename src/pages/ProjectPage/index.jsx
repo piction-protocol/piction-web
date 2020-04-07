@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Router, Redirect, navigate, useLocation,
-} from '@reach/router';
+  Routes, Route, useLocation, Navigate,
+} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
@@ -26,7 +26,7 @@ const MembershipList = React.lazy(() => import('components/organisms/MembershipL
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
-  Router: styled(Router)`
+  Routes: styled(Routes)`
     grid-column: 1 / -1;
     ${GridStyle}
   `,
@@ -86,7 +86,7 @@ function ProjectPage({ projectId }) {
   };
 
   if (projectError) {
-    navigate('/404', { replace: true });
+    Navigate('/404', { replace: true });
   }
 
   return (
@@ -121,26 +121,29 @@ function ProjectPage({ projectId }) {
         </Alert>
       ) }
 
-      <Styled.Router primary={false}>
-        <Redirect from="/" to="posts" noThrow />
-        <PostList
+      <Styled.Routes primary={false}>
+        <Route path="/" element={<Navigate to="post" />} />
+        <Route
           path="posts"
           projectId={projectId}
           project={project}
           sponsored={sponsored}
           isMyProject={isMyProject}
+          element={<PostList />}
         />
-        <SeriesList
+        <Route
           path="series"
           series={series}
+          element={<SeriesList />}
         />
-        <MembershipList
+        <Route
           path="memberships"
           memberships={memberships}
           sponsored={sponsored}
           isMyProject={isMyProject}
+          element={<MembershipList />}
         />
-      </Styled.Router>
+      </Styled.Routes>
     </GridTemplate>
   );
 }

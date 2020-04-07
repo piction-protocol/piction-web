@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
-import { Link, navigate } from '@reach/router';
+import { Link, Navigate as navigate } from 'react-router-dom';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';

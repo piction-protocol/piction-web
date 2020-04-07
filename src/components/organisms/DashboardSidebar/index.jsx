@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Location, Link } from '@reach/router';
+import { useLocation, Link } from 'react-router-dom';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -96,6 +96,7 @@ const isPartiallyActive = ({
 
 function DashboardSidebar({ projects, ...props }) {
   const { currentUser } = useCurrentUser();
+  const location = useLocation();
 
   return (
     <Styled.Sidebar {...props}>
@@ -103,46 +104,42 @@ function DashboardSidebar({ projects, ...props }) {
         <Styled.Name>{`${currentUser.username}의`}</Styled.Name>
         <Styled.Title>크리에이터 대시보드</Styled.Title>
       </Styled.Header>
-      <Location>
-        {({ location }) => (
-          projects.map(project => (
-            <React.Fragment key={project.uri}>
-              <Styled.Project
+      {projects.map(project => (
+        <React.Fragment key={project.uri}>
+          <Styled.Project
+            getProps={isPartiallyActive}
+            to={`/dashboard/${project.uri}/`}
+          >
+            <Styled.ProjectTitle>
+              {project.title}
+            </Styled.ProjectTitle>
+            <ExpandIcon />
+          </Styled.Project>
+          {location.pathname.includes(`/${project.uri}/`) && (
+            <>
+              <Styled.Link
                 getProps={isPartiallyActive}
-                to={`/dashboard/${project.uri}/`}
+                to={`/dashboard/${project.uri}/posts`}
               >
-                <Styled.ProjectTitle>
-                  {project.title}
-                </Styled.ProjectTitle>
-                <ExpandIcon />
-              </Styled.Project>
-              {location.pathname.includes(`/${project.uri}/`) && (
-                <>
-                  <Styled.Link
-                    getProps={isPartiallyActive}
-                    to={`/dashboard/${project.uri}/posts`}
-                  >
                     포스트 관리
-                  </Styled.Link>
-                  <Styled.Link to={`/dashboard/${project.uri}/series`}>시리즈 관리</Styled.Link>
-                  <Styled.Link
-                    getProps={isPartiallyActive}
-                    to={`/dashboard/${project.uri}/memberships`}
-                  >
-                    후원 플랜 관리
-                  </Styled.Link>
-                  <Styled.Link to={`/dashboard/${project.uri}/members`}>구독/후원자 목록</Styled.Link>
-                  <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
-                  <Styled.Link as="a" target="_blank" href={`/project/${project.uri}`}>
-                    프로젝트로 이동
-                    <OpenInNewIcon />
-                  </Styled.Link>
-                </>
-              )}
-            </React.Fragment>
-          ))
-        )}
-      </Location>
+              </Styled.Link>
+              <Styled.Link to={`/dashboard/${project.uri}/series`}>시리즈 관리</Styled.Link>
+              <Styled.Link
+                getProps={isPartiallyActive}
+                to={`/dashboard/${project.uri}/memberships`}
+              >
+                후원 플랜 관리
+              </Styled.Link>
+              <Styled.Link to={`/dashboard/${project.uri}/members`}>구독/후원자 목록</Styled.Link>
+              <Styled.Link to={`/dashboard/${project.uri}/info`}>프로젝트 정보 수정</Styled.Link>
+              <Styled.Link as="a" target="_blank" href={`/project/${project.uri}`}>
+                프로젝트로 이동
+                <OpenInNewIcon />
+              </Styled.Link>
+            </>
+          )}
+        </React.Fragment>
+      ))}
       <Styled.Buttons>
         <Styled.Button as={Link} to="new-project">
           새 프로젝트 만들기
