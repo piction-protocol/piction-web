@@ -1,5 +1,5 @@
 import { useCookies } from 'react-cookie';
-import { navigate } from '@reach/router';
+import { Navigate as navigate } from 'react-router-dom';
 import axios from 'axios';
 
 function useAPI() {

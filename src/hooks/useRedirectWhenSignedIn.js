@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useCurrentUser from 'hooks/useCurrentUser';
-import { navigate } from '@reach/router';
+import { Navigate as navigate } from 'react-router-dom';
 
 export default function useRedirectWhenSignedIn(redirectTo = '/') {
   const { accessToken } = useCurrentUser();

@@ -1,5 +1,5 @@
 import { useContext, useCallback } from 'react';
-import { navigate } from '@reach/router';
+import { Navigate as navigate } from 'react-router-dom';
 
 import useAPI from 'hooks/useAPI';
 
