@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR from 'swr';
 
