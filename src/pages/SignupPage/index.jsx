@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CompactTemplate from 'components/templates/CompactTemplate';
-import { Router } from '@reach/router';
+import { Routes, Route } from 'react-router-dom';
 
 import useRedirectWhenSignedIn from 'hooks/useRedirectWhenSignedIn';
 
@@ -15,10 +15,10 @@ function SignupPage({ location }) {
 
   return (
     <CompactTemplate>
-      <Router primary={false} basepath="/signup">
-        <SignupForm path="/" />
-        <Welcome path="/welcome" redirectTo={redirectTo} />
-      </Router>
+      <Routes basepath="/signup">
+        <Route path="/" element={<SignupForm />} />
+        <Route path="/welcome" element={<Welcome redirectTo={redirectTo} />} />
+      </Routes>
     </CompactTemplate>
   );
 }

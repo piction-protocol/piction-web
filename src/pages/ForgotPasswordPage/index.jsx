@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { Routes, Route } from 'react-router-dom';
 
 import styled from 'styled-components/macro';
 
@@ -22,10 +22,10 @@ function ForgotPasswordPage() {
       <Styled.Heading>
         비밀번호 재설정
       </Styled.Heading>
-      <Router primary={false} basepath="/forgot_password">
-        <ForgotPasswordForm path="/" />
-        <ResetPasswordForm path="/edit" />
-      </Router>
+      <Routes basepath="/forgot_password">
+        <Route path="/" element={<ForgotPasswordForm />} />
+        <Route path="/edit" element={<ResetPasswordForm />} />
+      </Routes>
     </CompactTemplate>
   );
 }
