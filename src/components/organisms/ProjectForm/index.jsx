@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { navigate } from '@reach/router';
+import { Navigate as navigate } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR, { trigger } from 'swr';
 

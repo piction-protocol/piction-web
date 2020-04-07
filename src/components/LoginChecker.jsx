@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { navigate } from '@reach/router';
-
+import { Navigate as navigate } from 'react-router-dom';
 import Spinner from 'components/atoms/Spinner';
 import useCurrentUser from 'hooks/useCurrentUser';
 

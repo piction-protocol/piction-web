@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { navigate } from '@reach/router';
+import { Navigate as navigate } from 'react-router-dom';
 
 import { mediaQuery } from 'styles/media';
 import useMedia from 'hooks/useMedia';
