@@ -1,47 +1,38 @@
-import { useContext, useCallback } from 'react';
-import { navigate } from '@reach/router';
+import { useCallback } from 'react';
 
-import DefaultPicture from 'images/img-user-profile.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'rootReducer';
 
-import { CurrentUserContext } from 'context/CurrentUserContext';
-import useAuth from './useAuth';
+import { 
+  loginRequest,
+  logoutRequest,
+  fetchCurrentUserRequest,
+  LoginPayload
+} from 'modules/currentUser';
 
 function useCurrentUser() {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const dispatch = useDispatch()
+  const { currentUser }= useSelector((state: RootState) => state)
 
-  const auth = useAuth();
+  const getCurrentUser = useCallback(() => {
+    dispatch(fetchCurrentUserRequest())
+  }, [dispatch]);
 
-  const accessToken = auth.token.get();
-  const getCurrentUser = useCallback(async () => {
-    try {
-      const { data } = await auth.user.me();
-      setCurrentUser({
-        ...data,
-        picture: data.picture || DefaultPicture,
-      });
-    } catch (error) {
-      setCurrentUser(undefined);
-      auth.token.delete();
-    }
-    // eslint-disable-next-line
-  }, [accessToken, setCurrentUser]);
+  const deleteSession = useCallback(() => {
+    dispatch(logoutRequest())
+  }, [dispatch]);
 
-  const deleteSession = useCallback(async () => {
-    try {
-      // Side effect
-      navigate('/');
-      await auth.session.delete();
-    } finally {
-      auth.token.delete();
-      window.location.reload();
-    }
-  }, [auth]);
+  const requestAccessToken = useCallback((param: LoginPayload) => {
+    dispatch(loginRequest(param))
+  }, [dispatch])
 
   return {
-    currentUser,
-    accessToken,
+    currentUser: currentUser.user,
+    accessToken: currentUser.auth.accessToken,
     getCurrentUser,
     deleteSession,
+    requestAccessToken,
+    loginErrorMessage: currentUser.auth.error
   };
 }
 

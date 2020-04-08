@@ -1,9 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
 import flash from 'modules/flash'
+import currentUser from 'modules/currentUser'
 
 const rootReducer = combineReducers({
-  flash
+  flash,
+  currentUser
 })
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, navigate } from '@reach/router';
+import { Link } from '@reach/router';
 
 import useForm from 'hooks/useForm';
-import useAPI from 'hooks/useAPI';
+import useCurrentUser from 'hooks/useCurrentUser'
 
 import Heading from 'components/atoms/Heading';
 import Checkbox from 'components/atoms/Checkbox';
@@ -54,25 +54,23 @@ const Styled = {
 };
 
 function LoginForm({ redirectTo = '/' }) {
+  const { 
+    loginErrorMessage: errorMessage,
+    requestAccessToken
+  } = useCurrentUser();
+
   const [formData, { handleChange }] = useForm({
     loginId: '',
     password: '',
     rememberme: true,
   });
-  const [errorMessage, setErrorMessage] = useState('');
-  const [API] = useAPI();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      const response = await API.session.create(formData);
-      await API.token.create(response.data.accessToken, formData.rememberme && {
-        expires: new Date('2099-12-31T23:59:59'),
-      });
-      navigate(redirectTo, { replace: true });
-    } catch (error) {
-      setErrorMessage(error.response.data.message);
-    }
+    requestAccessToken({
+      ...formData,
+      redirectTo
+    })
   };
 
   return (

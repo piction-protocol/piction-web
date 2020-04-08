@@ -5,8 +5,6 @@ import { render } from 'react-dom';
 import * as Sentry from '@sentry/browser';
 import { Provider } from 'react-redux';
 
-import { CurrentUserProvider } from 'context/CurrentUserContext';
-
 import GlobalStyle from 'styles/GlobalStyle';
 
 import App from './App';
@@ -19,8 +17,6 @@ if (process.env.REACT_APP_SENTRY_DSN) {
 render((
   <Provider store={store}>
     <GlobalStyle />
-    <CurrentUserProvider>
-      <App />
-    </CurrentUserProvider>
+    <App />
   </Provider>
 ), document.getElementById('app-root'));

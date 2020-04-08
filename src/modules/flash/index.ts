@@ -32,12 +32,9 @@ const slice = createSlice({
   }
 })
 
-const selector = (state: RootState) => state.flash
+export const selector = (state: RootState) => state.flash
 
 export const { 
   setFlash,
 } = slice.actions
-export {
-  selector
-}
 export default slice.reducer;
