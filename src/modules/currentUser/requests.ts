@@ -23,9 +23,13 @@ export const createSession = (param: LoginParams): Promise<CreateSessionResponse
     url: `/sessions`,
     method: 'POST',
     data: param
-  }).then((res) => 
-    res.data
-  )
+  }).then(res => res.data)
+
+export const destroySession = () =>
+  request({
+    url: '/sessions',
+    method: 'DELETE',
+  })
 
 export const fetchCurrentUser = (accessToken: string): Promise<UserMeResponse> =>
   request({
@@ -34,4 +38,4 @@ export const fetchCurrentUser = (accessToken: string): Promise<UserMeResponse> =
     headers: {
       'X-Auth-Token': accessToken,
     }
-  }).then((res) => res.data)
+  }).then(res => res.data)

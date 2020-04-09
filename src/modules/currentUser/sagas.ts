@@ -10,11 +10,16 @@ import {
   loginRequest,
   loginSuccess,
   loginFailure,
-  logoutRequest
+  logoutRequest,
 } from 'modules/currentUser'
 import { setFlash } from 'modules/flash'
-
-import { createSession, CreateSessionResponse, fetchCurrentUser, UserMeResponse } from 'modules/currentUser/requests'
+import { 
+  createSession,
+  destroySession,
+  fetchCurrentUser,
+  UserMeResponse,
+  CreateSessionResponse,
+} from 'modules/currentUser/requests'
 
 import DefaultPicture from 'images/img-user-profile.svg';
 
@@ -33,6 +38,7 @@ function* watchCurrentUser() {
         }))
       }
     } catch (error) {
+      // TODO: Handle failed fetch current user request
       yield put(fetchCurrentUserFailure("FAILED"))
     }
   }
@@ -65,6 +71,8 @@ function* loginFlow() {
 function* logoutFlow() {
   while(true) {
     yield take(logoutRequest.type)
+
+    yield call(destroySession)
 
     cookies.remove('access_token')
 
