@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import media from 'styles/media';
 
@@ -11,7 +11,7 @@ const Styled = {
     flex-flow: row wrap;
     border-top: 1px solid var(--black);
   `,
-  Tab: styled(Link)`
+  Tab: styled(NavLink)`
     position: relative;
     flex: 1;
     padding: 16px;

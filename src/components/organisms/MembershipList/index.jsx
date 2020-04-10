@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -77,8 +77,9 @@ const Styled = {
 };
 
 function MembershipList({
-  isMyProject, memberships, sponsored, location, projectId,
+  isMyProject, memberships, sponsored, projectId,
 }) {
+  const location = useLocation();
   const [minimum, setMinimum] = useState(location?.state?.post ? location.state.post.membership.level : 0);
 
   return (
@@ -142,7 +143,7 @@ function MembershipList({
                     disabled={isDisabled || isFull}
                     state={{
                       postId: location?.state?.post?.id,
-                      redirectTo: location.state.redirectTo ? `${location?.state?.redirectTo}?purchasePay` : `${location.origin}/project/${projectId}/posts?purchasePay`,
+                      redirectTo: location.state?.redirectTo ? `${location?.state?.redirectTo}?purchasePay` : `${location.origin}/project/${projectId}/posts?purchasePay`,
                     }}
                   >
                     {`${membership.price} PXL / 30일`}

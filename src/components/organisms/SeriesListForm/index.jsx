@@ -12,6 +12,7 @@ import DeleteSeriesModal from 'components/molecules/DeleteSeriesModal';
 import SeriesItem from 'components/molecules/SeriesItem';
 import Heading from 'components/atoms/Heading';
 import { PrimaryButton } from 'components/atoms/Button';
+import { useParams } from 'react-router-dom';
 
 const Styled = {
   Heading: styled(Heading)`
@@ -40,7 +41,8 @@ const Styled = {
 
 const getIdArray = array => array.map(item => item.id);
 
-function SeriesListForm({ title, projectId }) {
+function SeriesListForm({ title }) {
+  const { projectId } = useParams();
   const [seriesList, setSeriesList] = useState([]);
   const [prevSeriesList, setPrevSeriesList] = useState([]);
   const [selected, setSelected] = useState({});
@@ -153,7 +155,7 @@ function SeriesListForm({ title, projectId }) {
 
 SeriesListForm.propTypes = {
   title: PropTypes.string.isRequired,
-  projectId: PropTypes.string.isRequired,
+  // projectId: PropTypes.string.isRequired,
 };
 
 export default SeriesListForm;

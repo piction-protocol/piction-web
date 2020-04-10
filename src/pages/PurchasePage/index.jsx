@@ -6,6 +6,7 @@ import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { useLocation, useParams } from 'react-router-dom';
 
 import media, { mediaQuery } from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -158,15 +159,16 @@ const Styled = {
   `,
 };
 
-function PurchasePage({
-  projectId, membershipId, location,
-}) {
+function PurchasePage() {
+  const { projectId, membershipId } = useParams();
+  const location = useLocation();
   const isDesktop = useMedia(mediaQuery.desktop);
   const [isAgreed, setIsAgreed] = useState(false);
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
   const [alert, setAlert] = useState(null);
   const [linkaPayment, setLinkaPayment] = useState(null);
   const redirectPage = location.state.redirectTo;
+
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);

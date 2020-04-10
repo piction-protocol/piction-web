@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
@@ -86,7 +86,8 @@ const Styled = {
   `,
 };
 
-function SeriesPage({ projectId, seriesId }) {
+function SeriesPage() {
+  const { projectId, seriesId } = useParams();
   const listRef = useRef(null);
   const { currentUser } = useCurrentUser();
 

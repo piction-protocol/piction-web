@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Routes, Route, useLocation, Navigate,
+  Routes, Route, useLocation, useNavigate, useParams, Navigate,
 } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
@@ -19,6 +18,7 @@ import GridTemplate from 'components/templates/GridTemplate';
 import ProjectInfo from 'components/organisms/ProjectInfo';
 import Tabs from 'components/molecules/Tabs';
 import media, { mediaQuery } from 'styles/media';
+
 
 const PostList = React.lazy(() => import('components/organisms/PostList'));
 const SeriesList = React.lazy(() => import('components/organisms/SeriesList'));
@@ -40,11 +40,13 @@ const Styled = {
   `,
 };
 
-function ProjectPage({ projectId }) {
+function ProjectPage() {
+  const { projectId } = useParams();
   const [cookies, setCookie] = useCookies();
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), [projectId]);
   const isDesktop = useMedia(mediaQuery.desktop);
+  const navigate = useNavigate();
 
   const { data: project, projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
@@ -86,7 +88,7 @@ function ProjectPage({ projectId }) {
   };
 
   if (projectError) {
-    Navigate('/404', { replace: true });
+    navigate('/404', { replace: true });
   }
 
   return (
@@ -121,27 +123,19 @@ function ProjectPage({ projectId }) {
         </Alert>
       ) }
 
-      <Styled.Routes primary={false}>
-        <Route path="/" element={<Navigate to="post" />} />
+      <Styled.Routes>
+        <Route path="/" element={<Navigate to="posts" />} />
         <Route
           path="posts"
-          projectId={projectId}
-          project={project}
-          sponsored={sponsored}
-          isMyProject={isMyProject}
-          element={<PostList />}
+          element={<PostList projectId={projectId} project={project} sponsored={sponsored} isMyProject={isMyProject} />}
         />
         <Route
           path="series"
-          series={series}
-          element={<SeriesList />}
+          element={<SeriesList series={series} />}
         />
         <Route
           path="memberships"
-          memberships={memberships}
-          sponsored={sponsored}
-          isMyProject={isMyProject}
-          element={<MembershipList />}
+          element={<MembershipList memberships={memberships} sponsored={sponsored} isMyProject={isMyProject} />}
         />
       </Styled.Routes>
     </GridTemplate>
@@ -149,7 +143,3 @@ function ProjectPage({ projectId }) {
 }
 
 export default ProjectPage;
-
-ProjectPage.propTypes = {
-  projectId: PropTypes.string.isRequired,
-};

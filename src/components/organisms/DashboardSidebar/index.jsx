@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, NavLink } from 'react-router-dom';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -32,7 +32,7 @@ const Styled = {
   Name: styled.p`
     font-size: var(--font-size--small);
   `,
-  Project: styled(Link)`
+  Project: styled(NavLink)`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -60,7 +60,7 @@ const Styled = {
     text-overflow: ellipsis;
     white-space: nowrap;
   `,
-  Link: styled(Link)`
+  Link: styled(NavLink)`
     display: flex;
     padding: 12px 40px;
     color: var(--gray--dark);
@@ -141,11 +141,11 @@ function DashboardSidebar({ projects, ...props }) {
         </React.Fragment>
       ))}
       <Styled.Buttons>
-        <Styled.Button as={Link} to="new-project">
+        <Styled.Button as={NavLink} to="new-project">
           새 프로젝트 만들기
         </Styled.Button>
         {projects.length > 0 && (
-          <Styled.Button as={Link} to="creator-profile">
+          <Styled.Button as={NavLink} to="creator-profile">
             크리에이터 정보 설정
           </Styled.Button>
         )}

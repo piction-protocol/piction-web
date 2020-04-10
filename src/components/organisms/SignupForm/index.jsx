@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
-import { Link, Navigate as navigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';
@@ -57,7 +56,7 @@ const Styled = {
   `,
 };
 
-function SignupForm({ location }) {
+function SignupForm() {
   const [formData, { handleChange }] = useForm({
     loginId: '',
     email: '',
@@ -69,6 +68,8 @@ function SignupForm({ location }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -164,9 +165,5 @@ function SignupForm({ location }) {
     </Styled.Form>
   );
 }
-
-SignupForm.propTypes = {
-  location: PropTypes.object.isRequired,
-};
 
 export default SignupForm;

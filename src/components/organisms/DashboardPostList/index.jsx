@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR from 'swr';
 
@@ -57,7 +57,8 @@ const Styled = {
   `,
 };
 
-function DashboardPostList({ title, projectId }) {
+function DashboardPostList({ title }) {
+  const { projectId } = useParams();
   const [deletingPost, setDeletingPost] = useState(null);
   const [seriesId, setSeriesId] = useState('');
   const [page, setPage] = useState(1);
