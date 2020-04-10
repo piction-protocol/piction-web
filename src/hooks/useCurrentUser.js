@@ -1,5 +1,5 @@
 import { useContext, useCallback } from 'react';
-import { Navigate as navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import useAPI from 'hooks/useAPI';
 
@@ -10,6 +10,7 @@ import { CurrentUserContext } from 'context/CurrentUserContext';
 function useCurrentUser() {
   const [currentUser, setCurrentUser] = useContext(CurrentUserContext);
   const [API] = useAPI();
+  const navigate = useNavigate();
   const accessToken = API.token.get();
   const getCurrentUser = useCallback(async () => {
     try {
@@ -33,7 +34,7 @@ function useCurrentUser() {
       API.token.delete();
       window.location.reload();
     }
-  }, [API]);
+  }, [navigate, API]);
 
   return {
     currentUser,

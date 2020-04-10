@@ -1,10 +1,11 @@
 import { useCookies } from 'react-cookie';
-import { Navigate as navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function useAPI() {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const accessToken = cookies.access_token;
+  const navigate = useNavigate();
   const API = axios.create({
     baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
     headers: {
