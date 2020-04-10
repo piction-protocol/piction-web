@@ -90,8 +90,8 @@ function WalletPage() {
       <Routes component={({ children }) => <>{children}</>}>
         <Route path="/" element={<Navigate to="transactions" />} />
         <Route path="transactions" element={<Transactions />} />
-        <Route path="deposit" wallet={wallet} element={<Deposit />} />
-        <Route path="withdraw" wallet={wallet} element={<Withdraw />} />
+        <Route path="deposit" element={<Deposit wallet={wallet} />} />
+        <Route path="withdraw" element={<Withdraw wallet={wallet} />} />
       </Routes>
     </GridTemplate>
   );
