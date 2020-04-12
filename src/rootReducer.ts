@@ -5,7 +5,7 @@ import currentUser from 'modules/currentUser'
 
 const rootReducer = combineReducers({
   flash,
-  currentUser
+  currentUser,
 })
 
 export type RootState = ReturnType<typeof rootReducer>;

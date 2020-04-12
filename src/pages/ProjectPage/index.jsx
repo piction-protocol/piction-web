@@ -1,15 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Router, Redirect, navigate,
+  Router, Redirect,
 } from '@reach/router';
 import styled from 'styled-components/macro';
-import { useCookies } from 'react-cookie';
-import moment from 'moment';
-import useSWR, { trigger, mutate } from 'swr';
 
-import useAPI from 'hooks/useAPI';
-import useCurrentUser from 'hooks/useCurrentUser';
+import useProject from 'hooks/useProject'
 import useMedia from 'hooks/useMedia';
 
 import { GridStyle } from 'styles/Grid';
@@ -40,50 +36,18 @@ const Styled = {
 };
 
 function ProjectPage({ projectId }) {
-  const [cookies, setCookie] = useCookies();
-  const { currentUser } = useCurrentUser();
-  const [API] = useCallback(useAPI(), [projectId]);
   const isDesktop = useMedia(mediaQuery.desktop);
 
-  const { data: project, projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
-  const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
-  const { data: [subscription, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
-  const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
-  const isMyProject = currentUser?.loginId === project?.user.loginId;
-
-  const handleSubscribe = async () => {
-    if (sponsored) {
-      try {
-        await API.membership.unsubscribe({
-          projectId,
-          membershipId: subscription.id,
-        });
-        mutate(`/projects/${projectId}/memberships/sponsorship`, null);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const { data } = await API.membership.subscribe({
-          projectId,
-          membershipId: subscription.id,
-          sponsorshipPrice: subscription.price,
-        });
-        mutate(`/projects/${projectId}/memberships/sponsorship`, data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    trigger(`/projects/${projectId}`);
-  };
-
-  const handleCookie = () => {
-    setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
-  };
-
-  if (projectError) {
-    navigate('/404', { replace: true });
-  }
+  const {
+    project,
+    series,
+    memberships,
+    sponsored,
+    isMyProject,
+    requestToggleSubscription,
+    showOverlay,
+    supressOverlay
+  } = useProject(projectId)
 
   return (
     <GridTemplate
@@ -92,15 +56,15 @@ function ProjectPage({ projectId }) {
           project={project}
           isMyProject={isMyProject}
           sponsored={sponsored}
-          handleSubscribe={handleSubscribe}
+          onToggleSubscription={requestToggleSubscription}
         />
       ) : (
         <ProjectInfo.Placeholder isDesktop={isDesktop} />
       )}
     >
 
-      {(project && project.adult && !cookies[`no-warning-${projectId}`]) && (
-        <AdultPopup close={handleCookie} />
+      {showOverlay && (
+        <AdultPopup close={supressOverlay} />
       )}
 
       <Styled.Tabs

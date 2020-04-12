@@ -28,6 +28,11 @@ const slice = createSlice({
       state.message = message;
       state.type = type;
       state.visible = true;
+    },
+    dismissFlash: (state) => {
+      state.message = ''
+      state.type = 'base'
+      state.visible = false
     }
   }
 })
@@ -36,5 +41,6 @@ export const selector = (state: RootState) => state.flash
 
 export const { 
   setFlash,
+  dismissFlash
 } = slice.actions
 export default slice.reducer;
