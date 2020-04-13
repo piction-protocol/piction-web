@@ -69,7 +69,7 @@ const Styled = {
 };
 
 function ProjectCard({
-  uri, title, thumbnail, lastPublishedAt, children, ...props
+  title, thumbnail, lastPublishedAt, children, ...props
 }) {
   return (
     <Styled.Item
@@ -108,7 +108,6 @@ ProjectCard.Placeholder = () => (
 );
 
 ProjectCard.propTypes = {
-  uri: PropTypes.string,
   title: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,
   lastPublishedAt: PropTypes.number,
