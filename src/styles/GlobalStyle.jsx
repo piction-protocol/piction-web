@@ -8,10 +8,13 @@ const GlobalStyle = createGlobalStyle`
     --black: #000000;
     --charcoal-black: #333333;
     --gray--dark: #BFBFBF;
-    --gray--light: #F2F2F2;
+    --gray--pale: #E8E8E8;
     --white: #FFFFFF;
 
     --blue: #1A92FF;
+    --blue--strong: #0387FF;
+    --blue--pale: #E8F4FF;
+
     --red: #D51315;
     --red--dark: #BF1113;
 
@@ -20,8 +23,8 @@ const GlobalStyle = createGlobalStyle`
     --shadow-color: rgba(0, 0, 0, .15);
 
     --font-size--large: 30px;
-    --font-size--big: 22px;
-    --font-size--base: 18px;
+    --font-size--big: 18px;
+    --font-size--base: 16px;
     --font-size--small: 14px;
     --font-size--tiny: 12px;
 

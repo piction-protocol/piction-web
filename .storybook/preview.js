@@ -1,6 +1,16 @@
 import React from 'react';
-import { addDecorator } from '@storybook/react';
+import { addDecorator, addParameters } from '@storybook/react';
+import { withKnobs, DocsPage, DocsContainer } from '@storybook/addon-knobs';
 import GlobalStyle from '../src/styles/GlobalStyle';
+
+addDecorator(withKnobs);
+
+addParameters({
+  docs: {
+    container: DocsContainer,
+    page: DocsPage,
+  },
+});
 
 addDecorator(storyFn => (
   <>
