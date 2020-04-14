@@ -8,6 +8,19 @@ addDecorator(withPaddings);
 addDecorator(withKnobs);
 
 addParameters({
+  paddings: [
+    { name: 'space--xs', value: '8px' },
+    { name: 'space--s', value: '12px' },
+    { name: 'space--m', value: '16px' },
+    { name: 'space--l', value: '24px' },
+    { name: 'space--xl', value: '32px' },
+  ],
+  backgrounds: [
+    { name: 'white', value: '#FFFFFF', default: true },
+    { name: 'gray--pale', value: '#E8E8E8' },
+    { name: 'gray', value: '#BABABA' },
+    { name: 'black', value: '#000000' },
+  ],
   docs: {
     container: DocsContainer,
     page: DocsPage,

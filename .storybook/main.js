@@ -7,6 +7,7 @@ module.exports = {
     '@storybook/addon-knobs/register',
     '@storybook/addon-docs',
     '@storybook/addon-viewport/register',
+    '@storybook/addon-backgrounds',
     'storybook-addon-paddings',
   ],
 };
