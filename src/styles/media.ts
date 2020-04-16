@@ -1,4 +1,4 @@
-import { css } from 'styled-components/macro';
+import { css, CSSObject, SimpleInterpolation } from 'styled-components/macro';
 
 const breakpoint = 1024;
 
@@ -8,14 +8,14 @@ export const mediaQuery = {
 };
 
 const media = {
-  mobile: (args: TemplateStringsArray) => css`
+  mobile: (first: CSSObject | TemplateStringsArray, ...interpolations: SimpleInterpolation[]) => css`
     @media ${mediaQuery.mobile} {
-      ${css(args)}
+      ${css(first, ...interpolations)}
     }
   `,
-  desktop: (args: TemplateStringsArray) => css`
+  desktop: (first: CSSObject | TemplateStringsArray, ...interpolations: SimpleInterpolation[]) => css`
     @media ${mediaQuery.desktop} {
-      ${css(args)}
+      ${css(first, ...interpolations)}
     }
   `,
 };
