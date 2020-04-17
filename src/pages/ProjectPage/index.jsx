@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Router, Redirect,
-} from '@reach/router';
+import { Router, Redirect, navigate } from '@reach/router';
 import styled from 'styled-components/macro';
 
 import useProject from 'hooks/useProject'
+import useSubscription from 'hooks/useSubscription';
 import useMedia from 'hooks/useMedia';
 
 import { GridStyle } from 'styles/Grid';
@@ -40,14 +39,24 @@ function ProjectPage({ projectId }) {
 
   const {
     project,
+    projectError,
     series,
+    isMyProject,
+    isExplicitContent,
+    consentWithExplicitContent
+  } = useProject(projectId)
+
+  useEffect(() => {
+    if (projectError?.response.status === 404) {
+      navigate('/404', { replace: true })
+    }
+  }, [projectError])
+
+  const {
     memberships,
     sponsored,
-    isMyProject,
     requestToggleSubscription,
-    showOverlay,
-    supressOverlay
-  } = useProject(projectId)
+  } = useSubscription(projectId)
 
   return (
     <GridTemplate
@@ -63,8 +72,8 @@ function ProjectPage({ projectId }) {
       )}
     >
 
-      {showOverlay && (
-        <AdultPopup close={supressOverlay} />
+      {isExplicitContent && (
+        <AdultPopup close={consentWithExplicitContent} />
       )}
 
       <Styled.Tabs

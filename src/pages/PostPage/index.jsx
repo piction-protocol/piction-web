@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useCookies } from 'react-cookie';
-import moment from 'moment';
-import 'moment/locale/ko';
-import useSWR, { mutate } from 'swr';
 import { navigate } from '@reach/router';
 
 import media from 'styles/media';
 
+import usePost from 'hooks/usePost';
+import useSubscription from 'hooks/useSubscription';
 import useProjectLayout from 'hooks/useNavigationLayout';
-import useCurrentUser from 'hooks/useCurrentUser';
-import useAPI from 'hooks/useAPI';
 import useLocalStorage from 'hooks/useLocalStorage';
 
 import GridTemplate from 'components/templates/GridTemplate';
@@ -46,68 +42,36 @@ const Styled = {
 
 function PostPage({ projectId, postId }) {
   const [readerMode, setReaderMode] = useLocalStorage(`project/${projectId}/textmode`, false);
-  const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
-  const [API, handleError] = useCallback(useAPI(), []);
 
-  const { data: project, error: projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
+  const {
+    project,
+    projectError,
+    post,
+    postError,
+    content,
+    revalidateContent,
+    needSponsorship,
+    like,
+    handleLike,
+    isExplicitContent,
+    consentWithExplicitContent
+  } = usePost(projectId, postId);
+
+  const { sponsored, requestSubscription } = useSubscription(projectId)
+
+  useEffect(() => {
+    if (sponsored && !content) {
+      revalidateContent()
+    }
+  }, [sponsored, content, revalidateContent])
+
   useProjectLayout(project);
-
-  const { data: post, error: postError } = useSWR(`/projects/${projectId}/posts/${postId}`, { revalidateOnFocus: false });
 
   useEffect(() => {
     if (projectError || postError) {
       navigate('/404');
     }
   }, [projectError, postError]);
-
-  const {
-    data: content,
-    error: contentError,
-    revalidate: revalidateContent,
-  } = useSWR(`/projects/${projectId}/posts/${postId}/content`, { revalidateOnFocus: false, shouldRetryOnError: false });
-
-  const [needSponsorship, setNeedSponsorship] = useState(false);
-
-  useEffect(() => {
-    if (contentError && contentError.response.data.code === 4003) {
-      setNeedSponsorship(true);
-    }
-    return () => setNeedSponsorship(false);
-  }, [contentError]);
-
-  const { currentUser } = useCurrentUser();
-  const { data: { like } = { like: false } } = useSWR(currentUser ? `/projects/${projectId}/posts/${postId}/like` : null, { revalidateOnFocus: false });
-
-  const handleLike = async () => {
-    try {
-      await API.post(projectId).like({ postId });
-      mutate(`/projects/${projectId}/posts/${postId}/like`, { like: true });
-      mutate(`/projects/${projectId}/posts/${postId}`, { ...post, likeCount: post.likeCount + 1 });
-    } catch (error) {
-      handleError(error.response.data);
-    }
-  };
-
-  const handleSubscription = async () => {
-    try {
-      const response = await API.membership.subscribe({
-        projectId,
-        membershipId: post.membership.id,
-        sponsorshipPrice: post.membership.price,
-      });
-      if (response.status === 200) {
-        revalidateContent();
-        setNeedSponsorship(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const shouldShowAdultPopup = project && project.adult && !cookies[`no-warning-${projectId}`];
-  const handleAdultPopupClose = () => {
-    setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
-  };
 
   const headerLoaded = project && post;
   const contentLoaded = content && post;
@@ -119,7 +83,7 @@ function PostPage({ projectId, postId }) {
         marginBottom: '0',
       } : null}
     >
-      {shouldShowAdultPopup && <AdultPopup close={handleAdultPopupClose} />}
+      {isExplicitContent && <AdultPopup close={consentWithExplicitContent} />}
 
       <Styled.Article>
         {headerLoaded ? (
@@ -142,7 +106,7 @@ function PostPage({ projectId, postId }) {
         ) : (
           // FIXME: needSponsorship을 관리하는 코드를 개선
           post && post.membership && needSponsorship ? (
-            <Content.Locked handleSubscription={handleSubscription} post={post} redirectTo={window.location.href} />
+            <Content.Locked handleSubscription={requestSubscription} post={post} redirectTo={window.location.href} />
           ) : (
             <Content.Placeholder />
           )
