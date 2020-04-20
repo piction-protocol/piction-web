@@ -76,6 +76,12 @@ function App() {
     loading();
   }, [getCurrentUser]);
 
+  useEffect(() => {
+    const { SMPCTracking } = window;
+    if (SMPCTracking) {
+      SMPCTracking.active();
+    }
+  }, [location.pathname]);
 
   return (
     <div className="root">

@@ -199,7 +199,6 @@ function PurchasePage() {
     }
   };
 
-
   return (
     <>
       <Styled.WideThumbnail
