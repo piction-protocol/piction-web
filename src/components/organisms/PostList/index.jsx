@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components/macro';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import useSWR, { useSWRPages } from 'swr';
 
 import Grid from 'styles/Grid';

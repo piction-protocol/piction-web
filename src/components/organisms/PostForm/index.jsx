@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, navigate } from '@reach/router';
 import moment from 'moment';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -88,7 +88,8 @@ const Styled = {
 };
 
 // FIXME: SWR, react-hook-form을 사용하는 방향으로 리팩토링
-function PostForm({ title, projectId, postId = null }) {
+function PostForm({ title }) {
+  const { projectId, postId } = useParams();
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     content: '',
@@ -107,6 +108,7 @@ function PostForm({ title, projectId, postId = null }) {
   const [series, setSeries] = useState([]);
   const [membership, setMembership] = useState([]);
   const [API] = useCallback(useAPI(), []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getFormData = async () => {
@@ -376,9 +378,7 @@ function PostForm({ title, projectId, postId = null }) {
 }
 
 PostForm.propTypes = {
-  projectId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  postId: PropTypes.string,
 };
 
 export default PostForm;

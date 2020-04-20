@@ -1,8 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet';
-import { Link } from '@reach/router';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import media from 'styles/media';

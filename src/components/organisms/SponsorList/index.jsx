@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { useParams } from 'react-router-dom';
 
 import placeholder from 'styles/placeholder';
 
@@ -66,8 +67,9 @@ const Styled = {
   `,
 };
 
-function SponsorList({ title, projectId }) {
+function SponsorList({ title }) {
   const [page, setPage] = useState(1);
+  const { projectId } = useParams();
 
   const { data: { content: sponsors, ...pageable } = {} } = useSWR(
     `/my/projects/${projectId}/sponsors?page=${page}`,
@@ -133,7 +135,7 @@ function SponsorList({ title, projectId }) {
 
 SponsorList.propTypes = {
   title: PropTypes.string.isRequired,
-  projectId: PropTypes.string.isRequired,
+  // projectId: PropTypes.string.isRequired,
 };
 
 export default SponsorList;

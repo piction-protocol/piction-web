@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { mutate } from 'swr';
-import { navigate } from '@reach/router';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import media from 'styles/media';
 
@@ -44,10 +43,12 @@ const Styled = {
   `,
 };
 
-function PostPage({ projectId, postId }) {
+function PostPage() {
+  const { projectId, postId } = useParams();
   const [readerMode, setReaderMode] = useLocalStorage(`project/${projectId}/textmode`, false);
   const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
   const [API, handleError] = useCallback(useAPI(), []);
+  const navigate = useNavigate();
 
   const { data: project, error: projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
@@ -58,7 +59,7 @@ function PostPage({ projectId, postId }) {
     if (projectError || postError) {
       navigate('/404');
     }
-  }, [projectError, postError]);
+  }, [projectError, navigate, postError]);
 
   const {
     data: content,
@@ -160,10 +161,5 @@ function PostPage({ projectId, postId }) {
     </GridTemplate>
   );
 }
-
-PostPage.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  postId: PropTypes.string.isRequired,
-};
 
 export default PostPage;

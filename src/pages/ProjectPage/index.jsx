@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Router, Redirect, navigate,
-} from '@reach/router';
+  Routes, Route, useLocation, useNavigate, useParams, Navigate,
+} from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
@@ -14,10 +13,12 @@ import useMedia from 'hooks/useMedia';
 
 import { GridStyle } from 'styles/Grid';
 
+import Alert from 'components/externals/Alert';
 import GridTemplate from 'components/templates/GridTemplate';
 import ProjectInfo from 'components/organisms/ProjectInfo';
 import Tabs from 'components/molecules/Tabs';
 import media, { mediaQuery } from 'styles/media';
+
 
 const PostList = React.lazy(() => import('components/organisms/PostList'));
 const SeriesList = React.lazy(() => import('components/organisms/SeriesList'));
@@ -25,7 +26,7 @@ const MembershipList = React.lazy(() => import('components/organisms/MembershipL
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
-  Router: styled(Router)`
+  Routes: styled(Routes)`
     grid-column: 1 / -1;
     ${GridStyle}
   `,
@@ -39,17 +40,22 @@ const Styled = {
   `,
 };
 
-function ProjectPage({ projectId }) {
+function ProjectPage() {
+  const { projectId } = useParams();
   const [cookies, setCookie] = useCookies();
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), [projectId]);
   const isDesktop = useMedia(mediaQuery.desktop);
+  const navigate = useNavigate();
 
   const { data: project, projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
   const { data: [subscription, ...memberships] = [] } = useSWR(`/projects/${projectId}/memberships`);
   const { data: sponsored } = useSWR(() => (currentUser ? `/projects/${projectId}/memberships/sponsorship` : null));
   const isMyProject = currentUser?.loginId === project?.user.loginId;
+  const postLocation = useLocation();
+  const purchasePay = postLocation.search;
+  const didCompletePurchase = (purchasePay === '?purchasePay');
 
   const handleSubscribe = async () => {
     if (sponsored) {
@@ -111,32 +117,29 @@ function ProjectPage({ projectId }) {
         ]}
       />
 
-      <Styled.Router primary={false}>
-        <Redirect from="/" to="posts" noThrow />
-        <PostList
+      { didCompletePurchase && (
+        <Alert>
+          후원 플랜 결제가 완료되었습니다.
+        </Alert>
+      ) }
+
+      <Styled.Routes>
+        <Route path="/" element={<Navigate to="posts" />} />
+        <Route
           path="posts"
-          projectId={projectId}
-          project={project}
-          sponsored={sponsored}
-          isMyProject={isMyProject}
+          element={<PostList projectId={projectId} project={project} sponsored={sponsored} isMyProject={isMyProject} />}
         />
-        <SeriesList
+        <Route
           path="series"
-          series={series}
+          element={<SeriesList series={series} />}
         />
-        <MembershipList
+        <Route
           path="memberships"
-          memberships={memberships}
-          sponsored={sponsored}
-          isMyProject={isMyProject}
+          element={<MembershipList memberships={memberships} sponsored={sponsored} isMyProject={isMyProject} />}
         />
-      </Styled.Router>
+      </Styled.Routes>
     </GridTemplate>
   );
 }
 
 export default ProjectPage;
-
-ProjectPage.propTypes = {
-  projectId: PropTypes.string.isRequired,
-};

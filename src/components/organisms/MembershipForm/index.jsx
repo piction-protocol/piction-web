@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, navigate } from '@reach/router';
 import useSWR from 'swr';
 import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 
 import useAPI from 'hooks/useAPI';
 
@@ -130,6 +130,7 @@ function MembershipForm({
   }, [watchingPrice, fees]);
 
   const [API] = useAPI();
+  const navigate = useNavigate();
 
   const deleteMembership = async () => {
     try {

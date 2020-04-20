@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link } from '@reach/router';
+import { Link, useParams } from 'react-router-dom';
 import useSWR from 'swr';
 
 import Grid from 'styles/Grid';
@@ -80,7 +80,8 @@ const Styled = {
   `,
 };
 
-function DashboardMembershipList({ title, projectId }) {
+function DashboardMembershipList({ title }) {
+  const { projectId } = useParams();
   const { data: project } = useSWR(`/projects/${projectId}`, { suspense: true });
   const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { navigate } from '@reach/router';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR, { trigger } from 'swr';
 
@@ -96,9 +96,9 @@ const Styled = {
 
 function ProjectForm({
   title,
-  projectId = '',
-  location: { search },
 }) {
+  const { search } = useLocation();
+  const { projectId } = useParams();
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     uri: '',
@@ -113,6 +113,7 @@ function ProjectForm({
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
+  const navigate = useNavigate();
   const { data: categories = [] } = useSWR('/categories', { revalidateOnFocus: false });
 
   useEffect(() => {
@@ -341,9 +342,7 @@ function ProjectForm({
 }
 
 ProjectForm.propTypes = {
-  projectId: PropTypes.string,
   title: PropTypes.string.isRequired,
-  location: PropTypes.object,
 };
 
 export default ProjectForm;

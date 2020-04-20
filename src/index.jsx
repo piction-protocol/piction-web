@@ -2,6 +2,7 @@ import 'react-app-polyfill/ie9';
 
 import React from 'react';
 import { render } from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import * as Sentry from '@sentry/browser';
 
 import { CurrentUserProvider } from 'context/CurrentUserContext';
@@ -18,7 +19,9 @@ render((
   <>
     <GlobalStyle />
     <CurrentUserProvider>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </CurrentUserProvider>
   </>
 ), document.getElementById('app-root'));

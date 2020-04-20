@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Redirect } from '@reach/router';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -50,11 +50,11 @@ function MyPage() {
           { text: '비밀번호 변경', to: 'password' },
         ]}
       />
-      <Router primary={false}>
-        <Redirect from="/" to="info" noThrow />
-        <UpdateUserForm path="info" />
-        <UpdatePasswordForm path="password" />
-      </Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="info" />} />
+        <Route path="info" element={<UpdateUserForm />} />
+        <Route path="password" element={<UpdatePasswordForm />} />
+      </Routes>
     </UserTemplate>
   );
 }
