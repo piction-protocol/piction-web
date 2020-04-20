@@ -100,7 +100,7 @@ function DashboardSidebar({ projects, ...props }) {
   return (
     <Styled.Sidebar {...props}>
       <Styled.Header>
-        <Styled.Name>{`${currentUser.username}의`}</Styled.Name>
+        <Styled.Name>{`${currentUser?.username}의`}</Styled.Name>
         <Styled.Title>크리에이터 대시보드</Styled.Title>
       </Styled.Header>
       <Location>

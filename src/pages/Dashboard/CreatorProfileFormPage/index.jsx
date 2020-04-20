@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components/macro';
-import useSWR from 'swr';
-import { useForm, useFieldArray } from 'react-hook-form';
-
-import useAPI from 'hooks/useAPI';
+import useSWR from 'swr'
 
 import Grid from 'styles/Grid';
 
 import { ReactComponent as DeleteIcon } from 'images/ic-delete.svg';
+
+import useCreatorProfileForm from 'hooks/useCreatorProfileForm'
 
 import Heading from 'components/atoms/Heading';
 import Input from 'components/atoms/Input';
 import Label from 'components/atoms/Label';
 import { PrimaryButton } from 'components/atoms/Button';
 import ExternalFavicon from 'components/atoms/ExternalFavicon';
-import Modal, { ModalBody } from 'components/externals/Modal';
+import useAPI from 'hooks/useAPI';
+import useAlert from 'hooks/useAlert';
 
 const Styled = {
   Form: styled(Grid).attrs({
@@ -89,66 +88,44 @@ const Styled = {
   `,
 };
 
-function CreatorProfileForm({ title }) {
+function CreatorProfileFormPage() {
   const [API] = useAPI();
-  const [modalBody, setModalBody] = useState(null);
+  const { setSuccessAlert, setErrorAlert } = useAlert();
 
-  const { data: profile, revalidate } = useSWR(() => 'my/creator-profiles', {
+  const { data: profile, revalidate } = useSWR('my/creator-profiles', {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
   });
 
   const {
-    control, register, handleSubmit, reset, watch,
-  } = useForm({
-    defaultValues: profile,
-  });
-
-  useEffect(() => {
-    reset(profile);
-  }, [reset, profile]);
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'links',
-  });
+    register,
+    linkFields,
+    watchLinks,
+    addLink,
+    removeLink,
+    handleSubmit
+  } = useCreatorProfileForm(profile);
 
   const onSubmit = async (data) => {
-    const { links = [] } = data;
-    const refinedData = {
-      ...data,
-      links: links.map(link => (/^https?:\/\//i.test(link.url) ? link : {
-        ...link,
-        url: `http://${link.url}`,
-      })),
-    };
     try {
       if (profile) {
-        await API.creatorProfile.update(refinedData);
+        await API.creatorProfile.update(data);
       } else {
-        await API.creatorProfile.create(refinedData);
+        await API.creatorProfile.create(data);
       }
-      setModalBody('입력하신 내용이 저장되었습니다.');
+      setSuccessAlert('입력하신 내용이 저장되었습니다.');
+      window.scrollTo(0, 0);
       revalidate();
     } catch (error) {
       const { message } = error?.response?.data;
-      setModalBody(message || '서버가 응답하지 않습니다. 잠시 후 다시 시도해주세요.');
+      setErrorAlert(message || '서버가 응답하지 않습니다. 잠시 후 다시 시도해주세요.');
     }
-  };
-
-  const watchLinks = watch('links');
+  }
 
   return (
     <>
-      {modalBody && (
-        <Modal close={() => setModalBody(null)}>
-          <ModalBody>{modalBody}</ModalBody>
-          <PrimaryButton onClick={() => setModalBody(null)}>확인</PrimaryButton>
-        </Modal>
-      )}
-
       <Styled.Form onSubmit={handleSubmit(onSubmit)}>
-        <Heading>{title}</Heading>
+        <Heading>크리에이터 정보 설정</Heading>
         <Styled.InputGroup>
           <Label htmlFor="greetings">소개</Label>
           <Styled.Textarea
@@ -159,7 +136,7 @@ function CreatorProfileForm({ title }) {
         </Styled.InputGroup>
         <Styled.InputGroup>
           <Label>외부 링크</Label>
-          {fields.map((field, index) => (
+          {linkFields.map((field, index) => (
             <Styled.Field key={field.id}>
               <Styled.Url>
                 <Styled.ExternalFavicon url={watchLinks[index]?.url} />
@@ -179,14 +156,14 @@ function CreatorProfileForm({ title }) {
                 defaultValue={field.name}
                 required
               />
-              <Styled.Delete type="button" onClick={() => remove(index)}>
+              <Styled.Delete type="button" onClick={() => removeLink(index)}>
                 <DeleteIcon />
               </Styled.Delete>
             </Styled.Field>
           ))}
           <Styled.AddLink
-            disabled={fields.length >= 5}
-            onClick={() => append({ url: '', name: '' })}
+            disabled={linkFields.length >= 5}
+            onClick={() => addLink({ url: '', name: '' })}
           >
             + 외부 링크 추가
           </Styled.AddLink>
@@ -199,8 +176,4 @@ function CreatorProfileForm({ title }) {
   );
 }
 
-CreatorProfileForm.propTypes = {
-  title: PropTypes.string.isRequired,
-};
-
-export default CreatorProfileForm;
+export default CreatorProfileFormPage;

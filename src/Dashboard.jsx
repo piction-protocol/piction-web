@@ -18,7 +18,7 @@ const SponsorList = React.lazy(() => import('components/organisms/SponsorList'))
 const SeriesListForm = React.lazy(() => import('components/organisms/SeriesListForm'));
 const DashboardMembershipList = React.lazy(() => import('components/organisms/DashboardMembershipList'));
 const MembershipForm = React.lazy(() => import('components/organisms/MembershipForm'));
-const CreatorProfileForm = React.lazy(() => import('components/organisms/CreatorProfileForm'));
+const CreatorProfileFormPage = React.lazy(() => import('pages/Dashboard/CreatorProfileFormPage'));
 
 const Styled = {
   Router: styled(Router)`
@@ -82,7 +82,7 @@ function Dashboard() {
           <SponsorList title="구독자 목록" path=":projectId/members" />
           <PostForm title="새 포스트" path=":projectId/posts/new" />
           <PostForm title="포스트 수정" path=":projectId/posts/:postId/edit" />
-          <CreatorProfileForm title="크리에이터 정보 설정" path="creator-profile" />
+          <CreatorProfileFormPage path="/creator-profile" />
           <NotFound default />
         </Styled.Router>
       </DashboardTemplate>
