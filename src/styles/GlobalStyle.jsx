@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
     --black: #000000;
     --charcoal-black: #333333;
     --gray--dark: #BFBFBF;
+    --gray: #BABABA;
     --gray--pale: #E8E8E8;
     --white: #FFFFFF;
 
