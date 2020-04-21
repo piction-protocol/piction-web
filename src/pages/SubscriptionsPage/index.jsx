@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';

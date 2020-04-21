@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 
 import titleImage from './title-mobile.png';
 import titleImage2 from './title-mobile@2x.png';

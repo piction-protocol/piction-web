@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import useSWR, { useSWRPages } from 'swr';
 
@@ -42,8 +42,9 @@ const Styled = {
   `,
 };
 
-function CategoryPage({ categoryId }) {
+function CategoryPage() {
   const FETCHING_SIZE = 20;
+  const { categoryId } = useParams();
 
   const [totalCount, setTotalCount] = useState(0);
   const { data: category } = useSWR(`categories/${categoryId}`);

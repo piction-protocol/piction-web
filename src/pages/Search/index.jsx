@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import queryString from 'query-string';
 import useSWR, { useSWRPages } from 'swr';
@@ -43,7 +43,8 @@ const Styled = {
   `,
 };
 
-function Search({ location: { search } }) {
+function Search() {
+  const { search } = useLocation();
   const { query } = queryString.parse(search, { decode: false });
 
   const FETCHING_SIZE = 20;

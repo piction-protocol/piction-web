@@ -3,7 +3,6 @@ import { postLikeRequest, postLikeSuccess, postLikeFailure } from '.'
 import { likePost } from './requests'
 import { RootState } from 'rootReducer'
 import { Authentication } from 'modules/currentUser'
-import { navigate } from '@reach/router'
 import { trigger } from 'swr'
 
 
@@ -23,7 +22,7 @@ function* watchLikeRequests() {
 
     if (!accessToken) {
       yield put(postLikeFailure())
-      navigate('/login', { state: { redirectTo: window.location.pathname }})
+      // navigate('/login', { state: { redirectTo: window.location.pathname }})
       continue
     } 
 

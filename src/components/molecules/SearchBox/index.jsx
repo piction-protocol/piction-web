@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { navigate } from '@reach/router';
+import { useNavigate } from 'react-router-dom';
 
 import { mediaQuery } from 'styles/media';
 import useMedia from 'hooks/useMedia';
@@ -68,6 +68,7 @@ function SearchBox({
   const [isOpened, setIsOpened] = useState(false);
   const [query, setQuery] = useState('');
   const isDesktop = useMedia(mediaQuery.desktop);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();

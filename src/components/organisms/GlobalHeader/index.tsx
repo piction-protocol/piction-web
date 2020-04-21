@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, useRef, useContext,
 } from 'react';
 import styled from 'styled-components/macro';
-import { Link, Location } from '@reach/router';
+import { Link, useLocation } from 'react-router-dom';
 
 import media, { mediaQuery } from 'styles/media';
 
@@ -161,6 +161,7 @@ function GlobalHeader() {
   const { currentUser, deleteSession } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
   const { layout } = useContext(LayoutContext);
+  const location = useLocation();
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -188,89 +189,79 @@ function GlobalHeader() {
         text: '로그인',
         to: '/login',
         icon: <AccountIcon />,
-        state: { redirectTo: encodeURIComponent(window.location.pathname) },
+        state: { redirectTo: encodeURIComponent(location.pathname) },
       },
       {
         text: '회원가입',
         to: '/signup',
         icon: <PictionIcon />,
-        state: { redirectTo: encodeURIComponent(window.location.pathname) },
+        state: { redirectTo: encodeURIComponent(location.pathname) },
       },
     ],
   ];
 
   return (
     <Styled.Header>
-      <Location>
-        {({ location }) => (
-          <Styled.Nav>
-            <NavigateListener location={location} event={() => setIsMenuOpened(false)} />
-            {layout.type === 'project' ? (
-              <ProjectTitle project={layout.data.project} />
+      <Styled.Nav>
+        <NavigateListener location={location} event={() => setIsMenuOpened(false)} />
+        {layout.type === 'project' ? (
+          <ProjectTitle project={layout.data.project} />
+        ) : (
+          <>
+            <Styled.Link to='/'>
+              <Styled.Logo />
+            </Styled.Link>
+            {isDesktop && (
+              <>
+                <Styled.Link to="/all">
+                      전체 프로젝트
+                </Styled.Link>
+                <Styled.Link to="/creatorsguide">
+                      크리에이터 가이드
+                </Styled.Link>
+              </>
+            )}
+          </>
+        )}
+        {/^\/login|^\/signup/.test(location.pathname) || (
+          <>
+            <Styled.SearchBox />
+            {currentUser || !isDesktop ? (
+              <Styled.User ref={menuRef}>
+                <Styled.Toggle
+                  onClick={() => setIsMenuOpened(prevState => !prevState)}
+                >
+                  {currentUser ? (
+                    <Styled.UserProfile image={currentUser.picture} />
+                  ) : (
+                    <MenuIcon />
+                  )}
+                </Styled.Toggle>
+                {isMenuOpened && (
+                <UserMenuWithWrapper
+                  links={links}
+                  isDesktop={isDesktop}
+                  close={() => setIsMenuOpened(false)}
+                />
+                )}
+              </Styled.User>
             ) : (
               <>
-                <Styled.Link to="/">
-                  <Styled.Logo />
-                </Styled.Link>
-                {isDesktop && (
-                  <>
-                    <Styled.Link to="/all">
-                      전체 프로젝트
-                    </Styled.Link>
-                    <Styled.Link to="/creatorsguide">
-                      크리에이터 가이드
-                    </Styled.Link>
-                  </>
-                )}
-              </>
-            )}
-            {/^\/login|^\/signup/.test(location.pathname) || (
-              <>
-                <Styled.SearchBox />
-                {currentUser || !isDesktop ? (
-                  <Styled.User ref={menuRef}>
-                    <Styled.Toggle
-                      onClick={() => setIsMenuOpened(prevState => !prevState)}
-                    >
-                      {currentUser ? (
-                        <Styled.UserProfile image={currentUser.picture} />
-                      ) : (
-                        <MenuIcon />
-                      )}
-                    </Styled.Toggle>
-                    {isMenuOpened && (
-                      <UserMenuWithWrapper
-                        links={links}
-                        isDesktop={isDesktop}
-                        close={() => setIsMenuOpened(false)}
-                      />
-                    )}
-                  </Styled.User>
-                ) : (
-                  <>
-                    <Styled.Login
-                      to="/login"
-                      state={{
-                        redirectTo: encodeURIComponent(location.pathname),
-                      }}
-                    >
+                <Styled.Login
+                  to={`/login?redirectTo=${encodeURIComponent(location.pathname)}`}
+                >
                       로그인
-                    </Styled.Login>
-                    <Styled.Signup
-                      to="/signup"
-                      state={{
-                        redirectTo: encodeURIComponent(location.pathname),
-                      }}
-                    >
+                </Styled.Login>
+                <Styled.Signup
+                  to={`/signup?redirectTo=${encodeURIComponent(location.pathname)}`}
+                >
                       회원가입
-                    </Styled.Signup>
-                  </>
-                )}
+                </Styled.Signup>
               </>
             )}
-          </Styled.Nav>
+          </>
         )}
-      </Location>
+      </Styled.Nav>
     </Styled.Header>
   );
 }

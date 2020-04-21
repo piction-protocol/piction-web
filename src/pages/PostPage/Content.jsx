@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Location, Link } from '@reach/router';
+import { useLocation, Link } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/ko';
 
@@ -111,6 +111,7 @@ Content.Placeholder = () => {
 function LockedContent({ handleSubscription, post }) {
   const { currentUser } = useCurrentUser();
   const hasPrice = post?.membership.price > 0;
+  const location = useLocation();
   return (
     <Styled.Locked>
       <Styled.LockedIcon />
@@ -154,19 +155,15 @@ function LockedContent({ handleSubscription, post }) {
           </Styled.Subscription>
         )
       ) : (
-        <Location>
-          {({ location }) => (
-            <Styled.Subscription
-              as={Link}
-              to="/login"
-              state={{
-                redirectTo: encodeURIComponent(location.pathname),
-              }}
-            >
-              {hasPrice ? '후원하기' : '구독하기'}
-            </Styled.Subscription>
-          )}
-        </Location>
+        <Styled.Subscription
+          as={Link}
+          to="/login"
+          state={{
+            redirectTo: encodeURIComponent(location.pathname),
+          }}
+        >
+          {hasPrice ? '후원하기' : '구독하기'}
+        </Styled.Subscription>
       )}
     </Styled.Locked>
   );

@@ -1,7 +1,6 @@
 import { RootState } from 'rootReducer'
 import { all, put, take, call, select } from 'redux-saga/effects'
 import { Cookies } from 'react-cookie'
-import { navigate } from '@reach/router';
 
 import {
   fetchCurrentUserRequest,
@@ -61,7 +60,7 @@ function* loginFlow() {
 
       yield put(fetchCurrentUserRequest())
 
-      navigate(payload.redirectTo || '/', { replace: true })
+      // navigate(payload.redirectTo || '/', { replace: true })
     } catch (error) {
       yield put(loginFailure(error.response.data.message as string))
     }
@@ -78,7 +77,7 @@ function* logoutFlow() {
 
     yield put(setFlash({ type: 'success', message: '로그아웃 되었습니다' }))
 
-    navigate('/')
+    // navigate('/')
   }
 }
 

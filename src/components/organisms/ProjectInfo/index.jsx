@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, Location } from '@reach/router';
+import { Link, useLocation } from 'react-router-dom';
 
 import { MainGrid } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
@@ -215,7 +215,7 @@ function ProjectInfo({
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { currentUser } = useCurrentUser();
   const creatorsProfileLink = `/creator-profile/${project.user.loginId}`;
-
+  const location = useLocation();
   return (
     <Styled.Section {...props}>
       <Styled.WideThumbnail
@@ -302,19 +302,15 @@ function ProjectInfo({
                 구독
               </Styled.SubscribeButton>
             ) : (
-              <Location>
-                {({ location }) => (
-                  <Styled.SubscribeButton
-                    as={Link}
-                    to="/login"
-                    state={{
-                      redirectTo: encodeURIComponent(location.pathname),
-                    }}
-                  >
+              <Styled.SubscribeButton
+                as={Link}
+                to="/login"
+                state={{
+                  redirectTo: encodeURIComponent(location.pathname),
+                }}
+              >
                     구독
-                  </Styled.SubscribeButton>
-                )}
-              </Location>
+              </Styled.SubscribeButton>
             ))}
           </Styled.Subscribe>
           {isPictionChoice && !isDesktop && (

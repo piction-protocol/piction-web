@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';

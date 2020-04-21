@@ -1,11 +1,12 @@
 import React, { Suspense, useEffect } from 'react';
-import { Router, Location, Redirect } from '@reach/router';
+import {
+  Routes, Route, Navigate, useLocation,
+} from 'react-router-dom';
 import { importMDX } from 'mdx.macro';
 import { SWRConfig } from 'swr';
-import styled from 'styled-components/macro';
 import createFetcher from 'config/fetcher';
-import { ScrollContext } from 'gatsby-react-router-scroll';
 
+import useScrollRestoration from 'hooks/useScrollRestoration';
 import useAlert from 'hooks/useAlert';
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -56,12 +57,6 @@ const NotFound = () => (
   </div>
 );
 
-const StyledRouter = styled(Router)`
-  display: flex;
-  flex: 1;
-  flex-flow: column;
-`;
-
 const swrConfig = {
   onErrorRetry: (error, key, option, revalidate, { retryCount }) => {
     if (retryCount >= 3) return;
@@ -75,6 +70,9 @@ function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
   const { flash } = useAlert();
+  const location = useLocation();
+
+  useScrollRestoration()
 
   useEffect(() => {
     async function loading() {
@@ -83,6 +81,13 @@ function App() {
     loading();
   }, [getCurrentUser]);
 
+  useEffect(() => {
+    const { SMPCTracking } = window;
+    if (SMPCTracking) {
+      SMPCTracking.active();
+    }
+  }, [location.pathname]);
+
   return (
     <div className="root">
       {flash.visible && (
@@ -90,59 +95,48 @@ function App() {
           {flash.message}
         </Alert>
       )}
-      <Location>
-        {locationContext => (
-          <SWRConfig value={{ ...swrConfig, fetcher }}>
-            <LayoutProvider>
-              <GlobalHeader />
-              <Suspense fallback={<Spinner />}>
-                <ScrollContext location={locationContext.location}>
-                  <StyledRouter>
-                    <HomePage path="/" />
-                    <LoginPage path="login" />
-                    <SignupPage path="signup/*" />
-                    <ForgotPasswordPage path="forgot_password/*" />
+      <SWRConfig value={{ ...swrConfig, fetcher }}>
+        <LayoutProvider>
+          <GlobalHeader />
+          <Suspense fallback={<Spinner />}>
 
-                    <SubscriptionsPage path="subscriptions" />
-                    <AllProjectsPage path="all" />
+            <Routes>
+              <Route path="/" exact element={<HomePage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="signup/*" element={<SignupPage />} />
+              <Route path="forgot_password/*" element={<ForgotPasswordPage />} />
+              <Route path="subscriptions" element={<SubscriptionsPage />} />
+              <Route path="all" element={<AllProjectsPage />} />
+              <Route path="search" element={<Search />} />
+              <Route path="tag/:tagName" element={<TagPage />} />
+              <Route path="category/:categoryId" element={<CategoryPage />} />
+              <Route path="project/:projectId/*" element={<ProjectPage />} />
+              <Route path="project/:projectId/memberships/purchase/:membershipId" element={<PurchasePage />} />
+              <Route path="project/:projectId/series/:seriesId" element={<SeriesPage />} />
+              <Route path="project/:projectId/posts/:postId" element={<PostPage />} />
+              <Route path="creator-profile/:creatorId" element={<CreatorProfilePage />} />
+              <Route path="my/*" element={<MyPage />} />
+              <Route path="wallet/*" element={<WalletPage />} />
+              <Route path="dashboard/*" element={<Dashboard />} />
+              <Route path="terms" components={TermsComponents} element={<Terms />} />
+              <Route path="privacy" element={<Privacy />} />
+              <Route path="campaigns/dnfcreativeleague" element={<DNFCreativeLeague />} />
+              <Route path="campaigns/cpr_2019" element={<CPR />} />
+              <Route path="campaigns/hongik_2019" element={<Hongik />} />
 
-                    <Search path="search" />
-                    <TagPage path="tag/:tagName" />
-                    <CategoryPage path="category/:categoryId" />
+              <Route path="creatorsguide" element={<CreatorsGuide />} />
 
-                    <ProjectPage path="project/:projectId/*" />
-                    <PurchasePage path="project/:projectId/memberships/purchase/:membershipId" />
-                    <SeriesPage path="project/:projectId/series/:seriesId" />
-                    <PostPage path="project/:projectId/posts/:postId" />
-                    <CreatorProfilePage path="creator-profile/:creatorId" />
+              <Route path="newsletter/unsubscribe" element={<OptOut />} />
 
-                    <MyPage path="my/*" />
-                    <WalletPage path="wallet/*" />
-                    <Dashboard path="dashboard/*" />
+              <Route path="/en" element={<Navigate to="/" />} />
+              <Route path="/ko" element={<Navigate to="/" />} />
 
-                    <Terms components={TermsComponents} path="terms" />
-                    <Privacy components={TermsComponents} path="privacy" />
-
-                    <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
-                    <CPR path="campaigns/cpr_2019" />
-                    <Hongik path="campaigns/hongik_2019" />
-
-                    <CreatorsGuide path="creatorsguide" />
-
-                    <OptOut path="newsletter/unsubscribe" />
-
-                    <Redirect from="/en" to="/" noThrow />
-                    <Redirect from="/ko" to="/" noThrow />
-
-                    <NotFound default />
-                  </StyledRouter>
-                </ScrollContext>
-              </Suspense>
-              <GlobalFooter />
-            </LayoutProvider>
-          </SWRConfig>
-        )}
-      </Location>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+          <GlobalFooter />
+        </LayoutProvider>
+      </SWRConfig>
     </div>
   );
 }

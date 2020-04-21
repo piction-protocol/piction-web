@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Redirect } from '@reach/router';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import axios from 'axios';
@@ -87,12 +87,12 @@ function WalletPage() {
           { text: '출금', to: 'withdraw' },
         ]}
       />
-      <Router primary={false} component={({ children }) => <>{children}</>}>
-        <Redirect from="/" to="transactions" noThrow />
-        <Transactions path="transactions" />
-        <Deposit path="deposit" wallet={wallet} />
-        <Withdraw path="withdraw" wallet={wallet} />
-      </Router>
+      <Routes component={({ children }) => <>{children}</>}>
+        <Route path="/" element={<Navigate to="transactions" />} />
+        <Route path="transactions" element={<Transactions />} />
+        <Route path="deposit" element={<Deposit wallet={wallet} />} />
+        <Route path="withdraw" element={<Withdraw wallet={wallet} />} />
+      </Routes>
     </GridTemplate>
   );
 }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { navigate } from '@reach/router';
-
+import { useNavigate } from 'react-router-dom';
 import Spinner from 'components/atoms/Spinner';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 function LoginChecker({ children, redirect }) {
   const { currentUser, accessToken } = useCurrentUser();
   const [isFetchingCurrentUser, setIsFetchingCurrentUser] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (accessToken) return;
@@ -17,7 +17,7 @@ function LoginChecker({ children, redirect }) {
       },
       replace: true,
     });
-  }, [accessToken, redirect]);
+  }, [accessToken, navigate, redirect]);
 
   useEffect(() => {
     if (currentUser && accessToken) {

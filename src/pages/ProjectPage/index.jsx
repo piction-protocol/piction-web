@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Router, Redirect, navigate } from '@reach/router';
+import {
+  Routes, Route, useLocation, useNavigate, useParams, Navigate,
+} from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import useProject from 'hooks/useProject'
@@ -9,10 +10,12 @@ import useMedia from 'hooks/useMedia';
 
 import { GridStyle } from 'styles/Grid';
 
+import Alert from 'components/externals/Alert';
 import GridTemplate from 'components/templates/GridTemplate';
 import ProjectInfo from 'components/organisms/ProjectInfo';
 import Tabs from 'components/molecules/Tabs';
 import media, { mediaQuery } from 'styles/media';
+
 
 const PostList = React.lazy(() => import('components/organisms/PostList'));
 const SeriesList = React.lazy(() => import('components/organisms/SeriesList'));
@@ -20,7 +23,7 @@ const MembershipList = React.lazy(() => import('components/organisms/MembershipL
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
-  Router: styled(Router)`
+  Routes: styled(Routes)`
     grid-column: 1 / -1;
     ${GridStyle}
   `,
@@ -34,8 +37,10 @@ const Styled = {
   `,
 };
 
-function ProjectPage({ projectId }) {
+function ProjectPage() {
+  const { projectId } = useParams();
   const isDesktop = useMedia(mediaQuery.desktop);
+  const navigate = useNavigate();
 
   const {
     project,
@@ -45,12 +50,15 @@ function ProjectPage({ projectId }) {
     isExplicitContent,
     consentWithExplicitContent
   } = useProject(projectId)
+  const postLocation = useLocation();
+  const purchasePay = postLocation.search;
+  const didCompletePurchase = (purchasePay === '?purchasePay');
 
   useEffect(() => {
     if (projectError?.response.status === 404) {
       navigate('/404', { replace: true })
     }
-  }, [projectError])
+  }, [projectError, navigate])
 
   const {
     memberships,
@@ -84,32 +92,29 @@ function ProjectPage({ projectId }) {
         ]}
       />
 
-      <Styled.Router primary={false}>
-        <Redirect from="/" to="posts" noThrow />
-        <PostList
+      { didCompletePurchase && (
+        <Alert>
+          후원 플랜 결제가 완료되었습니다.
+        </Alert>
+      ) }
+
+      <Styled.Routes>
+        <Route path="/" element={<Navigate to="posts" replace/>} />
+        <Route
           path="posts"
-          projectId={projectId}
-          project={project}
-          sponsored={sponsored}
-          isMyProject={isMyProject}
+          element={<PostList projectId={projectId} project={project} sponsored={sponsored} isMyProject={isMyProject} />}
         />
-        <SeriesList
+        <Route
           path="series"
-          series={series}
+          element={<SeriesList series={series} />}
         />
-        <MembershipList
+        <Route
           path="memberships"
-          memberships={memberships}
-          sponsored={sponsored}
-          isMyProject={isMyProject}
+          element={<MembershipList memberships={memberships} sponsored={sponsored} isMyProject={isMyProject} />}
         />
-      </Styled.Router>
+      </Styled.Routes>
     </GridTemplate>
   );
 }
 
 export default ProjectPage;
-
-ProjectPage.propTypes = {
-  projectId: PropTypes.string.isRequired,
-};

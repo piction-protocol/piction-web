@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { navigate } from '@reach/router';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import media from 'styles/media';
 
@@ -40,8 +39,10 @@ const Styled = {
   `,
 };
 
-function PostPage({ projectId, postId }) {
+function PostPage() {
+  const { projectId, postId } = useParams();
   const [readerMode, setReaderMode] = useLocalStorage(`project/${projectId}/textmode`, false);
+  const navigate = useNavigate()
 
   const {
     project,
@@ -71,7 +72,7 @@ function PostPage({ projectId, postId }) {
     if (projectError || postError) {
       navigate('/404');
     }
-  }, [projectError, postError]);
+  }, [projectError, postError, navigate]);
 
   const headerLoaded = project && post;
   const contentLoaded = content && post;
@@ -124,10 +125,5 @@ function PostPage({ projectId, postId }) {
     </GridTemplate>
   );
 }
-
-PostPage.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  postId: PropTypes.string.isRequired,
-};
 
 export default PostPage;
