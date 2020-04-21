@@ -93,8 +93,8 @@ function ProjectCard({
 
 const Placeholder = {
   Title: styled(Styled.Title)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
+    background-color: var(--gray--pale);
+    color: var(--gray--pale);
   `,
 };
 

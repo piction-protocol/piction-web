@@ -12,7 +12,7 @@ const Styled = {
     margin-top: auto;
     padding: 24px 0;
     border-top: 1px solid #F2F2F2;
-    border-top: 1px solid var(--gray--light);
+    border-top: 1px solid var(--gray--pale);
     background-color: #FFFFFF;
     background-color: var(--white);
     ${media.desktop`

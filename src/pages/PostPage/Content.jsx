@@ -46,7 +46,7 @@ const Styled = {
     height: 104px;
     margin-bottom: 8px;
     path {
-      fill: var(--gray--light);
+      fill: var(--gray--pale);
     }
     ${media.desktop`
       margin-bottom: 24px;
@@ -94,8 +94,8 @@ Content.Placeholder = () => {
           <div
             key={width}
             style={{
-              backgroundColor: 'var(--gray--light)',
-              color: 'var(--gray--light)',
+              backgroundColor: 'var(--gray--pale)',
+              color: 'var(--gray--pale)',
               height: '1.5em',
               width: `${width}`,
               marginBottom: '1em',

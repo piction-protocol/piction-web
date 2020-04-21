@@ -43,7 +43,7 @@ const ReaderModeControl = ({ readerMode, onToggle }) => (
     </Styled.Label>
     <Styled.ReaderModeToggle
       style={{
-        backgroundColor: (readerMode ? null : 'var(--gray--light)'),
+        backgroundColor: (readerMode ? null : 'var(--gray--pale)'),
       }}
       size="mini"
       onClick={() => onToggle(false)}
@@ -52,7 +52,7 @@ const ReaderModeControl = ({ readerMode, onToggle }) => (
     </Styled.ReaderModeToggle>
     <Styled.ReaderModeToggle
       style={{
-        backgroundColor: (readerMode ? 'var(--gray--light)' : null),
+        backgroundColor: (readerMode ? 'var(--gray--pale)' : null),
       }}
       size="mini"
       onClick={() => onToggle(true)}

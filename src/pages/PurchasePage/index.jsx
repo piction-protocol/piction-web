@@ -29,7 +29,7 @@ import { ReactComponent as LinkaPayIcon } from 'images/ic-linkapay.svg';
 
 const Styled = {
   WideThumbnail: styled(WideThumbnail)`
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     ${media.desktop`
       max-height: 450px;
     `}
@@ -53,7 +53,7 @@ const Styled = {
   Section: styled.section`
     margin-bottom: 24px;
     padding-bottom: 24px;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
   `,
   SectionTitle: styled.h2`
     margin-bottom: 4px;

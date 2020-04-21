@@ -32,7 +32,7 @@ const Styled = {
     display: flex;
     align-items: center;
     padding: 12px 0;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
   `,
   UserProfile: styled(UserProfile)`
     width: 56px;

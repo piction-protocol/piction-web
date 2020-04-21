@@ -25,7 +25,7 @@ const Styled = {
     columns: 'var(--columns)',
   })`
     margin-bottom: 24px;
-    border: solid var(--gray--light);
+    border: solid var(--gray--pale);
     border-width: 1px 0;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
@@ -118,7 +118,7 @@ const Styled = {
       display: flex;
       flex-flow: column;
       margin-top: 16px;
-      border-top: 1px solid var(--gray--light);
+      border-top: 1px solid var(--gray--pale);
     `}
     ${media.desktop`
       --row-gap: 8px;
@@ -150,7 +150,7 @@ const Styled = {
     color: var(--gray--dark);
     ${media.mobile`
       padding: 16px 0;
-      border-bottom: 1px solid var(--gray--light);
+      border-bottom: 1px solid var(--gray--pale);
     `}
     ${media.desktop`
       display: flex;

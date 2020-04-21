@@ -19,7 +19,7 @@ const Styled = {
     color: var(--gray--dark);
     line-height: normal;
     &:disabled {
-      background-color: var(--gray--light);
+      background-color: var(--gray--pale);
     }
   `,
 };

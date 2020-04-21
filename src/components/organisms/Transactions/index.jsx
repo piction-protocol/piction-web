@@ -25,7 +25,7 @@ const Styled = {
     height: var(--row-height);
     border: solid var(--black);
     border-width: 1px 0;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     font-weight: bold;
     ${media.mobile`
       display: none;

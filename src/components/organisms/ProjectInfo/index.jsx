@@ -32,7 +32,7 @@ const Styled = {
     position: relative;
   `,
   WideThumbnail: styled(WideThumbnail)`
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     ${media.desktop`
       max-height: 450px;
     `}
@@ -150,7 +150,7 @@ const Styled = {
   `,
   UserProfile: styled(UserProfile)`
     border-radius: 50%;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
   `,
   Aside: styled.div`
     grid-column: 1 / -1;

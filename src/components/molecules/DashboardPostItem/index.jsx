@@ -14,7 +14,7 @@ const Styled = {
     display: flex;
     flex-flow: row wrap;
     position: relative;
-    border: 1px solid var(--gray--light);
+    border: 1px solid var(--gray--pale);
     background-color: var(--white);
     transition: box-shadow var(--transition--form);
     &:hover {

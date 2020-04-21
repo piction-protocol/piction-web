@@ -19,7 +19,7 @@ const Input = styled.input.attrs(({ type }) => ({
   }
 
   &:disabled, &[readonly]{
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     color: var(--gray--dark);
   }
 

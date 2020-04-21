@@ -20,7 +20,7 @@ const Styled = {
   Address: styled.p`
     margin-bottom: 16px;
     padding: 8px;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     font-size: var(--font-size--small);
     text-align: center;
     word-break: break-all;

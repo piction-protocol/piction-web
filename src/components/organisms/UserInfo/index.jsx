@@ -11,7 +11,7 @@ import 'moment/locale/ko';
 const Styled = {
   Section: styled.section`
     display: flex;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
   `,
   Wrapper: styled(MainGrid)`
     align-items: flex-start;

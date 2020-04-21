@@ -19,7 +19,7 @@ const Styled = {
     flex-flow: ${props => (props.theme.viewType === 'LIST' ? 'row wrap' : 'column')};
     align-items: ${props => (props.theme.viewType === 'LIST' ? 'center' : 'stretch')};
     padding-bottom: 20px;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
     background-color: var(--white);
   `,
   CoverWrapper: styled.div`

@@ -18,7 +18,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     padding: 16px 0;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
   `,
   Title: styled.h2`
     margin-right: auto;
@@ -58,7 +58,7 @@ const Styled = {
     transition: background-color var(--transition--form);
 
     &:hover {
-      background-color: var(--gray--light);
+      background-color: var(--gray--pale);
     }
   `,
   Thumbnail: styled(Thumbnail)`
@@ -109,7 +109,7 @@ const Styled = {
     }
 
     &:hover {
-      background-color: var(--gray--light);
+      background-color: var(--gray--pale);
     }
   `,
 };

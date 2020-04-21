@@ -26,7 +26,7 @@ const Styled = {
   Email: styled.p`
     margin: 24px 0 16px;
     padding: 16px;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
   `,
 };
 

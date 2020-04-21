@@ -17,7 +17,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     height: 100%;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
   `,
   Header: styled.header`
     padding: 24px;

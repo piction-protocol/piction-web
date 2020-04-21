@@ -44,7 +44,7 @@ const Styled = {
   `,
   Item: styled.div`
     padding: 12px 24px;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
   `,
   Name: styled.p`
     margin-bottom: 2px;

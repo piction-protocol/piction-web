@@ -31,7 +31,7 @@ import { ReactComponent as LogoutIcon } from 'images/ic-logout.svg';
 const Styled = {
   Header: styled.header`
     border-bottom: 1px solid #F2F2F2;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
     background-color: #FFFFFF;
     background-color: var(--white);
   `,

@@ -29,7 +29,7 @@ const Styled = {
       margin-right: 8px;
       padding: 8px 12px;
       border-radius: 8px;
-      background-color: var(--gray--light);
+      background-color: var(--gray--pale);
       color: var(--black);
       &::before {
         content: '#';

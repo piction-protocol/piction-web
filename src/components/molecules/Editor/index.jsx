@@ -25,7 +25,7 @@ const Styled = {
   `,
   Toolbar: styled.div`
     display: flex;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     border-bottom: 2px solid var(--gray--dark);
   `,
   Button: styled.button`

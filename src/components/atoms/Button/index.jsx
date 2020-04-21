@@ -19,7 +19,7 @@ const Button = styled.button`
 
   &[disabled] {
     pointer-events: none;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     color: var(--gray--dark);
     &::after {
       border: 0;
