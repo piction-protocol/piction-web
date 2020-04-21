@@ -15,7 +15,7 @@ export const WithPost = () => {
   const title = text('title', 'title');
   const likeCount = number('likeCount', 1);
   const isLocked = boolean('isLocked', false);
-  const cover = text('cover', 'http://placekitten.com/1000/1000');
+  const cover = text('cover', 'https://placekitten.com/1000/1000');
 
   const post = {
     title, likeCount, viewType, isLocked, cover,

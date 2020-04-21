@@ -1,6 +1,7 @@
 import React from 'react';
 import { addDecorator, addParameters } from '@storybook/react';
-import { withKnobs, DocsPage, DocsContainer } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
+import { DocsPage } from '@storybook/addon-docs/blocks';
 import GlobalStyle from '../src/styles/GlobalStyle';
 import { withPaddings } from 'storybook-addon-paddings';
 
@@ -22,9 +23,12 @@ addParameters({
     { name: 'black', value: '#000000' },
   ],
   docs: {
-    container: DocsContainer,
     page: DocsPage,
   },
+  dependencies: {
+    withStoriesOnly: true,
+    hideEmpty: true,
+  }
 });
 
 addDecorator(storyFn => (
