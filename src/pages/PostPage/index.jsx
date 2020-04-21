@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { mutate } from 'swr';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import media from 'styles/media';
 
@@ -13,6 +13,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import useAPI from 'hooks/useAPI';
 import useLocalStorage from 'hooks/useLocalStorage';
 
+import Alert from 'components/externals/Alert';
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
 import LikeButton from 'components/atoms/LikeButton';
@@ -54,6 +55,10 @@ function PostPage() {
   useProjectLayout(project);
 
   const { data: post, error: postError } = useSWR(`/projects/${projectId}/posts/${postId}`, { revalidateOnFocus: false });
+
+  const postLocation = useLocation();
+  const purchasePay = postLocation.search;
+  const didCompletePurchase = (purchasePay === '?purchasePay');
 
   useEffect(() => {
     if (projectError || postError) {
@@ -121,6 +126,12 @@ function PostPage() {
       } : null}
     >
       {shouldShowAdultPopup && <AdultPopup close={handleAdultPopupClose} />}
+
+      { didCompletePurchase && (
+        <Alert>
+          후원 플랜 결제가 완료되었습니다.
+        </Alert>
+      ) }
 
       <Styled.Article>
         {headerLoaded ? (

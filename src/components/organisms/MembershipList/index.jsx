@@ -77,7 +77,7 @@ const Styled = {
 };
 
 function MembershipList({
-  isMyProject, memberships, sponsored, projectId,
+  isMyProject, memberships, sponsored,
 }) {
   const location = useLocation();
   const [minimum, setMinimum] = useState(location?.state?.post ? location.state.post.membership.level : 0);
@@ -94,7 +94,7 @@ function MembershipList({
           </Styled.Notice>
         </Styled.Sponsored>
       )}
-      {minimum > 0 && location.state.post && (
+      {minimum > 0 && location?.state?.post && (
         <Styled.Post>
           <Styled.Name>
             {location.state.post.title}
@@ -142,8 +142,7 @@ function MembershipList({
                     to={`purchase/${membership.id}`}
                     disabled={isDisabled || isFull}
                     state={{
-                      postId: location?.state?.post?.id,
-                      redirectTo: location.state?.redirectTo ? `${location?.state?.redirectTo}?purchasePay` : `${location.origin}/project/${projectId}/posts?purchasePay`,
+                      redirectTo: location.state?.redirectTo ? `${location?.state?.redirectTo}?purchasePay` : null,
                     }}
                   >
                     {`${membership.price} PXL / 30일`}
@@ -171,5 +170,4 @@ MembershipList.propTypes = {
   memberships: PropTypes.array,
   sponsored: PropTypes.object,
   location: PropTypes.object,
-  projectId: PropTypes.object,
 };

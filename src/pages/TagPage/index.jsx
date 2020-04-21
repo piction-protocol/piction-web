@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import useSWR, { useSWRPages } from 'swr';
 
@@ -42,7 +42,8 @@ const Styled = {
   `,
 };
 
-function TagPage({ tagName }) {
+function TagPage() {
+  const { tagName } = useParams();
   const FETCHING_SIZE = 20;
 
   const [totalCount, setTotalCount] = useState(0);
