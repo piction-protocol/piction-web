@@ -48,8 +48,9 @@ const Styled = {
   `,
 };
 
-const NextPost = ({ post, ...props }) => (
-  <Styled.NextPost to={`../${post.id}`} {...props}>
+// TODO: remove `Link` or path 
+const NextPost = ({ post, projectId, ...props }) => (
+  <Styled.NextPost to={`/project/${projectId}/posts/${post.id}`} {...props}>
     <Cover
       image={post.cover}
       width={960}

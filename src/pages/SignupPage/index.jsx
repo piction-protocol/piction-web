@@ -1,6 +1,6 @@
 import React from 'react';
 import CompactTemplate from 'components/templates/CompactTemplate';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Switch, Route, useLocation, useRouteMatch } from 'react-router-dom';
 
 import useRedirectWhenSignedIn from 'hooks/useRedirectWhenSignedIn';
 
@@ -13,12 +13,17 @@ function SignupPage() {
 
   useRedirectWhenSignedIn(redirectTo);
 
+  const { path } = useRouteMatch();
+  console.log(path)
+
   return (
     <CompactTemplate>
-      <Routes basepath="/signup">
-        <Route path="/" element={<SignupForm />} />
-        <Route path="/welcome" element={<Welcome redirectTo={redirectTo} />} />
-      </Routes>
+      <Switch>
+        <Route exact path={path} component={SignupForm} />
+        <Route path={`${path}/welcome`}>
+          <Welcome redirectTo={redirectTo} />
+        </Route>
+      </Switch>
     </CompactTemplate>
   );
 }

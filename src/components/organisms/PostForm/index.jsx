@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import moment from 'moment';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -108,7 +108,7 @@ function PostForm({ title }) {
   const [series, setSeries] = useState([]);
   const [membership, setMembership] = useState([]);
   const [API] = useCallback(useAPI(), []);
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   useEffect(() => {
     const getFormData = async () => {

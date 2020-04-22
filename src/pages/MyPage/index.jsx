@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -32,6 +32,7 @@ const Styled = {
 
 function MyPage() {
   const { currentUser } = useCurrentUser();
+  const { path } = useRouteMatch();
 
   return (
     <UserTemplate
@@ -50,11 +51,13 @@ function MyPage() {
           { text: '비밀번호 변경', to: 'password' },
         ]}
       />
-      <Routes>
-        <Route path="/" element={<Navigate to="info" />} />
-        <Route path="info" element={<UpdateUserForm />} />
-        <Route path="password" element={<UpdatePasswordForm />} />
-      </Routes>
+      <Switch>
+        <Route exact path={path}>
+          <Redirect to={`${path}/info`} />
+        </Route>
+        <Route path={`${path}/info`} component={UpdateUserForm} />
+        <Route path={`${path}/password`} component={UpdatePasswordForm} />
+      </Switch>
     </UserTemplate>
   );
 }

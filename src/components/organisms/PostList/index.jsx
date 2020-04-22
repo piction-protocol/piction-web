@@ -78,7 +78,7 @@ function PostList({
 
     return data.content.map(content => (
       <Styled.Link
-        to={`${content.id}`}
+        to={`/project/${projectId}/posts/${content.id}`}
         key={content.id}
       >
         <Styled.PostItem

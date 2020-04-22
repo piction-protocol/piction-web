@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
 
 import media from 'styles/media';
 
@@ -43,7 +43,7 @@ const Styled = {
 function PostPage() {
   const { projectId, postId } = useParams();
   const [readerMode, setReaderMode] = useLocalStorage(`project/${projectId}/textmode`, false);
-  const navigate = useNavigate()
+  const navigate = useHistory()
 
   const {
     project,

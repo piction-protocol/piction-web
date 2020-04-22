@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useRouteMatch } from 'react-router-dom';
 import useSWR from 'swr';
 
 import Grid from 'styles/Grid';
@@ -82,6 +82,7 @@ const Styled = {
 
 function DashboardMembershipList({ title }) {
   const { projectId } = useParams();
+  const { url } = useRouteMatch();
   const { data: project } = useSWR(`/projects/${projectId}`, { suspense: true });
   const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
 
@@ -103,13 +104,13 @@ function DashboardMembershipList({ title }) {
                   명 구독 중
                 </Styled.Subscriptions>
               </Styled.Price>
-              <Styled.Edit to={`${membership.id}/edit`}>
+              <Styled.Edit to={`${url}/${membership.id}/edit`}>
                 <EditIcon />
               </Styled.Edit>
             </Styled.Membership>
           ))}
           {membershipList.length <= 5 && (
-            <Styled.Create to="new">
+            <Styled.Create to={`${url}/new`}>
               {`+ 티어 ${membershipList.length} 상품 추가`}
             </Styled.Create>
           )}

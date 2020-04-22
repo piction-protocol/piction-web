@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR from 'swr';
 
@@ -48,7 +48,7 @@ function OptOut({ location: { search } }) {
   });
   const [API] = useAPI();
   const { setSuccessAlert } = useAlert();
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   if (newsletterError) {
     navigate('/404');

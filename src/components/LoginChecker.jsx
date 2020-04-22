@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Spinner from 'components/atoms/Spinner';
 import useCurrentUser from 'hooks/useCurrentUser';
 
 function LoginChecker({ children, redirect }) {
   const { currentUser, accessToken } = useCurrentUser();
   const [isFetchingCurrentUser, setIsFetchingCurrentUser] = useState(true);
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   useEffect(() => {
     if (accessToken) return;

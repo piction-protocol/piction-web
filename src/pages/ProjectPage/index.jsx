@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Routes, Route, useLocation, useNavigate, useParams, Navigate,
+  Switch, Route, useLocation, useHistory, useParams, Redirect, useRouteMatch,
 } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
@@ -23,7 +23,7 @@ const MembershipList = React.lazy(() => import('components/organisms/MembershipL
 const AdultPopup = React.lazy(() => import('components/organisms/AdultPopup'));
 
 const Styled = {
-  Routes: styled(Routes)`
+  Routes: styled(Switch)`
     grid-column: 1 / -1;
     ${GridStyle}
   `,
@@ -40,7 +40,7 @@ const Styled = {
 function ProjectPage() {
   const { projectId } = useParams();
   const isDesktop = useMedia(mediaQuery.desktop);
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   const {
     project,
@@ -53,6 +53,8 @@ function ProjectPage() {
   const postLocation = useLocation();
   const purchasePay = postLocation.search;
   const didCompletePurchase = (purchasePay === '?purchasePay');
+
+  const { url } = useRouteMatch();
 
   useEffect(() => {
     if (projectError?.response.status === 404) {
@@ -99,19 +101,18 @@ function ProjectPage() {
       ) }
 
       <Styled.Routes>
-        <Route path="/" element={<Navigate to="posts" replace/>} />
-        <Route
-          path="posts"
-          element={<PostList projectId={projectId} project={project} sponsored={sponsored} isMyProject={isMyProject} />}
-        />
-        <Route
-          path="series"
-          element={<SeriesList series={series} />}
-        />
-        <Route
-          path="memberships"
-          element={<MembershipList memberships={memberships} sponsored={sponsored} isMyProject={isMyProject} />}
-        />
+        <Route exact path={url}>
+          <Redirect to={ `${url}/posts` } replace/>
+        </Route>
+        <Route exact path={`${url}/posts`}>
+          <PostList projectId={projectId} project={project} sponsored={sponsored} isMyProject={isMyProject} />
+        </Route>
+        <Route exact path={`${url}/series`}>
+          <SeriesList projectId={projectId} series={series} />
+        </Route>
+        <Route exact path={`${url}/memberships`}>
+          <MembershipList memberships={memberships} sponsored={sponsored} isMyProject={isMyProject} />
+        </Route>
       </Styled.Routes>
     </GridTemplate>
   );

@@ -108,7 +108,7 @@ function DashboardSidebar({ projects, ...props }) {
         <React.Fragment key={project.uri}>
           <Styled.Project
             getProps={isPartiallyActive}
-            to={`/dashboard/${project.uri}/`}
+            to={`/dashboard/${project.uri}/posts`}
           >
             <Styled.ProjectTitle>
               {project.title}
@@ -141,11 +141,11 @@ function DashboardSidebar({ projects, ...props }) {
         </React.Fragment>
       ))}
       <Styled.Buttons>
-        <Styled.Button as={NavLink} to="new-project">
+        <Styled.Button as={NavLink} to="/dashboard/new-project">
           새 프로젝트 만들기
         </Styled.Button>
         {projects.length > 0 && (
-          <Styled.Button as={NavLink} to="creator-profile">
+          <Styled.Button as={NavLink} to="/dashboard/creator-profile">
             크리에이터 정보 설정
           </Styled.Button>
         )}

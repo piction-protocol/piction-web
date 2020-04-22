@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';
@@ -68,7 +68,7 @@ function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const location = useLocation();
 
   const handleSubmit = async (event) => {

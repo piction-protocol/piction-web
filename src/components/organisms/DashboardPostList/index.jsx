@@ -111,7 +111,7 @@ function DashboardPostList({ title }) {
             ...seriesList.map(series => ({ text: series.name, value: series.id })),
           ]}
         />
-        <Styled.New to="new">+ 새 포스트 등록</Styled.New>
+        <Styled.New to={`/dashboard/${projectId}/posts/new`}>+ 새 포스트 등록</Styled.New>
       </Styled.Tools>
       {postList.content.length === 0 && (
         <Styled.Empty>

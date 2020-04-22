@@ -35,7 +35,7 @@ const Styled = {
   `,
 };
 
-const SeriesList = ({ series }) => (
+const SeriesList = ({ projectId, series }) => (
   <Styled.Section>
     {series.reduce((acc, item) => acc + item.postCount, 0) === 0 ? (
       <Styled.Empty>
@@ -46,7 +46,7 @@ const SeriesList = ({ series }) => (
       </Styled.Empty>
     ) : series.map(item => item.postCount > 0 && (
       <Styled.Link
-        to={`${item.id}`}
+        to={`/project/${projectId}/series/${item.id}`}
         key={item.id}
       >
         <SeriesCard {...item} />
@@ -56,6 +56,7 @@ const SeriesList = ({ series }) => (
 );
 
 SeriesList.propTypes = {
+  projectId: PropTypes.string.isRequired,
   series: PropTypes.array,
 };
 

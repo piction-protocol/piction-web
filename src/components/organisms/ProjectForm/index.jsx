@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR, { trigger } from 'swr';
 
@@ -113,7 +113,7 @@ function ProjectForm({
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const { data: categories = [] } = useSWR('/categories', { revalidateOnFocus: false });
 
   useEffect(() => {
