@@ -167,7 +167,7 @@ function PurchasePage() {
   const [API] = useCallback(useAPI(), [projectId, membershipId]);
   const { setErrorAlert } = useAlert();
   const [linkaPayment, setLinkaPayment] = useState(null);
-  const redirectPage = location.state.redirectTo;
+  const redirectPage = location?.state?.redirectTo || `${window.location.origin}/project/${projectId}/posts?purchasePay`;
 
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });

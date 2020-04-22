@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import media from 'styles/media';
 
@@ -9,6 +9,7 @@ import useSubscription from 'hooks/useSubscription';
 import useProjectLayout from 'hooks/useNavigationLayout';
 import useLocalStorage from 'hooks/useLocalStorage';
 
+import Alert from 'components/externals/Alert';
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
 import LikeButton from 'components/atoms/LikeButton';
@@ -60,6 +61,10 @@ function PostPage() {
 
   const { sponsored, requestSubscription } = useSubscription(projectId)
 
+  const postLocation = useLocation();
+  const purchasePay = postLocation.search;
+  const didCompletePurchase = (purchasePay === '?purchasePay');
+
   useEffect(() => {
     if (sponsored && !content) {
       revalidateContent()
@@ -85,6 +90,12 @@ function PostPage() {
       } : null}
     >
       {isExplicitContent && <AdultPopup close={consentWithExplicitContent} />}
+
+      { didCompletePurchase && (
+        <Alert>
+          후원 플랜 결제가 완료되었습니다.
+        </Alert>
+      ) }
 
       <Styled.Article>
         {headerLoaded ? (
