@@ -1,10 +1,12 @@
 import { all, call, take, select, put } from 'redux-saga/effects'
-import { postLikeRequest, postLikeSuccess, postLikeFailure } from '.'
-import { likePost } from './requests'
-import { RootState } from 'rootReducer'
-import { Authentication } from 'modules/currentUser'
 import { trigger } from 'swr'
+import { push } from 'connected-react-router'
 
+import { RootState } from 'rootReducer'
+
+import { postLikeRequest, postLikeSuccess, postLikeFailure } from 'modules/post'
+import { likePost } from 'modules/post/requests'
+import { Authentication } from 'modules/currentUser'
 
 function* watchLikeSuccess() {
   while (true) {
@@ -22,7 +24,7 @@ function* watchLikeRequests() {
 
     if (!accessToken) {
       yield put(postLikeFailure())
-      // navigate('/login', { state: { redirectTo: window.location.pathname }})
+      yield put(push('/login', { redirectTo: window.location.pathname }))
       continue
     } 
 
