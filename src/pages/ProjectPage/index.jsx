@@ -40,7 +40,8 @@ const Styled = {
 function ProjectPage() {
   const { projectId } = useParams();
   const isDesktop = useMedia(mediaQuery.desktop);
-  const navigate = useHistory();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
 
   const {
     project,
@@ -56,11 +57,12 @@ function ProjectPage() {
 
   const { url } = useRouteMatch();
 
+  // FIXME: history 직접 접근하지 않도록
   useEffect(() => {
     if (projectError?.response.status === 404) {
-      navigate('/404', { replace: true })
+      history.push('/404', { replace: true })
     }
-  }, [projectError, navigate])
+  }, [projectError, history])
 
   const {
     memberships,

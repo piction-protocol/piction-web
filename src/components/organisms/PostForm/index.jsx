@@ -108,7 +108,8 @@ function PostForm({ title }) {
   const [series, setSeries] = useState([]);
   const [membership, setMembership] = useState([]);
   const [API] = useCallback(useAPI(), []);
-  const navigate = useHistory();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
 
   useEffect(() => {
     const getFormData = async () => {
@@ -193,7 +194,7 @@ function PostForm({ title }) {
           membershipId: formData.status === 'MEMBERSHIP' ? formData.membershipId : null,
         });
       }
-      navigate(`/dashboard/${projectId}/posts`);
+      history.push(`/dashboard/${projectId}/posts`);
     } catch (error) {
       setErrorMessage({
         [error.response.data.field]: error.response.data.message,

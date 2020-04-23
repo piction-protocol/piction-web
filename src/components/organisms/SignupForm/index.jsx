@@ -68,7 +68,7 @@ function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useAPI();
-  const navigate = useHistory();
+  const history = useHistory();
   const location = useLocation();
 
   const handleSubmit = async (event) => {
@@ -79,7 +79,7 @@ function SignupForm() {
       API.token.create(response.data.accessToken, {
         expires: new Date('2099-12-31T23:59:59'),
       });
-      navigate('/signup/welcome', { replace: true, state: location.state });
+      history.push('/signup/welcome', { replace: true, state: location.state });
     } catch (error) {
       setErrorMessage({
         [error.response.data.field]: error.response.data.message,

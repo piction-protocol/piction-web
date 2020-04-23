@@ -113,7 +113,8 @@ function ProjectForm({
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
-  const navigate = useHistory();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
   const { data: categories = [] } = useSWR('/categories', { revalidateOnFocus: false });
 
   useEffect(() => {
@@ -166,7 +167,7 @@ function ProjectForm({
       } else {
         await API.project.create(formData);
         trigger('my/projects');
-        navigate(`${formData.uri}/posts`);
+        history.push(`${formData.uri}/posts`);
       }
     } catch (error) {
       setErrorMessage({

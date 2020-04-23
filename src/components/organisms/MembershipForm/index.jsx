@@ -130,12 +130,13 @@ function MembershipForm({
   }, [watchingPrice, fees]);
 
   const [API] = useAPI();
-  const navigate = useHistory();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
 
   const deleteMembership = async () => {
     try {
       await API.membership.delete({ projectId, membershipId });
-      navigate(`/dashboard/${projectId}/memberships/`);
+      history.push(`/dashboard/${projectId}/memberships/`);
     } catch (ex) {
       setCanDeleteMembership(false);
     }
@@ -157,7 +158,7 @@ function MembershipForm({
           sponsorLimit: isUnlimited ? null : data.sponsorLimit,
         });
       }
-      navigate(`/dashboard/${projectId}/memberships/`);
+      history.push(`/dashboard/${projectId}/memberships/`);
     } catch (error) {
       setError(error?.response?.data?.field, 'validation', error?.response?.data?.message);
       console.log(error);

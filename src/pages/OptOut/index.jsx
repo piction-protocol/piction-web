@@ -48,17 +48,18 @@ function OptOut({ location: { search } }) {
   });
   const [API] = useAPI();
   const { setSuccessAlert } = useAlert();
-  const navigate = useHistory();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
 
   if (newsletterError) {
-    navigate('/404');
+    history.push('/404');
   }
 
   const unsubscribe = async () => {
     try {
       await API.newsletter.deleteByToken({ token });
       setSuccessAlert('업데이트 알림 메일을 발송하지 않습니다.');
-      navigate('/');
+      history.push('/');
     } catch (error) {
       console.log(error);
     }

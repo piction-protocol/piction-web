@@ -43,7 +43,8 @@ const Styled = {
 function PostPage() {
   const { projectId, postId } = useParams();
   const [readerMode, setReaderMode] = useLocalStorage(`project/${projectId}/textmode`, false);
-  const navigate = useHistory()
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory()
 
   const {
     project,
@@ -75,9 +76,9 @@ function PostPage() {
 
   useEffect(() => {
     if (projectError || postError) {
-      navigate('/404');
+      history.push('/404');
     }
-  }, [projectError, postError, navigate]);
+  }, [projectError, postError, history]);
 
   const headerLoaded = project && post;
   const contentLoaded = content && post;

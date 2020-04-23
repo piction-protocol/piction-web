@@ -5,7 +5,7 @@ import axios from 'axios';
 function useAPI() {
   const [cookies, setCookie] = useCookies(['access_token']);
   const accessToken = cookies.access_token;
-  const navigate = useHistory();
+  const history = useHistory();
   const API = axios.create({
     baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
     headers: {
@@ -101,8 +101,8 @@ function useAPI() {
   };
 
   const handleCommonError = ({ code }) => ({
-    4001: () => navigate('/login', { state: { redirectTo: window.location.pathname }, replace: true }),
-    4004: () => navigate('/404'),
+    4001: () => history.push('/login', { state: { redirectTo: window.location.pathname }, replace: true }),
+    4004: () => history.push('/404'),
   }[code]());
 
   return [{

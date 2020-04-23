@@ -52,13 +52,14 @@ function CreatorProfilePage() {
   const { data: profile = { greetings: '', links: [] } } = useSWR(`creator-profiles/users/${creatorId}`, {
     shouldRetryOnError: false,
   });
-  const navigate = useHistory();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
   const { data: projects = [] } = useSWR(`creator-profiles/users/${creatorId}/projects`, {
     shouldRetryOnError: false,
   });
 
   if (userError) {
-    navigate('/404');
+    history.push('/404');
   }
 
   return (
