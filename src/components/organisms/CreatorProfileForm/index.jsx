@@ -41,7 +41,7 @@ const Styled = {
     display: grid;
     row-gap: 8px;
     padding-bottom: 40px;
-    border-bottom: 1px solid #bababa;
+    border-bottom: 1px solid var(--gray);
   `,
   Field: styled.div`
     display: flex;
