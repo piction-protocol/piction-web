@@ -102,7 +102,7 @@ const Styled = {
   `,
   Series: styled.p`
     margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '2px' : '4px')};
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
@@ -126,7 +126,7 @@ const Styled = {
   `,
   PublishedAt: styled.p`
     margin-top: auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
@@ -136,7 +136,7 @@ const Styled = {
     align-items: center;
     bottom: 20px;
     right: 0;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${media.desktop`
       right: 8px;

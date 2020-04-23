@@ -15,7 +15,7 @@ const Styled = {
     width: 16px;
     height: 16px;
     margin-right: 8px;
-    border: 2px solid var(--gray--dark);
+    border: 2px solid var(--gray);
     border-radius: 50%;
     background-color: var(--white);
     transition: border var(--transition--form);

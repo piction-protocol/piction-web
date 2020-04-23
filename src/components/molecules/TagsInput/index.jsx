@@ -9,7 +9,7 @@ const Styled = {
   TagsInput: styled(ReactTagsInput)`
     display: flex;
     padding: 6px;
-    border: 2px solid var(--gray--dark);
+    border: 2px solid var(--gray);
     background-color: var(--white);
     overflow-x: auto;
     font-size: var(--font-size--small);
@@ -50,7 +50,7 @@ const Styled = {
       outline: none;
       padding: 10px 0;
       &::placeholder {
-        color: var(--gray--dark);
+        color: var(--gray);
       }
       &:only-child {
         padding-left: 8px;

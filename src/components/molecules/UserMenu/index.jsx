@@ -78,7 +78,7 @@ const Styled = {
     white-space: nowrap;
   `,
   ProjectInfo: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--tiny);
   `,
   SecondaryButton: styled(SecondaryButton).attrs(() => ({

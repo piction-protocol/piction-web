@@ -35,7 +35,7 @@ const Styled = {
   `,
   CardText: styled.p`
     overflow: hidden;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     text-overflow: ellipsis;
     white-space: nowrap;

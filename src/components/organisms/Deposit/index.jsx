@@ -64,7 +64,7 @@ const Styled = {
   `,
   List: styled.ul`
     padding-left: 16px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Item: styled.li`

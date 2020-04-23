@@ -68,7 +68,7 @@ const Styled = {
     color: var(--blue);
   `,
   Spec: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     a {
       color: var(--blue);

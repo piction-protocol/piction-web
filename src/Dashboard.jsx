@@ -27,7 +27,7 @@ const Styled = {
   `,
   Container: styled.section`
     margin: auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--base);
     text-align: center;
   `,

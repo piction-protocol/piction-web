@@ -13,7 +13,7 @@ const Styled = {
     row-gap: 8px;
   `,
   Spec: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };

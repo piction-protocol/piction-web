@@ -51,7 +51,7 @@ const Styled = {
     grid-row: 2;
     grid-column: 3 / -1;
     align-items: center;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--base);
   `,
   Fee: styled.p`

@@ -68,7 +68,7 @@ const Styled = {
   `,
   Spec: styled.p`
     font-size: var(--font-size--small);
-    color: var(--gray--dark);
+    color: var(--gray);
   `,
   CheckboxGroup: styled.label`
     display: flex;

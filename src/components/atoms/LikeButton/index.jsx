@@ -6,7 +6,7 @@ import { ReactComponent as HeartIcon } from 'images/ic-heart.svg';
 
 const Styled = {
   Button: styled.button`
-    --color: ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray--dark)')};
+    --color: ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray)')};
 
     display: flex;
     flex-flow: column;

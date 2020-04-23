@@ -36,7 +36,7 @@ const Styled = {
     flex-flow: row wrap;
     align-items: center;
     height: var(--row-height);
-    border-bottom: 1px solid var(--gray--dark);
+    border-bottom: 1px solid var(--gray);
     cursor: pointer;
     &:hover {
       background-color: #f1f9ff;

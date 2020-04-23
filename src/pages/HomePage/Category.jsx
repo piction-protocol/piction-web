@@ -108,7 +108,7 @@ const Styled = {
   `,
   Count: styled.p`
     ${placeholder}
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };

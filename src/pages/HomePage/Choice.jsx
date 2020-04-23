@@ -78,7 +78,7 @@ const Styled = {
     width: 16px;
     height: 16px;
     margin-left: 4px;
-    color: var(--gray--dark);
+    color: var(--gray);
     cursor: pointer;
     ${media.desktop`
       width: 20px;

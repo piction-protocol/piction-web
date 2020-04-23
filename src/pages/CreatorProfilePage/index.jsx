@@ -41,7 +41,7 @@ const Styled = {
     grid-column: span 3;
   `,
   CardText: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };

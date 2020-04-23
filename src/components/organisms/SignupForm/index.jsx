@@ -35,7 +35,7 @@ const Styled = {
     align-items: center;
     flex-flow: row wrap;
     margin-bottom: 16px;
-    color: var(--gray--dark);
+    color: var(--gray);
     white-space: pre-wrap;
   `,
   Link: styled(Link)`
@@ -52,7 +52,7 @@ const Styled = {
     align-items: center;
     flex-flow: row wrap;
     margin: 24px auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     white-space: pre-wrap;
   `,
 };

@@ -75,7 +75,7 @@ const Styled = {
   `,
   UserId: styled.span`
     margin-top: 4px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     font-weight: normal;
     ${media.desktop`
@@ -110,7 +110,7 @@ const Styled = {
   Synopsis: styled.p`
     width: 100%;
     margin-top: 8px;
-    color: var(--gray--dark);
+    color: var(--gray);
     line-height: var(--line-height--content);
     ${placeholder}
   `,
@@ -196,7 +196,7 @@ const Styled = {
   SubscribeInfo: styled.p`
     display: flex;
     margin: 0 auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   AccessTimeIcon: styled(AccessTimeIcon)`

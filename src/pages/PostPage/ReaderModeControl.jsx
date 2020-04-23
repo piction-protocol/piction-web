@@ -23,7 +23,7 @@ const Styled = {
     padding: 6px 20px;
     font-size: 12px;
     font-weight: normal;
-    color: var(--gray--dark);
+    color: var(--gray);
     background-color: var(--white);
     box-shadow: 0 1px 2px 0 var(--shadow-color);
     &:hover {

@@ -46,7 +46,7 @@ const Styled = {
   `,
   ID: styled.p`
     margin: 2px 0;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     font-weight: bold;
     ${media.desktop`
@@ -55,7 +55,7 @@ const Styled = {
     `}
   `,
   Description: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${media.desktop`
       font-size: var(--font-size--base);

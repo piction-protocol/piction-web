@@ -80,7 +80,7 @@ const Styled = {
   Login: styled(Link)`
     margin-right: 40px;
     color: #BFBFBF;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Signup: styled(Link)`

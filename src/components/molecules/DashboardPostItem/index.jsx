@@ -61,7 +61,7 @@ const Styled = {
   `,
   Series: styled.p`
     margin-bottom: 4px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Title: styled.h2`
@@ -73,7 +73,7 @@ const Styled = {
     text-overflow: ellipsis;
   `,
   PublishedAt: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   PrePublishedAt: styled.p`
@@ -85,7 +85,7 @@ const Styled = {
     align-items: center;
     margin-left: auto;
     margin-right: 24px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Delete: styled.button.attrs({

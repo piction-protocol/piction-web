@@ -25,7 +25,7 @@ const Styled = {
   Empty: styled.div`
     grid-column: 1 / -1;
     margin: 80px auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--base);
     text-align: center;
   `,

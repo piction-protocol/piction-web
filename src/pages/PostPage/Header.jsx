@@ -20,7 +20,7 @@ const Styled = {
   `,
   SeriesName: styled(Link)`
     margin-bottom: 8px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   User: styled.div`

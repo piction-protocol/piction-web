@@ -74,7 +74,7 @@ const Styled = {
   Item: styled.li`
     margin-bottom: 10px;
     color: #BFBFBF;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: 14px;
     font-size: var(--font-size--small);
     ${media.desktop`

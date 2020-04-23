@@ -40,7 +40,7 @@ const Styled = {
   Spec: styled.p`
     grid-column: 1 / -1;
     font-size: var(--font-size--small);
-    color: var(--gray--dark);
+    color: var(--gray);
   `,
   ErrorMessage: styled.p`
     grid-column: 1 / -1;

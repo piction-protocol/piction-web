@@ -20,7 +20,7 @@ const Button = styled.button`
   &[disabled] {
     pointer-events: none;
     background-color: var(--gray--pale);
-    color: var(--gray--dark);
+    color: var(--gray);
     &::after {
       border: 0;
     }
@@ -63,7 +63,7 @@ export const SecondaryButton = styled(Button)`
 
   &:hover {
     &::after {
-      border-color: var(--gray--dark);
+      border-color: var(--gray);
     }
   }
 `;

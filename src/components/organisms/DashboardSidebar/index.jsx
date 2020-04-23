@@ -63,7 +63,7 @@ const Styled = {
   Link: styled(Link)`
     display: flex;
     padding: 12px 40px;
-    color: var(--gray--dark);
+    color: var(--gray);
     align-items: center;
     &[aria-current] {
       color: var(--black);

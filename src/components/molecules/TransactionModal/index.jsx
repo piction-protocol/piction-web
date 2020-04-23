@@ -51,7 +51,7 @@ const Styled = {
     font-size: 16px;
   `,
   Value: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     a {
       color: var(--blue);

@@ -24,7 +24,7 @@ const Styled = {
     height: 40px;
     padding: 8px 12px;
     padding-left: 40px;
-    border: 1px solid var(--gray--dark);
+    border: 1px solid var(--gray);
     border-radius: 20px;
     font-size: var(--font-size--small);
     transition: box-shadow var(--transition--form), border-color var(--transition--form), background-color var(--transition--form);
@@ -36,7 +36,7 @@ const Styled = {
     }
 
     &::placeholder {
-      color: var(--gray--dark);
+      color: var(--gray);
     }
   `,
   SearchIcon: styled(SearchIcon)`

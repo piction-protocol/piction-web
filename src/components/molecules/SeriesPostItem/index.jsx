@@ -19,7 +19,7 @@ const Styled = {
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 16px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: 22px;
     font-weight: bold;
     ${media.desktop`
@@ -60,7 +60,7 @@ const Styled = {
     font-size: var(--font-size--small);
   `,
   PublishedAt: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };

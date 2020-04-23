@@ -22,7 +22,7 @@ const Styled = {
   `,
   Date: styled.p`
     margin-top: var(--row-gap);
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Required: styled.strong`
@@ -33,7 +33,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     align-items: center;
-    color: var(--gray--dark);
+    color: var(--gray);
     line-height: var(--line-height--content);
     text-align: center;
     word-break: keep-all;
