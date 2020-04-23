@@ -1,41 +1,42 @@
-import React, { Suspense } from 'react'
-import {
-  Switch, Route, Redirect
-} from 'react-router-dom';
-import { importMDX } from 'mdx.macro';
+import React from 'react'
+import { Switch, Route, Redirect } from 'react-router'
+import { importMDX } from 'mdx.macro'
+import { ConnectedRouter } from 'connected-react-router'
 
-import GlobalHeader from 'components/organisms/GlobalHeader';
-import GlobalFooter from 'components/organisms/GlobalFooter';
-import Spinner from 'components/atoms/Spinner';
+import history from 'config/history'
 
-import TermsComponents from 'components/templates/TermsComponents';
+import GlobalHeader from 'components/organisms/GlobalHeader'
+import GlobalFooter from 'components/organisms/GlobalFooter'
+import Spinner from 'components/atoms/Spinner'
 
-const HomePage = React.lazy(() => import('pages/HomePage'));
-const LoginPage = React.lazy(() => import('pages/LoginPage'));
-const SignupPage = React.lazy(() => import('pages/SignupPage'));
-const ForgotPasswordPage = React.lazy(() => import('pages/ForgotPasswordPage'));
-const SubscriptionsPage = React.lazy(() => import('pages/SubscriptionsPage'));
-const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'));
-const Search = React.lazy(() => import('pages/Search'));
-const TagPage = React.lazy(() => import('pages/TagPage'));
-const CategoryPage = React.lazy(() => import('pages/CategoryPage'));
-const ProjectPage = React.lazy(() => import('pages/ProjectPage'));
-const PurchasePage = React.lazy(() => import('pages/PurchasePage'));
-const SeriesPage = React.lazy(() => import('pages/SeriesPage'));
-const PostPage = React.lazy(() => import('pages/PostPage'));
-const CreatorProfilePage = React.lazy(() => import('pages/CreatorProfilePage'));
-const MyPage = React.lazy(() => import('pages/MyPage'));
-const WalletPage = React.lazy(() => import('pages/WalletPage'));
-const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
-const OptOut = React.lazy(() => import('pages/OptOut'));
-const Dashboard = React.lazy(() => import('Dashboard'));
+import TermsComponents from 'components/templates/TermsComponents'
 
-const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
-const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'));
+const HomePage = React.lazy(() => import('pages/HomePage'))
+const LoginPage = React.lazy(() => import('pages/LoginPage'))
+const SignupPage = React.lazy(() => import('pages/SignupPage'))
+const ForgotPasswordPage = React.lazy(() => import('pages/ForgotPasswordPage'))
+const SubscriptionsPage = React.lazy(() => import('pages/SubscriptionsPage'))
+const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'))
+const Search = React.lazy(() => import('pages/Search'))
+const TagPage = React.lazy(() => import('pages/TagPage'))
+const CategoryPage = React.lazy(() => import('pages/CategoryPage'))
+const ProjectPage = React.lazy(() => import('pages/ProjectPage'))
+const PurchasePage = React.lazy(() => import('pages/PurchasePage'))
+const SeriesPage = React.lazy(() => import('pages/SeriesPage'))
+const PostPage = React.lazy(() => import('pages/PostPage'))
+const CreatorProfilePage = React.lazy(() => import('pages/CreatorProfilePage'))
+const MyPage = React.lazy(() => import('pages/MyPage'))
+const WalletPage = React.lazy(() => import('pages/WalletPage'))
+const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'))
+const OptOut = React.lazy(() => import('pages/OptOut'))
+const Dashboard = React.lazy(() => import('Dashboard'))
 
-const Hongik = React.lazy(() => import('pages/Campaigns/Hongik'));
-const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
-const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
+const Terms = React.lazy(() => importMDX('pages/Terms.mdx'))
+const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'))
+
+const Hongik = React.lazy(() => import('pages/Campaigns/Hongik'))
+const CPR = React.lazy(() => import('pages/Campaigns/CPR'))
+const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'))
 
 const NotFound = () => (
   <div style={{
@@ -49,11 +50,10 @@ const NotFound = () => (
 );
 
 const Routes = () => {
-
   return (
-    <>
+    <ConnectedRouter history={history}>
       <GlobalHeader />
-      <Suspense fallback={<Spinner />}>
+      <React.Suspense fallback={<Spinner />}>
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/login" component={LoginPage} />
@@ -95,9 +95,9 @@ const Routes = () => {
 
           <Route path="*" component={NotFound} />
         </Switch>
-      </Suspense>
+      </React.Suspense>
       <GlobalFooter />
-    </>
+    </ConnectedRouter>
   )
 }
 

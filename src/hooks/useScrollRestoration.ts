@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { RootState } from 'rootReducer'
+import { useSelector } from 'react-redux'
 
 function useScrollRestoration() {
-  const { pathname } = useLocation()
-
+  const { key, pathname } = useSelector((state: RootState) => state.router.location)
+  
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [pathname]);
+  }, [key, pathname])
 }
 
-export default useScrollRestoration;
+export default useScrollRestoration

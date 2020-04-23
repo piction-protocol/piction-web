@@ -6,7 +6,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
-import withLoginChecker from 'components/LoginChecker';
+import { withLoginChecker } from 'components/LoginChecker';
 
 import UserTemplate from 'components/templates/UserTemplate';
 import UserInfo from 'components/organisms/UserInfo';

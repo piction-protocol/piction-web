@@ -21,6 +21,7 @@ import {
 } from 'modules/currentUser/requests'
 
 import DefaultPicture from 'images/img-user-profile.svg';
+import { push, replace } from 'connected-react-router'
 
 const cookies = new Cookies();
 
@@ -60,7 +61,7 @@ function* loginFlow() {
 
       yield put(fetchCurrentUserRequest())
 
-      // navigate(payload.redirectTo || '/', { replace: true })
+      yield put(replace(payload.redirectTo || '/'))
     } catch (error) {
       yield put(loginFailure(error.response.data.message as string))
     }
@@ -71,13 +72,13 @@ function* logoutFlow() {
   while(true) {
     yield take(logoutRequest.type)
 
+    yield put(push('/'))
+
     yield call(destroySession)
 
     cookies.remove('access_token')
 
     yield put(setFlash({ type: 'success', message: '로그아웃 되었습니다' }))
-
-    // navigate('/')
   }
 }
 

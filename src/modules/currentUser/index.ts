@@ -10,7 +10,6 @@ export interface CurrentUser {
 }
 
 export interface Authentication {
-  loggedIn: boolean
   accessToken: string | null
   error: string | null
 }
@@ -31,7 +30,6 @@ const cookies = new Cookies();
 
 const initialState: CurrentUserState = {
   auth: {
-    loggedIn: false,
     accessToken: cookies.get('access_token') as string || null,
     error: null
   },

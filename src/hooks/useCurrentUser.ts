@@ -1,26 +1,25 @@
-import { useCallback } from 'react';
+import { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'rootReducer';
-
+import { RootState } from 'rootReducer'
 import { 
   loginRequest,
   logoutRequest,
   fetchCurrentUserRequest,
   LoginPayload
-} from 'modules/currentUser';
+} from 'modules/currentUser'
 
 function useCurrentUser() {
   const dispatch = useDispatch()
   const { currentUser }= useSelector((state: RootState) => state)
 
-  const getCurrentUser = useCallback(() => {
+  const requestFetchCurrentUser = useCallback(() => {
     dispatch(fetchCurrentUserRequest())
-  }, [dispatch]);
+  }, [dispatch])
 
   const deleteSession = useCallback(() => {
     dispatch(logoutRequest())
-  }, [dispatch]);
+  }, [dispatch])
 
   const requestAccessToken = useCallback((param: LoginPayload) => {
     dispatch(loginRequest(param))
@@ -29,11 +28,11 @@ function useCurrentUser() {
   return {
     currentUser: currentUser.user,
     accessToken: currentUser.auth.accessToken,
-    getCurrentUser,
+    requestFetchCurrentUser,
     deleteSession,
     requestAccessToken,
     loginErrorMessage: currentUser.auth.error
-  };
+  }
 }
 
-export default useCurrentUser;
+export default useCurrentUser

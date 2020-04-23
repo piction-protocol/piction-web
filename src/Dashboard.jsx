@@ -1,11 +1,11 @@
 import React from 'react';
-import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, Redirect, useRouteMatch } from 'react-router';
 import styled from 'styled-components/macro';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import useSWR from 'swr';
 
-import withLoginChecker from 'components/LoginChecker';
+import { withLoginChecker } from 'components/LoginChecker';
 
 import DashboardTemplate from 'components/templates/DashboardTemplate';
 

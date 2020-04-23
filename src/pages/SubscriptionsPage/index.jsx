@@ -10,7 +10,7 @@ import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
 import media from 'styles/media';
 
-import withLoginChecker from 'components/LoginChecker';
+import { withLoginChecker } from 'components/LoginChecker';
 import GridTemplate from 'components/templates/GridTemplate';
 import UserInfo from 'components/organisms/UserInfo';
 import NewsletterManager from 'components/organisms/NewsletterManager';

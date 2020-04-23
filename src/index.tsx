@@ -2,7 +2,6 @@ import 'react-app-polyfill/ie9';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
 import * as Sentry from '@sentry/browser';
 import { Provider } from 'react-redux';
 
@@ -18,8 +17,6 @@ if (process.env.REACT_APP_SENTRY_DSN) {
 render((
   <Provider store={store}>
     <GlobalStyle />
-      <Router>
-        <App />
-      </Router>
+    <App />
   </Provider>
 ), document.getElementById('app-root'));

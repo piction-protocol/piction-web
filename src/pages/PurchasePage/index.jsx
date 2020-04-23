@@ -16,7 +16,7 @@ import useProjectLayout from 'hooks/useNavigationLayout';
 import useAPI from 'hooks/useAPI';
 import useAlert from 'hooks/useAlert';
 
-import withLoginChecker from 'components/LoginChecker';
+import { withLoginChecker } from 'components/LoginChecker';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import LinkaPayment from 'components/molecules/LinkaPayment';
