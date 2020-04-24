@@ -160,7 +160,7 @@ function GlobalHeader({ paths, child, ...props }) {
 
   const links = [
     ...isDesktop ? [] : [
-      { text: '전체 프로젝트', to: '/all', icon: <ProjectsIcon /> },
+      { text: '프로젝트 탐색', to: '/explore/all', icon: <ProjectsIcon /> },
       { text: '크리에이터 가이드', to: '/creatorsguide', icon: <PictionIcon /> },
     ],
     ...currentUser ? [
@@ -206,8 +206,8 @@ function GlobalHeader({ paths, child, ...props }) {
                 </Styled.Link>
                 {isDesktop && (
                   <>
-                    <Styled.Link to="/all">
-                      전체 프로젝트
+                    <Styled.Link to="/explore/all">
+                      프로젝트 탐색
                     </Styled.Link>
                     <Styled.Link to="/creatorsguide">
                       크리에이터 가이드
