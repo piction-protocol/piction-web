@@ -98,7 +98,6 @@ function ProjectPage({ projectId }) {
         <ProjectInfo.Placeholder isDesktop={isDesktop} />
       )}
     >
-
       {(project && project.adult && !cookies[`no-warning-${projectId}`]) && (
         <AdultPopup close={handleCookie} />
       )}

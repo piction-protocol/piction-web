@@ -12,7 +12,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import usePictionChoices from 'hooks/usePictionChoices';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
-
+import MembershipBanner from 'components/molecules/MembershipBanner';
 import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Heading from 'components/atoms/Heading';
@@ -38,7 +38,6 @@ const Styled = {
     `}
   `,
   MainGrid: styled(MainGrid)`
-    position: relative;
     padding-top: 20px;
     padding-bottom: 32px;
     ${media.desktop`
@@ -69,8 +68,7 @@ const Styled = {
       flex-flow: row wrap;
       align-items: center;
       margin-top: 12px;
-      font-size: var(--font-size--base);
-    `}
+     `}
     ${placeholder}
   `,
   UserId: styled.span`
@@ -89,6 +87,7 @@ const Styled = {
     align-items: center;
     top: -16px;
     right: var(--outer-gap);
+    margin-top: 50%;
     padding: 8px 12px;
     border-radius: 18px;
     background-color: rgba(0, 0, 0, .3);
@@ -96,6 +95,8 @@ const Styled = {
     font-size: var(--font-size--small);
     transform: translateY(-100%);
     ${media.desktop`
+      top: -24px;
+      margin-top: 450px;
     `}
   `,
   PeopleIcon: styled(PeopleIcon)`
@@ -226,6 +227,7 @@ function ProjectInfo({
         })}
         image={project.wideThumbnail}
       />
+      <MembershipBanner userName={project.user.username} />
       <Styled.MainGrid>
         <Styled.Main>
           <Styled.Heading>
