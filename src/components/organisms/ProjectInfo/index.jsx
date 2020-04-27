@@ -81,23 +81,33 @@ const Styled = {
       margin-left: 8px;
     `}
   `,
-  SponsorCount: styled.div`
-    display: inline-flex;
+  SponsorCountWrapper: styled.div`
+    display: flex;
     position: absolute;
-    align-items: center;
     top: -16px;
-    right: var(--outer-gap);
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: var(--max-width);
     margin-top: 50%;
-    padding: 8px 12px;
-    border-radius: 18px;
-    background-color: rgba(0, 0, 0, .3);
-    color: var(--white);
-    font-size: var(--font-size--small);
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 var(--outer-gap);
     transform: translateY(-100%);
     ${media.desktop`
       top: -24px;
       margin-top: 450px;
     `}
+  `,
+  SponsorCount: styled.div`
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding: 8px 12px;
+    border-radius: 18px;
+    background-color: rgba(0, 0, 0, .3);
+    color: var(--white);
+    font-size: var(--font-size--small);
   `,
   PeopleIcon: styled(PeopleIcon)`
     width: 20px;
@@ -231,6 +241,12 @@ function ProjectInfo({
         <MembershipBanner userName={project.user.username} />
       )}
       <Styled.MainGrid>
+        <Styled.SponsorCountWrapper>
+          <Styled.SponsorCount>
+            <Styled.PeopleIcon />
+            {`구독자 수 ${project.sponsorCount}`}
+          </Styled.SponsorCount>
+        </Styled.SponsorCountWrapper>
         <Styled.Main>
           <Styled.Heading>
             {project.title}
@@ -247,10 +263,6 @@ function ProjectInfo({
               </Styled.Label>
             )}
           </Styled.User>
-          <Styled.SponsorCount>
-            <Styled.PeopleIcon />
-            {`구독자 수 ${project.sponsorCount}`}
-          </Styled.SponsorCount>
           {isDesktop ? (
             <>
               {project.synopsis && (
