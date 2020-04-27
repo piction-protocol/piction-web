@@ -304,12 +304,14 @@ function ProjectInfo({
             ) : (
               <Styled.SubscribeButton
                 as={Link}
-                to="/login"
-                state={{
-                  redirectTo: encodeURIComponent(location.pathname),
+                to={{
+                  pathname: "/login",
+                  state: {
+                    redirectTo: encodeURIComponent(location.pathname),
+                  }
                 }}
               >
-                    구독
+                구독
               </Styled.SubscribeButton>
             ))}
           </Styled.Subscribe>

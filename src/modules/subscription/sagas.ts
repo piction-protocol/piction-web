@@ -1,7 +1,7 @@
 import { take, call, select, put, all } from 'redux-saga/effects'
-import { mutate } from 'swr';
+import { mutate } from 'swr'
 
-import { RootState } from 'rootReducer';
+import { RootState } from 'rootReducer'
 import { 
   subscriptionRequest,
   subscriptionSuccess,
@@ -10,7 +10,7 @@ import {
   cancelSubscriptionSuccess,
   cancelSubscriptionFailure
 } from '.'
-import { subscribeProject, unsubscribeProject } from './requests';
+import { subscribeProject, unsubscribeProject } from './requests'
 
 function* watchSubscription() {
   while (true) {

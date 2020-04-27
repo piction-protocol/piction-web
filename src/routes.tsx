@@ -14,6 +14,7 @@ import TermsComponents from 'components/templates/TermsComponents'
 const HomePage = React.lazy(() => import('pages/HomePage'))
 const LoginPage = React.lazy(() => import('pages/LoginPage'))
 const SignupPage = React.lazy(() => import('pages/SignupPage'))
+const WelcomePage = React.lazy(() => import('pages/WelcomePage'))
 const ForgotPasswordPage = React.lazy(() => import('pages/ForgotPasswordPage'))
 const SubscriptionsPage = React.lazy(() => import('pages/SubscriptionsPage'))
 const AllProjectsPage = React.lazy(() => import('pages/AllProjectsPage'))
@@ -57,7 +58,10 @@ const Routes = () => {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/login" component={LoginPage} />
-          <Route path="/signup" component={SignupPage} />
+
+          <Route exact path="/signup" component={SignupPage} />
+          <Route exact path="/signup/welcome" component={WelcomePage} />
+
           <Route path="/forgot_password" component={ForgotPasswordPage} />
           <Route path="/subscriptions" component={SubscriptionsPage} />
           <Route path="/all" component={AllProjectsPage} />

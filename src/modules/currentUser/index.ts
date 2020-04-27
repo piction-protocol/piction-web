@@ -26,6 +26,11 @@ export interface LoginPayload {
   redirectTo: string | null
 }
 
+interface LoginSuccessPayload {
+  accessToken: string
+  rememberme: boolean
+}
+
 const cookies = new Cookies();
 
 const initialState: CurrentUserState = {
@@ -45,8 +50,8 @@ const slice = createSlice({
       state.auth.error = null
       state.user = null
     },
-    loginSuccess: (state, action: PayloadAction<string>) => {
-      state.auth.accessToken = action.payload
+    loginSuccess: (state, action: PayloadAction<LoginSuccessPayload>) => {
+      state.auth.accessToken = action.payload.accessToken
       state.auth.error = null
       state.user = null
     },

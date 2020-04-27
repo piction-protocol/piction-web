@@ -153,9 +153,6 @@ const NavigateListener = ({ location, event }: NavigateListenerProps) => {
   return null;
 };
 
-interface GlobalHeaderProps {
-}
-
 function GlobalHeader() {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
@@ -187,15 +184,19 @@ function GlobalHeader() {
     ] : [
       {
         text: '로그인',
-        to: '/login',
+        to: { 
+          pathname: '/login',
+          state: { redirectTo: encodeURIComponent(location.pathname) },
+        },
         icon: <AccountIcon />,
-        state: { redirectTo: encodeURIComponent(location.pathname) },
       },
       {
         text: '회원가입',
-        to: '/signup',
+        to: {
+          pathname: '/signup',
+          state: { redirectTo: encodeURIComponent(location.pathname) },
+        },
         icon: <PictionIcon />,
-        state: { redirectTo: encodeURIComponent(location.pathname) },
       },
     ],
   ];
@@ -213,12 +214,8 @@ function GlobalHeader() {
             </Styled.Link>
             {isDesktop && (
               <>
-                <Styled.Link to="/all">
-                      전체 프로젝트
-                </Styled.Link>
-                <Styled.Link to="/creatorsguide">
-                      크리에이터 가이드
-                </Styled.Link>
+                <Styled.Link to="/all">전체 프로젝트</Styled.Link>
+                <Styled.Link to="/creatorsguide">크리에이터 가이드</Styled.Link>
               </>
             )}
           </>
@@ -248,14 +245,24 @@ function GlobalHeader() {
             ) : (
               <>
                 <Styled.Login
-                  to={`/login?redirectTo=${encodeURIComponent(location.pathname)}`}
+                  to={{
+                    pathname: '/login',
+                    state: {
+                      redirectTo: encodeURIComponent(location.pathname)
+                    }
+                  }}
                 >
-                      로그인
+                  로그인
                 </Styled.Login>
                 <Styled.Signup
-                  to={`/signup?redirectTo=${encodeURIComponent(location.pathname)}`}
+                  to={{
+                    pathname: '/signup',
+                    state: {
+                      redirectTo: encodeURIComponent(location.pathname)
+                    }
+                  }}
                 >
-                      회원가입
+                  회원가입
                 </Styled.Signup>
               </>
             )}

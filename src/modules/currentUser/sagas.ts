@@ -39,8 +39,22 @@ function* watchCurrentUser() {
       }
     } catch (error) {
       // TODO: Handle failed fetch current user request
-      yield put(fetchCurrentUserFailure("FAILED"))
+      yield put(fetchCurrentUserFailure(error))
+      yield put(logoutRequest())
     }
+  }
+}
+
+function* watchLoginSuccess() {
+  while (true) {
+    const { payload }: ReturnType<typeof loginSuccess> = yield take(loginSuccess.type)
+    yield put(setFlash({ type: 'success', message: '로그인 되었습니다' }))
+
+    cookies.set('access_token', payload.accessToken, {
+      expires: payload.rememberme ? new Date('2099-12-31T23:59:59') : undefined
+    })
+
+    yield put(fetchCurrentUserRequest())
   }
 }
 
@@ -51,15 +65,7 @@ function* loginFlow() {
     try {
       const response: CreateSessionResponse = yield call(createSession, payload)
 
-      yield put(loginSuccess(response.accessToken))
-
-      yield put(setFlash({ type: 'success', message: '로그인 되었습니다' }))
-
-      cookies.set('access_token', response.accessToken, {
-        expires: payload.rememberme ? new Date('2099-12-31T23:59:59') : undefined
-      })
-
-      yield put(fetchCurrentUserRequest())
+      yield put(loginSuccess({ accessToken: response.accessToken, rememberme: payload.rememberme }))
 
       yield put(replace(payload.redirectTo || '/'))
     } catch (error) {
@@ -86,6 +92,7 @@ function* currentUserSaga() {
   yield all([
     loginFlow(),
     logoutFlow(),
+    watchLoginSuccess(),
     watchCurrentUser()
   ])
 }
