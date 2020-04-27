@@ -171,5 +171,5 @@ MembershipList.propTypes = {
   memberships: PropTypes.array,
   sponsored: PropTypes.object,
   location: PropTypes.object,
-  projectId: PropTypes.object,
+  projectId: PropTypes.string,
 };
