@@ -11,7 +11,7 @@ const Styled = {
     flex-flow: column;
     align-items: center;
     margin: auto;
-    color: var(--gray--dark);
+    color: var(--gray);
   `,
   Img: styled(oopsImg)`
     margin-bottom: 24px;
@@ -26,7 +26,7 @@ function ErrorPage() {
   return (
     <Styled.Main>
       <Styled.Img />
-        페이지를 찾을 수 없습니다.
+      페이지를 찾을 수 없습니다.
       <Styled.Button as={Link} to="/">
         홈으로 돌아가기
       </Styled.Button>
