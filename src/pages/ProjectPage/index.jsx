@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Router, Redirect, navigate,
+  Router, Redirect, navigate, useMatch,
 } from '@reach/router';
 import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
@@ -85,6 +85,10 @@ function ProjectPage({ projectId }) {
     navigate('/404', { replace: true });
   }
 
+  // FIXME: 배너 노출 조건 단순화, 컴포넌트에서 분리
+  const isMembershipsPage = useMatch('memberships');
+  const shouldRenderBanner = !isMyProject && !isMembershipsPage && (memberships.length > 0) && (!sponsored || sponsored.paidPrice === 0);
+
   return (
     <GridTemplate
       hero={project ? (
@@ -93,6 +97,7 @@ function ProjectPage({ projectId }) {
           isMyProject={isMyProject}
           sponsored={sponsored}
           handleSubscribe={handleSubscribe}
+          shouldRenderBanner={shouldRenderBanner}
         />
       ) : (
         <ProjectInfo.Placeholder isDesktop={isDesktop} />

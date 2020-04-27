@@ -208,7 +208,7 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, handleSubscribe, isMyProject = false, sponsored, ...props
+  project, handleSubscribe, isMyProject = false, sponsored, shouldRenderBanner, ...props
 }) {
   const { projects } = usePictionChoices();
   const isPictionChoice = projects && projects.includes(project.uri);
@@ -227,7 +227,9 @@ function ProjectInfo({
         })}
         image={project.wideThumbnail}
       />
-      <MembershipBanner userName={project.user.username} />
+      {shouldRenderBanner && (
+        <MembershipBanner userName={project.user.username} />
+      )}
       <Styled.MainGrid>
         <Styled.Main>
           <Styled.Heading>
@@ -337,6 +339,7 @@ ProjectInfo.propTypes = {
   project: PropTypes.object.isRequired,
   handleSubscribe: PropTypes.func.isRequired,
   hasFanPasses: PropTypes.bool,
+  shouldRenderBanner: PropTypes.bool,
 };
 
 ProjectInfo.Placeholder = ({ isDesktop }) => (
