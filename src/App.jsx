@@ -35,6 +35,7 @@ const CreatorProfilePage = React.lazy(() => import('pages/CreatorProfilePage'));
 const MyPage = React.lazy(() => import('pages/MyPage'));
 const WalletPage = React.lazy(() => import('pages/WalletPage'));
 const CreatorsGuide = React.lazy(() => import('pages/CreatorsGuide'));
+const ErrorPage = React.lazy(() => import('pages/ErrorPage'));
 const OptOut = React.lazy(() => import('pages/OptOut'));
 const Dashboard = React.lazy(() => import('Dashboard'));
 
@@ -44,17 +45,6 @@ const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'));
 const Hongik = React.lazy(() => import('pages/Campaigns/Hongik'));
 const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
 const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
-
-const NotFound = () => (
-  <div style={{
-    margin: 'auto',
-    fontSize: '54px',
-    fontWeight: 'bold',
-  }}
-  >
-    404
-  </div>
-);
 
 const StyledRouter = styled(Router)`
   display: flex;
@@ -135,7 +125,7 @@ function App() {
                     <Redirect from="/en" to="/" noThrow />
                     <Redirect from="/ko" to="/" noThrow />
 
-                    <NotFound default />
+                    <ErrorPage default />
                   </StyledRouter>
                 </ScrollContext>
               </Suspense>
