@@ -126,7 +126,7 @@ function MembershipList({
               <Styled.Status>
                 {isSubscribing
                   ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료')
-                  : membership.sponsorLimit && (
+                  : membership.sponsorLimit !== null && (
                     isFull ? '후원 불가능'
                       : `${membership.sponsorLimit - membership.sponsorCount}명 남음`
                   )}
