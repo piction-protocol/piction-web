@@ -1,11 +1,11 @@
 import { css } from 'styled-components/macro';
 
 interface PlaceholderableProps {
-  isPlaceholder: boolean
+  isPlaceholder?: boolean
 }
 
-const placeholder = (style: string) => css<PlaceholderableProps>`
-  ${({ isPlaceholder }) => isPlaceholder && `
+const placeholder = (style?: string) => css<PlaceholderableProps>`
+  ${({ isPlaceholder = false }) => isPlaceholder && `
     color: var(--gray--light);
     background-color: var(--gray--light);
     ${style}

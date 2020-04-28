@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components/macro';
-import useSWR from 'swr';
-import moment from 'moment';
-import 'moment/locale/ko';
-import { useParams } from 'react-router-dom';
+import React from 'react'
+import styled from 'styled-components/macro'
+import moment from 'moment'
+import 'moment/locale/ko'
+import { useParams } from 'react-router-dom'
 
-import placeholder from 'styles/placeholder';
+import placeholder from 'styles/placeholder'
 
-import Pagination from 'components/molecules/Pagination';
-import UserProfile from 'components/atoms/ContentImage/UserProfile';
-import Heading from 'components/atoms/Heading';
+import useSponsors from 'hooks/useSponsors'
+
+import Pagination from 'components/molecules/Pagination'
+import UserProfile from 'components/atoms/ContentImage/UserProfile'
+import Heading from 'components/atoms/Heading'
 
 const Styled = {
   Container: styled.div`
@@ -45,43 +45,72 @@ const Styled = {
     display: flex;
     align-items: center;
     margin-bottom: 4px;
-    ${placeholder}
+    ${placeholder()}
   `,
   UserId: styled.span`
     margin-left: 4px;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
-    ${placeholder}
+    ${placeholder()}
   `,
   Tier: styled.span`
     font-size: var(--font-size--small);
     color: #999999;
-    ${placeholder}
+    ${placeholder()}
   `,
   SubscriptionDate: styled.span`
     margin-left: auto;
     color: var(--gray--dark);
     font-size: var(--font-size--small);
     text-align: right;
-    ${placeholder}
+    ${placeholder()}
   `,
 };
 
-function SponsorList({ title }) {
-  const [page, setPage] = useState(1);
-  const { projectId } = useParams();
+const SponsorListPlaceholder = () => (
+  <Styled.Container>
+    <Heading>
+      구독/후원자 목록(-)
+    </Heading>
+    <Styled.List>
+      {Array.from({ length: 10 }, (_, i) => (
+        <Styled.Item key={i}>
+          <Styled.UserProfile />
+          <Styled.Text>
+            <Styled.UserName isPlaceholder>
+              userName
+              <Styled.UserId isPlaceholder>
+                userId
+              </Styled.UserId>
+            </Styled.UserName>
+            <Styled.Tier isPlaceholder>
+              tier
+            </Styled.Tier>
+          </Styled.Text>
+          <Styled.SubscriptionDate isPlaceholder>
+            0000/00/00 00:00
+          </Styled.SubscriptionDate>
+        </Styled.Item>
+      ))}
+    </Styled.List>
+  </Styled.Container>
+)
 
-  const { data: { content: sponsors, ...pageable } = {} } = useSWR(
-    `/my/projects/${projectId}/sponsors?page=${page}`,
-  );
+const SponsorListPage = () => {
+  const { projectId } = useParams();
+  const { sponsors, setPage } = useSponsors(projectId)
+
+  if (!sponsors) {
+    return <SponsorListPlaceholder />
+  }
 
   return (
     <Styled.Container>
       <Heading>
-        {`${title}(${pageable.totalElements || '-'})`}
+        {`구독/후원자 목록(${sponsors.totalElements})`}
       </Heading>
       <Styled.List>
-        {sponsors ? (sponsors.map(subscription => (
+        {sponsors.content.map(subscription => (
           <Styled.Item key={subscription.sponsor.username}>
             <Styled.UserProfile
               image={subscription.sponsor.picture}
@@ -103,39 +132,16 @@ function SponsorList({ title }) {
               {subscription.expireDate && moment(subscription.expireDate).format('~ YYYY/MM/DD HH:mm')}
             </Styled.SubscriptionDate>
           </Styled.Item>
-        ))) : Array.from({ length: 10 }, (_, i) => (
-          <Styled.Item key={i}>
-            <Styled.UserProfile />
-            <Styled.Text>
-              <Styled.UserName isPlaceholder>
-                userName
-                <Styled.UserId isPlaceholder>
-                  userId
-                </Styled.UserId>
-              </Styled.UserName>
-              <Styled.Tier isPlaceholder>
-                tier
-              </Styled.Tier>
-            </Styled.Text>
-            <Styled.SubscriptionDate isPlaceholder>
-              0000/00/00 00:00
-            </Styled.SubscriptionDate>
-          </Styled.Item>
         ))}
       </Styled.List>
       <Pagination
-        number={pageable.number}
-        totalPages={pageable.totalPages}
+        number={sponsors.number}
+        totalPages={sponsors.totalPages}
         setPage={setPage}
         delta={2}
       />
     </Styled.Container>
-  );
+  )
 }
 
-SponsorList.propTypes = {
-  title: PropTypes.string.isRequired,
-  // projectId: PropTypes.string.isRequired,
-};
-
-export default SponsorList;
+export default SponsorListPage

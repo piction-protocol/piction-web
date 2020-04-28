@@ -14,7 +14,7 @@ import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 const ProjectForm = React.lazy(() => import('components/organisms/ProjectForm'));
 const PostForm = React.lazy(() => import('components/organisms/PostForm'));
 const DashboardPostList = React.lazy(() => import('components/organisms/DashboardPostList'));
-const SponsorList = React.lazy(() => import('components/organisms/SponsorList'));
+const SponsorListPage = React.lazy(() => import('pages/Dashboard/SponsorListPage'));
 const SeriesListForm = React.lazy(() => import('components/organisms/SeriesListForm'));
 const DashboardMembershipList = React.lazy(() => import('components/organisms/DashboardMembershipList'));
 const MembershipForm = React.lazy(() => import('components/organisms/MembershipForm'));
@@ -98,7 +98,7 @@ function Dashboard() {
             <MembershipForm title="후원 플랜 수정" />
           </Route>
           <Route extact path={`${path}/:projectId/members`}>
-            <SponsorList title="구독자 목록" />
+            <SponsorListPage title="구독자 목록" />
           </Route>
           <Route path={`${path}/creator-profile`} component={CreatorProfileFormPage} />
           <Route path="*" component={NotFound} />
