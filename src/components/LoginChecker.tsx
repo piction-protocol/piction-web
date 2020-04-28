@@ -10,7 +10,7 @@ interface LoginCheckerProps {
   redirect: string
 }
 
-const LoginChecker: React.SFC<LoginCheckerProps> = ({ redirect, children }) => {
+const LoginChecker: React.FunctionComponent<LoginCheckerProps> = ({ redirect, children }) => {
   const { accessToken } = useCurrentUser()
   const dispatch = useDispatch()
 
