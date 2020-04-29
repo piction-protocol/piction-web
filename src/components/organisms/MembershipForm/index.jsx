@@ -9,6 +9,7 @@ import useAPI from 'hooks/useAPI';
 
 import Grid from 'styles/Grid';
 
+import InputGroupInside from 'components/atoms/LengthCounter';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
@@ -45,14 +46,6 @@ const Styled = {
     column-gap: var(--column-gap);
     margin-bottom: var(--row-gap);
     white-space: nowrap;
-  `,
-  InputGroupInside: styled.div`
-    display: flex;
-    grid-row: 2;
-    grid-column: 9;
-    align-items: center;
-    color: var(--gray);
-    font-size: var(--font-size--base);
   `,
   Unit: styled.span`
     display: flex;
@@ -128,8 +121,8 @@ function MembershipForm({
   const [isUnlimited, setIsUnlimited] = useState(!defaultValues.sponsorLimit);
   const [isDeletingMembership, setIsDeletingMembership] = useState(false);
   const [canDeleteMembership, setCanDeleteMembership] = useState(true);
-  const [supportTitle, setTitle] = useState('');
-  const [supportExplain, setExplain] = useState('');
+  const supportTitle = watch('name');
+  const supportExplain = watch('description');
 
   // Compute settlement amount when watching price or fees changed
   useEffect(() => {
@@ -190,16 +183,12 @@ function MembershipForm({
         inputRef={register}
         name="name"
         label="상품명"
-        value={supportTitle}
-        onChange={({ target: { value } }) => setTitle(value)}
         style={{
           gridColumn: '1 / 9',
         }}
         required
       >
-        <Styled.InputGroupInside>
-          {`${supportTitle.length} / 30`}
-        </Styled.InputGroupInside>
+        <InputGroupInside letterLength={supportTitle} maxLength={30} />
         {errors.name && (
           <ErrorMessage>
             {errors.name.message}
@@ -254,15 +243,12 @@ function MembershipForm({
         })}
         name="description"
         label="설명"
-        onChange={({ target: { value } }) => setExplain(value)}
         placeholder="최대 100자"
         style={{
           gridColumn: '1 / 9',
         }}
       >
-        <Styled.InputGroupInside>
-          {`${supportExplain.length} / 100`}
-        </Styled.InputGroupInside>
+        <InputGroupInside letterLength={supportExplain} maxLength={100} />
         {errors.description && (
           <ErrorMessage>
             {errors.description.message}
