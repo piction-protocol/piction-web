@@ -179,7 +179,7 @@ function MembershipForm({
           </Styled.Level>
         </div>
       )}
-      <Styled.InputGroup
+      <InputGroupInside
         inputRef={register}
         name="name"
         label="상품명"
@@ -187,14 +187,15 @@ function MembershipForm({
           gridColumn: '1 / 9',
         }}
         required
+        letterLength={supportTitle}
+        maxLength={30}
       >
-        <InputGroupInside letterLength={supportTitle} maxLength={30} />
         {errors.name && (
           <ErrorMessage>
             {errors.name.message}
           </ErrorMessage>
         )}
-      </Styled.InputGroup>
+      </InputGroupInside>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           inputRef={register({
@@ -234,7 +235,7 @@ function MembershipForm({
           )}
         </Styled.InputGroup>
       )}
-      <Styled.InputGroup
+      <InputGroupInside
         inputRef={register({
           maxLength: {
             value: 100,
@@ -247,14 +248,15 @@ function MembershipForm({
         style={{
           gridColumn: '1 / 9',
         }}
+        letterLength={supportExplain}
+        maxLength={100}
       >
-        <InputGroupInside letterLength={supportExplain} maxLength={100} />
         {errors.description && (
           <ErrorMessage>
             {errors.description.message}
           </ErrorMessage>
         )}
-      </Styled.InputGroup>
+      </InputGroupInside>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
