@@ -9,7 +9,7 @@ import useAPI from 'hooks/useAPI';
 
 import Grid from 'styles/Grid';
 
-import InputGroupInside from 'components/atoms/LengthCounter';
+import InputLengthCounter from 'components/atoms/InputLengthCounter';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
@@ -179,7 +179,7 @@ function MembershipForm({
           </Styled.Level>
         </div>
       )}
-      <InputGroupInside
+      <InputLengthCounter
         inputRef={register}
         name="name"
         label="상품명"
@@ -195,7 +195,7 @@ function MembershipForm({
             {errors.name.message}
           </ErrorMessage>
         )}
-      </InputGroupInside>
+      </InputLengthCounter>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           inputRef={register({
@@ -235,7 +235,7 @@ function MembershipForm({
           )}
         </Styled.InputGroup>
       )}
-      <InputGroupInside
+      <InputLengthCounter
         inputRef={register({
           maxLength: {
             value: 100,
@@ -256,7 +256,7 @@ function MembershipForm({
             {errors.description.message}
           </ErrorMessage>
         )}
-      </InputGroupInside>
+      </InputLengthCounter>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"

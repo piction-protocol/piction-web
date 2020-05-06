@@ -33,7 +33,7 @@ const Styled = {
   `,
 };
 
-function LengthCounter({
+function InputLengthCounter({
   letterLength, maxLength, name, label, spec, errorMessage, className, type, children, inputRef, ...props
 }) {
   return (
@@ -61,7 +61,7 @@ function LengthCounter({
   );
 }
 
-LengthCounter.propTypes = {
+InputLengthCounter.propTypes = {
   letterLength: PropTypes.string.isRequired,
   maxLength: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
@@ -75,7 +75,7 @@ LengthCounter.propTypes = {
 };
 
 
-LengthCounter.defaultProps = {
+InputLengthCounter.defaultProps = {
   label: null,
   spec: null,
   errorMessage: null,
@@ -84,4 +84,4 @@ LengthCounter.defaultProps = {
   children: null,
 };
 
-export default LengthCounter;
+export default InputLengthCounter;
