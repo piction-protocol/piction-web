@@ -25,7 +25,7 @@ const Styled = {
   `,
   Id: styled.p`
     margin-top: 4px;
-    color: #bababa;
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Projects: styled.section`
@@ -34,14 +34,14 @@ const Styled = {
   ProjectsTitle: styled.h2`
     grid-column: 1 / -1;
     padding-top: 16px;
-    border-top: 1px solid #bababa;
+    border-top: 1px solid var(--gray);
     font-size: 24px;
   `,
   Link: styled(Link)`
     grid-column: span 3;
   `,
   CardText: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };

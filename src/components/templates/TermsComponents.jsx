@@ -17,7 +17,7 @@ const H1 = styled.h1`
 const H2 = styled.h2`
   margin-bottom: 8px;
   padding-top: var(--row-gap);
-  border-top: 1px solid var(--gray--light);
+  border-top: 1px solid var(--gray--pale);
   font-size: var(--font-size--base);
   &:first-of-type {
     border-top: 0;

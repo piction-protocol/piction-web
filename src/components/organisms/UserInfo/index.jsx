@@ -11,7 +11,7 @@ import 'moment/locale/ko';
 const Styled = {
   Section: styled.section`
     display: flex;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
   `,
   Wrapper: styled(MainGrid)`
     align-items: flex-start;
@@ -46,7 +46,7 @@ const Styled = {
   `,
   ID: styled.p`
     margin: 2px 0;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     font-weight: bold;
     ${media.desktop`
@@ -55,7 +55,7 @@ const Styled = {
     `}
   `,
   Description: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${media.desktop`
       font-size: var(--font-size--base);

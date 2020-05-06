@@ -6,7 +6,7 @@ import { Link } from '@reach/router';
 const StyledTag = styled(Link)`
   padding: 8px 12px;
   border-radius: 8px;
-  background-color: var(--gray--light);
+  background-color: var(--gray--pale);
   color: var(--black);
   font-size: var(--font-size--small);
 `;

@@ -6,7 +6,7 @@ const Input = styled.input.attrs(({ type }) => ({
 }))`
   min-width: 0;
   padding: 14px;
-  border: 2px solid var(--gray--dark);
+  border: 2px solid var(--gray);
   background-color: var(--white);
   font-size: var(--font-size--small);
   line-height: normal;
@@ -19,12 +19,12 @@ const Input = styled.input.attrs(({ type }) => ({
   }
 
   &:disabled, &[readonly]{
-    background-color: var(--gray--light);
-    color: var(--gray--dark);
+    background-color: var(--gray--pale);
+    color: var(--gray);
   }
 
   &::placeholder {
-    color: var(--gray--dark);
+    color: var(--gray);
   }
 
   ${({ invalid }) => invalid && 'border-color: var(--red)'};

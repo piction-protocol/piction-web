@@ -48,7 +48,7 @@ const Styled = {
   `,
   Text: styled.p`
     margin-bottom: 8px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };

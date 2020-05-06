@@ -28,7 +28,7 @@ const Checkbox = styled.input.attrs({
     right: 0;
     bottom: 0;
     left: 0;
-    border: 2px solid var(--gray--dark);
+    border: 2px solid var(--gray);
     transition: border-color var(--transition--form);
   }
 `;

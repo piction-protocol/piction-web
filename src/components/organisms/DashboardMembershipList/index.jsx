@@ -46,7 +46,7 @@ const Styled = {
   PeopleIcon: styled(PeopleIcon)`
     width: 18px;
     margin-right: 4px;
-    color: vaR(--gray--dark);
+    color: vaR(--gray);
   `,
   Edit: styled(Link)`
     position: absolute;
@@ -63,13 +63,13 @@ const Styled = {
     flex-flow: column;
     align-items: center;
     margin: auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     text-align: center;
   `,
   Strong: styled.strong`
     margin: 24px auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--base);
     font-weight: bold;
   `,

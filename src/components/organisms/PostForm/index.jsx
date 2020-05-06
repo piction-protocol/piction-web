@@ -68,7 +68,7 @@ const Styled = {
   `,
   Spec: styled.p`
     font-size: var(--font-size--small);
-    color: var(--gray--dark);
+    color: var(--gray);
   `,
   CheckboxGroup: styled.label`
     display: flex;
@@ -80,7 +80,7 @@ const Styled = {
   SubmitGroup: styled.div`
     grid-column: 1 / -1;
     padding-top: var(--row-gap);
-    border-top: 1px solid var(--gray--light);
+    border-top: 1px solid var(--gray--pale);
   `,
   Submit: styled(PrimaryButton)`
     margin-right: 16px;

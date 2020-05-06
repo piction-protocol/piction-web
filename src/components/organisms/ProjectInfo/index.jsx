@@ -12,7 +12,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 import usePictionChoices from 'hooks/usePictionChoices';
 
 import SynopsisPopup from 'components/molecules/SynopsisPopup';
-
+import MembershipBanner from 'components/molecules/MembershipBanner';
 import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
 import UserProfile from 'components/atoms/ContentImage/UserProfile';
 import Heading from 'components/atoms/Heading';
@@ -32,13 +32,12 @@ const Styled = {
     position: relative;
   `,
   WideThumbnail: styled(WideThumbnail)`
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     ${media.desktop`
       max-height: 450px;
     `}
   `,
   MainGrid: styled(MainGrid)`
-    position: relative;
     padding-top: 20px;
     padding-bottom: 32px;
     ${media.desktop`
@@ -69,13 +68,12 @@ const Styled = {
       flex-flow: row wrap;
       align-items: center;
       margin-top: 12px;
-      font-size: var(--font-size--base);
-    `}
+     `}
     ${placeholder}
   `,
   UserId: styled.span`
     margin-top: 4px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     font-weight: normal;
     ${media.desktop`
@@ -83,20 +81,33 @@ const Styled = {
       margin-left: 8px;
     `}
   `,
-  SponsorCount: styled.div`
-    display: inline-flex;
+  SponsorCountWrapper: styled.div`
+    display: flex;
     position: absolute;
-    align-items: center;
     top: -16px;
-    right: var(--outer-gap);
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: var(--max-width);
+    margin-top: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 var(--outer-gap);
+    transform: translateY(-100%);
+    ${media.desktop`
+      top: -24px;
+      margin-top: 450px;
+    `}
+  `,
+  SponsorCount: styled.div`
+    display: flex;
+    align-items: center;
+    margin-left: auto;
     padding: 8px 12px;
     border-radius: 18px;
     background-color: rgba(0, 0, 0, .3);
     color: var(--white);
     font-size: var(--font-size--small);
-    transform: translateY(-100%);
-    ${media.desktop`
-    `}
   `,
   PeopleIcon: styled(PeopleIcon)`
     width: 20px;
@@ -110,7 +121,7 @@ const Styled = {
   Synopsis: styled.p`
     width: 100%;
     margin-top: 8px;
-    color: var(--gray--dark);
+    color: var(--gray);
     line-height: var(--line-height--content);
     ${placeholder}
   `,
@@ -150,7 +161,7 @@ const Styled = {
   `,
   UserProfile: styled(UserProfile)`
     border-radius: 50%;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
   `,
   Aside: styled.div`
     grid-column: 1 / -1;
@@ -196,7 +207,7 @@ const Styled = {
   SubscribeInfo: styled.p`
     display: flex;
     margin: 0 auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   AccessTimeIcon: styled(AccessTimeIcon)`
@@ -207,7 +218,7 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, handleSubscribe, isMyProject = false, sponsored, ...props
+  project, handleSubscribe, isMyProject = false, sponsored, shouldRenderBanner, ...props
 }) {
   const { projects } = usePictionChoices();
   const isPictionChoice = projects && projects.includes(project.uri);
@@ -226,7 +237,16 @@ function ProjectInfo({
         })}
         image={project.wideThumbnail}
       />
+      {shouldRenderBanner && (
+        <MembershipBanner userName={project.user.username} />
+      )}
       <Styled.MainGrid>
+        <Styled.SponsorCountWrapper>
+          <Styled.SponsorCount>
+            <Styled.PeopleIcon />
+            {`구독자 수 ${project.sponsorCount}`}
+          </Styled.SponsorCount>
+        </Styled.SponsorCountWrapper>
         <Styled.Main>
           <Styled.Heading>
             {project.title}
@@ -243,10 +263,6 @@ function ProjectInfo({
               </Styled.Label>
             )}
           </Styled.User>
-          <Styled.SponsorCount>
-            <Styled.PeopleIcon />
-            {`구독자 수 ${project.sponsorCount}`}
-          </Styled.SponsorCount>
           {isDesktop ? (
             <>
               {project.synopsis && (
@@ -335,6 +351,7 @@ ProjectInfo.propTypes = {
   project: PropTypes.object.isRequired,
   handleSubscribe: PropTypes.func.isRequired,
   hasFanPasses: PropTypes.bool,
+  shouldRenderBanner: PropTypes.bool,
 };
 
 ProjectInfo.Placeholder = ({ isDesktop }) => (

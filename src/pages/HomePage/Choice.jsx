@@ -35,7 +35,7 @@ const Styled = {
   `,
   MainImage: styled(Link)`
     grid-column: 1 / -1;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     ${media.mobile`
       margin: calc( -1 * var(--outer-gap));
     `}
@@ -78,7 +78,7 @@ const Styled = {
     width: 16px;
     height: 16px;
     margin-left: 4px;
-    color: var(--gray--dark);
+    color: var(--gray);
     cursor: pointer;
     ${media.desktop`
       width: 20px;
@@ -227,8 +227,8 @@ const Choice = (props) => {
 
 const Placeholder = {
   ProjectTitle: styled(Styled.ProjectTitle)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
+    background-color: var(--gray--pale);
+    color: var(--gray--pale);
   `,
 };
 

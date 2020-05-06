@@ -19,7 +19,7 @@ const Styled = {
     flex-flow: ${props => (props.theme.viewType === 'LIST' ? 'row wrap' : 'column')};
     align-items: ${props => (props.theme.viewType === 'LIST' ? 'center' : 'stretch')};
     padding-bottom: 20px;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
     background-color: var(--white);
   `,
   CoverWrapper: styled.div`
@@ -102,7 +102,7 @@ const Styled = {
   `,
   Series: styled.p`
     margin-bottom: ${props => (props.theme.viewType === 'LIST' ? '2px' : '4px')};
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
@@ -126,7 +126,7 @@ const Styled = {
   `,
   PublishedAt: styled.p`
     margin-top: auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
@@ -136,7 +136,7 @@ const Styled = {
     align-items: center;
     bottom: 20px;
     right: 0;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${media.desktop`
       right: 8px;

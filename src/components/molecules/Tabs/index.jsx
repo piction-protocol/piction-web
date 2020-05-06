@@ -15,7 +15,7 @@ const Styled = {
     position: relative;
     flex: 1;
     padding: 16px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     text-align: center;
     ${media.desktop`

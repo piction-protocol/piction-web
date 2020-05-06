@@ -11,13 +11,13 @@ const Styled = {
   Item: styled.div`
     display: flex;
     align-items: center;
-    border: 2px solid var(--gray--dark);
+    border: 2px solid var(--gray);
     font-size: var(--font-size--small);
   `,
   Indicator: styled.div`
     display: flex;
     padding: 10px;
-    border-right: 2px solid var(--gray--dark);
+    border-right: 2px solid var(--gray);
     cursor: move;
   `,
   Name: styled.span`
@@ -33,7 +33,7 @@ const Styled = {
   })`
     display: flex;
     padding: 10px;
-    border-left: 2px solid var(--gray--dark);
+    border-left: 2px solid var(--gray);
     cursor: pointer;
   `,
 };

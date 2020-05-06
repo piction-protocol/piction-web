@@ -43,7 +43,7 @@ const Styled = {
   `,
   Won: styled.span`
     margin-left: 4px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     font-weight: bold;
     ${media.desktop`

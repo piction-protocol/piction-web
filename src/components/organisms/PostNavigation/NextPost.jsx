@@ -17,7 +17,7 @@ const Styled = {
     left: 0;
     padding: 16px;
     background-color: rgba(0, 0, 0, .60);
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     text-align: center;
   `,
@@ -43,7 +43,7 @@ const Styled = {
     bottom: 0;
     left: 0;
     background-color: #333333;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };

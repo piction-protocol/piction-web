@@ -51,7 +51,7 @@ const Styled = {
     grid-row: 2;
     grid-column: 3 / -1;
     align-items: center;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--base);
   `,
   Fee: styled.p`
@@ -68,7 +68,7 @@ const Styled = {
   SubmitGroup: styled.div`
     grid-column: 1 / -1;
     padding-top: var(--row-gap);
-    border-top: 1px solid var(--gray--light);
+    border-top: 1px solid var(--gray--pale);
   `,
   Submit: styled(PrimaryButton).attrs(() => ({
     as: 'input',
@@ -103,7 +103,11 @@ function MembershipForm({
       price: 0,
       sponsorLimit: 0,
     },
-  } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), { suspense: true });
+  } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), {
+    suspense: true,
+    revalidateOnFocus: false,
+  });
+
 
   const {
     register,
@@ -111,9 +115,13 @@ function MembershipForm({
     setError,
     handleSubmit,
     watch,
+    reset,
   } = useForm({
     defaultValues,
   });
+
+  useEffect(() => reset(defaultValues), [reset, defaultValues]);
+
   const watchingPrice = watch('price');
 
   const [settlementAmount, setSettlementAmount] = useState(0);

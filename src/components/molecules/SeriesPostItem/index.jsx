@@ -12,14 +12,14 @@ const Styled = {
   Item: styled.article`
     display: flex;
     padding: var(--row-gap) 0;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
     background-color: var(--white);
   `,
   Index: styled.div`
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 16px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: 22px;
     font-weight: bold;
     ${media.desktop`
@@ -60,7 +60,7 @@ const Styled = {
     font-size: var(--font-size--small);
   `,
   PublishedAt: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
 };
@@ -104,17 +104,17 @@ SeriesPostItem.propTypes = {
 
 const Placeholder = {
   Index: styled(Styled.Index)`
-    color: var(--gray--light);
-    background-color: var(--gray--light);
+    color: var(--gray--pale);
+    background-color: var(--gray--pale);
   `,
   Title: styled(Styled.Title)`
-    color: var(--gray--light);
-    background-color: var(--gray--light);
+    color: var(--gray--pale);
+    background-color: var(--gray--pale);
     width: 20%;
   `,
   PublishedAt: styled(Styled.PublishedAt)`
-    color: var(--gray--light);
-    background-color: var(--gray--light);
+    color: var(--gray--pale);
+    background-color: var(--gray--pale);
     width: 40%;
   `,
 };

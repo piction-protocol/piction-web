@@ -17,7 +17,7 @@ const Styled = {
     grid-column: 1 / -1;
   `,
   P: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Sponsored: styled.div`
@@ -37,7 +37,7 @@ const Styled = {
   Empty: styled.div`
     grid-column: 1 / -1;
     margin: 80px auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--base);
     text-align: center;
   `,
@@ -126,7 +126,7 @@ function MembershipList({
               <Styled.Status>
                 {isSubscribing
                   ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료')
-                  : membership.sponsorLimit && (
+                  : membership.sponsorLimit !== null && (
                     isFull ? '후원 불가능'
                       : `${membership.sponsorLimit - membership.sponsorCount}명 남음`
                   )}
@@ -171,5 +171,5 @@ MembershipList.propTypes = {
   memberships: PropTypes.array,
   sponsored: PropTypes.object,
   location: PropTypes.object,
-  projectId: PropTypes.object,
+  projectId: PropTypes.string,
 };

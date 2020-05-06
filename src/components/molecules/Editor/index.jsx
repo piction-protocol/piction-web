@@ -21,12 +21,12 @@ import './formats';
 
 const Styled = {
   Editor: styled.div`
-    border: 2px solid var(--gray--dark);
+    border: 2px solid var(--gray);
   `,
   Toolbar: styled.div`
     display: flex;
-    background-color: var(--gray--light);
-    border-bottom: 2px solid var(--gray--dark);
+    background-color: var(--gray--pale);
+    border-bottom: 2px solid var(--gray);
   `,
   Button: styled.button`
     display: flex;
@@ -68,7 +68,7 @@ const Styled = {
       &.ql-blank::before {
         content: attr(data-placeholder);
         position: absolute;
-        color: var(--gray--dark);
+        color: var(--gray);
         pointer-events: none;
       }
     }

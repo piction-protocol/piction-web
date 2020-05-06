@@ -239,7 +239,7 @@ function CreatorsGuide() {
             <ListItem index={1}>
               <ListItemHeading>어떤 이야기를 하고 싶으신가요?</ListItemHeading>
               창작의 주제는 무엇이든 좋습니다. 내가 좋아하는 콘텐츠로 시작해보세요. 다른 창작자들은&nbsp;
-              <DecoratedLink to="/all">어떤 이야기를</DecoratedLink>
+              <DecoratedLink to="/explore/all">어떤 이야기를</DecoratedLink>
               &nbsp;하고 있는지 살펴보세요.
             </ListItem>
             <ListItem index={2}>

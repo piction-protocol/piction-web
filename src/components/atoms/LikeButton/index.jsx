@@ -6,13 +6,13 @@ import { ReactComponent as HeartIcon } from 'images/ic-heart.svg';
 
 const Styled = {
   Button: styled.button`
-    --color: ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray--dark)')};
+    --color: ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray)')};
 
     display: flex;
     flex-flow: column;
     align-items: center;
     padding: 16px 24px 12px;
-    border: 1px solid ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray--light)')};
+    border: 1px solid ${({ isLiked }) => (isLiked ? 'var(--blue)' : 'var(--gray--pale)')};
     border-radius: 50%;
     color: var(--color);
     box-shadow: 0 2px 4px 0 var(--shadow-color);

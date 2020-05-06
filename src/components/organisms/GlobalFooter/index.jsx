@@ -12,7 +12,7 @@ const Styled = {
     margin-top: auto;
     padding: 24px 0;
     border-top: 1px solid #F2F2F2;
-    border-top: 1px solid var(--gray--light);
+    border-top: 1px solid var(--gray--pale);
     background-color: #FFFFFF;
     background-color: var(--white);
     ${media.desktop`
@@ -74,7 +74,7 @@ const Styled = {
   Item: styled.li`
     margin-bottom: 10px;
     color: #BFBFBF;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: 14px;
     font-size: var(--font-size--small);
     ${media.desktop`

@@ -1,5 +1,5 @@
 import { useEffect, useContext } from 'react';
-import { LayoutContext } from 'context/LayoutContext';
+import { LayoutContext } from 'contexts/LayoutContext';
 
 function useProjectLayout(project) {
   const [, setLayout] = useContext(LayoutContext);

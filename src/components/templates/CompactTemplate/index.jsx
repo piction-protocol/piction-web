@@ -13,7 +13,7 @@ const Styled = {
     flex: 1;
     flex-flow: column;
     ${media.desktop`
-      background-color: var(--gray--light);
+      background-color: var(--gray--pale);
     `}
   `,
 

@@ -35,7 +35,7 @@ const Styled = {
   `,
   Li: styled.li`
     margin-bottom: 8px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     list-style: disc;
   `,

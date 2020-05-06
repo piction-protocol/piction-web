@@ -22,7 +22,7 @@ const Styled = {
   `,
   Date: styled.p`
     margin-top: var(--row-gap);
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Required: styled.strong`
@@ -33,7 +33,7 @@ const Styled = {
     display: flex;
     flex-flow: column;
     align-items: center;
-    color: var(--gray--dark);
+    color: var(--gray);
     line-height: var(--line-height--content);
     text-align: center;
     word-break: keep-all;
@@ -46,7 +46,7 @@ const Styled = {
     height: 104px;
     margin-bottom: 8px;
     path {
-      fill: var(--gray--light);
+      fill: var(--gray--pale);
     }
     ${media.desktop`
       margin-bottom: 24px;
@@ -94,8 +94,8 @@ Content.Placeholder = () => {
           <div
             key={width}
             style={{
-              backgroundColor: 'var(--gray--light)',
-              color: 'var(--gray--light)',
+              backgroundColor: 'var(--gray--pale)',
+              color: 'var(--gray--pale)',
               height: '1.5em',
               width: `${width}`,
               marginBottom: '1em',

@@ -32,7 +32,7 @@ const Styled = {
     display: flex;
     align-items: center;
     padding: 12px 0;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
   `,
   UserProfile: styled(UserProfile)`
     width: 56px;
@@ -48,7 +48,7 @@ const Styled = {
   `,
   UserId: styled.span`
     margin-left: 4px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
@@ -59,7 +59,7 @@ const Styled = {
   `,
   SubscriptionDate: styled.span`
     margin-left: auto;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     text-align: right;
     ${placeholder}

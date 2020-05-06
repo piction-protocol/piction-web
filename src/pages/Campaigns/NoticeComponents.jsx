@@ -59,7 +59,7 @@ const H2 = styled.h2`
 
 const P = styled.p`
   grid-column: 3 / -1;
-  color: var(--gray--dark);
+  color: var(--gray);
 `;
 
 const A = styled.a.attrs(() => ({

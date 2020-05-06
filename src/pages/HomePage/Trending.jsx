@@ -43,7 +43,7 @@ const Styled = {
         display: block;
         width: 32px;
         margin-top: 20px;
-        border-top: 1px solid var(--gray--dark);
+        border-top: 1px solid var(--gray);
       }
     `}
   `,
@@ -61,7 +61,7 @@ const Styled = {
     max-height: 40px;
     margin-bottom: 12px;
     overflow: hidden;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Author: styled.div`
@@ -78,7 +78,7 @@ const Styled = {
     overflow: hidden;
   `,
   LoginId: styled.span`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: 12px;
   `,
 };

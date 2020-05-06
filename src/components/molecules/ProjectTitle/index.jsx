@@ -34,7 +34,7 @@ const Styled = {
     flex: 0 0 auto;
     align-items: center;
     margin: 0 24px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${media.mobile`
       display: none;

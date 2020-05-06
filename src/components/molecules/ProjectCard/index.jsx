@@ -69,7 +69,7 @@ const Styled = {
 };
 
 function ProjectCard({
-  uri, title, thumbnail, lastPublishedAt, children, ...props
+  title, thumbnail, lastPublishedAt, children, ...props
 }) {
   return (
     <Styled.Item
@@ -93,8 +93,8 @@ function ProjectCard({
 
 const Placeholder = {
   Title: styled(Styled.Title)`
-    background-color: var(--gray--light);
-    color: var(--gray--light);
+    background-color: var(--gray--pale);
+    color: var(--gray--pale);
   `,
 };
 
@@ -108,7 +108,6 @@ ProjectCard.Placeholder = () => (
 );
 
 ProjectCard.propTypes = {
-  uri: PropTypes.string,
   title: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,
   lastPublishedAt: PropTypes.number,

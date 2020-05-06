@@ -44,14 +44,14 @@ const Styled = {
   `,
   Item: styled.div`
     padding: 12px 24px;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
   `,
   Name: styled.p`
     margin-bottom: 2px;
     font-size: 16px;
   `,
   Value: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     a {
       color: var(--blue);

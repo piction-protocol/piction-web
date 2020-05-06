@@ -8,7 +8,7 @@ const Link = styled.a`
   padding: 4px 12px;
   border: 1px solid;
   border-radius: 20px;
-  color: #bababa;
+  color: var(--gray);
   font-size: var(--font-size--small);
 `;
 

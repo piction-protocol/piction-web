@@ -40,7 +40,7 @@ const Styled = {
   Spec: styled.p`
     grid-column: 1 / -1;
     font-size: var(--font-size--small);
-    color: var(--gray--dark);
+    color: var(--gray);
   `,
   ErrorMessage: styled.p`
     grid-column: 1 / -1;
@@ -56,7 +56,7 @@ const Styled = {
   SubmitGroup: styled.div`
     grid-column: 1 / -1;
     padding-top: var(--row-gap);
-    border-top: 1px solid var(--gray--light);
+    border-top: 1px solid var(--gray--pale);
   `,
   Submit: styled(PrimaryButton).attrs({
     as: 'input',

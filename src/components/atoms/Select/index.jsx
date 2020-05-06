@@ -8,7 +8,7 @@ const Styled = {
   Select: styled.select`
     appearance: none;
     padding: 6px 10px;
-    border: 2px solid var(--gray--dark);
+    border: 2px solid var(--gray);
     border-radius: 0;
     background-color: var(--white);
     background-image: url(${ExpandIcon});
@@ -16,10 +16,10 @@ const Styled = {
     background-size: 24px;
     background-repeat: no-repeat;
     font-size: var(--font-size--small);
-    color: var(--gray--dark);
+    color: var(--gray);
     line-height: normal;
     &:disabled {
-      background-color: var(--gray--light);
+      background-color: var(--gray--pale);
     }
   `,
 };

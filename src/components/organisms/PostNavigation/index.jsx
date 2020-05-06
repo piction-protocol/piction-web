@@ -25,9 +25,9 @@ const Styled = {
     columns: 'var(--columns)',
   })`
     margin-bottom: 24px;
-    border: solid var(--gray--light);
+    border: solid var(--gray--pale);
     border-width: 1px 0;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${media.desktop`
       margin-bottom: 64px;
@@ -97,7 +97,7 @@ const Styled = {
     `}
   `,
   PostCount: styled.p`
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   AllPosts: styled(Link)`
@@ -118,7 +118,7 @@ const Styled = {
       display: flex;
       flex-flow: column;
       margin-top: 16px;
-      border-top: 1px solid var(--gray--light);
+      border-top: 1px solid var(--gray--pale);
     `}
     ${media.desktop`
       --row-gap: 8px;
@@ -147,10 +147,10 @@ const Styled = {
     columns: 'var(--columns)',
   })`
     align-items: center;
-    color: var(--gray--dark);
+    color: var(--gray);
     ${media.mobile`
       padding: 16px 0;
-      border-bottom: 1px solid var(--gray--light);
+      border-bottom: 1px solid var(--gray--pale);
     `}
     ${media.desktop`
       display: flex;

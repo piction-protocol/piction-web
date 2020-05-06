@@ -9,7 +9,7 @@ const Styled = {
   TagsInput: styled(ReactTagsInput)`
     display: flex;
     padding: 6px;
-    border: 2px solid var(--gray--dark);
+    border: 2px solid var(--gray);
     background-color: var(--white);
     overflow-x: auto;
     font-size: var(--font-size--small);
@@ -29,7 +29,7 @@ const Styled = {
       margin-right: 8px;
       padding: 8px 12px;
       border-radius: 8px;
-      background-color: var(--gray--light);
+      background-color: var(--gray--pale);
       color: var(--black);
       &::before {
         content: '#';
@@ -50,7 +50,7 @@ const Styled = {
       outline: none;
       padding: 10px 0;
       &::placeholder {
-        color: var(--gray--dark);
+        color: var(--gray);
       }
       &:only-child {
         padding-left: 8px;

@@ -25,7 +25,7 @@ const Styled = {
     height: var(--row-height);
     border: solid var(--black);
     border-width: 1px 0;
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     font-weight: bold;
     ${media.mobile`
       display: none;
@@ -36,7 +36,7 @@ const Styled = {
     flex-flow: row wrap;
     align-items: center;
     height: var(--row-height);
-    border-bottom: 1px solid var(--gray--dark);
+    border-bottom: 1px solid var(--gray);
     cursor: pointer;
     &:hover {
       background-color: #f1f9ff;

@@ -7,7 +7,7 @@ import { Link, Location } from '@reach/router';
 
 import media, { mediaQuery } from 'styles/media';
 
-import { LayoutContext } from 'context/LayoutContext';
+import { LayoutContext } from 'contexts/LayoutContext';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
@@ -31,7 +31,7 @@ import { ReactComponent as LogoutIcon } from 'images/ic-logout.svg';
 const Styled = {
   Header: styled.header`
     border-bottom: 1px solid #F2F2F2;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
     background-color: #FFFFFF;
     background-color: var(--white);
   `,
@@ -80,7 +80,7 @@ const Styled = {
   Login: styled(Link)`
     margin-right: 40px;
     color: #BFBFBF;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   Signup: styled(Link)`
@@ -160,7 +160,7 @@ function GlobalHeader({ paths, child, ...props }) {
 
   const links = [
     ...isDesktop ? [] : [
-      { text: '전체 프로젝트', to: '/all', icon: <ProjectsIcon /> },
+      { text: '프로젝트 탐색', to: '/explore/all', icon: <ProjectsIcon /> },
       { text: '크리에이터 가이드', to: '/creatorsguide', icon: <PictionIcon /> },
     ],
     ...currentUser ? [
@@ -206,8 +206,8 @@ function GlobalHeader({ paths, child, ...props }) {
                 </Styled.Link>
                 {isDesktop && (
                   <>
-                    <Styled.Link to="/all">
-                      전체 프로젝트
+                    <Styled.Link to="/explore/all">
+                      프로젝트 탐색
                     </Styled.Link>
                     <Styled.Link to="/creatorsguide">
                       크리에이터 가이드

@@ -25,7 +25,7 @@ const Styled = {
   `,
   Text: styled.p`
     margin: 24px 0;
-    color: #bababa;
+    color: var(--gray);
     text-align: center;
     word-break: keep-all;
   `,

@@ -29,7 +29,7 @@ import { ReactComponent as LinkaPayIcon } from 'images/ic-linkapay.svg';
 
 const Styled = {
   WideThumbnail: styled(WideThumbnail)`
-    background-color: var(--gray--light);
+    background-color: var(--gray--pale);
     ${media.desktop`
       max-height: 450px;
     `}
@@ -53,17 +53,17 @@ const Styled = {
   Section: styled.section`
     margin-bottom: 24px;
     padding-bottom: 24px;
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
   `,
   SectionTitle: styled.h2`
     margin-bottom: 4px;
-    color: #bababa;
+    color: var(--gray);
     font-size: var(--font-size--small);
     font-weight: normal;
   `,
   SectionLabel: styled.h2`
     margin-bottom: 4px;
-    color: #bababa;
+    color: var(--gray);
     font-size: var(--font-size--base);
   `,
   Name: styled.p`
@@ -74,7 +74,7 @@ const Styled = {
   `,
   Description: styled.p`
     margin-top: 16px;
-    color: #bababa;
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${placeholder}
   `,
@@ -134,7 +134,7 @@ const Styled = {
     padding: 16px;
   `,
   Li: styled.li`
-    color: #bababa;
+    color: var(--gray);
     list-style: disc;
     & + & {
       margin-top: 8px;
@@ -149,7 +149,7 @@ const Styled = {
     align-items: center;
     justify-content: center;
     margin-top: 16px;
-    color: #bababa;
+    color: var(--gray);
     font-size: var(--font-size--tiny);
   `,
   LinkaPayIcon: styled(LinkaPayIcon)`

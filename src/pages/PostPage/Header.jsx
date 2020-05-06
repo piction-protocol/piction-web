@@ -15,12 +15,12 @@ const Styled = {
     align-items: center;
     margin-bottom: var(--row-gap);
     padding-bottom: var(--row-gap);
-    border-bottom: 1px solid var(--gray--light);
+    border-bottom: 1px solid var(--gray--pale);
     text-align: center;
   `,
   SeriesName: styled(Link)`
     margin-bottom: 8px;
-    color: var(--gray--dark);
+    color: var(--gray);
     font-size: var(--font-size--small);
   `,
   User: styled.div`
@@ -79,15 +79,15 @@ Header.propTypes = {
 Header.Placeholder = () => (
   <Styled.Info>
     <div style={{
-      color: 'var(--gray--light)',
-      backgroundColor: 'var(--gray--light)',
+      color: 'var(--gray--pale)',
+      backgroundColor: 'var(--gray--pale)',
       width: '60%',
       height: '45px',
     }}
     />
     <div style={{
-      color: 'var(--gray--light)',
-      backgroundColor: 'var(--gray--light)',
+      color: 'var(--gray--pale)',
+      backgroundColor: 'var(--gray--pale)',
       width: '30%',
       marginTop: '16px',
       height: '27px',

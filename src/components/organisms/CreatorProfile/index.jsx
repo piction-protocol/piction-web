@@ -41,7 +41,7 @@ const Styled = {
   Id: styled.p`
     grid-column: 1 / -1;
     margin-top: 4px;
-    color: #bababa;
+    color: var(--gray);
     font-size: var(--font-size--small);
     ${media.desktop`
       font-size: var(--font-size--base);
