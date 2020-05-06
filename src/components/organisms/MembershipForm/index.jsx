@@ -103,7 +103,11 @@ function MembershipForm({
       price: 0,
       sponsorLimit: 0,
     },
-  } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), { suspense: true });
+  } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), {
+    suspense: true,
+    revalidateOnFocus: false,
+  });
+
 
   const {
     register,
@@ -111,9 +115,13 @@ function MembershipForm({
     setError,
     handleSubmit,
     watch,
+    reset,
   } = useForm({
     defaultValues,
   });
+
+  useEffect(() => reset(defaultValues), [reset, defaultValues]);
+
   const watchingPrice = watch('price');
 
   const [settlementAmount, setSettlementAmount] = useState(0);
