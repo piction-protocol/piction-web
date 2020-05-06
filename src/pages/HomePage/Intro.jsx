@@ -108,7 +108,7 @@ const Intro = () => (
         <br />
         누구나 나의 최애 크리에이터를 응원할 수 있습니다.
       </Styled.Paragraph>
-      <Styled.Button as={Link} to="/all">연재 중인 프로젝트</Styled.Button>
+      <Styled.Button as={Link} to="/explore/all">연재 중인 프로젝트</Styled.Button>
     </Styled.MainGrid>
   </Styled.Section>
 );
