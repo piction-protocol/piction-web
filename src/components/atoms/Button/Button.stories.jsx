@@ -1,20 +1,14 @@
 import React from 'react';
-import { PrimaryButton, SecondaryButton, TertiaryButton } from '.';
+import Button, { PrimaryButton, SecondaryButton, TertiaryButton } from '.';
+import docs from './Button.docs.mdx';
 
 export default {
   title: 'Components|Atoms/Button',
+  component: Button,
+  parameters: {
+    docs: { page: docs },
+  },
 };
-
-export const all = () => (
-  <>
-    <PrimaryButton>Primary</PrimaryButton>
-    <PrimaryButton size="mini">Primary Mini</PrimaryButton>
-    <SecondaryButton>Secondary</SecondaryButton>
-    <SecondaryButton size="mini">Secondary Mini</SecondaryButton>
-    <TertiaryButton>Tertiary</TertiaryButton>
-    <TertiaryButton size="mini">Tertiary Mini</TertiaryButton>
-  </>
-);
 
 export const primary = () => <PrimaryButton>Primary</PrimaryButton>;
 export const primaryMini = () => <PrimaryButton size="mini">Primary Mini</PrimaryButton>;
