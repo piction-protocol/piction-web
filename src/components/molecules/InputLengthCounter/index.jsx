@@ -34,7 +34,7 @@ const Styled = {
 };
 
 function InputLengthCounter({
-  letterLength, maxLength, name, label, spec, errorMessage, className, type, children, inputRef, ...props
+  letterLength, maxLength, name, label = null, spec = null, errorMessage = null, className = null, type = 'text', children = null, inputRef, ...props
 }) {
   return (
     <Styled.Group className={className}>
@@ -72,16 +72,6 @@ InputLengthCounter.propTypes = {
   type: PropTypes.string,
   children: PropTypes.node,
   inputRef: PropTypes.func,
-};
-
-
-InputLengthCounter.defaultProps = {
-  label: null,
-  spec: null,
-  errorMessage: null,
-  className: null,
-  type: 'text',
-  children: null,
 };
 
 export default InputLengthCounter;

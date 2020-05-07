@@ -9,7 +9,7 @@ import useAPI from 'hooks/useAPI';
 
 import Grid from 'styles/Grid';
 
-import InputLengthCounter from 'components/atoms/InputLengthCounter';
+import InputLengthCounter from 'components/molecules/InputLengthCounter';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
