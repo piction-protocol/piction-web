@@ -5,6 +5,8 @@ import { DocsPage } from '@storybook/addon-docs/blocks';
 import GlobalStyle from '../src/styles/GlobalStyle';
 import { withPaddings } from 'storybook-addon-paddings';
 
+import sortStories from './sortStories';
+
 addDecorator(withPaddings);
 addDecorator(withKnobs);
 
@@ -28,6 +30,16 @@ addParameters({
   dependencies: {
     withStoriesOnly: true,
     hideEmpty: true,
+  },
+  options: {
+    storySort: sortStories({
+      Guidelines: [],
+      Components: [
+        'Atoms',
+        'Molecules',
+        'Organisms'
+      ],
+    })
   }
 });
 
