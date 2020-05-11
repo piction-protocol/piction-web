@@ -97,7 +97,6 @@ const GlobalStyle = createGlobalStyle`
   ul, li {
     margin: 0;
     padding: 0;
-    list-style: none;
   }
 
   .root {

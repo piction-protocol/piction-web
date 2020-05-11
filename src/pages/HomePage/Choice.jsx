@@ -152,6 +152,7 @@ const Styled = {
   ProjectListItem: styled.li`
     scroll-snap-align: start;
     overflow: hidden;
+    list-style: none;
     ${media.desktop`
       grid-column: span 2;
     `}

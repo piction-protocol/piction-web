@@ -136,6 +136,7 @@ const Li = styled.li`
   margin: 5px auto;
   padding: 20px;
   width: 100%;
+  list-style: none;
   ${media.desktop`
     width: 720px;
     flex-direction: row;

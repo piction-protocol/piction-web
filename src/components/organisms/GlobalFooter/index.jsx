@@ -77,6 +77,7 @@ const Styled = {
     color: var(--gray);
     font-size: 14px;
     font-size: var(--font-size--small);
+    list-style: none;
     ${media.desktop`
       margin: 4px 0;
     `}
