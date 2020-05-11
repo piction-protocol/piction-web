@@ -33,6 +33,7 @@ addParameters({
   },
   options: {
     storySort: sortStories({
+      Introduction: ['Greeting'],
       Guidelines: [],
       Components: [
         'Atoms',

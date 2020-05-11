@@ -4,15 +4,26 @@ import {
 
 <Meta title="Guidelines|Colors" />
 
-# Colors
-변수명은 kebab-case를 사용하고 `name--variation` 식으로 표기합니다.
+# COLORS
+픽션네트워크에서 사용되는 색상을 기재한 문서입니다.  
+이하는 색상 가이드라인에 대한 규칙입니다.
 
-Primary, Grayscale은 name에 색상의 이름이 들어갑니다.
+- 픽션네트워크의 모든 플랫폼에서 동일하게 사용되는 색상을 기재합니다. 
+- 가이드라인에 기재된 항목 이외의 색상이 __2회 이상 사용__되었을 경우 본 문서에 기재합니다.
+- 흰 색에 대비하여 모든 색상에 대한 대비 비율을 __최소 1.2:1__을 유지해야 합니다. (이는 악조건의 디스플레이에서 최소한의 대비를 유지할 수 있는 대비 수치입니다.)
+- 파생된 색상의 경우, 접미사로 __--타입 이름__을 기재합니다.
+- 모든 색상은 소문자 표기를 원칙으로 합니다. (이는 접두사, 접미사 동일합니다.)
 
-Special은 name에 해당 색의 용도가 들어갑니다.
+<br />
 
-## Primary
-(description)
+## 첨자 사전
+- strong : Original 색상 대비 강조된 색상을 의미합니다.
+- pale : Original 색상 대비 흐린 색상을 의미합니다.
+
+<br />
+
+## Piction Blue
+Piction network의 브랜드 컬러로 사용되는 색상을 기재합니다.
 <ColorPalette>
   <ColorItem title="blue--strong" colors={['#0387FF']} />
   <ColorItem title="blue" colors={['#1A92FF']} />
@@ -20,7 +31,7 @@ Special은 name에 해당 색의 용도가 들어갑니다.
 </ColorPalette>
 
 ## Grayscale
-(description)
+하얀 색부터 검은 색까지 총 5가지 갈래로 나눈 해당 문서는 서체, 면, 선 등에서 사용됩니다.
 <ColorPalette>
   <ColorItem title="white" colors={['#FFFFFF']} />
   <ColorItem title="gray--pale" colors={['#E8E8E8']} />
@@ -30,7 +41,7 @@ Special은 name에 해당 색의 용도가 들어갑니다.
 </ColorPalette>
 
 ## Special
-(description)
+에러, 읽기 모드 등에서 사용되는 색상을 기재합니다.
 <ColorPalette>
   <ColorItem title="error" colors={['#D51315']} />
   <ColorItem title="reader-mode" colors={['#E8EFF4']} />
