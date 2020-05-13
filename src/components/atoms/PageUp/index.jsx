@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 
 import media from 'styles/media';
@@ -29,16 +29,26 @@ const Styled = {
 };
 
 function PageUp() {
-  const [isHidden, setIsHidden] = useState(false);
+  const [isHidden, setIsHidden] = useState(true);
+  const scrollLocation = window.scrollY;
 
-  document.addEventListener('scroll', () => {
-    const scrollLocation = window.scrollY;
-    if (scrollLocation < 400) {
-      setIsHidden(true);
-    } else {
-      setIsHidden(false);
-    }
-  });
+
+  useEffect(() => {
+    const listener = () => {
+      if (scrollLocation > 400) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+    };
+
+    document.addEventListener('scroll', listener);
+    return (
+      () => {
+        document.removeEventListener('scroll', listener);
+      }
+    );
+  }, [scrollLocation]);
 
   const scrollToTop = () => {
     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
