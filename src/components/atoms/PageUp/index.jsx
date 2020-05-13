@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 
 import media from 'styles/media';
@@ -29,11 +29,22 @@ const Styled = {
 };
 
 function PageUp() {
+  const [isHidden, setIsHidden] = useState(false);
+
+  document.addEventListener('scroll', () => {
+    const scrollLocation = window.scrollY;
+    if (scrollLocation < 400) {
+      setIsHidden(true);
+    } else {
+      setIsHidden(false);
+    }
+  });
+
   const scrollToTop = () => {
     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
   };
 
-  return (
+  return isHidden ? null : (
     <Styled.Button onClick={scrollToTop} role="button">
       <UpwardIcon />
     </Styled.Button>
