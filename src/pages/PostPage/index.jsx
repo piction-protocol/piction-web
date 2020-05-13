@@ -17,6 +17,7 @@ import useLocalStorage from 'hooks/useLocalStorage';
 import GridTemplate from 'components/templates/GridTemplate';
 import PostNavigation from 'components/organisms/PostNavigation';
 import LikeButton from 'components/atoms/LikeButton';
+import PageUp from 'components/atoms/PageUp';
 
 import Header from './Header';
 import Content from './Content';
@@ -157,6 +158,7 @@ function PostPage({ projectId, postId }) {
         )}
       </Styled.Article>
       {post && <PostNavigation projectId={projectId} postId={postId} series={post.series} />}
+      <PageUp />
     </GridTemplate>
   );
 }
