@@ -1,39 +1,42 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import { ReactComponent as upButton } from './ic-arrow-upward.svg';
+import media from 'styles/media';
+
+import { ReactComponent as UpwardIcon } from 'images/ic-arrow-upward.svg';
 
 const Styled = {
-  GotoUp: styled.div`
-  cursor: pointer;
-  display: flex;
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-  width: 48px;
-  height: 48px;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.15);
-  border: solid 1px #e8e8e8;
-  background-color: var(--white);
-  `,
-  upButton: styled(upButton)`
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
+  // FIXME : grid, margin등의 위치 제어용 스타일 분리
+  Button: styled.button`
+    display: flex;
+    position: sticky;
+    grid-column: -2 / -1;
+    bottom: 24px;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-top: auto;
+    margin-left: auto;
+    box-shadow: 0 2px 20px 0 var(--shadow-color);
+    border: 1px solid var(--gray--pale);
+    background-color: var(--white);
+    color: var(--gray);
+    ${media.desktop`
+      bottom: 40px;
+    `}
   `,
 };
 
 function PageUp() {
-  const upscroll = () => {
+  const scrollToTop = () => {
     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
   };
 
   return (
-    <div>
-      <Styled.GotoUp className="up" onClick={upscroll} role="button" title="위로 올라가기"><Styled.upButton /></Styled.GotoUp>
-    </div>
+    <Styled.Button onClick={scrollToTop} role="button">
+      <UpwardIcon />
+    </Styled.Button>
   );
 }
 

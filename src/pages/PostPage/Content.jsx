@@ -12,7 +12,6 @@ import ContentStyle from 'styles/ContentStyle';
 import { ReactComponent as LockedIcon } from 'images/ic-locked.svg';
 
 import { PrimaryButton } from 'components/atoms/Button';
-import PageUp from 'components/atoms/PageUp';
 
 const Styled = {
   Content: styled.div`
@@ -75,7 +74,6 @@ function Content({ publishedAt, content, readerMode }) {
       <Styled.Date>
         {`${moment(publishedAt).format('ll HH:mm')} 발행`}
       </Styled.Date>
-      <PageUp />
     </>
   );
 }
