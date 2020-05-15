@@ -27,6 +27,10 @@ const Styled = {
       margin-left: 20px;
     `}
   `,
+  ContentWrapper: styled.div`
+    display: flex;
+    height: 100%;
+  `,
 };
 
 function DashboardTemplate({ projects, children }) {
@@ -34,7 +38,9 @@ function DashboardTemplate({ projects, children }) {
     <Styled.MainGrid as="main" role="main">
       <Styled.Sidebar projects={projects} />
       <Styled.Content>
-        {children}
+        <Styled.ContentWrapper>
+          {children}
+        </Styled.ContentWrapper>
       </Styled.Content>
     </Styled.MainGrid>
   );

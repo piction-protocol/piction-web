@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
-import { useCookies } from 'react-cookie';
-import moment from 'moment';
-import 'moment/locale/ko';
-import useSWR, { mutate } from 'swr';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
 
 import media from 'styles/media';
 
+import usePost from 'hooks/usePost';
+import useSubscription from 'hooks/useSubscription';
 import useProjectLayout from 'hooks/useNavigationLayout';
-import useCurrentUser from 'hooks/useCurrentUser';
-import useAPI from 'hooks/useAPI';
 import useLocalStorage from 'hooks/useLocalStorage';
 
 import Alert from 'components/externals/Alert';
@@ -47,73 +43,42 @@ const Styled = {
 function PostPage() {
   const { projectId, postId } = useParams();
   const [readerMode, setReaderMode] = useLocalStorage(`project/${projectId}/textmode`, false);
-  const [cookies, setCookie] = useCookies([`no-warning-${projectId}`]);
-  const [API, handleError] = useCallback(useAPI(), []);
-  const navigate = useNavigate();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory()
 
-  const { data: project, error: projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
-  useProjectLayout(project);
+  const {
+    project,
+    projectError,
+    post,
+    postError,
+    content,
+    revalidateContent,
+    needSponsorship,
+    like,
+    handleLike,
+    isExplicitContent,
+    consentWithExplicitContent
+  } = usePost(projectId, postId);
 
-  const { data: post, error: postError } = useSWR(`/projects/${projectId}/posts/${postId}`, { revalidateOnFocus: false });
+  const { sponsored, requestSubscription } = useSubscription(projectId)
 
   const postLocation = useLocation();
   const purchasePay = postLocation.search;
   const didCompletePurchase = (purchasePay === '?purchasePay');
 
   useEffect(() => {
-    if (projectError || postError) {
-      navigate('/404');
+    if (sponsored && !content) {
+      revalidateContent()
     }
-  }, [projectError, navigate, postError]);
+  }, [sponsored, content, revalidateContent])
 
-  const {
-    data: content,
-    error: contentError,
-    revalidate: revalidateContent,
-  } = useSWR(`/projects/${projectId}/posts/${postId}/content`, { revalidateOnFocus: false, shouldRetryOnError: false });
-
-  const [needSponsorship, setNeedSponsorship] = useState(false);
+  useProjectLayout(project);
 
   useEffect(() => {
-    if (contentError && contentError.response.data.code === 4003) {
-      setNeedSponsorship(true);
+    if (projectError || postError) {
+      history.push('/404');
     }
-    return () => setNeedSponsorship(false);
-  }, [contentError]);
-
-  const { currentUser } = useCurrentUser();
-  const { data: { like } = { like: false } } = useSWR(currentUser ? `/projects/${projectId}/posts/${postId}/like` : null, { revalidateOnFocus: false });
-
-  const handleLike = async () => {
-    try {
-      await API.post(projectId).like({ postId });
-      mutate(`/projects/${projectId}/posts/${postId}/like`, { like: true });
-      mutate(`/projects/${projectId}/posts/${postId}`, { ...post, likeCount: post.likeCount + 1 });
-    } catch (error) {
-      handleError(error.response.data);
-    }
-  };
-
-  const handleSubscription = async () => {
-    try {
-      const response = await API.membership.subscribe({
-        projectId,
-        membershipId: post.membership.id,
-        sponsorshipPrice: post.membership.price,
-      });
-      if (response.status === 200) {
-        revalidateContent();
-        setNeedSponsorship(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const shouldShowAdultPopup = project && project.adult && !cookies[`no-warning-${projectId}`];
-  const handleAdultPopupClose = () => {
-    setCookie(`no-warning-${projectId}`, true, { expires: moment().add(12, 'hours').toDate(), path: '/' });
-  };
+  }, [projectError, postError, history]);
 
   const headerLoaded = project && post;
   const contentLoaded = content && post;
@@ -125,7 +90,7 @@ function PostPage() {
         marginBottom: '0',
       } : null}
     >
-      {shouldShowAdultPopup && <AdultPopup close={handleAdultPopupClose} />}
+      {isExplicitContent && <AdultPopup close={consentWithExplicitContent} />}
 
       { didCompletePurchase && (
         <Alert>
@@ -154,7 +119,7 @@ function PostPage() {
         ) : (
           // FIXME: needSponsorship을 관리하는 코드를 개선
           post && post.membership && needSponsorship ? (
-            <Content.Locked handleSubscription={handleSubscription} post={post} redirectTo={window.location.href} />
+            <Content.Locked handleSubscription={requestSubscription} post={post} redirectTo={window.location.href} />
           ) : (
             <Content.Placeholder />
           )

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR, { trigger } from 'swr';
 
@@ -113,7 +113,8 @@ function ProjectForm({
   const [defaultImage, setDefaultImage] = useState({});
   const [errorMessage, setErrorMessage] = useState({});
   const [API] = useCallback(useAPI(), []);
-  const navigate = useNavigate();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
   const { data: categories = [] } = useSWR('/categories', { revalidateOnFocus: false });
 
   useEffect(() => {
@@ -166,7 +167,7 @@ function ProjectForm({
       } else {
         await API.project.create(formData);
         trigger('my/projects');
-        navigate(`${formData.uri}/posts`);
+        history.push(`${formData.uri}/posts`);
       }
     } catch (error) {
       setErrorMessage({

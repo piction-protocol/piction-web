@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -52,13 +52,14 @@ function CreatorProfilePage() {
   const { data: profile = { greetings: '', links: [] } } = useSWR(`creator-profiles/users/${creatorId}`, {
     shouldRetryOnError: false,
   });
-  const navigate = useNavigate();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
   const { data: projects = [] } = useSWR(`creator-profiles/users/${creatorId}/projects`, {
     shouldRetryOnError: false,
   });
 
   if (userError) {
-    navigate('/404');
+    history.push('/404');
   }
 
   return (

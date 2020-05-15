@@ -1,11 +1,11 @@
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 function useAPI() {
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+  const [cookies, setCookie] = useCookies(['access_token']);
   const accessToken = cookies.access_token;
-  const navigate = useNavigate();
+  const history = useHistory();
   const API = axios.create({
     baseURL: process.env.REACT_APP_API_URL || 'https://api-stg.piction.network/',
     headers: {
@@ -78,13 +78,7 @@ function useAPI() {
     delete: params => API.delete(`/projects/${projectId}/series/${params.seriesId}`),
   });
 
-  const session = {
-    create: params => API.post('/sessions', params),
-    delete: () => API.delete('/sessions'),
-  };
-
   const user = {
-    me: () => API.get('/users/me'),
     create: params => API.post('/users', params),
     update: params => API.put('/users/me', params),
     updatePassword: params => API.patch('/users/me/password', params),
@@ -103,14 +97,12 @@ function useAPI() {
   };
 
   const token = {
-    get: () => accessToken,
     create: (value, params) => setCookie('access_token', value, { ...params, path: '/' }),
-    delete: () => removeCookie('access_token', { path: '/' }),
   };
 
   const handleCommonError = ({ code }) => ({
-    4001: () => navigate('/login', { state: { redirectTo: window.location.pathname }, replace: true }),
-    4004: () => navigate('/404'),
+    4001: () => history.push('/login', { state: { redirectTo: window.location.pathname }, replace: true }),
+    4004: () => history.push('/404'),
   }[code]());
 
   return [{
@@ -122,7 +114,6 @@ function useAPI() {
     linka,
     recommended,
     series,
-    session,
     user,
     creatorProfile,
     newsletter,

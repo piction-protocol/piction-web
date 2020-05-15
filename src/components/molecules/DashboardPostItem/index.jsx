@@ -135,7 +135,7 @@ function DashboardPostItem({
         </Styled.Text>
       </Styled.Link>
       <Styled.Buttons>
-        <Link to={`${id}/edit`}>
+        <Link to={`/dashboard/${projectId}/posts/${id}/edit`}>
           수정
         </Link>
         <Styled.Delete onClick={handleDelete}>

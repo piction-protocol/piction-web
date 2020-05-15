@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import axios from 'axios';
@@ -8,7 +8,7 @@ import useCurrentUser from 'hooks/useCurrentUser';
 
 import media from 'styles/media';
 
-import withLoginChecker from 'components/LoginChecker';
+import { withLoginChecker } from 'components/LoginChecker';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import UserInfo from 'components/organisms/UserInfo';
@@ -60,6 +60,8 @@ function WalletPage() {
     return response.data.last;
   }, { revalidateOnFocus: false });
 
+  const { path } = useRouteMatch()
+
   return (
     <GridTemplate
       hero={(
@@ -87,12 +89,18 @@ function WalletPage() {
           { text: '출금', to: 'withdraw' },
         ]}
       />
-      <Routes component={({ children }) => <>{children}</>}>
-        <Route path="/" element={<Navigate to="transactions" />} />
-        <Route path="transactions" element={<Transactions />} />
-        <Route path="deposit" element={<Deposit wallet={wallet} />} />
-        <Route path="withdraw" element={<Withdraw wallet={wallet} />} />
-      </Routes>
+      <Switch>
+        <Route exact path={path}>
+          <Redirect to={`${path}/transactions`} />
+        </Route>
+        <Route path={`${path}/transactions`} component={Transactions} />
+        <Route path={`${path}/deposit`}>
+          <Deposit wallet={wallet} />
+        </Route>
+        <Route path={`${path}/withdraw`}>
+          <Withdraw wallet={wallet} />
+        </Route>
+      </Switch>
     </GridTemplate>
   );
 }

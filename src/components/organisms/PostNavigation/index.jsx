@@ -193,7 +193,7 @@ function PostNavigation({ projectId, postId, series }) {
     <Styled.Container>
       <Styled.PrevNext>
         {previousPost && (
-          <Styled.Prev to={`../${previousPost.id}`}>
+          <Styled.Prev to={`/project/${projectId}/posts/${previousPost.id}`}>
             <ChevronIcon />
             <Styled.Text>
               이전 포스트
@@ -204,7 +204,7 @@ function PostNavigation({ projectId, postId, series }) {
           </Styled.Prev>
         )}
         {nextPost && (
-          <Styled.Next to={`../${nextPost.id}`}>
+          <Styled.Next to={`/project/${projectId}/posts/${nextPost.id}`}>
             <Styled.Text>
               다음 포스트
               <Styled.PrevNextTitle>
@@ -219,20 +219,20 @@ function PostNavigation({ projectId, postId, series }) {
         <Styled.Series>
           <Styled.SeriesName>{series.name}</Styled.SeriesName>
           <Styled.PostCount>{`${series.postCount} 포스트`}</Styled.PostCount>
-          <Styled.AllPosts to={`../../series/${series.id}`}>
+          <Styled.AllPosts to={`/project/${projectId}/series/${series.id}`}>
             전체 목록
           </Styled.AllPosts>
           <Styled.PostList>
             {postList[postList.findIndex(({ post }) => String(post.id) === postId) + 1] ? (
-              <Styled.NextPost post={
-                postList[postList.findIndex(({ post }) => String(post.id) === postId) + 1].post
-              }
+              <Styled.NextPost 
+                post={postList[postList.findIndex(({ post }) => String(post.id) === postId) + 1].post} 
+                projectId={projectId}
               />
             ) : (
-              <Styled.NoNextPost to={`../../series/${series.id}`} />
+              <Styled.NoNextPost to={`/project/${projectId}/series/${series.id}`} />
             )}
             {postList.map(({ index, post }) => (
-              <Styled.Post to={`../${post.id}`} key={post.id}>
+              <Styled.Post to={`/project/${projectId}/posts/${post.id}`} key={post.id}>
                 {String(post.id) === postId ? (
                   <Styled.PostIndex>
                     <Styled.CurrentPostIcon />

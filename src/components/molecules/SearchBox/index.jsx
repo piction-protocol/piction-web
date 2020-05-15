@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { mediaQuery } from 'styles/media';
 import useMedia from 'hooks/useMedia';
@@ -68,14 +68,15 @@ function SearchBox({
   const [isOpened, setIsOpened] = useState(false);
   const [query, setQuery] = useState('');
   const isDesktop = useMedia(mediaQuery.desktop);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     event.target.querySelector('input').blur();
     setQuery('');
     setIsOpened(false);
-    navigate(`/search?query=${encodeURIComponent(query.trim())}`);
+    // FIXME: molecules에서 history에 대한 직접 접근을 제거
+    history.push(`/search?query=${encodeURIComponent(query.trim())}`);
   };
 
   const toggleModal = () => {

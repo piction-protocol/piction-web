@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 
 import styled from 'styled-components/macro';
 
@@ -17,15 +17,16 @@ const Styled = {
 };
 
 function ForgotPasswordPage() {
+  const { path } = useRouteMatch();
   return (
     <CompactTemplate>
       <Styled.Heading>
         비밀번호 재설정
       </Styled.Heading>
-      <Routes basepath="/forgot_password">
-        <Route path="/" element={<ForgotPasswordForm />} />
-        <Route path="/edit" element={<ResetPasswordForm />} />
-      </Routes>
+      <Switch>
+        <Route exact path={path} component={ForgotPasswordForm} />
+        <Route path={`${path}/edit`} component={ResetPasswordForm} />
+      </Switch>
     </CompactTemplate>
   );
 }

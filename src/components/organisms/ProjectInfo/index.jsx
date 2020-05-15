@@ -207,7 +207,7 @@ const Styled = {
 };
 
 function ProjectInfo({
-  project, handleSubscribe, isMyProject = false, sponsored, ...props
+  project, onToggleSubscription, isMyProject = false, sponsored, ...props
 }) {
   const { projects } = usePictionChoices();
   const isPictionChoice = projects && projects.includes(project.uri);
@@ -293,23 +293,25 @@ function ProjectInfo({
                   후원 중
                 </Styled.SubscribeButton>
               ) : (
-                <Styled.UnsubscribeButton onClick={handleSubscribe}>
+                <Styled.UnsubscribeButton onClick={onToggleSubscription}>
                   구독 중
                 </Styled.UnsubscribeButton>
               )
             ) : (currentUser ? (
-              <Styled.SubscribeButton onClick={handleSubscribe}>
+              <Styled.SubscribeButton onClick={onToggleSubscription}>
                 구독
               </Styled.SubscribeButton>
             ) : (
               <Styled.SubscribeButton
                 as={Link}
-                to="/login"
-                state={{
-                  redirectTo: encodeURIComponent(location.pathname),
+                to={{
+                  pathname: "/login",
+                  state: {
+                    redirectTo: encodeURIComponent(location.pathname),
+                  }
                 }}
               >
-                    구독
+                구독
               </Styled.SubscribeButton>
             ))}
           </Styled.Subscribe>
@@ -329,7 +331,7 @@ ProjectInfo.propTypes = {
   isMyProject: PropTypes.bool,
   sponsored: PropTypes.object,
   project: PropTypes.object.isRequired,
-  handleSubscribe: PropTypes.func.isRequired,
+  onToggleSubscription: PropTypes.func.isRequired,
   hasFanPasses: PropTypes.bool,
 };
 

@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import useSWR from 'swr';
 
 import useAPI from 'hooks/useAPI';
+import useAlert from 'hooks/useAlert';
 
 import GridTemplate from 'components/templates/GridTemplate';
 import { PrimaryButton } from 'components/atoms/Button';
@@ -46,18 +47,19 @@ function OptOut({ location: { search } }) {
     errorOnRetry: false,
   });
   const [API] = useAPI();
-  const navigate = useNavigate();
+  const { setSuccessAlert } = useAlert();
+  // FIXME: history에 대한 직접 접근 제거
+  const history = useHistory();
 
   if (newsletterError) {
-    navigate('/404');
+    history.push('/404');
   }
 
   const unsubscribe = async () => {
     try {
       await API.newsletter.deleteByToken({ token });
-      // FIXME: 토스트 메시지로 변경
-      alert('업데이트 알림 메일을 발송하지 않습니다.');
-      navigate('/');
+      setSuccessAlert('업데이트 알림 메일을 발송하지 않습니다.');
+      history.push('/');
     } catch (error) {
       console.log(error);
     }
