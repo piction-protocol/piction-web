@@ -9,6 +9,7 @@ import useAPI from 'hooks/useAPI';
 
 import Grid from 'styles/Grid';
 
+import InputLengthCounter from 'components/molecules/InputLengthCounter';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
@@ -128,6 +129,8 @@ function MembershipForm({
   const [isUnlimited, setIsUnlimited] = useState(!defaultValues.sponsorLimit);
   const [isDeletingMembership, setIsDeletingMembership] = useState(false);
   const [canDeleteMembership, setCanDeleteMembership] = useState(true);
+  const supportTitle = watch('name');
+  const supportExplain = watch('description');
 
   // Compute settlement amount when watching price or fees changed
   useEffect(() => {
@@ -184,13 +187,23 @@ function MembershipForm({
           </Styled.Level>
         </div>
       )}
-      <Styled.InputGroup inputRef={register} name="name" label="상품명" required>
+      <InputLengthCounter
+        inputRef={register}
+        name="name"
+        label="상품명"
+        style={{
+          gridColumn: '1 / 9',
+        }}
+        required
+        letterLength={supportTitle}
+        maxLength={30}
+      >
         {errors.name && (
           <ErrorMessage>
             {errors.name.message}
           </ErrorMessage>
         )}
-      </Styled.InputGroup>
+      </InputLengthCounter>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           inputRef={register({
@@ -230,7 +243,7 @@ function MembershipForm({
           )}
         </Styled.InputGroup>
       )}
-      <Styled.InputGroup
+      <InputLengthCounter
         inputRef={register({
           maxLength: {
             value: 100,
@@ -240,13 +253,18 @@ function MembershipForm({
         name="description"
         label="설명"
         placeholder="최대 100자"
+        style={{
+          gridColumn: '1 / 9',
+        }}
+        letterLength={supportExplain}
+        maxLength={100}
       >
         {errors.description && (
           <ErrorMessage>
             {errors.description.message}
           </ErrorMessage>
         )}
-      </Styled.InputGroup>
+      </InputLengthCounter>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
