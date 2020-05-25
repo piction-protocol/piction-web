@@ -34,8 +34,9 @@ const Styled = {
 };
 
 function InputLengthCounter({
-  letterLength, maxLength, name, label = null, spec = null, errorMessage = null, className = null, type = 'text', children = null, inputRef, ...props
+  letterContext, maxLength, name, label = null, spec = null, errorMessage = null, className = null, type = 'text', children = null, inputRef, ...props
 }) {
+  console.log(letterContext);
   return (
     <Styled.Group className={className}>
       {label && (
@@ -49,7 +50,7 @@ function InputLengthCounter({
         : <Input id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} />
       }
       <Styled.LengthCounter>
-        { `${letterLength.length} / ${maxLength}` }
+        {letterContext ? `${letterContext.length} / ${maxLength}` : `0 / ${maxLength}`}
       </Styled.LengthCounter>
       {children}
       {errorMessage && (
@@ -62,7 +63,7 @@ function InputLengthCounter({
 }
 
 InputLengthCounter.propTypes = {
-  letterLength: PropTypes.string.isRequired,
+  letterContext: PropTypes.string.isRequired,
   maxLength: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.node,
