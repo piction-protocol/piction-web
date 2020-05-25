@@ -102,6 +102,8 @@ function MembershipForm({
     data: defaultValues = {
       price: 0,
       sponsorLimit: 0,
+      name: '',
+      description: '',
     },
   } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), {
     suspense: true,
@@ -120,7 +122,11 @@ function MembershipForm({
     defaultValues,
   });
 
-  useEffect(() => reset(defaultValues), [reset, defaultValues]);
+  useEffect(() => {
+    if (membershipId) {
+      reset(defaultValues);
+    }
+  }, [reset, defaultValues, membershipId]);
 
   const watchingPrice = watch('price');
 
