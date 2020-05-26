@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 
 import Label from 'components/atoms/Label';
 import Input from 'components/atoms/Input';
+import Textarea from 'components/atoms/Textarea';
 import PasswordInput from 'components/atoms/Input/PasswordInput';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 
@@ -34,7 +35,7 @@ const Styled = {
 };
 
 function InputLengthCounter({
-  letterContext, maxLength, name, label = null, spec = null, errorMessage = null, className = null, type = 'text', children = null, inputRef, ...props
+  letterContext, maxLength, name, label = null, spec = null, errorMessage = null, className = null, type = 'text', children = null, inputRef, ment, ...props
 }) {
   console.log(letterContext);
   return (
@@ -47,7 +48,7 @@ function InputLengthCounter({
       )}
       {type === 'password'
         ? <PasswordInput id={name} name={name} ref={inputRef} invalid={!!errorMessage} {...props} />
-        : <Input id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} />
+        : (ment === 'reaction' ? <Textarea id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} /> : <Input id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} />)
       }
       <Styled.LengthCounter>
         {letterContext ? `${letterContext.length} / ${maxLength}` : `0 / ${maxLength}`}
@@ -65,6 +66,7 @@ function InputLengthCounter({
 InputLengthCounter.propTypes = {
   letterContext: PropTypes.string.isRequired,
   maxLength: PropTypes.number.isRequired,
+  ment: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.node,
   spec: PropTypes.string,
