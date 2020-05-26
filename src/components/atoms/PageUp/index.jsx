@@ -8,6 +8,8 @@ import { ReactComponent as UpwardIcon } from 'images/ic-arrow-upward.svg';
 const Styled = {
   // FIXME : grid, margin등의 위치 제어용 스타일 분리
   Button: styled.button`
+    cursor: pointer;
+    outline: none;
     display: flex;
     position: sticky;
     grid-column: -2 / -1;
@@ -31,7 +33,6 @@ const Styled = {
 function PageUp() {
   const [isHidden, setIsHidden] = useState(true);
   const scrollLocation = window.scrollY;
-
 
   useEffect(() => {
     const listener = () => {
