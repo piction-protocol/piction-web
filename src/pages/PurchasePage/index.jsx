@@ -320,17 +320,17 @@ function PurchasePage({
               <br />
               <Styled.TextBox
                 placeholder="후원 메세지"
-                name="support"
+                name="meesageOfSponsorship"
                 ref={register({
                   maxLength: {
                     value: 1000,
-                    message: '설명은 최대 1000자까지 입력 가능합니다.',
+                    message: '후원 감사메세지는 최대 1000자까지 입력 가능합니다.',
                   },
                 })}
               />
-              {errors.support && (
+              {errors.meesageOfSponsorship && (
                 <ErrorMessage>
-                  {errors.support.message}
+                  {errors.meesageOfSponsorship.message}
                 </ErrorMessage>
               )}
             </Styled.Fees>

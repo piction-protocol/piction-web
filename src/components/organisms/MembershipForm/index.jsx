@@ -105,7 +105,7 @@ function MembershipForm({
       sponsorLimit: 0,
       name: '',
       description: '',
-      reaction: '',
+      messageOfThanks: '',
     },
   } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), {
     suspense: true,
@@ -137,7 +137,7 @@ function MembershipForm({
   const [canDeleteMembership, setCanDeleteMembership] = useState(true);
   const supportTitle = watch('name');
   const supportExplain = watch('description');
-  const supportReaction = watch('reaction');
+  const supportReaction = watch('messageOfThanks');
 
   // Compute settlement amount when watching price or fees changed
   useEffect(() => {
@@ -285,7 +285,7 @@ function MembershipForm({
             message: '감사 메세지는 최대 1000자까지 입력 가능합니다.',
           },
         })}
-        name="reaction"
+        name="messageOfThanks"
         ment="reaction"
         label="후원자에게 감사의 한마디를 전달하세요. 해당 메시지는 후원 플랜 구매자에게 이메일로 발송됩니다."
         placeholder="최대 1000자"
@@ -295,9 +295,9 @@ function MembershipForm({
         letterContext={supportReaction}
         maxLength={1000}
       >
-        {errors.reaction && (
+        {errors.messageOfThanks && (
           <ErrorMessage>
-            {errors.reaction.message}
+            {errors.messageOfThanks.message}
           </ErrorMessage>
         )}
       </InputLengthCounter>
