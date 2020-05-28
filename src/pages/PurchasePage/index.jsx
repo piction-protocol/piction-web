@@ -4,6 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useLocation } from '@reach/router';
+import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -17,6 +18,8 @@ import useAPI from 'hooks/useAPI';
 
 import withLoginChecker from 'components/LoginChecker';
 
+
+import ErrorMessage from 'components/atoms/ErrorMessage';
 import GridTemplate from 'components/templates/GridTemplate';
 import LinkaPayment from 'components/molecules/LinkaPayment';
 import WideThumbnail from 'components/atoms/ContentImage/WideThumbnail';
@@ -157,6 +160,13 @@ const Styled = {
     width: auto;
     height: 10px;
   `,
+  TextBox: styled.textarea`
+    width: 100%;
+    height: 80px;
+    outline: none;
+    resize: none;
+    border: 1px solid var(--gray);
+  `,
 };
 
 function PurchasePage({
@@ -178,20 +188,26 @@ function PurchasePage({
     revalidateOnFocus: false,
   });
 
+  const {
+    register,
+    errors,
+    handleSubmit,
+  } = useForm();
+
   const handleError = (error) => {
     setAlert({ text: error.response.data.message, type: 'error' });
   };
 
-  const handleSubscribe = async (event) => {
-    event.preventDefault();
+  const handleSubscribe = async (data) => {
     try {
-      const { data } = await API.linka.getLinkaPayment({
+      const { data: paymentData } = await API.linka.getLinkaPayment({
         projectId,
         membershipId,
         sponsorshipPrice: membership.price,
         nextUrl: redirectPage,
+        ...data,
       });
-      setLinkaPayment(data);
+      setLinkaPayment(paymentData);
     } catch (error) {
       handleError(error);
     } finally {
@@ -210,7 +226,7 @@ function PurchasePage({
         image={project?.wideThumbnail}
       />
       <GridTemplate>
-        <Styled.Wrapper onSubmit={handleSubscribe}>
+        <Styled.Wrapper onSubmit={handleSubmit(handleSubscribe)}>
           <Styled.Heading>
             후원 플랜 결제
           </Styled.Heading>
@@ -261,35 +277,64 @@ function PurchasePage({
             )}
           </Styled.Section>
           {fees && project && membership && (
+            <Styled.Section>
+              <Styled.Fees>
+                <Styled.FeesTitle>송금 안내</Styled.FeesTitle>
+                <Styled.Ul>
+                  <Styled.Li>
+                    {`기본 수수료 ${fees.contentsDistributorRate}%`}
+                    <Styled.FeesAmount>
+                      {`${membership.price * (fees.contentsDistributorRate) / 100} PXL`}
+                    </Styled.FeesAmount>
+                  </Styled.Li>
+                  <Styled.Li>
+                    {project.user.username}
+                    <Styled.FeesAmount>
+                      {`${membership.price * (100 - fees.contentsDistributorRate) / 100} PXL`}
+                    </Styled.FeesAmount>
+                  </Styled.Li>
+                </Styled.Ul>
+                <Styled.Notice>
+                  결제 완료 시 결제 금액이 즉시
+                  {' '}
+                  <strong>
+                    {project.user.username}
+                  </strong>
+                  님의 계좌로 송금되며,
+                  {' '}
+                  <Styled.Em>
+                    환불은 불가능합니다.
+                  </Styled.Em>
+                </Styled.Notice>
+              </Styled.Fees>
+            </Styled.Section>
+          )}
+          {fees && project && membership && (
+          <Styled.Section>
             <Styled.Fees>
-              <Styled.FeesTitle>송금 안내</Styled.FeesTitle>
-              <Styled.Ul>
-                <Styled.Li>
-                  {`기본 수수료 ${fees.contentsDistributorRate}%`}
-                  <Styled.FeesAmount>
-                    {`${membership.price * (fees.contentsDistributorRate) / 100} PXL`}
-                  </Styled.FeesAmount>
-                </Styled.Li>
-                <Styled.Li>
-                  {project.user.username}
-                  <Styled.FeesAmount>
-                    {`${membership.price * (100 - fees.contentsDistributorRate) / 100} PXL`}
-                  </Styled.FeesAmount>
-                </Styled.Li>
-              </Styled.Ul>
-              <Styled.Notice>
-                결제 완료 시 결제 금액이 즉시
+              <Styled.FeesTitle>
+                {project.user.username}
                 {' '}
-                <strong>
-                  {project.user.username}
-                </strong>
-                님의 계좌로 송금되며,
-                {' '}
-                <Styled.Em>
-                  환불은 불가능합니다.
-                </Styled.Em>
-              </Styled.Notice>
+                작가님에게 후원의 메세지를 전달하세요.
+              </Styled.FeesTitle>
+              <br />
+              <Styled.TextBox
+                placeholder="후원 메세지"
+                name="meesageOfSponsorship"
+                ref={register({
+                  maxLength: {
+                    value: 1000,
+                    message: '후원 감사메세지는 최대 1000자까지 입력 가능합니다.',
+                  },
+                })}
+              />
+              {errors.meesageOfSponsorship && (
+                <ErrorMessage>
+                  {errors.meesageOfSponsorship.message}
+                </ErrorMessage>
+              )}
             </Styled.Fees>
+          </Styled.Section>
           )}
           <Styled.CheckboxLabel>
             <Styled.Checkbox checked={isAgreed} onChange={e => setIsAgreed(e.target.checked)} />

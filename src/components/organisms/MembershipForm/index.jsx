@@ -105,12 +105,12 @@ function MembershipForm({
       sponsorLimit: 0,
       name: '',
       description: '',
+      messageOfThanks: '',
     },
   } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), {
     suspense: true,
     revalidateOnFocus: false,
   });
-
 
   const {
     register,
@@ -137,6 +137,7 @@ function MembershipForm({
   const [canDeleteMembership, setCanDeleteMembership] = useState(true);
   const supportTitle = watch('name');
   const supportExplain = watch('description');
+  const supportReaction = watch('messageOfThanks');
 
   // Compute settlement amount when watching price or fees changed
   useEffect(() => {
@@ -194,14 +195,20 @@ function MembershipForm({
         </div>
       )}
       <InputLengthCounter
-        inputRef={register}
+        inputRef={register({
+          maxLength: {
+            value: 30,
+            message: 'Tier 이름의 최대 길이는 30자입니다.',
+          },
+        })}
+        placeholder="최대 30자"
         name="name"
         label="상품명"
         style={{
           gridColumn: '1 / 9',
         }}
         required
-        letterLength={supportTitle}
+        letterContext={supportTitle}
         maxLength={30}
       >
         {errors.name && (
@@ -262,12 +269,35 @@ function MembershipForm({
         style={{
           gridColumn: '1 / 9',
         }}
-        letterLength={supportExplain}
+        letterContext={supportExplain}
         maxLength={100}
       >
         {errors.description && (
           <ErrorMessage>
             {errors.description.message}
+          </ErrorMessage>
+        )}
+      </InputLengthCounter>
+      <InputLengthCounter
+        inputRef={register({
+          maxLength: {
+            value: 1000,
+            message: '감사 메세지는 최대 1000자까지 입력 가능합니다.',
+          },
+        })}
+        name="messageOfThanks"
+        ment="reaction"
+        label="후원자에게 감사의 한마디를 전달하세요. 해당 메시지는 후원 플랜 구매자에게 이메일로 발송됩니다."
+        placeholder="최대 1000자"
+        style={{
+          gridColumn: '1 / 9',
+        }}
+        letterContext={supportReaction}
+        maxLength={1000}
+      >
+        {errors.messageOfThanks && (
+          <ErrorMessage>
+            {errors.messageOfThanks.message}
           </ErrorMessage>
         )}
       </InputLengthCounter>
