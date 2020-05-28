@@ -37,7 +37,6 @@ const Styled = {
 function InputLengthCounter({
   letterContext, maxLength, name, label = null, spec = null, errorMessage = null, className = null, type = 'text', children = null, inputRef, ment, ...props
 }) {
-  console.log(letterContext);
   return (
     <Styled.Group className={className}>
       {label && (
