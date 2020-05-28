@@ -320,7 +320,7 @@ function PurchasePage({
               <br />
               <Styled.TextBox
                 placeholder="후원 메세지"
-                name="meesageOfSponsorship"
+                name="messageOfSponsorship"
                 ref={register({
                   maxLength: {
                     value: 1000,
