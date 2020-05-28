@@ -9,7 +9,6 @@ import media from 'styles/media';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import contentsShowcaseImages from './showcases.png';
-import { ReactComponent as PictionLogo } from './piction-logo.svg';
 
 const PrimaryButtonLink = styled(PrimaryButton).attrs({
   as: Link,
@@ -137,6 +136,7 @@ const Li = styled.li`
   margin: 5px auto;
   padding: 20px;
   width: 100%;
+  list-style: none;
   ${media.desktop`
     width: 720px;
     flex-direction: row;
@@ -193,19 +193,6 @@ const ListItemHeading = styled.h4`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 5px;
-`;
-
-const Promotion = styled.div`
-  background-color: var(--white);
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  width: 100%;
-  margin: 5px auto;
-  align-items: center;
-  ${media.desktop`
-    width: 720px;
-  `}
 `;
 
 function CreatorsGuide() {
@@ -275,17 +262,6 @@ function CreatorsGuide() {
               이제 여러분의 차례입니다. 꾸준하게 이야기를 들려주세요. 반드시 내 프로젝트를 좋아하는 팬이 생길거에요. 세상을 넓고 이야기는 다양합니다. 누구에게 팬은 있습니다.
             </ListItem>
           </Ol>
-
-          <SectionSubheading>초기 창작자에게는 후원금을 지원합니다</SectionSubheading>
-          <Promotion>
-            <PictionLogo />
-            <ListItemHeading style={{ marginTop: '16px' }}>초기 창작자 분들을 위한 1+1 이벤트!</ListItemHeading>
-            <p style={{ marginBottom: '20px' }}>
-              후원 서비스 오픈을 기념하여 기간 한정으로 초기 창작자 분들에게는 기간 동안 모으신 후원금 만큼을 픽션 생태계 성장 기금에서 1+1으로 지원합니다. 이벤트 기간 동안 모집된 자발적 후원 금액의 100%만큼을 이벤트 종료 후 일괄 지급해 드립니다.
-            </p>
-            <small>2020년 4월 30일 24:00까지 모금된 후원금 기준</small>
-            <small>1인당 최대 5만 PXL, 총 100만 PXL 지원</small>
-          </Promotion>
         </Chevron>
       </Section>
       <Section>

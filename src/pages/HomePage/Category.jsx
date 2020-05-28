@@ -92,6 +92,7 @@ const Styled = {
     scroll-snap-align: start;
     overflow: hidden;
     text-align: center;
+    list-style: none;
     ${media.desktop`
       grid-column: span 1;
     `}
@@ -126,7 +127,7 @@ const Category = (props) => {
             CATEGORY
           </Styled.Title>
           <Styled.SubTitle>
-             원하는 카테고리로 픽션 프로젝트를 탐색해 보세요.
+            원하는 카테고리로 픽션 프로젝트를 탐색해 보세요.
           </Styled.SubTitle>
         </Styled.Texts>
         <Styled.List>
