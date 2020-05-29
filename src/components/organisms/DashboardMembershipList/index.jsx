@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
+import QRCode from 'qrcode.react';
+import { exportComponentAsPNG } from 'react-component-export-image';
 
 import Grid from 'styles/Grid';
 
@@ -22,6 +24,46 @@ const Styled = {
     > * {
       margin-bottom: var(--row-gap);
     }
+  `,
+  SupportQR: styled.article`
+    display: flex;
+    position: relative;
+    flex-flow: column;
+    padding: 24px;
+    border: 1px solid #e8e8e8;
+    background-color: var(--white);
+    font-size: var(--font-size--small);
+    grid-column: 1 / -1;
+  `,
+  SupportQRName: styled.h2`
+  margin-bottom: 8px;
+  font-size: var(--font-size--large);
+  font-weight: bold;
+  `,
+  QRCode: styled(QRCode)`
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    right: 20px;
+    top: 25px;
+  `,
+  QRBackgroundImg: styled.div`
+  background: url(${props => props.image}) no-repeat center center;
+  background-size: cover;
+  height: calc(225/1920*100vw);
+  `,
+  DownloadQR: styled(PrimaryButton)`
+    margin-top: 10px;
+    padding: 14px 20px;
+    width: 135px;
+  `,
+  DownloadImg: styled.div`
+    grid-column: 1 / -1;
+    /* position: absolute;
+    top: -9999999999999999%; */
+  `,
+  ImgTitle: styled.div`
+    grid-column: 1 / - 1;
   `,
   Membership: styled(Membership)`
     grid-column: 1 / -1;
@@ -83,12 +125,48 @@ const Styled = {
 function DashboardMembershipList({ title, projectId }) {
   const { data: project } = useSWR(`/projects/${projectId}`, { suspense: true });
   const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
+  const componentRef = useRef();
+  console.log({ project });
+
+  const ComponentToPrint = React.forwardRef((props, ref) => (
+    <Styled.DownloadImg ref={ref} className="DownloadImg">
+      <Styled.QRBackgroundImg image={project.wideThumbnail} />
+      <Styled.ImgTitle>
+        {project.user.username}
+        님은 여러분의 후원을 기다리고 있습니다.
+      </Styled.ImgTitle>
+      <Styled.ImgTitle>
+        우측의 QR코드를 스캔하여 간편하게 후원하세요.
+      </Styled.ImgTitle>
+      <QRCode
+        id="qr-gen"
+        value="https://piction.network"
+        size={100}
+        level="H"
+        includeMargin
+      />
+    </Styled.DownloadImg>
+  ));
 
   return (
     <Styled.Container>
       <Heading>{title}</Heading>
       {project.activeMembership ? (
         <Grid columns={9}>
+          <ComponentToPrint ref={componentRef} />
+          <Styled.SupportQR>
+            <Styled.SupportQRName>QR코드 배너 만들기</Styled.SupportQRName>
+            <Styled.QRCode
+              id="qr-gen"
+              value="https://piction.network"
+              size={110}
+              level="H"
+              // includeMargin
+            />
+            <Styled.DownloadQR onClick={() => exportComponentAsPNG(componentRef)}>
+              다운로드
+            </Styled.DownloadQR>
+          </Styled.SupportQR>
           {membershipList.map(membership => membership.price > 0 && (
             <Styled.Membership {...membership} key={membership.id}>
               <Styled.Price>
