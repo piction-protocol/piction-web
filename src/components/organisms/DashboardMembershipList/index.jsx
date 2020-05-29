@@ -8,6 +8,7 @@ import { exportComponentAsPNG } from 'react-component-export-image';
 
 import Grid from 'styles/Grid';
 import { ReactComponent as PictionLogo } from 'images/img-logo-piction-symbol-bl.svg';
+import { ReactComponent as Downward } from 'images/ic-arrow-downward.svg';
 
 import Membership from 'components/molecules/Membership';
 import Heading from 'components/atoms/Heading';
@@ -56,7 +57,8 @@ const Styled = {
   DownloadQRButton: styled(PrimaryButton)`
     margin-top: 10px;
     padding: 14px 20px;
-    width: 135px;
+    width: 115px;
+    padding-bottom: 31px;
   `,
   DownloadQRCode: styled(QRCode)`
     position: absolute;
@@ -72,11 +74,11 @@ const Styled = {
     position: relative;
   `,
   DownloadImg: styled.div`
-    grid-column: 1 / -1;
+    position: absolute;
+    width: 781px;
     border: 1px solid #e8e8e8;
     background-color: white;
-    /* position: absolute;
-    top: -9999999999999999%; */
+    top: -999999999999%;
   `,
   DownloadTitle: styled.div`
     font-size: 17px;
@@ -89,6 +91,16 @@ const Styled = {
   DownloadSubTitle: styled.div`
   margin: 6px 0 25px 20px;
   font-size: 15px;
+  `,
+  DownloadLetter: styled.span`
+    position: absolute;
+    right: 19px;
+    top: 11.4px;
+    font-size: 15px;
+  `,
+  Downward: styled(Downward)`
+    position: absolute;
+    left: 18px;
   `,
   Membership: styled(Membership)`
     grid-column: 1 / -1;
@@ -157,7 +169,6 @@ function DashboardMembershipList({ title, projectId }) {
     <Styled.DownloadImg ref={ref}>
       <Styled.DownloadWrap>
         <Styled.DownloadBackground image={`${project.wideThumbnail}?quality=80&output=webp`} crossOrigin="anonymous" />
-        {/* <Styled.DownloadBackground image={project.wideThumbnail} /> */}
         <Styled.DownloadPictionLogo />
         <Styled.DownloadTitle>
           <Styled.DownloadTitleUserName>{project.user.username}</Styled.DownloadTitleUserName>
@@ -192,7 +203,8 @@ function DashboardMembershipList({ title, projectId }) {
               level="H"
             />
             <Styled.DownloadQRButton onClick={() => exportComponentAsPNG(componentRef)}>
-              다운로드
+              <Styled.Downward />
+              <Styled.DownloadLetter>다운로드</Styled.DownloadLetter>
             </Styled.DownloadQRButton>
           </Styled.SupportQR>
           {membershipList.map(membership => membership.price > 0 && (
