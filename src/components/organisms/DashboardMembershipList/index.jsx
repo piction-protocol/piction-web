@@ -152,7 +152,6 @@ function DashboardMembershipList({ title, projectId }) {
   const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
   const location = useLocation();
   const componentRef = useRef();
-  console.log({ project, location });
 
   const ComponentToPrint = React.forwardRef((props, ref) => (
     <Styled.DownloadImg ref={ref}>
