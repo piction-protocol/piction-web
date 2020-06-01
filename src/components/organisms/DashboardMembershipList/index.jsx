@@ -27,6 +27,15 @@ const Styled = {
       margin-bottom: var(--row-gap);
     }
   `,
+  DownloadImg: styled.div`
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    width: 720px;
+    height: 355px;
+    background-color: white;
+    top: -99999999%;
+  `,
   SupportQR: styled.article`
     display: flex;
     position: relative;
@@ -38,9 +47,9 @@ const Styled = {
     grid-column: 1 / -1;
   `,
   SupportQRName: styled.h2`
-  margin-bottom: 8px;
-  font-size: var(--font-size--large);
-  font-weight: bold;
+    margin-bottom: 8px;
+    font-size: var(--font-size--large);
+    font-weight: bold;
   `,
   QRCode: styled(QRCode)`
     height: 100px;
@@ -50,47 +59,50 @@ const Styled = {
     top: 25px;
   `,
   DownloadBackground: styled.div`
-  background: url(${props => props.image}) no-repeat center center;
-  background-size: cover;
-  height: calc(225/1920*100vw);
+    background: url(${props => props.image}) no-repeat center center;
+    background-size: cover;
+    height: 225px;
+    width: 720px;
   `,
   DownloadQRButton: styled(PrimaryButton)`
     margin-top: 10px;
     padding: 14px 20px;
     width: 115px;
     padding-bottom: 31px;
-  `,
-  DownloadQRCode: styled(QRCode)`
-    position: absolute;
-    top: 145px;
-    right: 15px;
+    outline: none;
   `,
   DownloadPictionLogo: styled(PictionLogo)`
-    margin-left: 20px;
     margin-top: 20px;
   `,
   DownloadWrap: styled.div`
-    grid-column: 1 / -1;
-    position: relative;
-  `,
-  DownloadImg: styled.div`
-    position: absolute;
-    width: 781px;
-    border: 1px solid #e8e8e8;
-    background-color: white;
-    top: -999999999999%;
+    display: flex;
+    width: 720px;
+    height: 130px;
+    border-left: 1px solid #e8e8e8;
+    border-right:1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
   `,
   DownloadTitle: styled.div`
-    font-size: 17px;
-    margin: 4px 0 6px 20px;
-  `,
-  DownloadTitleUserName: styled.span`
-    font-weight: 600;
-    color: #1a92ff;
+    font-size: var(--font-size--big);
+    padding-top: 9px;
+    font-family: NotoSansCJKkr;
   `,
   DownloadSubTitle: styled.div`
-  margin: 6px 0 25px 20px;
-  font-size: 15px;
+    padding-top: 7px;
+    font-family: NotoSansCJKkr;
+    font-size: var(--font-size--small);
+  `,
+  DownloadTitleUserName: styled.span`
+    font-weight: 750;
+    font-family: NotoSansCJKkr;
+    color: #1a92ff;
+  `,
+  LeftWrap: styled.div`
+    padding-left: 31px;
+  `,
+  RightWrap: styled.div`
+    padding-left: 190px;
+    padding-top: 8px;
   `,
   DownloadLetter: styled.span`
     position: absolute;
@@ -125,7 +137,7 @@ const Styled = {
   PeopleIcon: styled(PeopleIcon)`
     width: 18px;
     margin-right: 4px;
-    color: vaR(--gray);
+    color: var(--gray);
   `,
   Edit: styled(Link)`
     position: absolute;
@@ -167,23 +179,27 @@ function DashboardMembershipList({ title, projectId }) {
 
   const ComponentToPrint = React.forwardRef((props, ref) => (
     <Styled.DownloadImg ref={ref}>
+      <Styled.DownloadBackground image={`${project.wideThumbnail}?quality=80&output=webp`} crossOrigin="anonymous" />
       <Styled.DownloadWrap>
-        <Styled.DownloadBackground image={`${project.wideThumbnail}?quality=80&output=webp`} crossOrigin="anonymous" />
-        <Styled.DownloadPictionLogo />
-        <Styled.DownloadTitle>
-          <Styled.DownloadTitleUserName>{project.user.username}</Styled.DownloadTitleUserName>
-          님은 여러분의 후원을 기다리고 있습니다.
-        </Styled.DownloadTitle>
-        <Styled.DownloadSubTitle>
-          우측의 QR코드를 스캔하여 간편하게 후원하세요.
-        </Styled.DownloadSubTitle>
-        <Styled.DownloadQRCode
-          id="qr-gen"
-          value={`${location.origin}/project/${project.uri}/memberships`}
-          size={120}
-          level="H"
-          includeMargin
-        />
+        <Styled.LeftWrap>
+          <Styled.DownloadPictionLogo />
+          <Styled.DownloadTitle>
+            <Styled.DownloadTitleUserName>{project.user.username}</Styled.DownloadTitleUserName>
+            님은 여러분의 후원을 기다리고 있습니다.
+          </Styled.DownloadTitle>
+          <Styled.DownloadSubTitle>
+            우측의 QR코드를 스캔하여 간편하게 후원하세요.
+          </Styled.DownloadSubTitle>
+        </Styled.LeftWrap>
+        <Styled.RightWrap>
+          <QRCode
+            id="qr-gen"
+            value={`${location.origin}/project/${project.uri}/memberships`}
+            size={114}
+            level="H"
+            includeMargin
+          />
+        </Styled.RightWrap>
       </Styled.DownloadWrap>
     </Styled.DownloadImg>
   ));
