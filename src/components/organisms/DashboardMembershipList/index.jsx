@@ -16,7 +16,7 @@ import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
 import { ReactComponent as EditIcon } from 'images/ic-edit.svg';
-import dummyImage from 'images/img-dummy-1440x450.jpg';
+import dummyImage from 'images/img-projects.png';
 
 const Styled = {
   Container: styled.div`
