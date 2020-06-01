@@ -42,8 +42,6 @@ const Styled = {
     height: 225px;
     width: 720px;
   `,
-  DownloadPictionLogo: styled(PictionLogo)`
-  `,
   DownloadWrap: styled.div`
     display: flex;
     width: 720px;
@@ -75,15 +73,15 @@ const Styled = {
     padding: 0 8px;
   `,
   SupportQR: styled.article`
-  display: flex;
-  position: relative;
-  flex-flow: row;
-  padding: 24px;
-  border: 1px solid #e8e8e8;
-  background-color: var(--white);
-  font-size: var(--font-size--small);
-  grid-column: 1 / -1;
-`,
+    display: flex;
+    position: relative;
+    flex-flow: row;
+    padding: 24px;
+    border: 1px solid #e8e8e8;
+    background-color: var(--white);
+    font-size: var(--font-size--small);
+    grid-column: 1 / -1;
+  `,
   SupportQRName: styled.h2`
     margin-bottom: 24px;
     font-size: var(--font-size--large);
@@ -179,7 +177,7 @@ function DashboardMembershipList({ title, projectId }) {
       <Styled.DownloadBackground image={backgroundImageUrl} crossOrigin="anonymous" />
       <Styled.DownloadWrap>
         <Styled.LeftWrap>
-          <Styled.DownloadPictionLogo />
+          <PictionLogo />
           <Styled.DownloadTitle>
             <Styled.DownloadTitleUserName>
               {project.user.username}
