@@ -170,7 +170,9 @@ function DashboardMembershipList({ title, projectId }) {
   const location = useLocation();
   const componentRef = useRef();
 
-  const backgroundImageUrl = process.env.NODE_ENV === 'development' ? dummyImage : `${project.wideThumbnail}?quality=80&output=webp`;
+  const backgroundImageisNull = `${project.wideThumbnail}` === 'null' ? 'dummy' : '';
+  const NodeEnv = process.env.NODE_ENV === 'development' ? 'dummy' : '';
+  const backgroundImageUrl = (NodeEnv) || (backgroundImageisNull) === 'dummy' ? dummyImage : `${project.wideThumbnail}?quality=80&output=webp`;
 
   const ComponentToPrint = React.forwardRef((props, ref) => (
     <Styled.DownloadImg ref={ref}>
