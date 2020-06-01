@@ -34,7 +34,9 @@ const Styled = {
     position: absolute;
     width: 720px;
     background-color: white;
-    top: -99999999%;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, -100%);
   `,
   DownloadBackground: styled.div`
     background: url(${props => props.image}) no-repeat center center;
