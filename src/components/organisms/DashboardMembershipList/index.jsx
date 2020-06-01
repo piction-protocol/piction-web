@@ -16,6 +16,7 @@ import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
 import { ReactComponent as PeopleIcon } from 'images/ic-people.svg';
 import { ReactComponent as EditIcon } from 'images/ic-edit.svg';
+import dummyImage from 'images/img-dummy-1440x450.jpg';
 
 const Styled = {
   Container: styled.div`
@@ -32,31 +33,8 @@ const Styled = {
     margin: 0;
     position: absolute;
     width: 720px;
-    height: 355px;
     background-color: white;
     top: -99999999%;
-  `,
-  SupportQR: styled.article`
-    display: flex;
-    position: relative;
-    flex-flow: column;
-    padding: 24px;
-    border: 1px solid #e8e8e8;
-    background-color: var(--white);
-    font-size: var(--font-size--small);
-    grid-column: 1 / -1;
-  `,
-  SupportQRName: styled.h2`
-    margin-bottom: 8px;
-    font-size: var(--font-size--large);
-    font-weight: bold;
-  `,
-  QRCode: styled(QRCode)`
-    height: 100px;
-    width: 100px;
-    position: absolute;
-    right: 20px;
-    top: 25px;
   `,
   DownloadBackground: styled.div`
     background: url(${props => props.image}) no-repeat center center;
@@ -64,55 +42,72 @@ const Styled = {
     height: 225px;
     width: 720px;
   `,
-  DownloadQRButton: styled(PrimaryButton)`
-    margin-top: 10px;
-    padding: 14px 20px;
-    width: 115px;
-    padding-bottom: 31px;
-    outline: none;
-  `,
   DownloadPictionLogo: styled(PictionLogo)`
-    margin-top: 20px;
   `,
   DownloadWrap: styled.div`
     display: flex;
     width: 720px;
-    height: 130px;
+    align-items: center;
     border-left: 1px solid #e8e8e8;
     border-right:1px solid #e8e8e8;
     border-bottom: 1px solid #e8e8e8;
   `,
   DownloadTitle: styled.div`
+    display: flex;
+    align-items: center;
     font-size: var(--font-size--big);
-    padding-top: 9px;
-    font-family: NotoSansCJKkr;
   `,
   DownloadSubTitle: styled.div`
     padding-top: 7px;
-    font-family: NotoSansCJKkr;
     font-size: var(--font-size--small);
   `,
   DownloadTitleUserName: styled.span`
-    font-weight: 750;
-    font-family: NotoSansCJKkr;
-    color: #1a92ff;
+    font-weight: bold;
+    color: var(--blue);
   `,
   LeftWrap: styled.div`
-    padding-left: 31px;
+    display: flex;
+    flex-flow: column;
+    padding: 24px 0 24px 32px;
   `,
   RightWrap: styled.div`
-    padding-left: 190px;
-    padding-top: 8px;
+    margin-left: auto;
+    padding: 0 8px;
   `,
-  DownloadLetter: styled.span`
-    position: absolute;
-    right: 19px;
-    top: 11.4px;
-    font-size: 15px;
+  SupportQR: styled.article`
+  display: flex;
+  position: relative;
+  flex-flow: row;
+  padding: 24px;
+  border: 1px solid #e8e8e8;
+  background-color: var(--white);
+  font-size: var(--font-size--small);
+  grid-column: 1 / -1;
+`,
+  SupportQRName: styled.h2`
+    margin-bottom: 24px;
+    font-size: var(--font-size--large);
+    font-weight: bold;
+  `,
+  QRCodeWrap: styled.div`
+    padding-top: 5px;
+    padding-left: 365px;
   `,
   Downward: styled(Downward)`
-    position: absolute;
-    left: 18px;
+    margin: 10px 0 10px 12px;
+    box-sizing: content-box;
+  `,
+  DownloadQRButton: styled(PrimaryButton)`
+    display: flex;
+    padding: 0;
+    width: 104px;
+    outline: none;
+  `,
+  DownloadLetter: styled.div`
+    width: 52px;
+    height: 20px;
+    padding: 7px 0 9px 8px;
+    box-sizing: content-box;
   `,
   Membership: styled(Membership)`
     grid-column: 1 / -1;
@@ -177,14 +172,18 @@ function DashboardMembershipList({ title, projectId }) {
   const location = useLocation();
   const componentRef = useRef();
 
+  const backgroundImageUrl = process.env.NODE_ENV === 'development' ? dummyImage : `${project.wideThumbnail}?quality=80&output=webp`;
+
   const ComponentToPrint = React.forwardRef((props, ref) => (
     <Styled.DownloadImg ref={ref}>
-      <Styled.DownloadBackground image={`${project.wideThumbnail}?quality=80&output=webp`} crossOrigin="anonymous" />
+      <Styled.DownloadBackground image={backgroundImageUrl} crossOrigin="anonymous" />
       <Styled.DownloadWrap>
         <Styled.LeftWrap>
           <Styled.DownloadPictionLogo />
           <Styled.DownloadTitle>
-            <Styled.DownloadTitleUserName>{project.user.username}</Styled.DownloadTitleUserName>
+            <Styled.DownloadTitleUserName>
+              {project.user.username}
+            </Styled.DownloadTitleUserName>
             님은 여러분의 후원을 기다리고 있습니다.
           </Styled.DownloadTitle>
           <Styled.DownloadSubTitle>
@@ -211,17 +210,21 @@ function DashboardMembershipList({ title, projectId }) {
         <Grid columns={9}>
           <ComponentToPrint ref={componentRef} />
           <Styled.SupportQR>
-            <Styled.SupportQRName>QR코드 배너 만들기</Styled.SupportQRName>
-            <Styled.QRCode
-              id="qr-gen"
-              value={`${location.origin}/project/${project.uri}/memberships`}
-              size={110}
-              level="H"
-            />
-            <Styled.DownloadQRButton onClick={() => exportComponentAsPNG(componentRef)}>
-              <Styled.Downward />
-              <Styled.DownloadLetter>다운로드</Styled.DownloadLetter>
-            </Styled.DownloadQRButton>
+            <div>
+              <Styled.SupportQRName>QR코드 배너 만들기</Styled.SupportQRName>
+              <Styled.DownloadQRButton onClick={() => exportComponentAsPNG(componentRef)}>
+                <Styled.Downward />
+                <Styled.DownloadLetter>다운로드</Styled.DownloadLetter>
+              </Styled.DownloadQRButton>
+            </div>
+            <Styled.QRCodeWrap>
+              <QRCode
+                id="qr-gen"
+                value={`${location.origin}/project/${project.uri}/memberships`}
+                size={110}
+                level="H"
+              />
+            </Styled.QRCodeWrap>
           </Styled.SupportQR>
           {membershipList.map(membership => membership.price > 0 && (
             <Styled.Membership {...membership} key={membership.id}>
