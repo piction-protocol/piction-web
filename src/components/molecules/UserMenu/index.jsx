@@ -120,7 +120,7 @@ function UserMenu({ links }) {
 
   const { data: projects = [] } = useSWR('/my/projects');
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
-  const { data: rate = 4000 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
+  const { data: rate = 0 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
     const response = await axios.get(path);
     return response.data.last;
   });
@@ -136,7 +136,7 @@ function UserMenu({ links }) {
             <Styled.PXL>
               {`${wallet.amount.toLocaleString()} PXL`}
             </Styled.PXL>
-            {wallet.amount > 0 && (
+            {(rate > 0 && wallet.amount > 0) && (
               <Styled.Won>
                 {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()} 원`}
               </Styled.Won>
