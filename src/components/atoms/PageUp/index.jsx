@@ -8,6 +8,7 @@ import { ReactComponent as UpwardIcon } from 'images/ic-arrow-upward.svg';
 const Styled = {
   // FIXME : grid, margin등의 위치 제어용 스타일 분리
   Button: styled.button`
+    opacity: 1;
     cursor: pointer;
     outline: none;
     display: flex;
