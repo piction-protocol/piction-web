@@ -31,12 +31,13 @@ const Styled = {
   DownloadImg: styled.div`
     padding: 0;
     margin: 0;
-    position: absolute;
     width: 720px;
     background-color: white;
     top: 0;
     right: 0;
-    transform: translate(-100%, -100%);
+    display: none;
+    /* position: absolute;
+    transform: translate(-100%, -100%); */
   `,
   DownloadBackground: styled.div`
     background: url(${props => props.image}) no-repeat center center;
@@ -75,7 +76,8 @@ const Styled = {
     padding: 0 8px;
   `,
   SupportQR: styled.article`
-    display: flex;
+    display: none;
+    /* display: flex; */
     position: relative;
     flex-flow: row;
     padding: 24px;
