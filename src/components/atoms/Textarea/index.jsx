@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
-const Input = styled.input.attrs(({ type }) => ({
+const Input = styled.textarea.attrs(({ type }) => ({
   type,
 }))`
+  resize: none;
+  outline: none;
+  height: 100px;
   min-width: 0;
   padding: 14px;
   border: 2px solid var(--gray);
@@ -34,4 +37,8 @@ export default Input;
 
 Input.propTypes = {
   type: PropTypes.string,
+};
+
+Input.defaultProps = {
+  type: 'text',
 };

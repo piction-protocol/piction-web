@@ -104,12 +104,12 @@ function MembershipForm({
       sponsorLimit: 0,
       name: '',
       description: '',
+      messageOfThanks: '',
     },
   } = useSWR(() => (membershipId ? `/projects/${projectId}/memberships/${membershipId}` : null), {
     suspense: true,
     revalidateOnFocus: false,
   });
-
 
   const {
     register,
@@ -190,7 +190,17 @@ function MembershipForm({
           </Styled.Level>
         </div>
       )}
-      <Styled.InputGroup inputRef={register} name="name" label="상품명" required>
+      <Styled.InputGroup
+        inputRef={register({
+          maxLength: {
+            value: 30,
+            message: 'Tier 이름의 최대 길이는 30자입니다.',
+          },
+        })}
+        placeholder="최대 30자"
+        name="name"
+        label="상품명"
+      >
         {errors.name && (
           <ErrorMessage>
             {errors.name.message}
@@ -250,6 +260,25 @@ function MembershipForm({
         {errors.description && (
           <ErrorMessage>
             {errors.description.message}
+          </ErrorMessage>
+        )}
+      </Styled.InputGroup>
+      <Styled.InputGroup
+        inputRef={register({
+          maxLength: {
+            value: 1000,
+            message: '감사 메세지는 최대 1000자까지 입력 가능합니다.',
+          },
+        })}
+        name="messageOfThanks"
+        ment="reaction"
+        label="후원자에게 감사의 한마디를 전달하세요. 해당 메시지는 후원 플랜 구매자에게 이메일로 발송됩니다."
+        placeholder="최대 1000자"
+        contentForm="reaction"
+      >
+        {errors.messageOfThanks && (
+          <ErrorMessage>
+            {errors.messageOfThanks.message}
           </ErrorMessage>
         )}
       </Styled.InputGroup>
