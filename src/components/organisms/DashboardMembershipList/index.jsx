@@ -171,6 +171,8 @@ function DashboardMembershipList({ title, projectId }) {
   const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
   const location = useLocation();
   const componentRef = useRef();
+  const captureQRCode = useRef();
+
   const captureDownload = (uri, filename) => {
     const link = document.createElement('a');
     if (typeof link.download === 'string') {
@@ -183,13 +185,18 @@ function DashboardMembershipList({ title, projectId }) {
       window.open(uri);
     }
   };
+  const captureImg = () => {
+    html2canvas(captureQRCode.current).then((canvas) => {
+      captureDownload(canvas.toDataURL('image/png'), `qr_${project.uri}.jpg`);
+    });
+  };
 
   const backgroundImageisNull = `${project.wideThumbnail}` === 'null' ? 'dummy' : '';
   const NodeEnv = process.env.NODE_ENV === 'development' ? 'dummy' : '';
   const backgroundImageUrl = (NodeEnv) || (backgroundImageisNull) === 'dummy' ? dummyImage : `${project.wideThumbnail}?quality=80&output=webp`;
 
-  const ComponentToQR = React.forwardRef((props, ref) => (
-    <Styled.DownloadImg id="captureQRCode" ref={ref}>
+  const ComponentToQR = React.forwardRef(() => (
+    <Styled.DownloadImg ref={captureQRCode}>
       <Styled.DownloadBackground image={backgroundImageUrl} crossOrigin="anonymous" />
       <Styled.DownloadWrap>
         <Styled.LeftWrap>
@@ -226,12 +233,7 @@ function DashboardMembershipList({ title, projectId }) {
           <Styled.SupportQR>
             <div>
               <Styled.SupportQRName>QR코드 배너 만들기</Styled.SupportQRName>
-              <Styled.DownloadQRButton onClick={() => {
-                html2canvas(document.getElementById('captureQRCode')).then((canvas) => {
-                  captureDownload(canvas.toDataURL('image/png'), `qr_${project.uri}.jpg`);
-                });
-              }}
-              >
+              <Styled.DownloadQRButton onClick={captureImg}>
                 <Styled.Downward />
                 <Styled.DownloadLetter>다운로드</Styled.DownloadLetter>
               </Styled.DownloadQRButton>
