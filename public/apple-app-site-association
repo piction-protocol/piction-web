@@ -6,7 +6,7 @@
             "paths": ["/project/*/memberships"]
             },
             {
-            "appID": "TVSPDRR58A.com.pictionnetwork.piction",
+            "appID": "TVSPDRR58A.com.pictionnetwork.piction-test",
             "paths": ["/project/*/memberships"]
         }]
     }
