@@ -233,7 +233,7 @@ function DashboardMembershipList({ title, projectId }) {
           <Styled.SupportQR>
             <div>
               <Styled.SupportQRName>QR코드 배너 만들기</Styled.SupportQRName>
-              <Styled.DownloadQRButton onClick={() => captureImg(componentRef)}>
+              <Styled.DownloadQRButton onClick={() => captureImg()}>
                 <Styled.Downward />
                 <Styled.DownloadLetter>다운로드</Styled.DownloadLetter>
               </Styled.DownloadQRButton>
