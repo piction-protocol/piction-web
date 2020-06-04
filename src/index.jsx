@@ -4,6 +4,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import * as Sentry from '@sentry/browser';
 
+import './language/i18n';
+
 import { CurrentUserProvider } from 'contexts/CurrentUserContext';
 
 import GlobalStyle from 'styles/GlobalStyle';
