@@ -31,11 +31,11 @@ const Styled = {
   DownloadImg: styled.div`
     padding: 0;
     margin: 0;
-    position: absolute;
     width: 720px;
     background-color: white;
     top: 0;
     right: 0;
+    position: absolute;
     transform: translate(-100%, -100%);
   `,
   DownloadBackground: styled.div`
@@ -186,8 +186,8 @@ function DashboardMembershipList({ title, projectId }) {
     }
   };
   const captureImg = () => {
-    html2canvas(captureQRCode.current).then((canvas) => {
-      captureDownload(canvas.toDataURL('image/png'), `qr_${project.uri}.jpg`);
+    html2canvas(captureQRCode.current, { useCORS: true }).then((canvas) => {
+      captureDownload(canvas.toDataURL('image/png', 1.0), `qr_${project.uri}.jpg`);
     });
   };
 
@@ -233,7 +233,7 @@ function DashboardMembershipList({ title, projectId }) {
           <Styled.SupportQR>
             <div>
               <Styled.SupportQRName>QR코드 배너 만들기</Styled.SupportQRName>
-              <Styled.DownloadQRButton onClick={captureImg}>
+              <Styled.DownloadQRButton onClick={() => captureImg()}>
                 <Styled.Downward />
                 <Styled.DownloadLetter>다운로드</Styled.DownloadLetter>
               </Styled.DownloadQRButton>
