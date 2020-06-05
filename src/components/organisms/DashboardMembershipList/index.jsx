@@ -38,11 +38,11 @@ const Styled = {
     position: absolute;
     transform: translate(-100%, -100%);
   `,
-  DownloadBackground: styled.div`
-    background: url(${props => props.image}) no-repeat center center;
-    background-size: cover;
-    height: 225px;
-    width: 720px;
+  DownloadBackground: styled.img`
+  background: no-repeat center center;
+  background-size: cover;
+  height: 225px;
+  width: 720px;
   `,
   DownloadWrap: styled.div`
     display: flex;
@@ -186,7 +186,12 @@ function DashboardMembershipList({ title, projectId }) {
     }
   };
   const captureImg = () => {
-    html2canvas(captureQRCode.current, { useCORS: true }).then((canvas) => {
+    html2canvas(captureQRCode.current, {
+      allowTaint: true,
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      useCORS: true,
+    }).then((canvas) => {
       captureDownload(canvas.toDataURL('image/png', 1.0), `qr_${project.uri}.jpg`);
     });
   };
@@ -197,7 +202,7 @@ function DashboardMembershipList({ title, projectId }) {
 
   const ComponentToQR = React.forwardRef(() => (
     <Styled.DownloadImg ref={captureQRCode}>
-      <Styled.DownloadBackground image={backgroundImageUrl} crossOrigin="anonymous" />
+      <Styled.DownloadBackground src={backgroundImageUrl} crossOrigin="anonymous" />
       <Styled.DownloadWrap>
         <Styled.LeftWrap>
           <PictionLogo />
