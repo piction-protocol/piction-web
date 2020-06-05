@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { useSWRPages } from 'swr';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
@@ -49,6 +50,7 @@ const Styled = {
 function SubscriptionsPage() {
   const { currentUser } = useCurrentUser();
   const listRef = useRef();
+  const { t } = useTranslation();
 
   const [totalSubscriptionCount, setTotalSubscriptionCount] = useState(0);
 
@@ -71,7 +73,7 @@ function SubscriptionsPage() {
         <ProjectCard {...project}>
           {project.lastPublishedAt && (
             <Styled.CardText>
-              {`${moment(project.lastPublishedAt).fromNow()} 업데이트`}
+              {`${moment(project.lastPublishedAt).fromNow()} ${t('업데이트')}`}
             </Styled.CardText>
           )}
         </ProjectCard>
@@ -104,7 +106,7 @@ function SubscriptionsPage() {
       ref={listRef}
     >
       <Styled.Heading>
-        {`구독 중인 프로젝트(${totalSubscriptionCount})`}
+        {`${t('구독 중인 프로젝트')}(${totalSubscriptionCount})`}
       </Styled.Heading>
       <Styled.NewsletterManager currentUser={currentUser} />
       {pages}
@@ -112,4 +114,4 @@ function SubscriptionsPage() {
   );
 }
 
-export default withLoginChecker(SubscriptionsPage);
+export default withLoginChecker(SubscriptionsPage); withTranslation()(SubscriptionsPage);

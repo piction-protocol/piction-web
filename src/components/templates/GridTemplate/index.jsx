@@ -15,7 +15,7 @@ const Styled = {
   `,
 };
 
-const GridTemplate = forwardRef(({ hero, children, ...props }, ref) => (
+const GridTemplate = forwardRef(({ hero = null, children, ...props }, ref) => (
   <Styled.Main {...props}>
     {hero}
     <MainGrid ref={ref}>
@@ -27,10 +27,6 @@ const GridTemplate = forwardRef(({ hero, children, ...props }, ref) => (
 GridTemplate.propTypes = {
   children: PropTypes.node.isRequired,
   hero: PropTypes.node,
-};
-
-GridTemplate.defaultProps = {
-  hero: null,
 };
 
 export default GridTemplate;
