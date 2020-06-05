@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -180,6 +181,7 @@ const Styled = {
 const Choice = (props) => {
   const { collection } = usePictionChoices();
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const { t } = useTranslation();
 
   return collection ? (
     <Styled.Container {...props}>
@@ -202,12 +204,12 @@ const Choice = (props) => {
           </Styled.SubTitle>
           {isTooltipVisible && (
             <Styled.Tooltip onClick={() => setIsTooltipVisible(false)}>
-              매주 화, 금요일마다 선정된
+              {t('매주 화, 금요일마다 선정된')}
               <br />
-              5명의 창작자에게
+              {t('5명의 창작자에게')}
               {' '}
               <Styled.PXL>500PXL</Styled.PXL>
-              을 드려요!
+              {t('을 드려요!')}
             </Styled.Tooltip>
           )}
         </Styled.Texts>
@@ -254,4 +256,4 @@ Choice.Placeholder = props => (
   </Styled.Container>
 );
 
-export default Choice;
+export default withTranslation()(Choice);

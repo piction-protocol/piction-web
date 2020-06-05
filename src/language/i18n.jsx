@@ -7,9 +7,7 @@ const resource = {
     translation: translationEn,
   },
   kr: {
-    translation: {
-
-    },
+    translation: {},
   },
 };
 
@@ -17,8 +15,8 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources: resource,
-    lng: 'kr',
-    fallbackLng: 'kr',
+    lng: 'en',
+    fallbackLng: 'en',
     // ns: ['translation'],
     // defaultNS: "translation",
     debug: true,

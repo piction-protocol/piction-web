@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useMedia from 'hooks/useMedia';
 
@@ -86,6 +87,7 @@ const Styled = {
 const Trending = (props) => {
   const FETCHING_SIZE = 6;
   const isDesktop = useMedia(mediaQuery.desktop);
+  const { t } = useTranslation();
 
   const { data: projects } = useSWR(`/projects/trending?size=${FETCHING_SIZE}`, { revalidateOnFocus: false });
 
@@ -96,7 +98,7 @@ const Trending = (props) => {
           Trending
         </Styled.Title>
         <Styled.SubTitle>
-          지금 주목받는 프로젝트. 놓치지 마세요!
+          {t('지금 주목받는 프로젝트. 놓치지 마세요!')}
         </Styled.SubTitle>
       </Styled.Texts>
       {projects ? projects.map(project => (
@@ -151,4 +153,4 @@ Trending.Placeholder = props => (
   </Styled.Section>
 );
 
-export default Trending;
+export default withTranslation()(Trending);
