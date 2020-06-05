@@ -1,13 +1,13 @@
 {
-    “applinks”: {
-        “apps”: [],
-        “details”: [
+    "applinks": {
+        "apps": [],
+        "details": [{
+            "appID": "7NU7MY8AU2.network.piction.piction-ios",
+            "paths": ["/project/*/memberships"]
+            },
             {
-                “appID”: [“TVSPDRR58A.network.piction.piction-ios”,TVSPDRR58A.com.pictionnetwork.piction-test],
-                "components": [
-                    "/": "/project/*/memberships"
-                ]
-            }
-        ]
+            "appID": "TVSPDRR58A.com.pictionnetwork.piction-test",
+            "paths": ["/project/*/memberships"]
+        }]
     }
 }
