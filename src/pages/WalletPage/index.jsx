@@ -3,6 +3,7 @@ import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import axios from 'axios';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -53,6 +54,7 @@ const Styled = {
 };
 
 function WalletPage() {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet', { revalidateOnFocus: false });
   const { data: rate = 4000 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
@@ -71,20 +73,20 @@ function WalletPage() {
           </Styled.PXL>
           {wallet.amount > 0 && (
             <Styled.Won>
-              {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()}원`}
+              {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()}${t('원')}`}
             </Styled.Won>
           )}
         </UserInfo>
       )}
     >
       <Styled.Heading>
-        내 지갑
+        {t('내 지갑')}
       </Styled.Heading>
       <Styled.Tabs
         links={[
-          { text: '거래 내역', to: 'transactions' },
-          { text: '입금', to: 'deposit' },
-          { text: '출금', to: 'withdraw' },
+          { text: `${t('거래 내역')}`, to: 'transactions' },
+          { text: `${t('입금')}`, to: 'deposit' },
+          { text: `${t('출금')}`, to: 'withdraw' },
         ]}
       />
       <Router primary={false} component={({ children }) => <>{children}</>}>
@@ -97,4 +99,4 @@ function WalletPage() {
   );
 }
 
-export default withLoginChecker(WalletPage);
+export default withTranslation()(WalletPage); withLoginChecker(WalletPage);

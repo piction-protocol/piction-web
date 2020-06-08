@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -79,6 +80,7 @@ const Styled = {
 };
 
 function Deposit({ wallet }) {
+  const { t } = useTranslation();
   const handleCopy = () => {
     const tempInput = document.createElement('input');
     const { body } = document;
@@ -86,14 +88,14 @@ function Deposit({ wallet }) {
     tempInput.setAttribute('value', wallet.publicKey);
     tempInput.select();
     document.execCommand('copy');
-    alert('지갑 주소가 복사되었습니다.');
+    alert(`${t('지갑 주소가 복사되었습니다.')}`);
     body.removeChild(tempInput);
   };
 
   return (
     <>
       <Styled.Section columns={5}>
-        <Styled.Title>내 지갑 주소</Styled.Title>
+        <Styled.Title>{t('내 지갑 주소')}</Styled.Title>
         <Styled.Group>
           {wallet.publicKey && (
             <Styled.Key>
@@ -107,23 +109,23 @@ function Deposit({ wallet }) {
             </Styled.Key>
           )}
           <Styled.Copy onClick={handleCopy}>
-            주소 복사
+            {t('주소 복사')}
           </Styled.Copy>
         </Styled.Group>
       </Styled.Section>
       <Styled.Section>
-        <Styled.Title>지원하는 입금 방법</Styled.Title>
+        <Styled.Title>{t('지원하는 입금 방법')}</Styled.Title>
         <Styled.List>
           <Styled.Item>
-            Klaytn 네트워크 기반 PXL 출금이 가능한 거래소에서 이 지갑 주소로 송금합니다.
+            {t('Klaytn 네트워크 기반 PXL 출금이 가능한 거래소에서 이 지갑 주소로 송금합니다.')}
           </Styled.Item>
           <Styled.Item>
-            Klaytn 네트워크를 지원하는 블록체인 지갑에 보유한 PXL을 이 지갑 주소로 송금합니다.
+            {t('Klaytn 네트워크를 지원하는 블록체인 지갑에 보유한 PXL을 이 지갑 주소로 송금합니다.')}
           </Styled.Item>
         </Styled.List>
       </Styled.Section>
       <Styled.Section>
-        <Styled.Title>입금을 지원하는 거래소 및 지갑 서비스</Styled.Title>
+        <Styled.Title>{t('입금을 지원하는 거래소 및 지갑 서비스')}</Styled.Title>
         <Styled.Group>
           <Styled.Link href="https://coinone.co.kr/exchange/trade/pxl/krw" target="_blank">
             <img src={CoinOneLogo} alt="coinone" />
@@ -137,17 +139,17 @@ function Deposit({ wallet }) {
         </Styled.Group>
       </Styled.Section>
       <Styled.Section>
-        <Styled.Title>주의사항</Styled.Title>
+        <Styled.Title>{t('주의사항')}</Styled.Title>
         <Styled.List>
           <Styled.Item>
-            이더리움(ERC-20) 기반 네트워크의 PXL 토큰은 입금하실 수 없습니다.
+            {t('이더리움(ERC-20) 기반 네트워크의 PXL 토큰은 입금하실 수 없습니다.')}
           </Styled.Item>
           <Styled.Item>
-            PXL 토큰 이외에 다른 토큰은 입금하실 수 없습니다.
+            {t('PXL 토큰 이외에 다른 토큰은 입금하실 수 없습니다.')}
           </Styled.Item>
           <Styled.Item>
             <Styled.Strong>
-              다른 네트워크 또는 다른 토큰 입금 시 발생하는 오류 및 손실은 복구해 드리지 않습니다.
+              {t('다른 네트워크 또는 다른 토큰 입금 시 발생하는 오류 및 손실은 복구해 드리지 않습니다.')}
             </Styled.Strong>
           </Styled.Item>
         </Styled.List>
@@ -156,7 +158,7 @@ function Deposit({ wallet }) {
   );
 }
 
-export default Deposit;
+export default withTranslation()(Deposit);
 
 Deposit.propTypes = {
   wallet: PropTypes.object.isRequired,
