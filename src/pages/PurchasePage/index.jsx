@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import media, { mediaQuery } from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -179,6 +180,7 @@ function PurchasePage({
   const [linkaPayment, setLinkaPayment] = useState(null);
   const location = useLocation();
   const redirectPage = location.state.redirectTo;
+  const { t } = useTranslation();
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
@@ -228,16 +230,16 @@ function PurchasePage({
       <GridTemplate>
         <Styled.Wrapper onSubmit={handleSubmit(handleSubscribe)}>
           <Styled.Heading>
-            후원 플랜 결제
+            {t('후원 플랜 결제')}
           </Styled.Heading>
           <Styled.Section>
             <Styled.SectionTitle>
-              선택한 후원 플랜
+              {t('선택한 후원 플랜')}
             </Styled.SectionTitle>
             {membership ? (
               <>
                 <Styled.Name>
-                  {`티어 ${membership.level} - ${membership.name}`}
+                  {`${t('티어')} ${membership.level} - ${membership.name}`}
                 </Styled.Name>
                 {membership.description && (
                   <Styled.Description>
@@ -248,7 +250,9 @@ function PurchasePage({
             ) : (
               <>
                 <Styled.Name isPlaceholder>
-                  티어 level - name
+                  {t('티어')}
+                  {' '}
+                  level - name
                 </Styled.Name>
                 <Styled.Description isPlaceholder>
                   description
@@ -258,13 +262,13 @@ function PurchasePage({
           </Styled.Section>
           <Styled.Section>
             <Styled.SectionLabel>
-              혜택 제공 기간
+              {t('혜택 제공 기간')}
             </Styled.SectionLabel>
             <Styled.Date>
               {moment().add(30, 'days').format(' YYYY년 MM월 DD일까지 (30일)')}
             </Styled.Date>
             <Styled.SectionLabel>
-              결제 금액
+              {t('결제 금액')}
             </Styled.SectionLabel>
             {membership ? (
               <Styled.Price>
@@ -279,10 +283,10 @@ function PurchasePage({
           {fees && project && membership && (
             <Styled.Section>
               <Styled.Fees>
-                <Styled.FeesTitle>송금 안내</Styled.FeesTitle>
+                <Styled.FeesTitle>{t('송금 안내')}</Styled.FeesTitle>
                 <Styled.Ul>
                   <Styled.Li>
-                    {`기본 수수료 ${fees.contentsDistributorRate}%`}
+                    {`${t('기본 수수료')} ${fees.contentsDistributorRate}%`}
                     <Styled.FeesAmount>
                       {`${membership.price * (fees.contentsDistributorRate) / 100} PXL`}
                     </Styled.FeesAmount>
@@ -295,15 +299,16 @@ function PurchasePage({
                   </Styled.Li>
                 </Styled.Ul>
                 <Styled.Notice>
-                  결제 완료 시 결제 금액이 즉시
+                  {t('결제 완료 시 결제 금액이 즉시')}
                   {' '}
                   <strong>
                     {project.user.username}
                   </strong>
-                  님의 계좌로 송금되며,
+                  {' '}
+                  {t('님의 계좌로 송금되며,')}
                   {' '}
                   <Styled.Em>
-                    환불은 불가능합니다.
+                    {t('환불은 불가능합니다.')}
                   </Styled.Em>
                 </Styled.Notice>
               </Styled.Fees>
@@ -315,16 +320,16 @@ function PurchasePage({
               <Styled.FeesTitle>
                 {project.user.username}
                 {' '}
-                작가님에게 후원의 메세지를 전달하세요.
+                {t('작가님에게 후원의 메세지를 전달하세요.')}
               </Styled.FeesTitle>
               <br />
               <Styled.TextBox
-                placeholder="후원 메세지"
+                placeholder={t('후원 메세지')}
                 name="messageOfSponsorship"
                 ref={register({
                   maxLength: {
                     value: 1000,
-                    message: '후원 감사메세지는 최대 1000자까지 입력 가능합니다.',
+                    message: `${t('후원 감사메세지는 최대 1000자까지 입력 가능합니다.')}`,
                   },
                 })}
               />
@@ -338,7 +343,7 @@ function PurchasePage({
           )}
           <Styled.CheckboxLabel>
             <Styled.Checkbox checked={isAgreed} onChange={e => setIsAgreed(e.target.checked)} />
-            상품 설명 및 환불에 대한 내용을 확인하였으며, 이에 동의합니다.
+            {t('상품 설명 및 환불에 대한 내용을 확인하였으며, 이에 동의합니다.')}
           </Styled.CheckboxLabel>
           <Styled.Submit value="결제" disabled={!isAgreed} />
           <Styled.PaymentBy>
@@ -359,7 +364,7 @@ function PurchasePage({
   );
 }
 
-export default withLoginChecker(PurchasePage);
+export default withTranslation()(PurchasePage); withLoginChecker(PurchasePage);
 
 PurchasePage.propTypes = {
   projectId: PropTypes.string.isRequired,
