@@ -5,6 +5,7 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR from 'swr';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import placeholder from 'styles/placeholder';
 
@@ -47,6 +48,7 @@ const Styled = {
 };
 
 function CreatorProfilePage({ creatorId }) {
+  const { t } = useTranslation();
   const { data: user, error: userError } = useSWR(`users/${creatorId}`);
   const { data: profile = { greetings: '', links: [] } } = useSWR(`creator-profiles/users/${creatorId}`, {
     shouldRetryOnError: false,
@@ -71,14 +73,14 @@ function CreatorProfilePage({ creatorId }) {
       )}
       <Styled.Projects>
         <Styled.ProjectsTitle>
-          프로젝트
+          {t('프로젝트')}
         </Styled.ProjectsTitle>
         {projects.map(project => (
           <Styled.Link to={`/project/${project.uri}`} key={project.id}>
             <ProjectCard {...project}>
               {project.lastPublishedAt && (
                 <Styled.CardText>
-                  {`${moment(project.lastPublishedAt).fromNow()} 업데이트`}
+                  {`${moment(project.lastPublishedAt).fromNow()} ${t('업데이트')}`}
                 </Styled.CardText>
               )}
             </ProjectCard>
@@ -89,7 +91,7 @@ function CreatorProfilePage({ creatorId }) {
   );
 }
 
-export default CreatorProfilePage;
+export default withTranslation()(CreatorProfilePage);
 
 CreatorProfilePage.propTypes = {
   creatorId: PropTypes.string.isRequired,
