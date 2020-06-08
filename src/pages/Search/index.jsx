@@ -4,6 +4,7 @@ import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import queryString from 'query-string';
 import useSWR, { useSWRPages } from 'swr';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
@@ -48,6 +49,7 @@ function Search({ location: { search } }) {
 
   const FETCHING_SIZE = 20;
   const [totalCount, setTotalCount] = useState(0);
+  const { t } = useTranslation();
   function FoundProjectsPage({ offset, withSWR }) {
     const { data } = withSWR(
       useSWR(`/search/projects?name=${query}&size=${FETCHING_SIZE}&page=${offset + 1}`),
@@ -99,10 +101,10 @@ function Search({ location: { search } }) {
       hero={(
         <Styled.Hero>
           <Heading>
-            {`"${decodeURIComponent(query) || ''}" 검색 결과`}
+            {`"${decodeURIComponent(query) || ''}" ${t('검색 결과')}`}
           </Heading>
           <Styled.Count>
-            {`${totalCount} 프로젝트`}
+            {`${totalCount} ${t('프로젝트')}`}
           </Styled.Count>
         </Styled.Hero>
       )}
@@ -117,4 +119,4 @@ Search.propTypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default Search;
+export default withTranslation()(Search);
