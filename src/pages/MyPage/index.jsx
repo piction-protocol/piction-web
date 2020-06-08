@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components/macro';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -31,6 +32,7 @@ const Styled = {
 };
 
 function MyPage() {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
 
   return (
@@ -42,12 +44,12 @@ function MyPage() {
       )}
     >
       <Styled.Heading>
-        내 정보
+        {t('내 정보')}
       </Styled.Heading>
       <Styled.Tabs
         links={[
-          { text: '기본정보', to: 'info' },
-          { text: '비밀번호 변경', to: 'password' },
+          { text: `${t('기본정보')}`, to: 'info' },
+          { text: `${t('비밀번호 변경')}`, to: 'password' },
         ]}
       />
       <Router primary={false}>
@@ -59,4 +61,4 @@ function MyPage() {
   );
 }
 
-export default withLoginChecker(MyPage);
+export default withTranslation()(MyPage); withLoginChecker(MyPage);

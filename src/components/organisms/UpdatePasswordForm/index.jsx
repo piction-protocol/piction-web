@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -40,6 +41,7 @@ const Styled = {
 };
 
 function UpdatePasswordForm() {
+  const { t } = useTranslation();
   const [formData, { handleChange }] = useForm({
     password: '',
     newPassword: '',
@@ -72,8 +74,8 @@ function UpdatePasswordForm() {
       />
       <Styled.InputGroup
         name="password"
-        label="현재 비밀번호"
-        placeholder="비밀번호를 입력해주세요"
+        label={t('현재 비밀번호')}
+        placeholder={t('비밀번호를 입력해주세요')}
         type="password"
         autoComplete="current-password"
         required
@@ -83,8 +85,8 @@ function UpdatePasswordForm() {
       />
       <Styled.InputGroup
         name="newPassword"
-        label="새 비밀번호"
-        placeholder="6자 이상의 비밀번호"
+        label={t('새 비밀번호')}
+        placeholder={t('6자 이상의 비밀번호')}
         type="password"
         autoComplete="new-password"
         required
@@ -94,8 +96,8 @@ function UpdatePasswordForm() {
       />
       <Styled.InputGroup
         name="passwordCheck"
-        label="비밀번호 확인"
-        placeholder="비밀번호 재입력"
+        label={t('비밀번호 확인')}
+        placeholder={t('비밀번호 재입력')}
         type="password"
         autoComplete="new-password"
         required
@@ -105,11 +107,11 @@ function UpdatePasswordForm() {
       />
       <Styled.SubmitGroup>
         <Styled.Submit
-          value="변경 내용 저장"
+          value={t('변경 내용 저장')}
         />
       </Styled.SubmitGroup>
     </Styled.Form>
   );
 }
 
-export default UpdatePasswordForm;
+export default withTranslation()(UpdatePasswordForm);
