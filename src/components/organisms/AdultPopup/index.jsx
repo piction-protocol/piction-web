@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -68,22 +69,23 @@ const Styled = {
 };
 
 function AdultPopup({ close, ...props }) {
+  const { t } = useTranslation();
   return (
     <Styled.FullscreenPopup {...props}>
       <Styled.Grid>
         <Styled.WarningIcon />
         <Styled.Heading>WARNING</Styled.Heading>
         <Styled.Description>
-          해당 프로젝트에는 민감한 콘텐츠가 포함되어 있을 수 있습니다.
+          {t('해당 프로젝트에는 민감한 콘텐츠가 포함되어 있을 수 있습니다.')}
           <br />
-          19세 미만 청소년의 이용을 금합니다.
+          {t('19세 미만 청소년의 이용을 금합니다.')}
         </Styled.Description>
         <Styled.Buttons>
           <TertiaryButton onClick={close}>
-            프로젝트 확인하기
+            {t('프로젝트 확인하기')}
           </TertiaryButton>
           <Styled.Link to="/">
-            홈으로 돌아가기
+            {t('홈으로 돌아가기')}
           </Styled.Link>
         </Styled.Buttons>
       </Styled.Grid>
@@ -91,7 +93,7 @@ function AdultPopup({ close, ...props }) {
   );
 }
 
-export default AdultPopup;
+export default withTranslation()(AdultPopup);
 
 AdultPopup.propTypes = {
   close: PropTypes.func.isRequired,

@@ -7,6 +7,7 @@ import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import useSWR, { trigger, mutate } from 'swr';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -44,6 +45,7 @@ function ProjectPage({ projectId }) {
   const { currentUser } = useCurrentUser();
   const [API] = useCallback(useAPI(), [projectId]);
   const isDesktop = useMedia(mediaQuery.desktop);
+  const { t } = useTranslation();
 
   const { data: project, projectError } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   const { data: series = [] } = useSWR(`/projects/${projectId}/series`, { revalidateOnFocus: false });
@@ -109,9 +111,9 @@ function ProjectPage({ projectId }) {
 
       <Styled.Tabs
         links={[
-          { text: '포스트', to: 'posts' },
-          { text: '시리즈', to: 'series' },
-          ...project?.activeMembership ? [{ text: '후원', to: 'memberships' }] : [],
+          { text: `${t('포스트')}`, to: 'posts' },
+          { text: `${t('시리즈')}`, to: 'series' },
+          ...project?.activeMembership ? [{ text: `${t('후원')}`, to: 'memberships' }] : [],
         ]}
       />
 
@@ -139,7 +141,7 @@ function ProjectPage({ projectId }) {
   );
 }
 
-export default ProjectPage;
+export default withTranslation()(ProjectPage);
 
 ProjectPage.propTypes = {
   projectId: PropTypes.string.isRequired,

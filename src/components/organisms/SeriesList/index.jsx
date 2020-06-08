@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -35,28 +36,31 @@ const Styled = {
   `,
 };
 
-const SeriesList = ({ series }) => (
-  <Styled.Section>
-    {series.reduce((acc, item) => acc + item.postCount, 0) === 0 ? (
-      <Styled.Empty>
-        <Styled.BadMoodIcon />
-        <p>
-          등록된 시리즈가 없습니다.
-        </p>
-      </Styled.Empty>
-    ) : series.map(item => item.postCount > 0 && (
+const SeriesList = ({ series }) => {
+  const { t } = useTranslation();
+  return (
+    <Styled.Section>
+      {series.reduce((acc, item) => acc + item.postCount, 0) === 0 ? (
+        <Styled.Empty>
+          <Styled.BadMoodIcon />
+          <p>
+            {t('등록된 시리즈가 없습니다.')}
+          </p>
+        </Styled.Empty>
+      ) : series.map(item => item.postCount > 0 && (
       <Styled.Link
         to={`${item.id}`}
         key={item.id}
       >
         <SeriesCard {...item} />
       </Styled.Link>
-    ))}
-  </Styled.Section>
-);
+      ))}
+    </Styled.Section>
+  );
+};
 
 SeriesList.propTypes = {
   series: PropTypes.array,
 };
 
-export default SeriesList;
+export default withTranslation()(SeriesList);
