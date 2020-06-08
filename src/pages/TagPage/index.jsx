@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import useSWR, { useSWRPages } from 'swr';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
@@ -46,6 +47,7 @@ function TagPage({ tagName }) {
   const FETCHING_SIZE = 20;
 
   const [totalCount, setTotalCount] = useState(0);
+  const { t } = useTranslation();
 
   function TaggedProjectsPage({ offset, withSWR }) {
     const { data } = withSWR(
@@ -101,7 +103,7 @@ function TagPage({ tagName }) {
             {`#${tagName}`}
           </Heading>
           <Styled.Count>
-            {`${totalCount} 프로젝트`}
+            {`${totalCount} ${t('프로젝트')}`}
           </Styled.Count>
         </Styled.Hero>
       )}
@@ -116,4 +118,4 @@ TagPage.propTypes = {
   tagName: PropTypes.string.isRequired,
 };
 
-export default TagPage;
+export default withTranslation()(TagPage);

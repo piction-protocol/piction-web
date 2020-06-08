@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import useSWR, { useSWRPages } from 'swr';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
@@ -47,6 +48,7 @@ function CategoryPage({ categoryId }) {
 
   const [totalCount, setTotalCount] = useState(0);
   const { data: category } = useSWR(`categories/${categoryId}`);
+  const { t } = useTranslation();
 
   function CategorizedProjectsPage({ offset, withSWR }) {
     const { data } = withSWR(
@@ -102,7 +104,7 @@ function CategoryPage({ categoryId }) {
             {category ? category.name : '-'}
           </Heading>
           <Styled.Count>
-            {`${totalCount} 프로젝트`}
+            {`${totalCount} ${t('프로젝트')}`}
           </Styled.Count>
         </Styled.Hero>
       )}
@@ -117,4 +119,4 @@ CategoryPage.propTypes = {
   categoryId: PropTypes.string.isRequired,
 };
 
-export default CategoryPage;
+export default withTranslation()(CategoryPage);
