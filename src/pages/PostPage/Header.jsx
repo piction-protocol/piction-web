@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -46,22 +47,25 @@ const Styled = {
   `,
 };
 
-const Header = ({ title, user, series }) => (
-  <Styled.Info>
-    {series && (
-      <Styled.SeriesName to={`../../series/${series.id}`}>
-        {`시리즈 · ${series.name}`}
-      </Styled.SeriesName>
-    )}
-    <Heading>{title}</Heading>
-    <Link to={`/creator-profile/${user.loginId}`}>
-      <Styled.User>
-        <Styled.UserProfile image={user.picture} />
-        {user.username}
-      </Styled.User>
-    </Link>
-  </Styled.Info>
-);
+const Header = ({ title, user, series }) => {
+  const { t } = useTranslation();
+  return (
+    <Styled.Info>
+      {series && (
+        <Styled.SeriesName to={`../../series/${series.id}`}>
+          {`${t('시리즈')} · ${series.name}`}
+        </Styled.SeriesName>
+      )}
+      <Heading>{title}</Heading>
+      <Link to={`/creator-profile/${user.loginId}`}>
+        <Styled.User>
+          <Styled.UserProfile image={user.picture} />
+          {user.username}
+        </Styled.User>
+      </Link>
+    </Styled.Info>
+  );
+};
 
 Header.propTypes = {
   title: PropTypes.string,

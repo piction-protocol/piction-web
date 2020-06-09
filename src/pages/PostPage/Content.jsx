@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import { Location, Link } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -109,6 +110,7 @@ Content.Placeholder = () => {
 };
 
 function LockedContent({ handleSubscription, post }) {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const hasPrice = post?.membership.price > 0;
   return (
@@ -127,11 +129,11 @@ function LockedContent({ handleSubscription, post }) {
       ) : (
         <p>
           <Styled.Required>
-            구독자
+            {t('구독자')}
           </Styled.Required>
-          만 이용 가능한
+          {t('만 이용 가능한')}
           <br />
-          포스트입니다.
+          {t('포스트입니다.')}
         </p>
       )}
       {currentUser ? (
