@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -119,4 +119,4 @@ function Transactions() {
   );
 }
 
-export default withTranslation()(Transactions);
+export default Transactions;

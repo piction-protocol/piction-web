@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -179,7 +179,7 @@ function SeriesPage({ projectId, seriesId }) {
   );
 }
 
-export default withTranslation()(SeriesPage);
+export default SeriesPage;
 
 SeriesPage.propTypes = {
   projectId: PropTypes.string.isRequired,

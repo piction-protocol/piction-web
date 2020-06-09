@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -256,4 +256,4 @@ Choice.Placeholder = props => (
   </Styled.Container>
 );
 
-export default withTranslation()(Choice);
+export default Choice;

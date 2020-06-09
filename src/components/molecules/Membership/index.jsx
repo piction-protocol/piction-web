@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -110,4 +110,4 @@ Membership.Placeholder.propTypes = {
   children: PropTypes.node,
 };
 
-export default withTranslation()(Membership);
+export default Membership;

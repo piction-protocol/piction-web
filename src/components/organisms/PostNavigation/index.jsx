@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -263,4 +263,4 @@ PostNavigation.propTypes = {
   series: PropTypes.object,
 };
 
-export default withTranslation()(PostNavigation);
+export default PostNavigation;

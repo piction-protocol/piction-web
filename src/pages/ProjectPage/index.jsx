@@ -7,7 +7,7 @@ import styled from 'styled-components/macro';
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import useSWR, { trigger, mutate } from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -141,7 +141,7 @@ function ProjectPage({ projectId }) {
   );
 }
 
-export default withTranslation()(ProjectPage);
+export default ProjectPage;
 
 ProjectPage.propTypes = {
   projectId: PropTypes.string.isRequired,

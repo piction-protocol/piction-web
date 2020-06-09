@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components/macro';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -61,4 +61,4 @@ function MyPage() {
   );
 }
 
-export default withTranslation()(MyPage); withLoginChecker(MyPage);
+export default withLoginChecker(MyPage);

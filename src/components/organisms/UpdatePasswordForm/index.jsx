@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -114,4 +114,4 @@ function UpdatePasswordForm() {
   );
 }
 
-export default withTranslation()(UpdatePasswordForm);
+export default UpdatePasswordForm;

@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import media, { mediaQuery } from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -364,7 +364,7 @@ function PurchasePage({
   );
 }
 
-export default withTranslation()(PurchasePage); withLoginChecker(PurchasePage);
+export default withLoginChecker(PurchasePage);
 
 PurchasePage.propTypes = {
   projectId: PropTypes.string.isRequired,

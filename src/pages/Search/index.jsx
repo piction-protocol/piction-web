@@ -4,7 +4,7 @@ import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import queryString from 'query-string';
 import useSWR, { useSWRPages } from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
@@ -119,4 +119,4 @@ Search.propTypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default withTranslation()(Search);
+export default Search;

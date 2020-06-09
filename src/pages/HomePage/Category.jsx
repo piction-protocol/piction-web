@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -165,4 +165,4 @@ const Category = (props) => {
 };
 
 
-export default withTranslation()(Category);
+export default Category;

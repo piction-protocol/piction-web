@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { useSWRPages } from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
@@ -114,4 +114,4 @@ function SubscriptionsPage() {
   );
 }
 
-export default withLoginChecker(SubscriptionsPage); withTranslation()(SubscriptionsPage);
+export default withLoginChecker(SubscriptionsPage);

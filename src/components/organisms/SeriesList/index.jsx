@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -63,4 +63,4 @@ SeriesList.propTypes = {
   series: PropTypes.array,
 };
 
-export default withTranslation()(SeriesList);
+export default SeriesList;

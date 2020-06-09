@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useAPI from 'hooks/useAPI';
@@ -151,4 +151,4 @@ function UpdateUserForm() {
   );
 }
 
-export default withTranslation()(UpdateUserForm);
+export default UpdateUserForm;

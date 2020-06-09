@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import Cover from 'components/atoms/ContentImage/Cover';
 
@@ -84,4 +84,4 @@ NextPost.propTypes = {
   post: PropTypes.object.isRequired,
 };
 
-export default withTranslation()(NextPost);
+export default NextPost;

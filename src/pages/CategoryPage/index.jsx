@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import useSWR, { useSWRPages } from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
@@ -119,4 +119,4 @@ CategoryPage.propTypes = {
   categoryId: PropTypes.string.isRequired,
 };
 
-export default withTranslation()(CategoryPage);
+export default CategoryPage;

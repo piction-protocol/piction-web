@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useForm } from 'react-hook-form';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -240,7 +240,7 @@ function Withdraw({ wallet }) {
   );
 }
 
-export default withTranslation()(Withdraw);
+export default Withdraw;
 
 Withdraw.propTypes = {
   wallet: PropTypes.object.isRequired,

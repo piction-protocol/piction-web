@@ -4,7 +4,7 @@ import { Link, useLocation } from '@reach/router';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
@@ -166,7 +166,7 @@ function MembershipList({
   );
 }
 
-export default withTranslation()(MembershipList);
+export default MembershipList;
 
 MembershipList.propTypes = {
   isMyProject: PropTypes.bool,

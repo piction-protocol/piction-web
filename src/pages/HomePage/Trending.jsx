@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useMedia from 'hooks/useMedia';
 
@@ -153,4 +153,4 @@ Trending.Placeholder = props => (
   </Styled.Section>
 );
 
-export default withTranslation()(Trending);
+export default Trending;

@@ -3,7 +3,7 @@ import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import axios from 'axios';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -99,4 +99,4 @@ function WalletPage() {
   );
 }
 
-export default withTranslation()(WalletPage); withLoginChecker(WalletPage);
+export default withLoginChecker(WalletPage);

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import useSWR, { mutate } from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 
@@ -109,4 +109,4 @@ NewsletterManager.propTypes = {
   currentUser: PropTypes.object.isRequired,
 };
 
-export default withTranslation()(NewsletterManager);
+export default NewsletterManager;

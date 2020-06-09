@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { PrimaryButton } from 'components/atoms/Button';
 import { ReactComponent as oopsImg } from './img-404-error.svg';
@@ -36,4 +36,4 @@ function ErrorPage() {
   );
 }
 
-export default withTranslation()(ErrorPage);
+export default ErrorPage;

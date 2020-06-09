@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR, { useSWRPages } from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import Grid from 'styles/Grid';
 import media from 'styles/media';
@@ -127,4 +127,4 @@ PostList.propTypes = {
   isMyProject: PropTypes.bool,
 };
 
-export default withTranslation()(PostList);
+export default PostList;

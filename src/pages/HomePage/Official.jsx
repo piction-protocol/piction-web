@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const Styled = {
   Section: styled(MainGrid).attrs({
@@ -59,4 +59,4 @@ const Official = () => {
   );
 };
 
-export default withTranslation()(Official);
+export default Official;

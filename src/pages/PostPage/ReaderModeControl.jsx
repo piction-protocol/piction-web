@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import Button from 'components/atoms/Button';
 
@@ -71,4 +71,4 @@ ReaderModeControl.propTypes = {
   onToggle: PropTypes.func.isRequired,
 };
 
-export default withTranslation()(ReaderModeControl);
+export default ReaderModeControl;

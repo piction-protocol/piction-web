@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -98,4 +98,4 @@ UserInfo.propTypes = {
   children: PropTypes.node,
 };
 
-export default withTranslation()(UserInfo);
+export default UserInfo;

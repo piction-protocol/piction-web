@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet';
 import { Link } from '@reach/router';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import media from 'styles/media';
@@ -303,4 +303,4 @@ function CreatorsGuide() {
   );
 }
 
-export default withTranslation()(CreatorsGuide);
+export default CreatorsGuide;

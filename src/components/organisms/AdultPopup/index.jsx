@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -93,7 +93,7 @@ function AdultPopup({ close, ...props }) {
   );
 }
 
-export default withTranslation()(AdultPopup);
+export default AdultPopup;
 
 AdultPopup.propTypes = {
   close: PropTypes.func.isRequired,

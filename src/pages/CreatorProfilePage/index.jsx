@@ -5,7 +5,7 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR from 'swr';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import placeholder from 'styles/placeholder';
 
@@ -91,7 +91,7 @@ function CreatorProfilePage({ creatorId }) {
   );
 }
 
-export default withTranslation()(CreatorProfilePage);
+export default CreatorProfilePage;
 
 CreatorProfilePage.propTypes = {
   creatorId: PropTypes.string.isRequired,
