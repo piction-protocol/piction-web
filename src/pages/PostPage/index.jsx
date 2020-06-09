@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import useSWR, { mutate } from 'swr';
 import { navigate } from '@reach/router';
+import { withTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -168,4 +169,4 @@ PostPage.propTypes = {
   postId: PropTypes.string.isRequired,
 };
 
-export default PostPage;
+export default withTranslation()(PostPage);

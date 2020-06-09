@@ -1,8 +1,10 @@
+/* eslint-disable react/jsx-indent */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation, withTranslation } from 'react-i18next';
 
 import Cover from 'components/atoms/ContentImage/Cover';
 
@@ -48,21 +50,24 @@ const Styled = {
   `,
 };
 
-const NextPost = ({ post, ...props }) => (
-  <Styled.NextPost to={`../${post.id}`} {...props}>
-    <Cover
-      image={post.cover}
-      width={960}
-      height={480}
-    />
-    <Styled.Text>
-      다음 포스트
+const NextPost = ({ post, ...props }) => {
+  const { t } = useTranslation();
+  return (
+    <Styled.NextPost to={`../${post.id}`} {...props}>
+      <Cover
+        image={post.cover}
+        width={960}
+        height={480}
+      />
+      <Styled.Text>
+        {t('다음 포스트')}
       <Styled.PostTitle>
         {post.title}
       </Styled.PostTitle>
-    </Styled.Text>
-  </Styled.NextPost>
-);
+      </Styled.Text>
+    </Styled.NextPost>
+  );
+};
 
 export const NoNextPost = props => (
   <Styled.NoNextPost {...props}>
@@ -79,4 +84,4 @@ NextPost.propTypes = {
   post: PropTypes.object.isRequired,
 };
 
-export default NextPost;
+export default withTranslation()(NextPost);
