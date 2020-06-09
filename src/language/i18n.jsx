@@ -7,7 +7,10 @@ const resource = {
     translation: translationEn,
   },
   kr: {
-    translation: {},
+    translation: {
+      '~ 이상 이용 가능한 포스트입니다.': '',
+      '~ 만 이용 가능한 포스트입니다.': '',
+    },
   },
 };
 

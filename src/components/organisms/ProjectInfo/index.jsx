@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link, Location } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import { MainGrid } from 'styles/Grid';
 import media, { mediaQuery } from 'styles/media';
@@ -220,6 +221,7 @@ const Styled = {
 function ProjectInfo({
   project, handleSubscribe, isMyProject = false, sponsored, shouldRenderBanner, ...props
 }) {
+  const { t } = useTranslation();
   const { projects } = usePictionChoices();
   const isPictionChoice = projects && projects.includes(project.uri);
   const isDesktop = useMedia(mediaQuery.desktop);
@@ -244,7 +246,7 @@ function ProjectInfo({
         <Styled.SponsorCountWrapper>
           <Styled.SponsorCount>
             <Styled.PeopleIcon />
-            {`구독자 수 ${project.sponsorCount}`}
+            {`${t('구독자 수')} ${project.sponsorCount}`}
           </Styled.SponsorCount>
         </Styled.SponsorCountWrapper>
         <Styled.Main>
@@ -301,21 +303,21 @@ function ProjectInfo({
           <Styled.Subscribe>
             {isMyProject ? isDesktop && (
               <Styled.SubscribeButton as={Link} to={`/dashboard/${project.uri}/posts`}>
-                관리
+                {t('관리')}
               </Styled.SubscribeButton>
             ) : sponsored ? (
               sponsored.membership?.price > 0 ? (
                 <Styled.SubscribeButton disabled>
-                  후원 중
+                  {t('후원 중')}
                 </Styled.SubscribeButton>
               ) : (
                 <Styled.UnsubscribeButton onClick={handleSubscribe}>
-                  구독 중
+                  {t('구독 중')}
                 </Styled.UnsubscribeButton>
               )
             ) : (currentUser ? (
               <Styled.SubscribeButton onClick={handleSubscribe}>
-                구독
+                {t('구독')}
               </Styled.SubscribeButton>
             ) : (
               <Location>
@@ -327,7 +329,7 @@ function ProjectInfo({
                       redirectTo: encodeURIComponent(location.pathname),
                     }}
                   >
-                    구독
+                    {t('구독')}
                   </Styled.SubscribeButton>
                 )}
               </Location>

@@ -69,16 +69,21 @@ const NextPost = ({ post, ...props }) => {
   );
 };
 
-export const NoNextPost = props => (
-  <Styled.NoNextPost {...props}>
-    <Styled.NoNextPostText>
-      다음 포스트가 없습니다.
-      <Styled.PostTitle>
-        전체 목록 보기 &gt;
-      </Styled.PostTitle>
-    </Styled.NoNextPostText>
-  </Styled.NoNextPost>
-);
+export const NoNextPost = (props) => {
+  const { t } = useTranslation();
+  return (
+    <Styled.NoNextPost {...props}>
+      <Styled.NoNextPostText>
+          {t('다음 포스트가 없습니다.')}
+        <Styled.PostTitle>
+          {t('전체 목록 보기')}
+          {' '}
+          &gt;
+        </Styled.PostTitle>
+      </Styled.NoNextPostText>
+    </Styled.NoNextPost>
+  );
+};
 
 NextPost.propTypes = {
   post: PropTypes.object.isRequired,

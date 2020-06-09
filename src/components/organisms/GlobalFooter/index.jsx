@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -95,30 +96,26 @@ const Styled = {
 };
 
 function GlobalFooter() {
+  const { t } = useTranslation();
   return (
     <Styled.Footer>
       <Styled.Wrapper>
         <Styled.Links>
           <Styled.Item>
             <Styled.Link href="/terms">
-              서비스 이용약관
+              {t('서비스 이용약관')}
             </Styled.Link>
           </Styled.Item>
           <Styled.Item>
             <Styled.Link href="/privacy">
               <Styled.Em>
-                개인정보 처리방침
+                {t('개인정보 처리방침')}
               </Styled.Em>
             </Styled.Link>
           </Styled.Item>
           <Styled.Item>
             <Styled.Link href="https://about.piction.network">
-              프로젝트 소개
-            </Styled.Link>
-          </Styled.Item>
-          <Styled.Item>
-            <Styled.Link href="https://about.piction.network/en">
-              English
+              {t('프로젝트 소개')}
             </Styled.Link>
           </Styled.Item>
         </Styled.Links>

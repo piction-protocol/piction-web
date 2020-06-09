@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -52,6 +53,7 @@ const Styled = {
 };
 
 function ProjectTitle({ project = {} }) {
+  const { t } = useTranslation();
   return (
     <>
       <Link to="/">
@@ -64,7 +66,7 @@ function ProjectTitle({ project = {} }) {
       </Styled.Title>
       <Styled.SponsorCount>
         <Styled.PeopleIcon />
-        {`구독자 수 ${project.sponsorCount}`}
+        {`${t('구독자 수')} ${project.sponsorCount}`}
       </Styled.SponsorCount>
     </>
   );

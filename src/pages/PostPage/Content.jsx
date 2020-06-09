@@ -56,6 +56,7 @@ const Styled = {
 };
 
 function Content({ publishedAt, content, readerMode }) {
+  const browserLng = navigator.language;
   const readerModeStyle = {
     fontFamily: 'RIDIBatang, serif',
     textAlign: 'justify',
@@ -73,7 +74,10 @@ function Content({ publishedAt, content, readerMode }) {
         }}
       />
       <Styled.Date>
-        {`${moment(publishedAt).format('ll HH:mm')} 발행`}
+        {
+                browserLng === 'ko-KR' ? `${moment(publishedAt).format('MM/DD, YYYY, HH:mm')} Reservation` : `${moment(publishedAt).format('ll HH:mm')} 발행`
+            }
+        {/* {`${moment(publishedAt).format('ll HH:mm')} 발행`} */}
       </Styled.Date>
     </>
   );
@@ -118,16 +122,18 @@ function LockedContent({ handleSubscription, post }) {
       <Styled.LockedIcon />
       {hasPrice ? (
         <p>
+          {t('~ 이상 이용 가능한 포스트입니다.')}
           <Styled.Required>
             {post.membership.name}
           </Styled.Required>
           {' '}
-          이상
+          {t('이상')}
           <br />
-          후원자만 이용 가능한 포스트입니다.
+          {t('후원자만 이용 가능한 포스트입니다.')}
         </p>
       ) : (
         <p>
+          {t('~ 만 이용 가능한 포스트입니다.')}
           <Styled.Required>
             {t('구독자')}
           </Styled.Required>
@@ -146,13 +152,13 @@ function LockedContent({ handleSubscription, post }) {
               redirectTo: window.location.href,
             }}
           >
-            후원하기
+            {t('후원하기')}
           </Styled.Subscription>
         ) : (
           <Styled.Subscription
             onClick={handleSubscription}
           >
-            구독하기
+            {t('구독하기')}
           </Styled.Subscription>
         )
       ) : (
@@ -165,7 +171,7 @@ function LockedContent({ handleSubscription, post }) {
                 redirectTo: encodeURIComponent(location.pathname),
               }}
             >
-              {hasPrice ? '후원하기' : '구독하기'}
+              {hasPrice ? `${t('후원하기')}` : `${t('구독하기')}`}
             </Styled.Subscription>
           )}
         </Location>

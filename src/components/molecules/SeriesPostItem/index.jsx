@@ -85,7 +85,7 @@ function SeriesPostItem({
         {isViewable ? (
           <Styled.PublishedAt>
             {
-                browserLng === 'ko-KR' ? moment(publishedAt).format('MM/DD/YYYY HH:mm [Reservation]') : moment(publishedAt).format('YYYY/MM/DD HH:mm 예약')
+                browserLng === 'ko-KR' ? moment(publishedAt).format('MM/DD, YYYY, HH:mm [Reservation]') : moment(publishedAt).format('YYYY/MM/DD HH:mm 예약')
             }
             {/* {moment(publishedAt).format('YYYY년 MMMM Do hh:mm 발행')} */}
           </Styled.PublishedAt>
