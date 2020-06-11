@@ -129,7 +129,7 @@ function MembershipList({
             <Styled.MembershipInfo>
               <Styled.Status>
                 {isSubscribing
-                  ? (PageLanguage === 'ko' ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료') : moment(sponsored.expireDate).format('MM/DD YYYY [Expiration]'))
+                  ? (((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료') : moment(sponsored.expireDate).format('MM/DD YYYY [Expiration]'))
                   : membership.sponsorLimit !== null && (
                     isFull ? `${t('후원 불가능')}`
                       : `${membership.sponsorLimit - membership.sponsorCount}${t('명 남음')}`

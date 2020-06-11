@@ -86,7 +86,7 @@ function SeriesPostItem({
         {isViewable ? (
           <Styled.PublishedAt>
             {
-                PageLanguage === 'ko' ? moment(publishedAt).format('YYYY/MM/DD HH:mm 발행') : moment(publishedAt).format('MM/DD, YYYY, HH:mm [Published]')
+                ((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? moment(publishedAt).format('YYYY/MM/DD HH:mm 발행') : moment(publishedAt).format('MM/DD, YYYY, HH:mm [Published]')
             }
           </Styled.PublishedAt>
         ) : (

@@ -1,7 +1,11 @@
 function useLanguage() {
-  const language = navigator.language.split('-')[0];
-
-  return language;
+  let willRenderLanguage = navigator.language.search(/ko/);
+  if (willRenderLanguage === 0) {
+    willRenderLanguage = 'ko';
+  } else {
+    willRenderLanguage = 'en';
+  }
+  return willRenderLanguage;
 }
 
 export default useLanguage;

@@ -100,9 +100,9 @@ function SponsorList({ title, projectId }) {
               </Styled.Tier>
             </Styled.Text>
             <Styled.SubscriptionDate>
-              {PageLanguage === 'ko' ? moment(subscription.startedAt).format('YYYY/MM/DD HH:mm') : moment(subscription.startedAt).format('MM/DD YYYY HH:mm')}
+              {((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? moment(subscription.startedAt).format('YYYY/MM/DD HH:mm') : moment(subscription.startedAt).format('MM/DD YYYY HH:mm')}
               <br />
-              {PageLanguage === 'ko' ? subscription.expireDate && moment(subscription.expireDate).format('~ YYYY/MM/DD HH:mm') : subscription.expireDate && moment(subscription.expireDate).format('~ MM/DD YYYY HH:mm')}
+              {((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? subscription.expireDate && moment(subscription.expireDate).format('~ YYYY/MM/DD HH:mm') : subscription.expireDate && moment(subscription.expireDate).format('~ MM/DD YYYY HH:mm')}
             </Styled.SubscriptionDate>
           </Styled.Item>
         ))) : Array.from({ length: 10 }, (_, i) => (
