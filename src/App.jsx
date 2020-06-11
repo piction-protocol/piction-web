@@ -7,6 +7,8 @@ import { SWRConfig } from 'swr';
 import styled from 'styled-components/macro';
 import createFetcher from 'config/fetcher';
 import { ScrollContext } from 'gatsby-react-router-scroll';
+import i18n from 'language/i18n';
+import { useCookies } from 'react-cookie';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -64,6 +66,10 @@ const swrConfig = {
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
+  const [cookie] = useCookies(['translate']);
+  const renderLang = cookie.translate;
+  i18n.changeLanguage(`${renderLang}`);
+
 
   useEffect(() => {
     async function loading() {

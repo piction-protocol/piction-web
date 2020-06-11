@@ -5,6 +5,7 @@ import { Location, Link } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';
 import { useTranslation } from 'react-i18next';
+import i18n from 'language/i18n';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -56,7 +57,7 @@ const Styled = {
 };
 
 function Content({ publishedAt, content, readerMode }) {
-  const browserLng = navigator.language;
+  const valueOfLang = i18n.language;
   const readerModeStyle = {
     fontFamily: 'RIDIBatang, serif',
     textAlign: 'justify',
@@ -75,9 +76,8 @@ function Content({ publishedAt, content, readerMode }) {
       />
       <Styled.Date>
         {
-                browserLng === 'ko-KR' ? `${moment(publishedAt).format('MM/DD, YYYY, HH:mm')} Reservation` : `${moment(publishedAt).format('ll HH:mm')} 발행`
-            }
-        {/* {`${moment(publishedAt).format('ll HH:mm')} 발행`} */}
+          valueOfLang === 'kr' ? `${moment(publishedAt).format('ll HH:mm')} 발행` : `${moment(publishedAt).format('MM/DD, YYYY, HH:mm')} Published`
+        }
       </Styled.Date>
     </>
   );

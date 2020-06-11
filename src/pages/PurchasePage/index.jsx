@@ -9,6 +9,7 @@ import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
 import { useTranslation } from 'react-i18next';
+import i18n from 'language/i18n';
 
 import media, { mediaQuery } from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -181,6 +182,7 @@ function PurchasePage({
   const location = useLocation();
   const redirectPage = location.state.redirectTo;
   const { t } = useTranslation();
+  const PageLanguage = i18n.language;
 
   const { data: project } = useSWR(`/projects/${projectId}`, { revalidateOnFocus: false });
   useProjectLayout(project);
@@ -265,7 +267,9 @@ function PurchasePage({
               {t('혜택 제공 기간')}
             </Styled.SectionLabel>
             <Styled.Date>
-              {moment().add(30, 'days').format(' YYYY년 MM월 DD일까지 (30일)')}
+              {
+                PageLanguage === 'kr' ? moment().add(30, 'days').format(' YYYY년 MM월 DD일까지 (30일)') : moment().add(30, 'days').format('[Until] YYYY-MM-DD [(30days)]')
+              }
             </Styled.Date>
             <Styled.SectionLabel>
               {t('결제 금액')}

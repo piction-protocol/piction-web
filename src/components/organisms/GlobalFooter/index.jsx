@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
+import { useCookies } from 'react-cookie';
 
 import media from 'styles/media';
 
 import { ReactComponent as Logo } from 'images/img-piction-logo--gray.svg';
+import i18n from 'language/i18n';
 
 const Styled = {
   Footer: styled.footer`
@@ -93,10 +96,22 @@ const Styled = {
     color: var(--black);
     font-style: normal;
   `,
+  Lang: styled.select`
+    margin-left: 20px;
+    border: 1px solid var(--gray);
+    width: 95px;
+    height: 38px;
+  `,
 };
 
 function GlobalFooter() {
   const { t } = useTranslation();
+  const [cookie, setCookie] = useCookies(['translate']);
+  const valueOfLang = cookie.translate === undefined ? i18n.language : cookie.translate;
+  const handleLanguage = (e) => {
+    setCookie('translate', e.target.value, { expires: moment().add(12, 'hours').toDate(), path: '/' });
+    i18n.changeLanguage(`${e.target.value}`);
+  };
   return (
     <Styled.Footer>
       <Styled.Wrapper>
@@ -123,6 +138,10 @@ function GlobalFooter() {
           <Styled.Item>Contact | help@piction.network</Styled.Item>
           <Styled.Item>© 2018-2020 Piction Network. All rights reserved</Styled.Item>
         </Styled.Texts>
+        <Styled.Lang value={valueOfLang} onChange={handleLanguage}>
+          <option value="kr" selected>한국어</option>
+          <option value="en">English</option>
+        </Styled.Lang>
         <Styled.Logo />
       </Styled.Wrapper>
     </Styled.Footer>

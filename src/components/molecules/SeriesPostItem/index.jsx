@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
 import { useTranslation } from 'react-i18next';
+import i18n from 'language/i18n';
 
 import media from 'styles/media';
 
@@ -70,7 +71,7 @@ function SeriesPostItem({
   index, title, cover = null, publishedAt, membership, isViewable, ...props
 }) {
   const { t } = useTranslation();
-  const browserLng = navigator.language;
+  const PageLanguage = i18n.language;
   return (
     <Styled.Item
       {...props}
@@ -85,9 +86,8 @@ function SeriesPostItem({
         {isViewable ? (
           <Styled.PublishedAt>
             {
-                browserLng === 'ko-KR' ? moment(publishedAt).format('MM/DD, YYYY, HH:mm [Reservation]') : moment(publishedAt).format('YYYY/MM/DD HH:mm 예약')
+                PageLanguage === 'kr' ? moment(publishedAt).format('YYYY/MM/DD HH:mm 발행') : moment(publishedAt).format('MM/DD, YYYY, HH:mm [Published]')
             }
-            {/* {moment(publishedAt).format('YYYY년 MMMM Do hh:mm 발행')} */}
           </Styled.PublishedAt>
         ) : (
           <Styled.Membership>

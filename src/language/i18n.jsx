@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import translationEn from './translation.en.json';
 
+
 const resource = {
   en: {
     translation: translationEn,
@@ -22,7 +23,7 @@ i18n
     fallbackLng: 'kr',
     // ns: ['translation'],
     // defaultNS: "translation",
-    debug: true,
+    debug: false,
     keySeparator: false, // we do not use keys in form messages.welcome
     interpolation: {
       escapeValue: false, // react already safes from xss
