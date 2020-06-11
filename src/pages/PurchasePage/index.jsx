@@ -268,7 +268,7 @@ function PurchasePage({
             </Styled.SectionLabel>
             <Styled.Date>
               {
-                PageLanguage === 'kr' ? moment().add(30, 'days').format(' YYYY년 MM월 DD일까지 (30일)') : moment().add(30, 'days').format('[Until] YYYY-MM-DD [(30days)]')
+                PageLanguage === 'ko' ? moment().add(30, 'days').format(' YYYY년 MM월 DD일까지 (30일)') : moment().add(30, 'days').format('[Until] YYYY-MM-DD [(30days)]')
               }
             </Styled.Date>
             <Styled.SectionLabel>

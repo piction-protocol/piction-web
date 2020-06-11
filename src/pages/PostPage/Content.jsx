@@ -76,7 +76,7 @@ function Content({ publishedAt, content, readerMode }) {
       />
       <Styled.Date>
         {
-          valueOfLang === 'kr' ? `${moment(publishedAt).format('ll HH:mm')} 발행` : `${moment(publishedAt).format('MM/DD, YYYY, HH:mm')} Published`
+          valueOfLang === 'ko' ? `${moment(publishedAt).format('ll HH:mm')} 발행` : `${moment(publishedAt).format('MM/DD, YYYY, HH:mm')} Published`
         }
       </Styled.Date>
     </>

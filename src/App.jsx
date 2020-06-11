@@ -11,6 +11,7 @@ import i18n from 'language/i18n';
 import { useCookies } from 'react-cookie';
 
 import useCurrentUser from 'hooks/useCurrentUser';
+import useLanguage from 'hooks/useLanguage';
 
 import { LayoutProvider } from 'contexts/LayoutContext';
 
@@ -62,6 +63,14 @@ const swrConfig = {
     setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 5000);
   },
 };
+
+const PageLanguage = useLanguage();
+
+if (PageLanguage === 'ko') {
+  i18n.changeLanguage('ko');
+} else {
+  i18n.changeLanguage('en');
+}
 
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();

@@ -7,7 +7,7 @@ const resource = {
   en: {
     translation: translationEn,
   },
-  kr: {
+  ko: {
     translation: {
       '~ 이상 이용 가능한 포스트입니다.': '',
       '~ 만 이용 가능한 포스트입니다.': '',
@@ -19,8 +19,8 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources: resource,
-    lng: 'kr',
-    fallbackLng: 'kr',
+    lng: 'ko',
+    fallbackLng: 'ko',
     // ns: ['translation'],
     // defaultNS: "translation",
     debug: false,

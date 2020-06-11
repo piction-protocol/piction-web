@@ -139,7 +139,7 @@ function GlobalFooter() {
           <Styled.Item>© 2018-2020 Piction Network. All rights reserved</Styled.Item>
         </Styled.Texts>
         <Styled.Lang value={valueOfLang} onChange={handleLanguage}>
-          <option value="kr" selected>한국어</option>
+          <option value="ko" selected>한국어</option>
           <option value="en">English</option>
         </Styled.Lang>
         <Styled.Logo />

@@ -87,7 +87,7 @@ function Transactions() {
         </Styled.Thead>
         {transactions ? transactions.map(transaction => (
           <Styled.Row key={transaction.transactionHash} onClick={() => setSelected(transaction)}>
-            <Styled.Cell>{PageLanguage === 'kr' ? moment(transaction.blockTime).format('YYYY/MM/DD HH:mm:ss') : moment(transaction.blockTime).format('MM/DD YYYY HH:mm:ss')}</Styled.Cell>
+            <Styled.Cell>{PageLanguage === 'ko' ? moment(transaction.blockTime).format('YYYY/MM/DD HH:mm:ss') : moment(transaction.blockTime).format('MM/DD YYYY HH:mm:ss')}</Styled.Cell>
             <Styled.Cell>
               {`${(transaction.inOut === 'IN' ? '+' : '-') + transaction.amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
             </Styled.Cell>
