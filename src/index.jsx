@@ -17,7 +17,6 @@ if (process.env.REACT_APP_SENTRY_DSN) {
 }
 
 if (navigator.language === 'ko-KR') {
-  console.log('index jsx 렌더링');
   i18n.changeLanguage('en');
 } else {
   i18n.changeLanguage('kr');
