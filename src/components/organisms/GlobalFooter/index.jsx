@@ -101,6 +101,7 @@ const Styled = {
     border: 1px solid var(--gray);
     width: 95px;
     height: 38px;
+    font-size: var(--font-size--small);
   `,
 };
 
