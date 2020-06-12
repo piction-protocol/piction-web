@@ -65,11 +65,9 @@ const swrConfig = {
 };
 
 const PageLanguage = useLanguage();
-console.log(PageLanguage);
 if (PageLanguage === 'ko') {
   i18n.changeLanguage('ko');
 } else {
-  console.log('왔어용 ㅎㅎ');
   i18n.changeLanguage('en');
 }
 
@@ -78,7 +76,6 @@ function App() {
   const fetcher = createFetcher(accessToken);
   const [cookie] = useCookies(['translate']);
   const renderLang = cookie.translate;
-  console.log(renderLang); // 여기서 언디파인드 떠서 생기는 문제
   i18n.changeLanguage(renderLang === undefined ? `${PageLanguage}` : `${renderLang}`);
 
 
