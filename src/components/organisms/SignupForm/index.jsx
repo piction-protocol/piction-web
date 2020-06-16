@@ -143,7 +143,7 @@ function SignupForm({ location }) {
         errorMessage={errorMessage.username}
       />
       <Styled.Terms>
-        <Trans i18nKey="ageeKey">
+        <Trans i18nKey="약관동의">
           <Styled.Checkbox
             name="agree"
             onChange={handleChange}
