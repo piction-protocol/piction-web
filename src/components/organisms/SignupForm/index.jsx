@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 
 import { Link, navigate } from '@reach/router';
 
@@ -143,17 +143,18 @@ function SignupForm({ location }) {
         errorMessage={errorMessage.username}
       />
       <Styled.Terms>
-        <Styled.Checkbox
-          name="agree"
-          onChange={handleChange}
-          checked={formData.agree}
-          required
-        />
-        {t('나는 동의합니다.')}
-        <Styled.Link as="a" href="/terms" target="_blank">{t('서비스 이용약관')}</Styled.Link>
-        {t(' 및 ')}
-        <Styled.Link as="a" href="/privacy" target="_blank">{t('개인정보 처리방침')}</Styled.Link>
-        {t('에 동의합니다.')}
+        <Trans i18nKey="ageeKey">
+          <Styled.Checkbox
+            name="agree"
+            onChange={handleChange}
+            checked={formData.agree}
+            required
+          />
+          <Styled.Link as="a" href="/terms" target="_blank">서비스 이용약관</Styled.Link>
+          및
+          <Styled.Link as="a" href="/privacy" target="_blank">개인정보 처리방침</Styled.Link>
+          에 동의합니다.
+        </Trans>
       </Styled.Terms>
       <Styled.Submit
         value={t('동의 및 회원가입')}
