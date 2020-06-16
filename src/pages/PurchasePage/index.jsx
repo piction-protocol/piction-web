@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import i18n from 'language/i18n';
 
 import media, { mediaQuery } from 'styles/media';
@@ -219,6 +219,8 @@ function PurchasePage({
     }
   };
 
+  const projectUserName = project?.user?.username;
+
   return (
     <>
       <Styled.WideThumbnail
@@ -303,17 +305,19 @@ function PurchasePage({
                   </Styled.Li>
                 </Styled.Ul>
                 <Styled.Notice>
-                  {t('결제 완료 시 결제 금액이 즉시')}
-                  {' '}
-                  <strong>
-                    {project.user.username}
-                  </strong>
-                  {' '}
-                  {t('님의 계좌로 송금되며,')}
-                  {' '}
-                  <Styled.Em>
-                    {t('환불은 불가능합니다.')}
-                  </Styled.Em>
+                  <Trans i18nKey="결제 완료">
+                    결제 완료 시 결제 금액이 즉시
+                    {' '}
+                    <strong>
+                      {{ projectUserName }}
+                    </strong>
+                    {' '}
+                    님의 계좌로 송금되며,
+                    {' '}
+                    <Styled.Em>
+                      환불은 불가능합니다.
+                    </Styled.Em>
+                  </Trans>
                 </Styled.Notice>
               </Styled.Fees>
             </Styled.Section>

@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import { Location, Link } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import i18n from 'language/i18n';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -117,31 +117,35 @@ function LockedContent({ handleSubscription, post }) {
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const hasPrice = post?.membership.price > 0;
+  const membershipName = post.membership.name;
   return (
     <Styled.Locked>
       <Styled.LockedIcon />
       {hasPrice ? (
         <p>
-          {t('~ 이상 이용 가능한 포스트입니다.')}
-          <Styled.Required>
-            {post.membership.name}
-          </Styled.Required>
-          {' '}
-          {t('이상')}
-          <br />
-          {t('후원자만 이용 가능한 포스트입니다.')}
+          <Trans i18nKey="후원자 이상 이용 가능한 포스트입니다.">
+            <Styled.Required>
+              {{ membershipName }}
+            </Styled.Required>
+            {' '}
+            이상
+            <br />
+            후원자만 이용 가능한 포스트입니다.
+          </Trans>
         </p>
       ) : (
         <p>
-          {t('~ 만 이용 가능한 포스트입니다.')}
-          <Styled.Required>
-            {t('구독자')}
-          </Styled.Required>
-          {t('만 이용 가능한')}
-          <br />
-          {t('포스트입니다.')}
+          <Trans i18nKey="구독자만 이용 가능한 포스트입니다.">
+            <Styled.Required>
+              구독자
+            </Styled.Required>
+            만 이용 가능한
+            <br />
+            포스트입니다.
+          </Trans>
         </p>
-      )}
+      )
+      }
       {currentUser ? (
         hasPrice ? (
           <Styled.Subscription
