@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet';
 import { Link } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import media from 'styles/media';
@@ -196,95 +197,104 @@ const ListItemHeading = styled.h4`
 `;
 
 function CreatorsGuide() {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const gettingStartPath = currentUser ? '/dashboard' : '/signup';
 
   return (
     <Main>
       <Helmet>
-        <title>크리에이터 가이드 - Piction</title>
+        <title>
+          {t('크리에이터 가이드')}
+          {' '}
+          - Piction
+        </title>
       </Helmet>
 
       <IntroSection>
-        <IntroDeco>누구에게나 팬은 있다, 창작자를 응원하는 새로운 방법</IntroDeco>
-        <IntroHeading>픽션과 함께 새로운 모험을 하실 창작자를 찾습니다</IntroHeading>
+        <IntroDeco>{t('누구에게나 팬은 있다, 창작자를 응원하는 새로운 방법')}</IntroDeco>
+        <IntroHeading>{t('픽션과 함께 새로운 모험을 하실 창작자를 찾습니다')}</IntroHeading>
         <IntroParagraph>
-          픽션 네트워크는 창작자의 다양한 창작활동을 후원 할 수 있는 오픈 생태계입니다.
-          콘텐츠가 만들어지는 과정을 팬과 함께 응원하고 즐기는 실험적인 시도를 함께하실 수 있습니다.
+          {t('픽션 네트워크는 창작자의 다양한 창작활동을 후원 할 수 있는 오픈 생태계입니다.')}
+          {t('콘텐츠가 만들어지는 과정을 팬과 함께 응원하고 즐기는 실험적인 시도를 함께하실 수 있습니다.')}
         </IntroParagraph>
-        <PrimaryButtonLink to={gettingStartPath}>시작하기</PrimaryButtonLink>
-        <SecondaryButtonLink href="http://bit.ly/piction_sponsorship_plan" target="_blank">후원플랜 신청</SecondaryButtonLink>
+        <PrimaryButtonLink to={gettingStartPath}>{t('시작하기')}</PrimaryButtonLink>
+        <SecondaryButtonLink href="http://bit.ly/piction_sponsorship_plan" target="_blank">{t('후원플랜 신청')}</SecondaryButtonLink>
 
       </IntroSection>
       <Section>
-        <SectionHeading>우리는 누구나 창작자입니다.</SectionHeading>
+        <SectionHeading>{t('우리는 누구나 창작자입니다.')}</SectionHeading>
         <SectionParagraph>
-          일러스트, 웹툰, 소설, 블로그, 사진 어떤 콘텐츠도 상관없습니다. 콘텐츠는 무궁무진합니다.
-          내가 좋아하는 것을 시작해보세요. 픽션에선 어떤것이든 당신의 이야기를 좋아하는 사람만 있다면 후원 받을 수 있습니다.
+          {t('일러스트, 웹툰, 소설, 블로그, 사진 어떤 콘텐츠도 상관없습니다. 콘텐츠는 무궁무진합니다.')}
+          {t('내가 좋아하는 것을 시작해보세요. 픽션에선 어떤것이든 당신의 이야기를 좋아하는 사람만 있다면 후원 받을 수 있습니다.')}
         </SectionParagraph>
         <picture>
           <img src={contentsShowcaseImages} alt="showcases" style={{ width: '100%' }} />
         </picture>
       </Section>
       <Section>
-        <SectionHeading>무엇을 할 수 있나요?</SectionHeading>
+        <SectionHeading>{t('무엇을 할 수 있나요?')}</SectionHeading>
         <SectionParagraph>
-          흥미진진한 웹툰부터 존잘 일러스트, 특별한 소재를 담은 웹소설, 지난달에 다녀온 유럽 여행기, 내가 좋아하는 피규어 사진,
-          사랑스런 반려동물의 모습, 취미로 하는 코스프레 까지 무엇이든 가능합니다. 심지어 당신의 비밀스러운 일기까지도..
-          당신의 이야기를 함께 나누고 싶은 사람과 공유하고, 그 가치를 후원 받을 수 있습니다.
+          {t('흥미진진한 웹툰부터 존잘 일러스트, 특별한 소재를 담은 웹소설, 지난달에 다녀온 유럽 여행기, 내가 좋아하는 피규어 사진,')}
+          {t('사랑스런 반려동물의 모습, 취미로 하는 코스프레 까지 무엇이든 가능합니다. 심지어 당신의 비밀스러운 일기까지도..')}
+          {t('당신의 이야기를 함께 나누고 싶은 사람과 공유하고, 그 가치를 후원 받을 수 있습니다.')}
         </SectionParagraph>
 
         <Chevron>
-          <SectionSubheading>이렇게 시작해보세요</SectionSubheading>
+          <SectionSubheading>{t('이렇게 시작해보세요')}</SectionSubheading>
           <Ol>
             <ListItem index={1}>
-              <ListItemHeading>어떤 이야기를 하고 싶으신가요?</ListItemHeading>
-              창작의 주제는 무엇이든 좋습니다. 내가 좋아하는 콘텐츠로 시작해보세요. 다른 창작자들은&nbsp;
-              <DecoratedLink to="/explore/all">어떤 이야기를</DecoratedLink>
-              &nbsp;하고 있는지 살펴보세요.
+              <ListItemHeading>{t('어떤 이야기를 하고 싶으신가요?')}</ListItemHeading>
+              {t('창작의 주제는 무엇이든 좋습니다. 내가 좋아하는 콘텐츠로 시작해보세요. 다른 창작자들은')}
+&nbsp;
+              <DecoratedLink to="/explore/all">{t('어떤 이야기를')}</DecoratedLink>
+              &nbsp;
+              {t('하고 있는지 살펴보세요.')}
             </ListItem>
             <ListItem index={2}>
-              <ListItemHeading>프로젝트를 만드세요</ListItemHeading>
-              하고 싶은 프로젝트를 정했다면&nbsp;
-              <DecoratedLink to="/dashboard">새로운 프로젝트를</DecoratedLink>
-              &nbsp;만들어주세요. 첫 포스트로 어떤 이야기를 할 것인지 알려주시면 프로젝트가 더욱 매력적으로 보일거에요.
+              <ListItemHeading>{t('프로젝트를 만드세요')}</ListItemHeading>
+              {t('하고 싶은 프로젝트를 정했다면')}
+&nbsp;
+              <DecoratedLink to="/dashboard">{t('새로운 프로젝트를')}</DecoratedLink>
+              &nbsp;
+              {t('만들어주세요. 첫 포스트로 어떤 이야기를 할 것인지 알려주시면 프로젝트가 더욱 매력적으로 보일거에요.')}
             </ListItem>
             <ListItem index={3}>
-              <ListItemHeading>나의 프로젝트를 알리고 구독자 5명을 모아주세요</ListItemHeading>
-              기존에 창작활동을 하시고 있었다면 픽션에서 새로운 시도를 시작 했음을 알려주세요. 인스타그램, 트위터, 블로그에 내 프로젝트의 링크를 공유하고 알려주시면 더 많은 팬들이 알게 될거에요.
+              <ListItemHeading>{t('나의 프로젝트를 알리고 구독자 5명을 모아주세요')}</ListItemHeading>
+              {t('기존에 창작활동을 하시고 있었다면 픽션에서 새로운 시도를 시작 했음을 알려주세요. 인스타그램, 트위터, 블로그에 내 프로젝트의 링크를 공유하고 알려주시면 더 많은 팬들이 알게 될거에요.')}
             </ListItem>
             <ListItem index={4}>
-              <ListItemHeading>후원 플랜을 신청해주세요</ListItemHeading>
-              구독자 5명을 달성하면 하고 후원 플랜을 신청하세요. 팬들로부터 직접 PXL을 후원 받을 수 있는 후원 플랜이 열립니다. 별도의 신청을 통해 후원 플랜을 마련할 수 있는 기회가 제공됩니다.
+              <ListItemHeading>{t('후원 플랜을 신청해주세요')}</ListItemHeading>
+              {t('구독자 5명을 달성하면 하고 후원 플랜을 신청하세요. 팬들로부터 직접 PXL을 후원 받을 수 있는 후원 플랜이 열립니다. 별도의 신청을 통해 후원 플랜을 마련할 수 있는 기회가 제공됩니다.')}
             </ListItem>
             <ListItem index={5}>
-              <ListItemHeading>꾸준히 창작 활동을 하세요</ListItemHeading>
-              이제 여러분의 차례입니다. 꾸준하게 이야기를 들려주세요. 반드시 내 프로젝트를 좋아하는 팬이 생길거에요. 세상을 넓고 이야기는 다양합니다. 누구에게 팬은 있습니다.
+              <ListItemHeading>{t('꾸준히 창작 활동을 하세요')}</ListItemHeading>
+              {t('이제 여러분의 차례입니다. 꾸준하게 이야기를 들려주세요. 반드시 내 프로젝트를 좋아하는 팬이 생길거에요. 세상을 넓고 이야기는 다양합니다. 누구에게 팬은 있습니다.')}
             </ListItem>
           </Ol>
         </Chevron>
       </Section>
       <Section>
-        <SectionHeading>픽션에서 새로운 창작활동을 시작해보세요, 창작자 여러분을 환영합니다.</SectionHeading>
-        <PrimaryButtonLink to={gettingStartPath}>시작하기</PrimaryButtonLink>
+        <SectionHeading>{t('픽션에서 새로운 창작활동을 시작해보세요, 창작자 여러분을 환영합니다.')}</SectionHeading>
+        <PrimaryButtonLink to={gettingStartPath}>{t('시작하기')}</PrimaryButtonLink>
       </Section>
 
       <DarkBackground>
         <Aside>
-          <h5>시간이 남았으면 더 알아보기</h5>
+          <h5>{t('시간이 남았으면 더 알아보기')}</h5>
 
           <hr />
 
           <div style={{ marginBottom: '20px' }}>
-            <h6 style={{ wordBreak: 'keep-all' }}>왜 블록체인 코인(PXL)으로 후원을 받아야 하나요?</h6>
+            <h6 style={{ wordBreak: 'keep-all' }}>{t('왜 블록체인 코인(PXL)으로 후원을 받아야 하나요?')}</h6>
             <p style={{ fontSize: '14px' }}>
-              픽션은 블록체인 네트워크에서 동작합니다. 블록체인은 투명하고 위변조가 불가능한 방식으로 동작하기 때문에 후원의 흐름을 누구나 투명하게 확인 가능하게 하고, 발생한 후원 금액의 일부가 다시 생태계로 들어가는 공정한 흐름을 만들 수 있게 해줍니다. 또한 스마트컨트랙트라는 프로그램을 이용해 복잡한 중간 정산 과정을 생략하고 신속하고 정확하게 후원이 전달될 수 있도록 해주기 때문입니다.
+              {t('픽션은 블록체인 네트워크에서 동작합니다. 블록체인은 투명하고 위변조가 불가능한 방식으로 동작하기 때문에 후원의 흐름을 누구나 투명하게 확인 가능하게 하고, 발생한 후원 금액의 일부가 다시 생태계로 들어가는 공정한 흐름을 만들 수 있게 해줍니다. 또한 스마트컨트랙트라는 프로그램을 이용해 복잡한 중간 정산 과정을 생략하고 신속하고 정확하게 후원이 전달될 수 있도록 해주기 때문입니다.')}
             </p>
           </div>
           <div>
-            <h6 style={{ wordBreak: 'keep-all' }}>비슷한 다른 플랫폼도 많은데 왜 픽션을 해야하나요?</h6>
+            <h6 style={{ wordBreak: 'keep-all' }}>{t('비슷한 다른 플랫폼도 많은데 왜 픽션을 해야하나요?')}</h6>
             <p style={{ fontSize: '14px' }}>
-              픽션은 창작자님들의 다양한 창작 실험을 지지합니다. 새로운 시도는 언제나 환영이며, 받는 응원만큼 픽션도 함께 응원할 준비가 되어있기 때문입니다. 픽션 생태계는 보다 많은 창작자의 창작활동을 장려하기 위해 생태계 성장 기금을 운영합니다. 이 기금은 다양한 창작활동을 지원하기 위한 용도로 사용됩니다.
+              {t('픽션은 창작자님들의 다양한 창작 실험을 지지합니다. 새로운 시도는 언제나 환영이며, 받는 응원만큼 픽션도 함께 응원할 준비가 되어있기 때문입니다. 픽션 생태계는 보다 많은 창작자의 창작활동을 장려하기 위해 생태계 성장 기금을 운영합니다. 이 기금은 다양한 창작활동을 지원하기 위한 용도로 사용됩니다.')}
             </p>
           </div>
         </Aside>

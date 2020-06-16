@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -38,16 +39,17 @@ const Styled = {
 };
 
 function Welcome({ redirectTo = '/' }) {
+  const { t } = useTranslation();
   return (
     <Styled.Container>
-      <Styled.Heading>회원가입이 완료되었습니다!</Styled.Heading>
+      <Styled.Heading>{t('회원가입이 완료되었습니다!')}</Styled.Heading>
       <Styled.Image />
       <Styled.Text>
-        지금 바로 PICTION에서
+        {t('지금 바로 PICTION에서')}
         <br />
-        다양한 창작물을 즐겨보세요!
+        {t('다양한 창작물을 즐겨보세요!')}
       </Styled.Text>
-      <Styled.Button to={redirectTo}>계속</Styled.Button>
+      <Styled.Button to={redirectTo}>{t('계속')}</Styled.Button>
     </Styled.Container>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import { MainGrid } from 'styles/Grid';
@@ -93,24 +94,26 @@ const Styled = {
     `}
   `,
 };
-
-const Intro = () => (
-  <Styled.Section>
-    <Styled.MainGrid>
-      <Styled.Image />
-      <Styled.Title>
-        크리에이터와
-        <br />
-        팬이 만나는 곳, 픽션.
-      </Styled.Title>
-      <Styled.Paragraph>
-        픽션에서는 누구나 크리에이터가 될 수 있고
-        <br />
-        누구나 나의 최애 크리에이터를 응원할 수 있습니다.
-      </Styled.Paragraph>
-      <Styled.Button as={Link} to="/explore/all">연재 중인 프로젝트</Styled.Button>
-    </Styled.MainGrid>
-  </Styled.Section>
-);
+const Intro = () => {
+  const { t } = useTranslation();
+  return (
+    <Styled.Section>
+      <Styled.MainGrid>
+        <Styled.Image />
+        <Styled.Title>
+          {t('크리에이터와')}
+          <br />
+          {t('팬이 만나는 곳, 픽션.')}
+        </Styled.Title>
+        <Styled.Paragraph>
+          {t('픽션에서는 누구나 크리에이터가 될 수 있고')}
+          <br />
+          {t('누구나 나의 최애 크리에이터를 응원할 수 있습니다.')}
+        </Styled.Paragraph>
+        <Styled.Button as={Link} to="/explore/all">{t('연재 중인 프로젝트')}</Styled.Button>
+      </Styled.MainGrid>
+    </Styled.Section>
+  );
+};
 
 export default Intro;

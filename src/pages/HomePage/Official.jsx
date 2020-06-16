@@ -3,6 +3,7 @@ import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
+import { useTranslation } from 'react-i18next';
 
 const Styled = {
   Section: styled(MainGrid).attrs({
@@ -46,13 +47,16 @@ const Styled = {
   `,
 };
 
-const Official = () => (
-  <Styled.Section>
-    <Styled.Link to="/project/piction/posts">
-      <Styled.Label>What&apos;s New</Styled.Label>
-      픽션 공식 프로젝트에서 픽션의 새로운 소식들을 만나보세요!
-    </Styled.Link>
-  </Styled.Section>
-);
+const Official = () => {
+  const { t } = useTranslation();
+  return (
+    <Styled.Section>
+      <Styled.Link to="/project/piction/posts">
+        <Styled.Label>What&apos;s New</Styled.Label>
+        {t('픽션 공식 프로젝트에서 픽션의 새로운 소식들을 만나보세요!')}
+      </Styled.Link>
+    </Styled.Section>
+  );
+};
 
 export default Official;

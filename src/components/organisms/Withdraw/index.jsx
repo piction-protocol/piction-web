@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -104,6 +105,7 @@ const Styled = {
 };
 
 function Withdraw({ wallet }) {
+  const { t } = useTranslation();
   const {
     register, errors, setError, getValues, handleSubmit,
   } = useForm();
@@ -131,27 +133,27 @@ function Withdraw({ wallet }) {
   return (
     <Styled.Form onSubmit={handleSubmit(onSubmit)} id="withdraw">
       <Styled.Section columns={4}>
-        <Styled.Title>출금 수량</Styled.Title>
+        <Styled.Title>{t('출금 수량')}</Styled.Title>
         <Styled.Input
           type="number"
           name="amount"
           placeholder="0"
           invalid={errors.amount}
           ref={register({
-            required: '출금 수량을 입력하세요.',
+            required: `${t('출금 수량을 입력하세요.')}`,
             min: {
               value: 1,
-              message: '1 이상의 정수만 입력 가능합니다.',
+              message: `${t('1 이상의 정수만 입력 가능합니다.')}`,
             },
             max: {
               value: wallet.amount,
-              message: 'PXL이 부족합니다.',
+              message: `${t('PXL이 부족합니다.')}`,
             },
           })}
         />
         {wallet.amountOriginal && (
           <Styled.Balance>
-            {`출금 가능한 금액 : ${wallet.amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
+            {`${t('출금 가능한 금액')} : ${wallet.amountOriginal.replace(/(\d*?\.?\d*?)(\.?0+)( PXL)$/g, '$1$3')}`}
           </Styled.Balance>
         )}
         {errors.amount && (
@@ -161,16 +163,16 @@ function Withdraw({ wallet }) {
         )}
       </Styled.Section>
       <Styled.Section columns={4} style={{ gridRow: 2 }}>
-        <Styled.Title>출금 주소</Styled.Title>
+        <Styled.Title>{t('출금 주소')}</Styled.Title>
         <Styled.Input
           name="withdrawAddress"
-          placeholder="출금 주소를 입력하세요."
+          placeholder={t('출금 주소를 입력하세요.')}
           invalid={errors.withdrawAddress}
           ref={register({
-            required: '출금 주소를 입력하세요.',
+            required: `${t('출금 주소를 입력하세요.')}`,
             pattern: {
               value: /^0x[a-fA-F0-9]{40}$/,
-              message: '잘못된 주소입니다.',
+              message: `${('잘못된 주소입니다.')}`,
             },
           })}
         />
@@ -181,7 +183,7 @@ function Withdraw({ wallet }) {
         )}
       </Styled.Section>
       <Styled.Section>
-        <Styled.Title>출금을 지원하는 거래소 및 지갑 서비스</Styled.Title>
+        <Styled.Title>{t('출금을 지원하는 거래소 및 지갑 서비스')}</Styled.Title>
         <Styled.Group>
           <Styled.Link href="https://coinone.co.kr/exchange/trade/pxl/krw" target="_blank">
             <img src={CoinOneLogo} alt="coinone" />
@@ -195,26 +197,26 @@ function Withdraw({ wallet }) {
         </Styled.Group>
       </Styled.Section>
       <Styled.Section>
-        <Styled.Title>주의사항</Styled.Title>
+        <Styled.Title>{t('주의사항')}</Styled.Title>
         <Styled.List>
           <Styled.Item>
-            PXL 토큰은 Klaytn 블록체인 네트워크를 통해 전송되며, 전송이 시작되면 취소가 불가능합니다.
+            {t('PXL 토큰은 Klaytn 블록체인 네트워크를 통해 전송되며, 전송이 시작되면 취소가 불가능합니다.')}
           </Styled.Item>
           <Styled.Item>
-            입력한 출금 수량 및 출금 주소 오입력으로 인한 피해는 픽션이 책임지지 않습니다.
+            {t('입력한 출금 수량 및 출금 주소 오입력으로 인한 피해는 픽션이 책임지지 않습니다.')}
           </Styled.Item>
           <Styled.Item>
-            Klaytn 네트워크를 지원하지 않는 거래소로의 송금은 불가능합니다.
+            {t('Klaytn 네트워크를 지원하지 않는 거래소로의 송금은 불가능합니다.')}
           </Styled.Item>
           <Styled.Item>
             <Styled.Strong>
-              다른 네트워크 또는 다른 토큰 입금 시 발생하는 오류 및 손실은 복구해 드리지 않습니다.
+              {t('다른 네트워크 또는 다른 토큰 입금 시 발생하는 오류 및 손실은 복구해 드리지 않습니다.')}
             </Styled.Strong>
           </Styled.Item>
         </Styled.List>
       </Styled.Section>
       <Styled.SubmitGroup>
-        <Styled.Submit value="PXL 출금" />
+        <Styled.Submit value={t('PXL 출금')} />
       </Styled.SubmitGroup>
       {isModalOpened && (
         <WithdrawModal
@@ -226,11 +228,11 @@ function Withdraw({ wallet }) {
       )}
       {isSuccess && (
         <Styled.Modal close={() => {}}>
-          출금이 시작되었습니다.
+          {t('출금이 시작되었습니다.')}
           <br />
-          네트워크 상황 및 거래소의 정책에 따라 시간이 좀 더 소요될 수 있습니다.
+          {t('네트워크 상황 및 거래소의 정책에 따라 시간이 좀 더 소요될 수 있습니다.')}
           <PrimaryButton onClick={() => window.location.reload()}>
-            확인
+            {t('확인')}
           </PrimaryButton>
         </Styled.Modal>
       )}

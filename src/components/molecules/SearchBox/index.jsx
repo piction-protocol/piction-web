@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { navigate } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import { mediaQuery } from 'styles/media';
 import useMedia from 'hooks/useMedia';
@@ -65,6 +66,7 @@ const Styled = {
 function SearchBox({
   ...props
 }) {
+  const { t } = useTranslation();
   const [isOpened, setIsOpened] = useState(false);
   const [query, setQuery] = useState('');
   const isDesktop = useMedia(mediaQuery.desktop);
@@ -88,7 +90,7 @@ function SearchBox({
       <Styled.Input
         value={query}
         onChange={e => setQuery(e.target.value)}
-        placeholder="프로젝트 검색"
+        placeholder={t('프로젝트 검색')}
       />
     </Styled.Form>
   ) : (
@@ -103,7 +105,7 @@ function SearchBox({
             <Styled.Input
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="프로젝트 검색"
+              placeholder={t('프로젝트 검색')}
             />
           </Styled.Form>
           <Styled.Button onClick={toggleModal}>

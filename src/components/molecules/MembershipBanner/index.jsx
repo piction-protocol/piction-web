@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -45,16 +46,17 @@ const Styled = {
 };
 
 function MembershipBanner({ userName }) {
+  const { t } = useTranslation();
   return (
     <Styled.Aside>
       <Styled.Container>
         <Styled.Symbol />
         <Styled.Text>
           <Styled.Name>{userName}</Styled.Name>
-          님은 여러분의 후원을 기다리고 있습니다.
+          {t('님은 여러분의 후원을 기다리고 있습니다.')}
         </Styled.Text>
         <SecondaryButton as={Link} to="memberships">
-          후원
+          {t('후원')}
         </SecondaryButton>
       </Styled.Container>
     </Styled.Aside>

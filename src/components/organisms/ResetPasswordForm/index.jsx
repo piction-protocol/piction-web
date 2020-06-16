@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import queryString from 'query-string';
+import { useTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 import useForm from 'hooks/useForm';
@@ -45,6 +46,7 @@ const Styled = {
 };
 
 function ResetPasswordForm({ location: { search } }) {
+  const { t } = useTranslation();
   const [isSent, setIsSent] = useState(false);
   const [formData, { handleChange }] = useForm({
     password: '',
@@ -69,7 +71,7 @@ function ResetPasswordForm({ location: { search } }) {
   return (!search ? (
     <>
       <Styled.Text>
-         잘못된 접근이거나, 유효기간이 만료된 링크로 접속하였습니다. 지속적으로 문제가 있을 경우 고객센터에 문의 바랍니다.
+        {t('잘못된 접근이거나, 유효기간이 만료된 링크로 접속하였습니다. 지속적으로 문제가 있을 경우 고객센터에 문의 바랍니다.')}
       </Styled.Text>
       <Styled.Email href="mailto:help@piction.network">
         help@piction.network
@@ -77,26 +79,26 @@ function ResetPasswordForm({ location: { search } }) {
       <Styled.Link
         to="/"
       >
-        홈으로 이동
+        {t('홈으로 이동')}
       </Styled.Link>
     </>
   ) : isSent ? (
     <>
       <Styled.Text>
-        비밀번호 재설정이 완료되었습니다.
+        {t('비밀번호 재설정이 완료되었습니다.')}
         <br />
-        다시 로그인해주세요.
+        {t('다시 로그인해주세요.')}
       </Styled.Text>
       <Styled.Link
         to="/login"
       >
-        로그인
+        {t('로그인')}
       </Styled.Link>
     </>
   ) : (
     <Styled.Form onSubmit={handleSubmit}>
       <Styled.Text>
-        새로 설정할 비밀번호를 입력해주세요.
+        {t('새로 설정할 비밀번호를 입력해주세요.')}
       </Styled.Text>
       <input
         type="text"
@@ -108,8 +110,8 @@ function ResetPasswordForm({ location: { search } }) {
       />
       <Styled.InputGroup
         name="password"
-        label="새 비밀번호"
-        placeholder="6자 이상의 비밀번호"
+        label={t('새 비밀번호')}
+        placeholder={t('6자 이상의 비밀번호')}
         type="password"
         autoComplete="new-password"
         required
@@ -119,8 +121,8 @@ function ResetPasswordForm({ location: { search } }) {
       />
       <Styled.InputGroup
         name="passwordCheck"
-        label="비밀번호 확인"
-        placeholder="비밀번호 재입력"
+        label={t('비밀번호 확인')}
+        placeholder={t('비밀번호 재입력')}
         type="password"
         autoComplete="new-password"
         required
@@ -129,7 +131,7 @@ function ResetPasswordForm({ location: { search } }) {
         errorMessage={errorMessage.passwordCheck || errorMessage.null}
       />
       <Styled.Submit
-        value="확인"
+        value={t('확인')}
       />
     </Styled.Form>
   ));

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 
@@ -56,6 +57,7 @@ const Styled = {
 function SeriesCard({
   name, thumbnails, postCount, ...props
 }) {
+  const { t } = useTranslation();
   return (
     <Styled.Item
       {...props}
@@ -69,7 +71,7 @@ function SeriesCard({
         />
       </Styled.Covers>
       <Styled.Title>{name}</Styled.Title>
-      <Styled.Text>{`${postCount} 포스트`}</Styled.Text>
+      <Styled.Text>{`${postCount} ${t('포스트')}`}</Styled.Text>
     </Styled.Item>
   );
 }

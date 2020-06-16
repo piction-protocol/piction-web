@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -89,6 +90,7 @@ const Styled = {
 function SeriesPage({ projectId, seriesId }) {
   const listRef = useRef(null);
   const { currentUser } = useCurrentUser();
+  const { t } = useTranslation();
 
   const [isDescending, setIsDescending] = useState(true);
 
@@ -158,7 +160,7 @@ function SeriesPage({ projectId, seriesId }) {
           <Styled.HeroText>
             <Styled.Heading>{series.name}</Styled.Heading>
             <p>
-              {`${series.postCount} 포스트`}
+              {`${series.postCount} ${t('포스트')}`}
             </p>
           </Styled.HeroText>
         </Styled.Hero>
@@ -167,7 +169,7 @@ function SeriesPage({ projectId, seriesId }) {
       <Styled.Section>
         <Styled.Sort onClick={() => setIsDescending(prev => !prev)}>
           <SortIcon />
-          정렬 변경
+          {t('정렬 변경')}
         </Styled.Sort>
         <Styled.SeriesPostList ref={listRef}>
           {pages}

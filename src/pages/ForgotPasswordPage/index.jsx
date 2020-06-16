@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import styled from 'styled-components/macro';
 
@@ -17,10 +18,11 @@ const Styled = {
 };
 
 function ForgotPasswordPage() {
+  const { t } = useTranslation();
   return (
     <CompactTemplate>
       <Styled.Heading>
-        비밀번호 재설정
+        {t('비밀번호 재설정')}
       </Styled.Heading>
       <Router primary={false} basepath="/forgot_password">
         <ForgotPasswordForm path="/" />

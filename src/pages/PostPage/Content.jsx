@@ -4,6 +4,8 @@ import styled from 'styled-components/macro';
 import { Location, Link } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { useTranslation } from 'react-i18next';
+import i18n from 'language/i18n';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -55,6 +57,7 @@ const Styled = {
 };
 
 function Content({ publishedAt, content, readerMode }) {
+  const valueOfLang = i18n.language;
   const readerModeStyle = {
     fontFamily: 'RIDIBatang, serif',
     textAlign: 'justify',
@@ -72,7 +75,9 @@ function Content({ publishedAt, content, readerMode }) {
         }}
       />
       <Styled.Date>
-        {`${moment(publishedAt).format('ll HH:mm')} 발행`}
+        {
+          ((valueOfLang === 'ko') || (valueOfLang === 'undefined')) ? `${moment(publishedAt).format('ll HH:mm')} 발행` : `${moment(publishedAt).format('MM/DD, YYYY, HH:mm')} Published`
+        }
       </Styled.Date>
     </>
   );
@@ -109,6 +114,7 @@ Content.Placeholder = () => {
 };
 
 function LockedContent({ handleSubscription, post }) {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const hasPrice = post?.membership.price > 0;
   return (
@@ -116,22 +122,24 @@ function LockedContent({ handleSubscription, post }) {
       <Styled.LockedIcon />
       {hasPrice ? (
         <p>
+          {t('~ 이상 이용 가능한 포스트입니다.')}
           <Styled.Required>
             {post.membership.name}
           </Styled.Required>
           {' '}
-          이상
+          {t('이상')}
           <br />
-          후원자만 이용 가능한 포스트입니다.
+          {t('후원자만 이용 가능한 포스트입니다.')}
         </p>
       ) : (
         <p>
+          {t('~ 만 이용 가능한 포스트입니다.')}
           <Styled.Required>
-            구독자
+            {t('구독자')}
           </Styled.Required>
-          만 이용 가능한
+          {t('만 이용 가능한')}
           <br />
-          포스트입니다.
+          {t('포스트입니다.')}
         </p>
       )}
       {currentUser ? (
@@ -144,13 +152,13 @@ function LockedContent({ handleSubscription, post }) {
               redirectTo: window.location.href,
             }}
           >
-            후원하기
+            {t('후원하기')}
           </Styled.Subscription>
         ) : (
           <Styled.Subscription
             onClick={handleSubscription}
           >
-            구독하기
+            {t('구독하기')}
           </Styled.Subscription>
         )
       ) : (
@@ -163,7 +171,7 @@ function LockedContent({ handleSubscription, post }) {
                 redirectTo: encodeURIComponent(location.pathname),
               }}
             >
-              {hasPrice ? '후원하기' : '구독하기'}
+              {hasPrice ? `${t('후원하기')}` : `${t('구독하기')}`}
             </Styled.Subscription>
           )}
         </Location>

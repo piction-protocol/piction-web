@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 
@@ -47,6 +48,7 @@ const Styled = {
 };
 
 function ForgotPasswordForm() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [email, setEmail] = useState('');
@@ -72,34 +74,34 @@ function ForgotPasswordForm() {
       {isSent ? (
         <>
           <Styled.Text>
-            비밀번호 재설정 메일을 전송했습니다.
+            {t('비밀번호 재설정 메일을 전송했습니다.')}
             <br />
-            메일함을 확인해주세요.
+            {t('메일함을 확인해주세요.')}
           </Styled.Text>
           <Styled.Ul>
             <Styled.Li>
-              메일을 수신하지 못했다면, 스팸메일함을 확인해주세요.
+              {t('메일을 수신하지 못했다면, 스팸메일함을 확인해주세요.')}
             </Styled.Li>
             <Styled.Li>
-              등록되지 않은 이메일인 경우 비밀번호 재설정 메일이 발송되지 않습니다.
+              {t('등록되지 않은 이메일인 경우 비밀번호 재설정 메일이 발송되지 않습니다.')}
             </Styled.Li>
           </Styled.Ul>
           <Styled.Link
             to="/"
           >
-            홈으로 이동
+            {t('홈으로 이동')}
           </Styled.Link>
         </>
       ) : (
         <Styled.Form onSubmit={handleSubmit}>
           <Styled.Text>
-            회원 가입 때 등록하신 이메일 주소를 입력해주세요.
+            {t('회원 가입 때 등록하신 이메일 주소를 입력해주세요.')}
             <br />
-            해당 이메일로 비밀번호를 재설정할 수 있는 링크를 보내드립니다.
+            {t('해당 이메일로 비밀번호를 재설정할 수 있는 링크를 보내드립니다.')}
           </Styled.Text>
           <Styled.InputGroup
             name="email"
-            label="이메일"
+            label={t('이메일')}
             placeholder="example@email.com"
             autoComplete="email"
             onChange={event => setEmail(event.target.value)}
@@ -108,7 +110,7 @@ function ForgotPasswordForm() {
             errorMessage={errorMessage}
           />
           <Styled.Submit
-            value="확인"
+            value={t('확인')}
           />
         </Styled.Form>
       )}

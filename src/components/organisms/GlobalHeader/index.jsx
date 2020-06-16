@@ -4,6 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link, Location } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import media, { mediaQuery } from 'styles/media';
 
@@ -149,6 +150,7 @@ const NavigateListener = ({ location, event }) => {
 };
 
 function GlobalHeader({ paths, child, ...props }) {
+  const { t } = useTranslation();
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const { currentUser, deleteSession } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
@@ -160,14 +162,14 @@ function GlobalHeader({ paths, child, ...props }) {
 
   const links = [
     ...isDesktop ? [] : [
-      { text: '프로젝트 탐색', to: '/explore/all', icon: <ProjectsIcon /> },
-      { text: '크리에이터 가이드', to: '/creatorsguide', icon: <PictionIcon /> },
+      { text: `${t('프로젝트 탐색')}`, to: '/explore/all', icon: <ProjectsIcon /> },
+      { text: `${t('크리에이터 가이드')}`, to: '/creatorsguide', icon: <PictionIcon /> },
     ],
     ...currentUser ? [
-      { text: '구독 중인 프로젝트', to: '/subscriptions', icon: <SubscriptionsIcon /> },
-      { text: '내 정보', to: '/my/info', icon: <AccountIcon /> },
+      { text: `${t('구독 중인 프로젝트')}`, to: '/subscriptions', icon: <SubscriptionsIcon /> },
+      { text: `${t('내 정보')}`, to: '/my/info', icon: <AccountIcon /> },
       {
-        text: '로그아웃',
+        text: `${t('로그아웃')}`,
         icon: <LogoutIcon />,
         as: 'button',
         onClick: () => {
@@ -177,13 +179,13 @@ function GlobalHeader({ paths, child, ...props }) {
       },
     ] : [
       {
-        text: '로그인',
+        text: `${t('로그인')}`,
         to: paths.login,
         icon: <AccountIcon />,
         state: { redirectTo: encodeURIComponent(window.location.pathname) },
       },
       {
-        text: '회원가입',
+        text: `${t('회원가입')}`,
         to: paths.signup,
         icon: <PictionIcon />,
         state: { redirectTo: encodeURIComponent(window.location.pathname) },
@@ -207,10 +209,10 @@ function GlobalHeader({ paths, child, ...props }) {
                 {isDesktop && (
                   <>
                     <Styled.Link to="/explore/all">
-                      프로젝트 탐색
+                      {t('프로젝트 탐색')}
                     </Styled.Link>
                     <Styled.Link to="/creatorsguide">
-                      크리에이터 가이드
+                      {t('크리에이터 가이드')}
                     </Styled.Link>
                   </>
                 )}
@@ -246,7 +248,7 @@ function GlobalHeader({ paths, child, ...props }) {
                         redirectTo: encodeURIComponent(location.pathname),
                       }}
                     >
-                      로그인
+                      {t('로그인')}
                     </Styled.Login>
                     <Styled.Signup
                       to={paths.signup}
@@ -254,7 +256,7 @@ function GlobalHeader({ paths, child, ...props }) {
                         redirectTo: encodeURIComponent(location.pathname),
                       }}
                     >
-                      회원가입
+                      {t('회원가입')}
                     </Styled.Signup>
                   </>
                 )}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import useSWR, { useSWRPages } from 'swr';
+import { useTranslation } from 'react-i18next';
 
 import useOnScrollToBottom from 'hooks/useOnScrollToBottom';
 
@@ -46,6 +47,7 @@ const Styled = {
 
 function ExplorePage({ listName }) {
   const FETCHING_SIZE = 20;
+  const { t } = useTranslation();
 
   const listRef = useRef(null);
   const endpoint = {
@@ -98,17 +100,17 @@ function ExplorePage({ listName }) {
     <GridTemplate
       hero={(
         <Styled.Hero>
-          일러스트부터 버츄얼 유튜버까지,
+          {t('일러스트부터 버츄얼 유튜버까지,')}
           <br />
-          <b>픽션을 즐겨보세요.</b>
+          <b>{t('픽션을 즐겨보세요.')}</b>
         </Styled.Hero>
       )}
       ref={listRef}
     >
       <Styled.SwitchTabs
         links={[
-          { text: '전체 프로젝트', to: '/explore/all' },
-          { text: '후원 프로젝트', to: '/explore/memberships' },
+          { text: `${t('전체 프로젝트')}`, to: '/explore/all' },
+          { text: `${t('후원 프로젝트')}`, to: '/explore/memberships' },
         ]}
       />
       {pages}

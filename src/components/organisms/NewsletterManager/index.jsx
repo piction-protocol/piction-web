@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import useSWR, { mutate } from 'swr';
+import { useTranslation } from 'react-i18next';
 
 import useAPI from 'hooks/useAPI';
 
@@ -35,16 +36,17 @@ function NewsletterManager({ currentUser, ...props }) {
   const { data: newsletter } = useSWR('/users/newsletter');
   const [API] = useAPI();
   const [alert, setAlert] = useState(null);
+  const { t } = useTranslation();
 
   const subscribe = async () => {
     try {
       const { data } = await API.newsletter.create();
       mutate('/users/newsletter', data);
       setIsModalOpened(false);
-      setAlert({ text: '업데이트 알림 메일을 발송합니다.', type: 'success' });
+      setAlert({ text: `${t('업데이트 알림 메일을 발송합니다.')}`, type: 'success' });
     } catch (error) {
       console.log(error);
-      setAlert({ text: '서버가 응답하지 않습니다.', type: 'error' });
+      setAlert({ text: `${t('서버가 응답하지 않습니다.')}`, type: 'error' });
     }
   };
 
@@ -52,10 +54,10 @@ function NewsletterManager({ currentUser, ...props }) {
     try {
       await API.newsletter.delete();
       mutate('/users/newsletter', null);
-      setAlert({ text: '업데이트 알림 메일을 발송하지 않습니다.' });
+      setAlert({ text: `${t('업데이트 알림 메일을 발송하지 않습니다.')}` });
     } catch (error) {
       console.log(error);
-      setAlert({ text: '서버가 응답하지 않습니다.', type: 'error' });
+      setAlert({ text: `${t('서버가 응답하지 않습니다.')}`, type: 'error' });
     }
   };
 
@@ -68,7 +70,7 @@ function NewsletterManager({ currentUser, ...props }) {
           {...props}
         >
           <Styled.PostboxIcon />
-          업데이트 알림 끄기
+          {t('업데이트 알림 끄기')}
         </Styled.Button>
       ) : (
         <Styled.Button
@@ -77,20 +79,20 @@ function NewsletterManager({ currentUser, ...props }) {
           {...props}
         >
           <Styled.PostboxIcon />
-          업데이트 알림 받기
+          {t('업데이트 알림 받기')}
         </Styled.Button>
       )}
       {isModalOpened && (
         <Styled.Modal close={() => setIsModalOpened(false)}>
-          회원 정보에 등록된 이메일로 구독 중인 프로젝트의 업데이트 알림 메시지를 받습니다.
+          {t('회원 정보에 등록된 이메일로 구독 중인 프로젝트의 업데이트 알림 메시지를 받습니다.')}
           <Styled.Email>
             {currentUser.email}
           </Styled.Email>
           <PrimaryButton onClick={subscribe}>
-            확인
+            {t('확인')}
           </PrimaryButton>
           <TertiaryButton onClick={() => setIsModalOpened(false)}>
-            취소
+            {t('취소')}
           </TertiaryButton>
         </Styled.Modal>
       )}
