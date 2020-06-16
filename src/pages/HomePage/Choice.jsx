@@ -203,7 +203,7 @@ const Choice = (props) => {
           </Styled.SubTitle>
           {isTooltipVisible && (
             <Styled.Tooltip onClick={() => setIsTooltipVisible(false)}>
-              <Trans i18nKey="픽션 초이스">
+              <Trans i18nKey="매주 화, 금요일마다 선정된 5명의 창작자에게 픽셀을 드려요!">
                 매주 화, 금요일마다 선정된
                 <br />
                 5명의 창작자에게
