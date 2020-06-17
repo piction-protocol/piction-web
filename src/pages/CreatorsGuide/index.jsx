@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet';
 import { Link } from '@reach/router';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import media from 'styles/media';
@@ -245,19 +245,23 @@ function CreatorsGuide() {
           <Ol>
             <ListItem index={1}>
               <ListItemHeading>{t('어떤 이야기를 하고 싶으신가요?')}</ListItemHeading>
-              {t('창작의 주제는 무엇이든 좋습니다. 내가 좋아하는 콘텐츠로 시작해보세요. 다른 창작자들은')}
-&nbsp;
-              <DecoratedLink to="/explore/all">{t('어떤 이야기를')}</DecoratedLink>
-              &nbsp;
-              {t('하고 있는지 살펴보세요.')}
+              <Trans i18nKey="item1">
+                창작의 주제는 무엇이든 좋습니다. 내가 좋아하는 콘텐츠로 시작해보세요. 다른 창작자들은
+                &nbsp;
+                <DecoratedLink to="/explore/all">어떤 이야기를</DecoratedLink>
+                &nbsp;
+                하고 있는지 살펴보세요.
+              </Trans>
             </ListItem>
             <ListItem index={2}>
               <ListItemHeading>{t('프로젝트를 만드세요')}</ListItemHeading>
-              {t('하고 싶은 프로젝트를 정했다면')}
-&nbsp;
-              <DecoratedLink to="/dashboard">{t('새로운 프로젝트를')}</DecoratedLink>
-              &nbsp;
-              {t('만들어주세요. 첫 포스트로 어떤 이야기를 할 것인지 알려주시면 프로젝트가 더욱 매력적으로 보일거에요.')}
+              <Trans i18nKey="item2">
+                하고 싶은 프로젝트를 정했다면
+                &nbsp;
+                <DecoratedLink to="/dashboard">새로운 프로젝트를</DecoratedLink>
+                &nbsp;
+                만들어주세요. 첫 포스트로 어떤 이야기를 할 것인지 알려주시면 프로젝트가 더욱 매력적으로 보일거에요.
+              </Trans>
             </ListItem>
             <ListItem index={3}>
               <ListItemHeading>{t('나의 프로젝트를 알리고 구독자 5명을 모아주세요')}</ListItemHeading>

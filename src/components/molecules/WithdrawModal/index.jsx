@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useTranslation, Trans } from 'react-i18next';
 
 
 import Modal from 'components/externals/Modal';
@@ -54,17 +55,23 @@ const Styled = {
 function WithdrawModal({
   amount, withdrawAddress, close, errors, register, ...props
 }) {
+  const { t } = useTranslation();
   const [isChecked, setIsChecked] = useState(false);
+  const sendPXL = Number(amount).toLocaleString();
 
   return (
     <Modal close={close} {...props}>
       <Styled.Text>
-        다음 주소로
-        {' '}
-        <Styled.Amount>
-          {`${Number(amount).toLocaleString()} PXL`}
-        </Styled.Amount>
-        을 전송합니다.
+        <Trans i18nKey="픽셀 전송">
+          다음 주소로
+          {' '}
+          <Styled.Amount>
+            {{ sendPXL }}
+            {' '}
+            PXL
+          </Styled.Amount>
+          을 전송합니다.
+        </Trans>
       </Styled.Text>
       <Styled.Address>
         <Styled.Em>
@@ -80,14 +87,14 @@ function WithdrawModal({
           checked={isChecked}
           onChange={() => setIsChecked(prev => !prev)}
         />
-        출금 주의사항을 모두 확인하였습니다.
+        {t('출금 주의사항을 모두 확인하였습니다.')}
       </Styled.Label>
       <PasswordInput
         name="password"
         ref={register({
-          required: '비밀번호를 입력하세요.',
+          required: `${t('비밀번호를 입력하세요.')}`,
         })}
-        placeholder="비밀번호를 입력하세요."
+        placeholder={t('비밀번호를 입력하세요.')}
         invalid={errors.password}
       />
       {errors.password && (
@@ -95,9 +102,9 @@ function WithdrawModal({
           {errors.password.message}
         </Styled.ErrorMessage>
       )}
-      <Styled.Submit value="출금" form="withdraw" disabled={!isChecked} />
+      <Styled.Submit value={t('출금')} form="withdraw" disabled={!isChecked} />
       <TertiaryButton onClick={close}>
-        취소
+        {t('취소')}
       </TertiaryButton>
     </Modal>
   );
