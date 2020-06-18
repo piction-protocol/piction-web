@@ -45,7 +45,6 @@ function NewsletterManager({ currentUser, ...props }) {
       setIsModalOpened(false);
       setAlert({ text: `${t('업데이트 알림 메일을 발송합니다.')}`, type: 'success' });
     } catch (error) {
-      console.log(error);
       setAlert({ text: `${t('서버가 응답하지 않습니다.')}`, type: 'error' });
     }
   };
@@ -56,7 +55,6 @@ function NewsletterManager({ currentUser, ...props }) {
       mutate('/users/newsletter', null);
       setAlert({ text: `${t('업데이트 알림 메일을 발송하지 않습니다.')}` });
     } catch (error) {
-      console.log(error);
       setAlert({ text: `${t('서버가 응답하지 않습니다.')}`, type: 'error' });
     }
   };
