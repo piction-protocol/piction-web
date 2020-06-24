@@ -4,7 +4,7 @@ import { Link, useLocation } from '@reach/router';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import i18n from 'language/i18n';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
@@ -132,7 +132,12 @@ function MembershipList({
                   ? (((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료') : moment(sponsored.expireDate).format('MM/DD YYYY [Expiration]'))
                   : membership.sponsorLimit !== null && (
                     isFull ? `${t('후원 불가능')}`
-                      : `${membership.sponsorLimit - membership.sponsorCount}${t('명 남음')}`
+                      : (
+                        <Trans i18nKey="명 한정">
+                          {`${membership.sponsorLimit - membership.sponsorCount}`}
+                          {'명 남음'}
+                        </Trans>
+                      )
                   )}
               </Styled.Status>
               {isSubscribing ? (

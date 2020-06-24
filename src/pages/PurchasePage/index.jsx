@@ -326,9 +326,11 @@ function PurchasePage({
           <Styled.Section>
             <Styled.Fees>
               <Styled.FeesTitle>
-                {project.user.username}
-                {' '}
-                {t('작가님에게 후원의 메세지를 전달하세요.')}
+                <Trans i18nKey="작가님에게 후원의 메세지를 전달하세요.">
+                  {project.user.username}
+                  {' '}
+                  작가님에게 후원의 메세지를 전달하세요.
+                </Trans>
               </Styled.FeesTitle>
               <br />
               <Styled.TextBox

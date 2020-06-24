@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import i18n from 'language/i18n';
 
 import media from 'styles/media';
@@ -91,7 +91,12 @@ function SeriesPostItem({
           </Styled.PublishedAt>
         ) : (
           <Styled.Membership>
-            {membership.price > 0 ? `${membership.name} ${t('이상 후원자 전용')}` : `${t('구독자 전용')}`}
+            {membership.price > 0 ? (
+              <Trans i18nKey="이상 후원자 전용">
+                {`${membership.name}`}
+                이상 후원자 전용
+              </Trans>
+            ) : `${t('구독자 전용')}`}
           </Styled.Membership>
         )}
       </Styled.Text>
