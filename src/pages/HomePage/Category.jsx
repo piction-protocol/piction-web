@@ -138,7 +138,7 @@ const Category = (props) => {
               <Link to={`/category/${category.id}`}>
                 <Styled.Thumbnail image={category.thumbnail} />
                 <Styled.CategoryName>
-                  {category.name}
+                  {t(`${category.name}`)}
                 </Styled.CategoryName>
                 <Styled.Count>
                   {`${category.categorizedCount} ${t('프로젝트')} `}
