@@ -142,7 +142,7 @@ function GlobalFooter() {
         <Styled.Lang value={valueOfLang} onChange={handleLanguage}>
           <option value="ko" selected>한국어</option>
           <option value="en">English</option>
-          <option value="ch">Chinese</option>
+          <option value="cn">简体</option>
         </Styled.Lang>
         <Styled.Logo />
       </Styled.Wrapper>

@@ -8,7 +8,7 @@ const resource = {
   en: {
     translation: translationEn,
   },
-  ch: {
+  cn: {
     translation: translationCh,
   },
   ko: {
