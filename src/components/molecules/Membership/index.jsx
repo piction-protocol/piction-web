@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 
 import media from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -62,7 +62,11 @@ function Membership({
       </Styled.Name>
       <Styled.PostCount>
         <Styled.UnlockIcon />
-        {`${postCount} ${t('포스트 조회 가능')}`}
+        <Trans i18nKey="포스트 조회 가능">
+          {`${postCount}`}
+          {' '}
+          {'포스트 조회 가능'}
+        </Trans>
       </Styled.PostCount>
       {description && (
         <Styled.Description>
