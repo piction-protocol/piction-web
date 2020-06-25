@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
+import 'moment/locale/en-gb';
+import 'moment/locale/zh-cn';
+import { useCookies } from 'react-cookie';
 
 import media from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -150,6 +153,8 @@ const Styled = {
 function PostItem({
   title, cover = null, viewType, series, publishedAt, likeCount = 0, isLocked = false, ...props
 }) {
+  const [cookie] = useCookies(['translate']);
+  const languageCookie = cookie.translate;
   return (
     <Styled.Item
       {...props}
@@ -182,7 +187,7 @@ function PostItem({
         {series && <Styled.Series>{series.name}</Styled.Series>}
         <Styled.Title>{title}</Styled.Title>
         <Styled.PublishedAt>
-          {moment(publishedAt).format('MMMM Do')}
+          {moment(publishedAt).locale(`${languageCookie}`).format('MMMM Do')}
         </Styled.PublishedAt>
         {likeCount > 0 && (
           <Styled.LikeCount>
