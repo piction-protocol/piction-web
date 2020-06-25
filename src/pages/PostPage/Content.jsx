@@ -4,10 +4,9 @@ import styled from 'styled-components/macro';
 import { Location, Link } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';
-import 'moment/locale/en-gb';
 import 'moment/locale/zh-cn';
 
-import { useCookies } from 'react-cookie';
+import i18n from 'language/i18n';
 import { useTranslation, Trans } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -61,8 +60,7 @@ const Styled = {
 
 function Content({ publishedAt, content, readerMode }) {
   const { t } = useTranslation();
-  const [cookie] = useCookies(['translate']);
-  const languageCookie = cookie.translate;
+  const { language } = i18n;
   const readerModeStyle = {
     fontFamily: 'RIDIBatang, serif',
     textAlign: 'justify',
@@ -81,7 +79,7 @@ function Content({ publishedAt, content, readerMode }) {
       />
       <Styled.Date>
         {
-          `${moment(publishedAt).locale(`${languageCookie}`).format('ll HH:mm')} ${t('발행')}`
+          `${moment(publishedAt).locale(`${language}`).format('ll HH:mm')} ${t('발행')}`
         }
       </Styled.Date>
     </>

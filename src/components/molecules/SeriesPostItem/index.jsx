@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
-import 'moment/locale/en-gb';
 import 'moment/locale/zh-cn';
 
-import { useCookies } from 'react-cookie';
+import i18n from 'language/i18n';
 import { useTranslation, Trans } from 'react-i18next';
 
 import media from 'styles/media';
@@ -74,8 +73,7 @@ function SeriesPostItem({
   index, title, cover = null, publishedAt, membership, isViewable, ...props
 }) {
   const { t } = useTranslation();
-  const [cookie] = useCookies(['translate']);
-  const languageCookie = cookie.translate;
+  const { language } = i18n;
   return (
     <Styled.Item
       {...props}
@@ -90,7 +88,7 @@ function SeriesPostItem({
         {isViewable ? (
           <Styled.PublishedAt>
             {
-                moment(publishedAt).locale(`${languageCookie}`).format(`YYYY/MM/DD HH:mm [${t('발행')}]`)
+                moment(publishedAt).locale(`${language}`).format(`YYYY/MM/DD HH:mm [${t('발행')}]`)
             }
           </Styled.PublishedAt>
         ) : (
