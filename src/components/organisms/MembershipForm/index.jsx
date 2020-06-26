@@ -271,10 +271,9 @@ function MembershipForm({
           },
         })}
         name="messageOfThanks"
-        ment="reaction"
+        contentForm="reaction"
         label="후원자에게 감사의 한마디를 전달하세요. 해당 메시지는 후원 플랜 구매자에게 이메일로 발송됩니다."
         placeholder="최대 1000자"
-        contentForm="reaction"
       >
         {errors.messageOfThanks && (
           <ErrorMessage>

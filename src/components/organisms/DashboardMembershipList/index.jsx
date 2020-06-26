@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import { Link, useLocation } from '@reach/router';
 import useSWR from 'swr';
 import QRCode from 'qrcode.react';
-import { exportComponentAsPNG } from 'react-component-export-image';
+import html2canvas from 'html2canvas';
 
 import Grid from 'styles/Grid';
 import { ReactComponent as PictionLogo } from 'images/img-logo-piction-symbol-bl.svg';
@@ -35,15 +35,14 @@ const Styled = {
     background-color: white;
     top: 0;
     right: 0;
-    display: none;
-    /* position: absolute;
-    transform: translate(-100%, -100%); */
+    position: absolute;
+    transform: translate(-100%, -100%);
   `,
-  DownloadBackground: styled.div`
-    background: url(${props => props.image}) no-repeat center center;
-    background-size: cover;
-    height: 225px;
-    width: 720px;
+  DownloadBackground: styled.img`
+  background: no-repeat center center;
+  background-size: cover;
+  height: 225px;
+  width: 720px;
   `,
   DownloadWrap: styled.div`
     display: flex;
@@ -173,14 +172,38 @@ function DashboardMembershipList({ title, projectId }) {
   const { data: membershipList } = useSWR(`/projects/${projectId}/memberships`, { suspense: true });
   const location = useLocation();
   const componentRef = useRef();
+  const captureQRCode = useRef();
+
+  const captureDownload = (uri, filename) => {
+    const link = document.createElement('a');
+    if (typeof link.download === 'string') {
+      link.href = uri;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(uri);
+    }
+  };
+  const captureImg = () => {
+    html2canvas(captureQRCode.current, {
+      allowTaint: true,
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      useCORS: true,
+    }).then((canvas) => {
+      captureDownload(canvas.toDataURL('image/png', 1.0), `qr_${project.uri}.jpg`);
+    });
+  };
 
   const backgroundImageisNull = `${project.wideThumbnail}` === 'null' ? 'dummy' : '';
   const NodeEnv = process.env.NODE_ENV === 'development' ? 'dummy' : '';
   const backgroundImageUrl = (NodeEnv) || (backgroundImageisNull) === 'dummy' ? dummyImage : `${project.wideThumbnail}?quality=80&output=webp`;
 
-  const ComponentToPrint = React.forwardRef((props, ref) => (
-    <Styled.DownloadImg ref={ref}>
-      <Styled.DownloadBackground image={backgroundImageUrl} crossOrigin="anonymous" />
+  const ComponentToQR = React.forwardRef(() => (
+    <Styled.DownloadImg ref={captureQRCode}>
+      <Styled.DownloadBackground src={backgroundImageUrl} crossOrigin="anonymous" />
       <Styled.DownloadWrap>
         <Styled.LeftWrap>
           <PictionLogo />
@@ -212,11 +235,11 @@ function DashboardMembershipList({ title, projectId }) {
       <Heading>{title}</Heading>
       {project.activeMembership ? (
         <Grid columns={9}>
-          <ComponentToPrint ref={componentRef} />
+          <ComponentToQR ref={componentRef} />
           <Styled.SupportQR>
             <div>
               <Styled.SupportQRName>QR코드 배너 만들기</Styled.SupportQRName>
-              <Styled.DownloadQRButton onClick={() => exportComponentAsPNG(componentRef)}>
+              <Styled.DownloadQRButton onClick={() => captureImg()}>
                 <Styled.Downward />
                 <Styled.DownloadLetter>다운로드</Styled.DownloadLetter>
               </Styled.DownloadQRButton>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useAPI from 'hooks/useAPI';
@@ -73,6 +74,7 @@ const Styled = {
 };
 
 function UpdateUserForm() {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const [formData, { handleChange }] = useForm({
     email: currentUser.email,
@@ -99,7 +101,7 @@ function UpdateUserForm() {
     <Styled.Form onSubmit={handleSubmit}>
       <Styled.InputGroup
         name="email"
-        label="이메일"
+        label={t('이메일')}
         value={formData.email}
         onChange={handleChange}
         autoComplete="email"
@@ -107,8 +109,8 @@ function UpdateUserForm() {
       />
       <Styled.InputGroup
         name="username"
-        label="닉네임"
-        placeholder="2자 이상의 닉네임"
+        label={t('닉네임')}
+        placeholder={t('2자 이상의 닉네임')}
         autoComplete="nickname"
         onChange={handleChange}
         errorMessage={errorMessage.username}
@@ -116,10 +118,10 @@ function UpdateUserForm() {
       />
       <Styled.ImageGroup>
         <Styled.Label>
-          프로필 이미지
+          {t('프로필 이미지')}
         </Styled.Label>
         <Styled.Spec>
-          JPG 또는 PNG 파일, 최대 5MB, 권장 사이즈 가로 세로 500px
+          {t('JPG 또는 PNG 파일, 최대 5MB, 권장 사이즈 가로 세로 500px')}
         </Styled.Spec>
         <Styled.ImageUploader
           name="picture"
@@ -131,8 +133,8 @@ function UpdateUserForm() {
       </Styled.ImageGroup>
       <Styled.InputGroup
         name="password"
-        label={<Styled.Notice>변경된 내용을 저장하려면 비밀번호 입력 후 저장 버튼을 눌러주세요.</Styled.Notice>}
-        placeholder="비밀번호를 입력해주세요"
+        label={<Styled.Notice>{t('변경된 내용을 저장하려면 비밀번호 입력 후 저장 버튼을 눌러주세요.')}</Styled.Notice>}
+        placeholder={t('비밀번호를 입력해주세요')}
         type="password"
         autoComplete="new-password"
         onChange={handleChange}
@@ -142,7 +144,7 @@ function UpdateUserForm() {
       />
       <Styled.SubmitGroup>
         <Styled.Submit
-          value="변경 내용 저장"
+          value={t('변경 내용 저장')}
         />
       </Styled.SubmitGroup>
     </Styled.Form>

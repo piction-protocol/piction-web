@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
+import 'moment/locale/zh-cn';
 
+import i18n from 'language/i18n';
 import media from 'styles/media';
 import placeholder from 'styles/placeholder';
 
@@ -150,6 +152,7 @@ const Styled = {
 function PostItem({
   title, cover = null, viewType, series, publishedAt, likeCount = 0, isLocked = false, ...props
 }) {
+  const { language } = i18n;
   return (
     <Styled.Item
       {...props}
@@ -182,7 +185,7 @@ function PostItem({
         {series && <Styled.Series>{series.name}</Styled.Series>}
         <Styled.Title>{title}</Styled.Title>
         <Styled.PublishedAt>
-          {moment(publishedAt).format('MMMM Do')}
+          {moment(publishedAt).locale(`${language}`).format('MMMM Do')}
         </Styled.PublishedAt>
         {likeCount > 0 && (
           <Styled.LikeCount>

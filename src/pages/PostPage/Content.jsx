@@ -4,6 +4,10 @@ import styled from 'styled-components/macro';
 import { Location, Link } from '@reach/router';
 import moment from 'moment';
 import 'moment/locale/ko';
+import 'moment/locale/zh-cn';
+
+import i18n from 'language/i18n';
+import { useTranslation, Trans } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 
@@ -55,6 +59,8 @@ const Styled = {
 };
 
 function Content({ publishedAt, content, readerMode }) {
+  const { t } = useTranslation();
+  const { language } = i18n;
   const readerModeStyle = {
     fontFamily: 'RIDIBatang, serif',
     textAlign: 'justify',
@@ -72,7 +78,9 @@ function Content({ publishedAt, content, readerMode }) {
         }}
       />
       <Styled.Date>
-        {`${moment(publishedAt).format('ll HH:mm')} 발행`}
+        {
+          `${moment(publishedAt).locale(`${language}`).format('ll HH:mm')} ${t('발행')}`
+        }
       </Styled.Date>
     </>
   );
@@ -109,31 +117,38 @@ Content.Placeholder = () => {
 };
 
 function LockedContent({ handleSubscription, post }) {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const hasPrice = post?.membership.price > 0;
+  const membershipName = post.membership.name;
   return (
     <Styled.Locked>
       <Styled.LockedIcon />
       {hasPrice ? (
         <p>
-          <Styled.Required>
-            {post.membership.name}
-          </Styled.Required>
-          {' '}
-          이상
-          <br />
-          후원자만 이용 가능한 포스트입니다.
+          <Trans i18nKey="후원자 이상 이용 가능한 포스트입니다.">
+            <Styled.Required>
+              {{ membershipName }}
+            </Styled.Required>
+            {' '}
+            이상
+            <br />
+            후원자만 이용 가능한 포스트입니다.
+          </Trans>
         </p>
       ) : (
         <p>
-          <Styled.Required>
-            구독자
-          </Styled.Required>
-          만 이용 가능한
-          <br />
-          포스트입니다.
+          <Trans i18nKey="구독자만 이용 가능한 포스트입니다.">
+            <Styled.Required>
+              구독자
+            </Styled.Required>
+            만 이용 가능한
+            <br />
+            포스트입니다.
+          </Trans>
         </p>
-      )}
+      )
+      }
       {currentUser ? (
         hasPrice ? (
           <Styled.Subscription
@@ -144,13 +159,13 @@ function LockedContent({ handleSubscription, post }) {
               redirectTo: window.location.href,
             }}
           >
-            후원하기
+            {t('후원하기')}
           </Styled.Subscription>
         ) : (
           <Styled.Subscription
             onClick={handleSubscription}
           >
-            구독하기
+            {t('구독하기')}
           </Styled.Subscription>
         )
       ) : (
@@ -163,7 +178,7 @@ function LockedContent({ handleSubscription, post }) {
                 redirectTo: encodeURIComponent(location.pathname),
               }}
             >
-              {hasPrice ? '후원하기' : '구독하기'}
+              {hasPrice ? `${t('후원하기')}` : `${t('구독하기')}`}
             </Styled.Subscription>
           )}
         </Location>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useTranslation, Trans } from 'react-i18next';
 
 import { Link, navigate } from '@reach/router';
 
@@ -58,6 +59,7 @@ const Styled = {
 };
 
 function SignupForm({ location }) {
+  const { t } = useTranslation();
   const [formData, { handleChange }] = useForm({
     loginId: '',
     email: '',
@@ -91,12 +93,12 @@ function SignupForm({ location }) {
   return (
     <Styled.Form onSubmit={handleSubmit}>
       <Styled.Heading>
-        회원가입
+        {t('회원가입')}
       </Styled.Heading>
       <Styled.InputGroup
         name="loginId"
-        label="아이디"
-        placeholder="5자 이상 15자 미만"
+        label={t('아이디')}
+        placeholder={t('5자 이상 15자 미만')}
         autoComplete="username"
         onChange={handleChange}
         required
@@ -104,7 +106,7 @@ function SignupForm({ location }) {
       />
       <Styled.InputGroup
         name="email"
-        label="이메일"
+        label={t('이메일')}
         placeholder="example@email.com"
         autoComplete="email"
         onChange={handleChange}
@@ -113,8 +115,8 @@ function SignupForm({ location }) {
       />
       <Styled.InputGroup
         name="password"
-        label="비밀번호"
-        placeholder="6자 이상의 비밀번호"
+        label={t('비밀번호')}
+        placeholder={t('6자 이상의 비밀번호')}
         type="password"
         autoComplete="new-password"
         onChange={handleChange}
@@ -123,8 +125,8 @@ function SignupForm({ location }) {
       />
       <Styled.InputGroup
         name="passwordCheck"
-        label="비밀번호 재입력"
-        placeholder="비밀번호 재입력"
+        label={t('비밀번호 재입력')}
+        placeholder={t('비밀번호 재입력')}
         type="password"
         autoComplete="new-password"
         onChange={handleChange}
@@ -133,32 +135,34 @@ function SignupForm({ location }) {
       />
       <Styled.InputGroup
         name="username"
-        label="닉네임"
-        placeholder="2자 이상의 닉네임"
+        label={t('닉네임')}
+        placeholder={t('2자 이상의 닉네임')}
         autoComplete="username"
         onChange={handleChange}
         required
         errorMessage={errorMessage.username}
       />
       <Styled.Terms>
-        <Styled.Checkbox
-          name="agree"
-          onChange={handleChange}
-          checked={formData.agree}
-          required
-        />
-        <Styled.Link as="a" href="/terms" target="_blank">서비스 이용약관</Styled.Link>
-        {' 및 '}
-        <Styled.Link as="a" href="/privacy" target="_blank">개인정보 처리방침</Styled.Link>
-        에 동의합니다.
+        <Trans i18nKey="약관동의">
+          <Styled.Checkbox
+            name="agree"
+            onChange={handleChange}
+            checked={formData.agree}
+            required
+          />
+          <Styled.Link as="a" href="/terms" target="_blank">서비스 이용약관</Styled.Link>
+          및
+          <Styled.Link as="a" href="/privacy" target="_blank">개인정보 처리방침</Styled.Link>
+          에 동의합니다.
+        </Trans>
       </Styled.Terms>
       <Styled.Submit
-        value="동의 및 회원가입"
+        value={t('동의 및 회원가입')}
       />
       <Styled.Login>
-        이미 픽션 계정을 가지고 있다면,
+        {t('이미 픽션 계정을 가지고 있다면,')}
         {' '}
-        <Styled.Link to="/login" state={location.state}>로그인</Styled.Link>
+        <Styled.Link to="/login" state={location.state}>{t('로그인')}</Styled.Link>
       </Styled.Login>
       {isLoading && <Spinner />}
     </Styled.Form>

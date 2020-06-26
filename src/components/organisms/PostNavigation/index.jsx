@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
+import { useTranslation } from 'react-i18next';
 
 import media from 'styles/media';
 import Grid from 'styles/Grid';
@@ -184,6 +185,7 @@ const Styled = {
 };
 
 function PostNavigation({ projectId, postId, series }) {
+  const { t } = useTranslation();
   const { data: { nextPost, previousPost } = {} } = useSWR(`/projects/${projectId}/posts/${postId}/links`, {
     revalidateOnFocus: false, shouldRetryOnError: false,
   });
@@ -196,7 +198,7 @@ function PostNavigation({ projectId, postId, series }) {
           <Styled.Prev to={`../${previousPost.id}`}>
             <ChevronIcon />
             <Styled.Text>
-              이전 포스트
+              {t('이전 포스트')}
               <Styled.PrevNextTitle>
                 {previousPost.title}
               </Styled.PrevNextTitle>
@@ -206,7 +208,7 @@ function PostNavigation({ projectId, postId, series }) {
         {nextPost && (
           <Styled.Next to={`../${nextPost.id}`}>
             <Styled.Text>
-              다음 포스트
+              {t('다음 포스트')}
               <Styled.PrevNextTitle>
                 {nextPost.title}
               </Styled.PrevNextTitle>
@@ -218,9 +220,9 @@ function PostNavigation({ projectId, postId, series }) {
       {postList && (
         <Styled.Series>
           <Styled.SeriesName>{series.name}</Styled.SeriesName>
-          <Styled.PostCount>{`${series.postCount} 포스트`}</Styled.PostCount>
+          <Styled.PostCount>{`${series.postCount} ${t('포스트')}`}</Styled.PostCount>
           <Styled.AllPosts to={`../../series/${series.id}`}>
-            전체 목록
+            {t('전체 목록')}
           </Styled.AllPosts>
           <Styled.PostList>
             {postList[postList.findIndex(({ post }) => String(post.id) === postId) + 1] ? (

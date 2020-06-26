@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
+import { useTranslation } from 'react-i18next';
 
 import Grid, { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -115,6 +116,7 @@ const Styled = {
 };
 
 const Category = (props) => {
+  const { t } = useTranslation();
   const { data: categories } = useSWR('/categories', { revalidateOnFocus: false });
 
   return (
@@ -127,7 +129,7 @@ const Category = (props) => {
             CATEGORY
           </Styled.Title>
           <Styled.SubTitle>
-            원하는 카테고리로 픽션 프로젝트를 탐색해 보세요.
+            {t('원하는 카테고리로 픽션 프로젝트를 탐색해 보세요.')}
           </Styled.SubTitle>
         </Styled.Texts>
         <Styled.List>
@@ -136,10 +138,10 @@ const Category = (props) => {
               <Link to={`/category/${category.id}`}>
                 <Styled.Thumbnail image={category.thumbnail} />
                 <Styled.CategoryName>
-                  {category.name}
+                  {t(`${category.name}`)}
                 </Styled.CategoryName>
                 <Styled.Count>
-                  {`${category.categorizedCount} 프로젝트 `}
+                  {`${category.categorizedCount} ${t('프로젝트')} `}
                 </Styled.Count>
               </Link>
             </Styled.ListItem>
@@ -150,7 +152,9 @@ const Category = (props) => {
                 category.name
               </Styled.CategoryName>
               <Styled.Count isPlaceholder>
-                0 프로젝트
+                0
+                {' '}
+                {t('프로젝트')}
               </Styled.Count>
             </Styled.ListItem>
           ))}

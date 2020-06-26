@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link, navigate } from '@reach/router';
+import { useTranslation } from 'react-i18next';
 
 import useForm from 'hooks/useForm';
 import useAPI from 'hooks/useAPI';
@@ -54,6 +55,7 @@ const Styled = {
 };
 
 function LoginForm({ redirectTo = '/' }) {
+  const { t } = useTranslation();
   const [formData, { handleChange }] = useForm({
     loginId: '',
     password: '',
@@ -78,12 +80,12 @@ function LoginForm({ redirectTo = '/' }) {
   return (
     <Styled.Form onSubmit={handleSubmit}>
       <Styled.Heading>
-        로그인
+        {t('로그인')}
       </Styled.Heading>
       <Styled.InputGroup
         name="loginId"
-        label="아이디"
-        placeholder="아이디를 입력해주세요."
+        label={t('아이디')}
+        placeholder={t('아이디를 입력해주세요.')}
         autoComplete="loginId"
         required
         onChange={handleChange}
@@ -92,8 +94,8 @@ function LoginForm({ redirectTo = '/' }) {
       />
       <Styled.InputGroup
         name="password"
-        label="비밀번호"
-        placeholder="비밀번호를 입력해주세요."
+        label={t('비밀번호')}
+        placeholder={t('비밀번호를 입력해주세요.')}
         type="password"
         autoComplete="current-password"
         required
@@ -107,16 +109,16 @@ function LoginForm({ redirectTo = '/' }) {
           onChange={handleChange}
           checked={formData.rememberme}
         />
-        로그인 상태 유지
+        {t('로그인 상태 유지')}
       </Styled.RememberMe>
       <Styled.Submit
-        value="로그인"
+        value={t('로그인')}
       />
       <Styled.Signup to="/signup" state={{ redirectTo }}>
-        회원가입
+        {t('회원가입')}
       </Styled.Signup>
       <Styled.ForgotPassword to="/forgot_password">
-        비밀번호를 잊으셨나요?
+        {t('비밀번호를 잊으셨나요?')}
       </Styled.ForgotPassword>
     </Styled.Form>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 import Button from 'components/atoms/Button';
 
@@ -35,32 +36,35 @@ const Styled = {
   `,
 };
 
-const ReaderModeControl = ({ readerMode, onToggle }) => (
-  <Styled.Wrapper>
-    <Styled.Label>
-      <Styled.AlignIcon />
-      읽기모드
-    </Styled.Label>
-    <Styled.ReaderModeToggle
-      style={{
-        backgroundColor: (readerMode ? null : 'var(--gray--pale)'),
-      }}
-      size="mini"
-      onClick={() => onToggle(false)}
-    >
-      일반
-    </Styled.ReaderModeToggle>
-    <Styled.ReaderModeToggle
-      style={{
-        backgroundColor: (readerMode ? 'var(--gray--pale)' : null),
-      }}
-      size="mini"
-      onClick={() => onToggle(true)}
-    >
-      읽기
-    </Styled.ReaderModeToggle>
-  </Styled.Wrapper>
-);
+const ReaderModeControl = ({ readerMode, onToggle }) => {
+  const { t } = useTranslation();
+  return (
+    <Styled.Wrapper>
+      <Styled.Label>
+        <Styled.AlignIcon />
+        {t('읽기모드')}
+      </Styled.Label>
+      <Styled.ReaderModeToggle
+        style={{
+          backgroundColor: (readerMode ? null : 'var(--gray--pale)'),
+        }}
+        size="mini"
+        onClick={() => onToggle(false)}
+      >
+        {t('일반')}
+      </Styled.ReaderModeToggle>
+      <Styled.ReaderModeToggle
+        style={{
+          backgroundColor: (readerMode ? 'var(--gray--pale)' : null),
+        }}
+        size="mini"
+        onClick={() => onToggle(true)}
+      >
+        {t('읽기')}
+      </Styled.ReaderModeToggle>
+    </Styled.Wrapper>
+  );
+};
 
 ReaderModeControl.propTypes = {
   readerMode: PropTypes.bool.isRequired,

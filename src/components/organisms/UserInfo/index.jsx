@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
@@ -64,8 +65,9 @@ const Styled = {
 };
 
 function UserInfo({
-  picture, username, loginId, createdAt, children,
+  picture = '', username, loginId, createdAt, children = null,
 }) {
+  const { t } = useTranslation();
   return (
     <Styled.Section>
       <Styled.Wrapper>
@@ -79,7 +81,7 @@ function UserInfo({
           </Styled.Name>
           {children || (
             <Styled.Description>
-              {`가입일 : ${moment(createdAt).format('ll')} (D+${moment().diff(moment(createdAt), 'days')})`}
+              {`${t('가입일')} : ${moment(createdAt).format('ll')} (D+${moment().diff(moment(createdAt), 'days')})`}
             </Styled.Description>
           )}
         </Styled.User>
@@ -94,11 +96,6 @@ UserInfo.propTypes = {
   loginId: PropTypes.string.isRequired,
   createdAt: PropTypes.number.isRequired,
   children: PropTypes.node,
-};
-
-UserInfo.defaultProps = {
-  picture: '',
-  children: null,
 };
 
 export default UserInfo;

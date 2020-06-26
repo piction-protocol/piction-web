@@ -7,6 +7,8 @@ import * as Sentry from '@sentry/browser';
 import { CurrentUserProvider } from 'contexts/CurrentUserContext';
 
 import GlobalStyle from 'styles/GlobalStyle';
+import './language/i18n';
+
 
 import App from './App';
 

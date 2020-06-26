@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useTranslation, Trans } from 'react-i18next';
 
 import media from 'styles/media';
 import placeholder from 'styles/placeholder';
@@ -48,19 +49,24 @@ const Styled = {
 function Membership({
   level, name, postCount, description, className, children, sponsorLimit,
 }) {
+  const { t } = useTranslation();
   return (
     <Styled.Item
       className={className}
     >
       <Styled.Level>
-        {level ? `티어 ${level} ${sponsorLimit ? `- ${sponsorLimit}명 한정` : ''} ` : '무료 티어'}
+        {level ? `${t('티어')} ${level} ${sponsorLimit ? `- ${sponsorLimit}${t('명 한정')}` : ''} ` : `${t('무료 티어')}`}
       </Styled.Level>
       <Styled.Name>
         {name}
       </Styled.Name>
       <Styled.PostCount>
         <Styled.UnlockIcon />
-        {`${postCount} 포스트 조회 가능`}
+        <Trans i18nKey="포스트 조회 가능">
+          {`${postCount}`}
+          {' '}
+          {'포스트 조회 가능'}
+        </Trans>
       </Styled.PostCount>
       {description && (
         <Styled.Description>

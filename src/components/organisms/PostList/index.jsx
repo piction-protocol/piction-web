@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR, { useSWRPages } from 'swr';
+import { useTranslation } from 'react-i18next';
 
 import Grid from 'styles/Grid';
 import media from 'styles/media';
@@ -51,6 +52,7 @@ function PostList({
   projectId, project, sponsored, isMyProject, ...props
 }) {
   const FETCHING_SIZE = 40;
+  const { t } = useTranslation();
 
   function PostsPage({ offset, withSWR }) {
     const { data } = withSWR(
@@ -70,7 +72,7 @@ function PostList({
         <Styled.Empty>
           <Styled.BadMoodIcon />
           <p>
-            등록된 포스트가 없습니다.
+            {t('등록된 포스트가 없습니다.')}
           </p>
         </Styled.Empty>
       );
@@ -111,7 +113,7 @@ function PostList({
       </Grid>
       {!(isLoadingMore || isReachingEnd) && (
       <Styled.More onClick={() => loadMore()}>
-        포스트 더 보기
+        {t('포스트 더 보기')}
       </Styled.More>
       )}
     </Styled.Container>

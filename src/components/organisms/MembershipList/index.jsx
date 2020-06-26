@@ -4,6 +4,8 @@ import { Link, useLocation } from '@reach/router';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { useTranslation, Trans } from 'react-i18next';
+import i18n from 'language/i18n';
 
 import { ReactComponent as BadMoodIcon } from 'images/ic-mood-bad.svg';
 
@@ -79,18 +81,20 @@ const Styled = {
 function MembershipList({
   isMyProject, memberships, sponsored, projectId,
 }) {
+  const { t } = useTranslation();
   const location = useLocation();
   const [minimum, setMinimum] = useState(location?.state?.post ? location.state.post.membership.level : 0);
+  const PageLanguage = i18n.language;
 
   return (
     <Styled.Section>
       {sponsored && sponsored.membership.level > 0 && (
         <Styled.Sponsored>
           <Styled.Name>
-            {`티어 ${sponsored.membership.level} - ${sponsored.membership.name} 후원 중`}
+            {`티어 ${sponsored.membership.level} - ${sponsored.membership.name} ${t('후원 중')}`}
           </Styled.Name>
           <Styled.Notice>
-            후원 플랜을 업그레이드 하는 경우, 현재 후원 중인 플랜의 남은 기간은 환불되지 않습니다.
+            {t('후원 플랜을 업그레이드 하는 경우, 현재 후원 중인 플랜의 남은 기간은 환불되지 않습니다.')}
           </Styled.Notice>
         </Styled.Sponsored>
       )}
@@ -100,10 +104,10 @@ function MembershipList({
             {location.state.post.title}
           </Styled.Name>
           <Styled.Notice>
-            포스트를 볼 수 있는 후원 플랜만 출력합니다.
+            {t('포스트를 볼 수 있는 후원 플랜만 출력합니다.')}
           </Styled.Notice>
           <PrimaryButton onClick={() => setMinimum(0)} size="mini" style={{ marginTop: 16 }}>
-            전체 후원 플랜 보기
+            {t('전체 후원 플랜 보기')}
           </PrimaryButton>
         </Styled.Post>
       )}
@@ -111,7 +115,7 @@ function MembershipList({
         <Styled.Empty>
           <Styled.BadMoodIcon />
           <p>
-            등록된 후원 플랜이 없습니다.
+            {t('등록된 후원 플랜이 없습니다.')}
           </p>
         </Styled.Empty>
       )}
@@ -125,15 +129,20 @@ function MembershipList({
             <Styled.MembershipInfo>
               <Styled.Status>
                 {isSubscribing
-                  ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료')
+                  ? (((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? moment(sponsored.expireDate).format('YYYY년 M월 DD일 만료') : moment(sponsored.expireDate).format('MM/DD YYYY [Expiration]'))
                   : membership.sponsorLimit !== null && (
-                    isFull ? '후원 불가능'
-                      : `${membership.sponsorLimit - membership.sponsorCount}명 남음`
+                    isFull ? `${t('후원 불가능')}`
+                      : (
+                        <Trans i18nKey="명 한정">
+                          {`${membership.sponsorLimit - membership.sponsorCount}`}
+                          {'명 남음'}
+                        </Trans>
+                      )
                   )}
               </Styled.Status>
               {isSubscribing ? (
                 <SecondaryButton>
-                  후원 중
+                  {t('후원 중')}
                 </SecondaryButton>
               ) : (
                 !isMyProject && (
@@ -146,7 +155,7 @@ function MembershipList({
                       redirectTo: location?.state?.redirectTo || `${location.origin}/project/${projectId}/posts`,
                     }}
                   >
-                    {`${membership.price} PXL / 30일`}
+                    {`${membership.price} PXL / 30${t('일')}`}
                   </PrimaryButton>
                 )
               )}

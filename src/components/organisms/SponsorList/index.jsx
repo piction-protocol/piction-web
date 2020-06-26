@@ -4,6 +4,8 @@ import styled from 'styled-components/macro';
 import useSWR from 'swr';
 import moment from 'moment';
 import 'moment/locale/ko';
+import i18n from 'language/i18n';
+import { useTranslation } from 'react-i18next';
 
 import placeholder from 'styles/placeholder';
 
@@ -67,7 +69,9 @@ const Styled = {
 };
 
 function SponsorList({ title, projectId }) {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
+  const PageLanguage = i18n.language;
 
   const { data: { content: sponsors, ...pageable } = {} } = useSWR(
     `/my/projects/${projectId}/sponsors?page=${page}`,
@@ -92,13 +96,13 @@ function SponsorList({ title, projectId }) {
                 </Styled.UserId>
               </Styled.UserName>
               <Styled.Tier>
-                {subscription.membership.level ? `티어 ${subscription.membership.level} - ${subscription.membership.name}` : '구독'}
+                {subscription.membership.level ? `${t('티어')} ${subscription.membership.level} - ${subscription.membership.name}` : `${t('구독')}`}
               </Styled.Tier>
             </Styled.Text>
             <Styled.SubscriptionDate>
-              {moment(subscription.startedAt).format('YYYY/MM/DD HH:mm')}
+              {((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? moment(subscription.startedAt).format('YYYY/MM/DD HH:mm') : moment(subscription.startedAt).format('MM/DD YYYY HH:mm')}
               <br />
-              {subscription.expireDate && moment(subscription.expireDate).format('~ YYYY/MM/DD HH:mm')}
+              {((PageLanguage === 'ko') || (PageLanguage === 'undefined')) ? subscription.expireDate && moment(subscription.expireDate).format('~ YYYY/MM/DD HH:mm') : subscription.expireDate && moment(subscription.expireDate).format('~ MM/DD YYYY HH:mm')}
             </Styled.SubscriptionDate>
           </Styled.Item>
         ))) : Array.from({ length: 10 }, (_, i) => (

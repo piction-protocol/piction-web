@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
 import useMedia from 'hooks/useMedia';
@@ -115,6 +116,7 @@ const Styled = {
 };
 
 function UserMenu({ links }) {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const isDesktop = useMedia(mediaQuery.desktop);
 
@@ -131,22 +133,24 @@ function UserMenu({ links }) {
         <>
           <Styled.Section>
             <Styled.Title as={Link} to="/wallet/transactions">
-              내 지갑 &gt;
+              {t('내 지갑')}
+              {' '}
+              &gt;
             </Styled.Title>
             <Styled.PXL>
               {`${wallet.amount.toLocaleString()} PXL`}
             </Styled.PXL>
             {(rate > 0 && wallet.amount > 0) && (
               <Styled.Won>
-                {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()} 원`}
+                {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()} ${t('원')}`}
               </Styled.Won>
             )}
             <Styled.WalletLink>
               <SecondaryButton size="mini" as={Link} to="/wallet/deposit">
-                입금
+                {t('입금')}
               </SecondaryButton>
               <SecondaryButton size="mini" as={Link} to="/wallet/withdraw">
-                출금
+                {t('출금')}
               </SecondaryButton>
             </Styled.WalletLink>
           </Styled.Section>
@@ -155,7 +159,7 @@ function UserMenu({ links }) {
               {projects.length > 0 && (
                 <>
                   <Styled.Title>
-                    내 프로젝트
+                    {t('내 프로젝트')}
                   </Styled.Title>
                   {projects.map(project => (
                     <Styled.Project to={`/project/${project.uri}`} key={project.id}>
@@ -165,7 +169,7 @@ function UserMenu({ links }) {
                           {project.title}
                         </Styled.ProjectTitle>
                         <Styled.ProjectInfo>
-                          {`구독자 ${project.sponsorCount}`}
+                          {`${t('구독자')} ${project.sponsorCount}`}
                         </Styled.ProjectInfo>
                       </Styled.ProjectTexts>
                     </Styled.Project>
@@ -174,7 +178,7 @@ function UserMenu({ links }) {
               )}
               {isDesktop && (
                 <Styled.SecondaryButton to="/dashboard">
-                  {projects.length > 0 ? '크리에이터 대시보드' : '+ 새 프로젝트 만들기'}
+                  {projects.length > 0 ? `${t('크리에이터 대시보드')}` : `${t('+ 새 프로젝트 만들기')}`}
                 </Styled.SecondaryButton>
               )}
             </Styled.Section>
