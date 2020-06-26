@@ -9,7 +9,6 @@ import useAPI from 'hooks/useAPI';
 
 import Grid from 'styles/Grid';
 
-import InputLengthCounter from 'components/molecules/InputLengthCounter';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 import InputGroup from 'components/molecules/InputGroup';
 import Label from 'components/atoms/Label';
@@ -135,9 +134,6 @@ function MembershipForm({
   const [isUnlimited, setIsUnlimited] = useState(!defaultValues.sponsorLimit);
   const [isDeletingMembership, setIsDeletingMembership] = useState(false);
   const [canDeleteMembership, setCanDeleteMembership] = useState(true);
-  const supportTitle = watch('name');
-  const supportExplain = watch('description');
-  const supportReaction = watch('messageOfThanks');
 
   // Compute settlement amount when watching price or fees changed
   useEffect(() => {
@@ -194,7 +190,7 @@ function MembershipForm({
           </Styled.Level>
         </div>
       )}
-      <InputLengthCounter
+      <Styled.InputGroup
         inputRef={register({
           maxLength: {
             value: 30,
@@ -204,19 +200,14 @@ function MembershipForm({
         placeholder="최대 30자"
         name="name"
         label="상품명"
-        style={{
-          gridColumn: '1 / 9',
-        }}
         required
-        letterContext={supportTitle}
-        maxLength={30}
       >
         {errors.name && (
           <ErrorMessage>
             {errors.name.message}
           </ErrorMessage>
         )}
-      </InputLengthCounter>
+      </Styled.InputGroup>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           inputRef={register({
@@ -256,7 +247,7 @@ function MembershipForm({
           )}
         </Styled.InputGroup>
       )}
-      <InputLengthCounter
+      <Styled.InputGroup
         inputRef={register({
           maxLength: {
             value: 100,
@@ -266,19 +257,14 @@ function MembershipForm({
         name="description"
         label="설명"
         placeholder="최대 100자"
-        style={{
-          gridColumn: '1 / 9',
-        }}
-        letterContext={supportExplain}
-        maxLength={100}
       >
         {errors.description && (
           <ErrorMessage>
             {errors.description.message}
           </ErrorMessage>
         )}
-      </InputLengthCounter>
-      <InputLengthCounter
+      </Styled.InputGroup>
+      <Styled.InputGroup
         inputRef={register({
           maxLength: {
             value: 1000,
@@ -289,18 +275,13 @@ function MembershipForm({
         ment="reaction"
         label="후원자에게 감사의 한마디를 전달하세요. 해당 메시지는 후원 플랜 구매자에게 이메일로 발송됩니다."
         placeholder="최대 1000자"
-        style={{
-          gridColumn: '1 / 9',
-        }}
-        letterContext={supportReaction}
-        maxLength={1000}
       >
         {errors.messageOfThanks && (
           <ErrorMessage>
             {errors.messageOfThanks.message}
           </ErrorMessage>
         )}
-      </InputLengthCounter>
+      </Styled.InputGroup>
       {(!membershipId || defaultValues.level > 0) && (
         <Styled.InputGroup
           type="number"
