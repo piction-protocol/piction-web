@@ -110,7 +110,7 @@ function GlobalFooter() {
   const [cookie, setCookie] = useCookies(['translate']);
   const valueOfLang = cookie.translate === undefined ? i18n.language : cookie.translate;
   const handleLanguage = (e) => {
-    setCookie('translate', e.target.value, { expires: moment().add(12, 'hours').toDate(), path: '/' });
+    setCookie('translate', e.target.value, { expires: moment().add(100, 'years').toDate(), path: '/' });
     i18n.changeLanguage(`${e.target.value}`);
   };
   return (
