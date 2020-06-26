@@ -2,7 +2,7 @@ function useLanguage() {
   let willRenderLanguage = navigator.language.search(/ko/);
   const koLanguage = navigator.language.search(/ko/);
   const enLanguage = navigator.language.search(/en/);
-  const cnLanguage = navigator.language.search(/cn/);
+  const cnLanguage = navigator.language.search(/zh/);
 
   if (koLanguage === 0) {
     willRenderLanguage = 'ko';
