@@ -70,7 +70,7 @@ if (PageLanguage === 'ko') {
 } else if (PageLanguage === 'en') {
   i18n.changeLanguage('en');
 } else {
-  i18n.changeLanguage('cn');
+  i18n.changeLanguage('zh');
 }
 
 function App() {

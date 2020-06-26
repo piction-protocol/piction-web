@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import translationEn from './translation.en.json';
-import translationCn from './translation.cn.json';
+import translationZh from './translation.zh.json';
 
 
 const resource = {
@@ -9,7 +9,7 @@ const resource = {
     translation: translationEn,
   },
   cn: {
-    translation: translationCn,
+    translation: translationZh,
   },
 };
 

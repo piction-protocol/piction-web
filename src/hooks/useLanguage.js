@@ -2,14 +2,14 @@ function useLanguage() {
   let willRenderLanguage = navigator.language.search(/ko/);
   const koLanguage = navigator.language.search(/ko/);
   const enLanguage = navigator.language.search(/en/);
-  const cnLanguage = navigator.language.search(/zh/);
+  const zhLanguage = navigator.language.search(/zh/);
 
   if (koLanguage === 0) {
     willRenderLanguage = 'ko';
   } else if (enLanguage === 0) {
     willRenderLanguage = 'en';
-  } else if (cnLanguage === 0) {
-    willRenderLanguage = 'cn';
+  } else if (zhLanguage === 0) {
+    willRenderLanguage = 'zh';
   } else {
     willRenderLanguage = 'en';
   }
