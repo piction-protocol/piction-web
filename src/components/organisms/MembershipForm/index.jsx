@@ -200,7 +200,6 @@ function MembershipForm({
         placeholder="최대 30자"
         name="name"
         label="상품명"
-        required
       >
         {errors.name && (
           <ErrorMessage>

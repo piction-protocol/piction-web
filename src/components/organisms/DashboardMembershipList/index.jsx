@@ -75,7 +75,8 @@ const Styled = {
     padding: 0 8px;
   `,
   SupportQR: styled.article`
-    display: flex;
+    display: none;
+    /* display: flex; */
     position: relative;
     flex-flow: row;
     padding: 24px;

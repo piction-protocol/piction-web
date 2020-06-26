@@ -188,7 +188,7 @@ function Withdraw({ wallet }) {
           <Styled.Link href="https://coinone.co.kr/exchange/trade/pxl/krw" target="_blank">
             <img src={CoinOneLogo} alt="coinone" />
           </Styled.Link>
-          <Styled.Link href="https://upbit.com/exchange?code=CRIX.UPBIT.BTC-PXL/" target="_blank">
+          <Styled.Link href="https://upbit.com/exchange?code=CRIX.UPBIT.KRW-PXL" target="_blank">
             <img src={UpbitLogo} alt="upbit" />
           </Styled.Link>
           <Styled.Link href="https://eosnova.io/" target="_blank">

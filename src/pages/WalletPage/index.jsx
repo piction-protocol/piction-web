@@ -57,7 +57,7 @@ function WalletPage() {
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet', { revalidateOnFocus: false });
-  const { data: rate = 4000 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
+  const { data: rate = 0 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
     const response = await axios.get(path);
     return response.data.last;
   }, { revalidateOnFocus: false });
@@ -71,7 +71,7 @@ function WalletPage() {
           <Styled.PXL>
             {`${wallet.amount.toLocaleString()} PXL`}
           </Styled.PXL>
-          {wallet.amount > 0 && (
+          {(rate > 0 && wallet.amount > 0) && (
             <Styled.Won>
               {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()}${t('원')}`}
             </Styled.Won>
