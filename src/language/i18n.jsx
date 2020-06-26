@@ -11,13 +11,6 @@ const resource = {
   cn: {
     translation: translationCn,
   },
-  ko: {
-    translation: {
-      '~ 이상 이용 가능한 포스트입니다.': '',
-      '~ 만 이용 가능한 포스트입니다.': '',
-      '나는 동의합니다.': '',
-    },
-  },
 };
 
 i18n

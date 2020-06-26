@@ -67,8 +67,10 @@ const swrConfig = {
 const PageLanguage = useLanguage();
 if (PageLanguage === 'ko') {
   i18n.changeLanguage('ko');
-} else {
+} else if (PageLanguage === 'en') {
   i18n.changeLanguage('en');
+} else {
+  i18n.changeLanguage('cn');
 }
 
 function App() {
