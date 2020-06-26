@@ -11,7 +11,7 @@ import i18n from 'language/i18n';
 import { useCookies } from 'react-cookie';
 
 import useCurrentUser from 'hooks/useCurrentUser';
-import useLanguage from 'hooks/useLanguage';
+import useNavigatorLanguage from 'hooks/useNavigatorLanguage';
 
 import { LayoutProvider } from 'contexts/LayoutContext';
 
@@ -64,22 +64,14 @@ const swrConfig = {
   },
 };
 
-const PageLanguage = useLanguage();
-if (PageLanguage === 'ko') {
-  i18n.changeLanguage('ko');
-} else if (PageLanguage === 'en') {
-  i18n.changeLanguage('en');
-} else {
-  i18n.changeLanguage('zh');
-}
-
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
   const [cookie] = useCookies(['translate']);
   const renderLang = cookie.translate;
-  i18n.changeLanguage(renderLang === undefined ? `${PageLanguage}` : `${renderLang}`);
+  const navigatorLanguage = useNavigatorLanguage();
 
+  i18n.changeLanguage(renderLang ? navigatorLanguage : renderLang);
 
   useEffect(() => {
     async function loading() {
