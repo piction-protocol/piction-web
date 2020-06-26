@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 
 import Label from 'components/atoms/Label';
 import Input from 'components/atoms/Input';
+import Textarea from 'components/atoms/Textarea';
 import PasswordInput from 'components/atoms/Input/PasswordInput';
 import ErrorMessage from 'components/atoms/ErrorMessage';
 
@@ -19,7 +20,7 @@ const Styled = {
 };
 
 function InputGroup({
-  name, label, spec, errorMessage, className, type, children, inputRef, ...props
+  name, label = null, spec = null, errorMessage = null, className = null, type = 'text', children = null, inputRef, contentForm, ...props
 }) {
   return (
     <Styled.Group className={className}>
@@ -31,7 +32,7 @@ function InputGroup({
       )}
       {type === 'password'
         ? <PasswordInput id={name} name={name} ref={inputRef} invalid={!!errorMessage} {...props} />
-        : <Input id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} />
+        : (contentForm === 'reaction' ? <Textarea id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} /> : <Input id={name} name={name} type={type} ref={inputRef} invalid={!!errorMessage} {...props} />)
       }
       {children}
       {errorMessage && (
@@ -47,20 +48,12 @@ InputGroup.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.node,
   spec: PropTypes.string,
+  contentForm: PropTypes.string,
   errorMessage: PropTypes.string,
   className: PropTypes.string,
   type: PropTypes.string,
   children: PropTypes.node,
   inputRef: PropTypes.func,
-};
-
-InputGroup.defaultProps = {
-  label: null,
-  spec: null,
-  errorMessage: null,
-  className: null,
-  type: 'text',
-  children: null,
 };
 
 export default InputGroup;
