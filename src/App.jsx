@@ -71,7 +71,7 @@ function App() {
   const renderLang = cookie.translate;
   const navigatorLanguage = useNavigatorLanguage();
 
-  i18n.changeLanguage(renderLang ? navigatorLanguage : renderLang);
+  i18n.changeLanguage(renderLang || navigatorLanguage);
 
   useEffect(() => {
     async function loading() {
