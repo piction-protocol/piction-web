@@ -16,6 +16,7 @@ import { PrimaryButton } from 'components/atoms/Button';
 
 import Modal from 'components/externals/Modal';
 
+import KlipLogo from 'images/img-logo-klip.png';
 import CoinOneLogo from 'images/img-logo-coin-one.png';
 import UpbitLogo from 'images/img-logo-upbit.png';
 import NovaWalletLogo from 'images/img-logo-nova-wallet.png';
@@ -185,14 +186,17 @@ function Withdraw({ wallet }) {
       <Styled.Section>
         <Styled.Title>{t('출금을 지원하는 거래소 및 지갑 서비스')}</Styled.Title>
         <Styled.Group>
+          <Styled.Link href="https://wallet.ground1.io/" target="_blank">
+            <img src={KlipLogo} alt="Klip" />
+          </Styled.Link>
           <Styled.Link href="https://coinone.co.kr/exchange/trade/pxl/krw" target="_blank">
             <img src={CoinOneLogo} alt="coinone" />
           </Styled.Link>
-          <Styled.Link href="https://upbit.com/exchange?code=CRIX.UPBIT.KRW-PXL" target="_blank">
-            <img src={UpbitLogo} alt="upbit" />
-          </Styled.Link>
           <Styled.Link href="https://eosnova.io/" target="_blank">
             <img src={NovaWalletLogo} alt="NOVA Wallet" />
+          </Styled.Link>
+          <Styled.Link href="https://upbit.com/exchange?code=CRIX.UPBIT.KRW-PXL" target="_blank">
+            <img src={UpbitLogo} alt="upbit" />
           </Styled.Link>
         </Styled.Group>
       </Styled.Section>
