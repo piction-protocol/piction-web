@@ -22,6 +22,8 @@ import Checkbox from 'components/atoms/Checkbox';
 import Select from 'components/atoms/Select';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
+import MultiImg from 'components/organisms/MultiImage';
+
 import dummyCoverImage from 'images/img-dummy-500x500.jpg';
 
 const Styled = {
@@ -237,6 +239,7 @@ function PostForm({ title, projectId, postId = null }) {
             {errorMessage.content}
           </ErrorMessage>
         )}
+        <MultiImg />
         <Styled.Group>
           <Label>
             커버이미지
