@@ -87,10 +87,16 @@ const Styled = {
   Submit: styled(PrimaryButton)`
     margin-right: 16px;
   `,
+  MultiImg: styled(MultiImg)`
+    z-index: 100;
+    display: ${props => (props.visible ? 'block' : 'none')};
+  `,
 };
 
 // FIXME: SWR, react-hook-form을 사용하는 방향으로 리팩토링
-function PostForm({ title, projectId, postId = null }) {
+function PostForm({
+  title, projectId, postId = null,
+}) {
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     content: '',
@@ -203,6 +209,7 @@ function PostForm({ title, projectId, postId = null }) {
 
   return (
     <>
+      <Styled.MultiImg />
       <Styled.Form onSubmit={handleSubmit}>
         <Heading>{title}</Heading>
         <Styled.Select
@@ -239,7 +246,6 @@ function PostForm({ title, projectId, postId = null }) {
             {errorMessage.content}
           </ErrorMessage>
         )}
-        <MultiImg />
         <Styled.Group>
           <Label>
             커버이미지

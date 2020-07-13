@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components/macro';
@@ -6,6 +6,8 @@ import styled from 'styled-components/macro';
 import useAPI from 'hooks/useAPI';
 
 import ContentStyle from 'styles/ContentStyle';
+
+import MultiImg from 'components/organisms/MultiImage';
 
 import { ReactComponent as BoldIcon } from 'images/ic-bold.svg';
 import { ReactComponent as ItalicIcon } from 'images/ic-italic.svg';
@@ -82,6 +84,10 @@ const Styled = {
       top: 50%;
     }
   `,
+  MultiImg: styled(MultiImg)`
+      z-index: 100;
+      display: ${props => (props.visible ? 'block' : 'none')};
+ `,
 };
 
 function Editor({
@@ -93,9 +99,16 @@ function Editor({
   const quillRef = useRef(null);
   const [API] = useAPI();
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
   function imageHandler() {
     const quill = quillRef.current.getEditor();
     const range = quill.getSelection();
+
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
@@ -165,41 +178,44 @@ function Editor({
   };
 
   return (
-    <Styled.Editor {...props}>
-      <Styled.Toolbar id="toolbar">
-        <Styled.Button className="ql-bold">
-          <BoldIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-italic">
-          <ItalicIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-underline">
-          <UnderlineIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-link">
-          <LinkIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-align" value="">
-          <AlignLeftIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-align" value="center">
-          <AlignCenterIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-align" value="right">
-          <AlignRightIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-image">
-          <ImageIcon />
-        </Styled.Button>
-        <Styled.Button className="ql-video">
-          <VideoIcon />
-        </Styled.Button>
-      </Styled.Toolbar>
-      <Styled.ReactQuill
-        ref={quillRef}
-        {...quillProps}
-      />
-    </Styled.Editor>
+    <>
+      {modalVisible && <Styled.MultiImg visible={modalVisible} />}
+      <Styled.Editor {...props}>
+        <Styled.Toolbar id="toolbar">
+          <Styled.Button className="ql-bold">
+            <BoldIcon />
+          </Styled.Button>
+          <Styled.Button className="ql-italic">
+            <ItalicIcon />
+          </Styled.Button>
+          <Styled.Button className="ql-underline">
+            <UnderlineIcon />
+          </Styled.Button>
+          <Styled.Button className="ql-link">
+            <LinkIcon />
+          </Styled.Button>
+          <Styled.Button className="ql-align" value="">
+            <AlignLeftIcon />
+          </Styled.Button>
+          <Styled.Button className="ql-align" value="center">
+            <AlignCenterIcon />
+          </Styled.Button>
+          <Styled.Button className="ql-align" value="right">
+            <AlignRightIcon />
+          </Styled.Button>
+          <Styled.Button onClick={openModal}>
+            <ImageIcon />
+          </Styled.Button>
+          <Styled.Button className="ql-video">
+            <VideoIcon />
+          </Styled.Button>
+        </Styled.Toolbar>
+        <Styled.ReactQuill
+          ref={quillRef}
+          {...quillProps}
+        />
+      </Styled.Editor>
+    </>
   );
 }
 
