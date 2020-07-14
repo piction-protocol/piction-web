@@ -122,7 +122,7 @@ function UserMenu({ links }) {
 
   const { data: projects = [] } = useSWR('/my/projects');
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
-  const { data: rate = 0 } = useSWR('http://api-stg.piction.network/upbit-api/ticker?market=KRW-PXL', async (path) => {
+  const { data: rate = 0 } = useSWR('upbit-api/ticker?market=KRW-PXL', async (path) => {
     const response = await axios.get(path);
     return response.data.trade_price;
   });
