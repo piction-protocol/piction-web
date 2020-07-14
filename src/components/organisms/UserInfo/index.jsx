@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 
+import i18n from 'language/i18n';
 import { MainGrid } from 'styles/Grid';
 import media from 'styles/media';
 
@@ -68,6 +69,7 @@ function UserInfo({
   picture = '', username, loginId, createdAt, children = null,
 }) {
   const { t } = useTranslation();
+  const { language } = i18n;
   return (
     <Styled.Section>
       <Styled.Wrapper>
@@ -81,7 +83,7 @@ function UserInfo({
           </Styled.Name>
           {children || (
             <Styled.Description>
-              {`${t('가입일')} : ${moment(createdAt).format('ll')} (D+${moment().diff(moment(createdAt), 'days')})`}
+              {`${t('가입일')} : ${moment(createdAt).locale(`${language}`).format('ll')} (D+${moment().diff(moment(createdAt), 'days')})`}
             </Styled.Description>
           )}
         </Styled.User>

@@ -3,6 +3,9 @@ import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import moment from 'moment';
 import 'moment/locale/ko';
+import 'moment/locale/zh-cn';
+
+import i18n from 'language/i18n';
 import useSWR, { useSWRPages } from 'swr';
 import { useTranslation } from 'react-i18next';
 
@@ -51,6 +54,7 @@ function SubscriptionsPage() {
   const { currentUser } = useCurrentUser();
   const listRef = useRef();
   const { t } = useTranslation();
+  const { language } = i18n;
 
   const [totalSubscriptionCount, setTotalSubscriptionCount] = useState(0);
 
@@ -73,7 +77,7 @@ function SubscriptionsPage() {
         <ProjectCard {...project}>
           {project.lastPublishedAt && (
             <Styled.CardText>
-              {`${moment(project.lastPublishedAt).fromNow()} ${t('업데이트')}`}
+              {`${moment(project.lastPublishedAt).locale(`${language}`).fromNow()} ${t('업데이트')}`}
             </Styled.CardText>
           )}
         </ProjectCard>
