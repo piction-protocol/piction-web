@@ -86,7 +86,7 @@ const Styled = {
   `,
   MultiImg: styled(MultiImg)`
       z-index: 100;
-      display: ${props => (props.visible ? 'block' : 'none')};
+      /* display: ${props => (props.visible ? 'block' : 'none')}; */
  `,
 };
 
@@ -94,6 +94,7 @@ function Editor({
   projectId,
   value,
   onChange,
+  touch,
   ...props
 }) {
   const quillRef = useRef(null);
@@ -102,7 +103,8 @@ function Editor({
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
-    setModalVisible(true);
+    setModalVisible(prev => !prev);
+    console.log(modalVisible);
   };
 
   function imageHandler() {
@@ -179,7 +181,7 @@ function Editor({
 
   return (
     <>
-      {modalVisible && <Styled.MultiImg visible={modalVisible} />}
+      {modalVisible && <Styled.MultiImg />}
       <Styled.Editor {...props}>
         <Styled.Toolbar id="toolbar">
           <Styled.Button className="ql-bold">
@@ -223,6 +225,7 @@ Editor.propTypes = {
   projectId: PropTypes.string.isRequired,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  touch: PropTypes.string,
 };
 
 Editor.defaultProps = {
