@@ -101,7 +101,7 @@ function CategoryPage({ categoryId }) {
       hero={(
         <Styled.Hero>
           <Heading>
-            {category ? category.name : '-'}
+            {category ? `${t(category.name)}` : '-'}
           </Heading>
           <Styled.Count>
             {`${totalCount} ${t('프로젝트')}`}

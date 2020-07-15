@@ -34,7 +34,7 @@ const Styled = {
     width: 720px;
     background-color: white;
     top: 0;
-    right: 0;
+    left: 0;
     position: absolute;
     transform: translate(-100%, -100%);
   `,
