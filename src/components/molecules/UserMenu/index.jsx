@@ -121,7 +121,7 @@ function UserMenu({ links }) {
 
   const { data: projects = [] } = useSWR('/my/projects');
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
-  const { data: rate = 0 } = useSWR('http://api-stg.piction.network/upbit-api/ticker?market=KRW-PXL');
+  const { data: rate = 0 } = useSWR('upbit-api/ticker?market=KRW-PXL');
   return (
     <>
       {currentUser && (
