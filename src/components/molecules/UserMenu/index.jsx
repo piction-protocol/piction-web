@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { Link } from '@reach/router';
 import useSWR from 'swr';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -122,10 +121,7 @@ function UserMenu({ links }) {
 
   const { data: projects = [] } = useSWR('/my/projects');
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet');
-  const { data: rate = 0 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
-    const response = await axios.get(path);
-    return response.data.last;
-  });
+  const { data: rate = 0 } = useSWR('upbit-api/ticker?market=KRW-PXL');
 
   return (
     <>
@@ -140,9 +136,9 @@ function UserMenu({ links }) {
             <Styled.PXL>
               {`${wallet.amount.toLocaleString()} PXL`}
             </Styled.PXL>
-            {(rate > 0 && wallet.amount > 0) && (
+            {(rate.trade_price > 0 && wallet.amount > 0) && (           
               <Styled.Won>
-                {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()} ${t('원')}`}
+                {`≒ ${Math.floor(wallet.amount * rate.trade_price).toLocaleString()} ${t('원')}`}
               </Styled.Won>
             )}
             <Styled.WalletLink>

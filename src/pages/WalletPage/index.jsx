@@ -2,7 +2,6 @@ import React from 'react';
 import { Router, Redirect } from '@reach/router';
 import styled from 'styled-components/macro';
 import useSWR from 'swr';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
 import useCurrentUser from 'hooks/useCurrentUser';
@@ -57,10 +56,7 @@ function WalletPage() {
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { data: wallet = { amount: 0 } } = useSWR('/my/wallet', { revalidateOnFocus: false });
-  const { data: rate = 0 } = useSWR('https://api.coinone.co.kr/ticker?currency=PXL', async (path) => {
-    const response = await axios.get(path);
-    return response.data.last;
-  }, { revalidateOnFocus: false });
+  const { data: rate = 0 } = useSWR('upbit-api/ticker?market=KRW-PXL', { revalidateOnFocus: false });
 
   return (
     <GridTemplate
@@ -71,9 +67,9 @@ function WalletPage() {
           <Styled.PXL>
             {`${wallet.amount.toLocaleString()} PXL`}
           </Styled.PXL>
-          {(rate > 0 && wallet.amount > 0) && (
+          {(rate.trade_price > 0 && wallet.amount > 0) && (
             <Styled.Won>
-              {`≒ ${Math.floor(wallet.amount * rate).toLocaleString()}${t('원')}`}
+              {`≒ ${Math.floor(wallet.amount * rate.trade_price).toLocaleString()}${t('원')}`}
             </Styled.Won>
           )}
         </UserInfo>
