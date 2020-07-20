@@ -94,7 +94,6 @@ function Editor({
   projectId,
   value,
   onChange,
-  touch,
   ...props
 }) {
   const quillRef = useRef(null);
@@ -225,7 +224,6 @@ Editor.propTypes = {
   projectId: PropTypes.string.isRequired,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  touch: PropTypes.string,
 };
 
 Editor.defaultProps = {

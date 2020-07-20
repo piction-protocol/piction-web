@@ -81,6 +81,8 @@ const Styled = {
     height: 144px;
     border: 1px solid gray;
     position: relative;
+    background: url(${props => props.back});
+    background-size: cover;
   `,
   Delete: styled(deletemark)`
     width: 32px;
@@ -141,27 +143,18 @@ const Styled = {
 function MultiImage({ className }) {
   const [visibleModal, setVisible] = useState(true);
   const [imgBase64, setImgBase64] = useState(''); // 파일 base64
-  const [imgFile, setImgFile] = useState(null); // 파일
+  // const [imgFile, setImgFile] = useState(); // 파일
 
-  const handleChangeFile = (event) => {
+  const handleChangeFile = (e) => {
     const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      // 2. 읽기가 완료되면 아래코드가 실행됩니다.
-      const base64 = reader.result;
-      if (base64) {
-        setImgBase64(base64); // 파일 base64 상태 업데이트
-        console.log(base64);
-      }
+      setImgBase64(reader.result); // 파일 base64 상태 업데이트
+      // setImgFile(file);
     };
-    if (event.target.files[0]) {
-      reader.readAsDataURL(event.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
-      setImgFile(event.target.files[0]); // 파일 상태 업데이트
-    }
-    console.log(`base64 ${imgBase64}`);
-    console.log(`imgfile ${imgFile}`);
   };
-
 
   const closeModal = () => {
     setVisible(!visibleModal);
@@ -177,7 +170,7 @@ function MultiImage({ className }) {
               <Styled.ImgText>이미지 하나 당 최대 5MB JPG 또는 PNG 파일</Styled.ImgText>
               <Styled.AddImg>
                 <Styled.AddImgText>
-                  <Styled.Input type="file" name="imgFile" id="imgFile" onChange={handleChangeFile} />
+                  <Styled.Input type="file" name="imgFile" id="imgFile" onChange={handleChangeFile} multiple />
                   + 이미지 추가
                 </Styled.AddImgText>
               </Styled.AddImg>
@@ -186,20 +179,14 @@ function MultiImage({ className }) {
         </Styled.Head>
         <Styled.Body>
           <Styled.Content>
-            <Styled.Img>
+            <Styled.Img back={imgBase64}>
               <Styled.Delete />
             </Styled.Img>
-            <Styled.Img><Styled.Delete /></Styled.Img>
-            <Styled.Img><Styled.Delete /></Styled.Img>
-            <Styled.Img><Styled.Delete /></Styled.Img>
-            <Styled.Img><Styled.Delete /></Styled.Img>
-            <Styled.Img><Styled.Delete /></Styled.Img>
-            <Styled.Img><Styled.Delete /></Styled.Img>
           </Styled.Content>
           <Styled.Choice>
             <Styled.ChoiceWrap>
               <Styled.Cancel onClick={closeModal}><Styled.Text>취소</Styled.Text></Styled.Cancel>
-              <Styled.Confirm><Styled.Text>편집 완료</Styled.Text></Styled.Confirm>
+              <Styled.Confirm onClick={closeModal}><Styled.Text>편집 완료</Styled.Text></Styled.Confirm>
             </Styled.ChoiceWrap>
           </Styled.Choice>
         </Styled.Body>
