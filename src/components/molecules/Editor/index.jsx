@@ -1,9 +1,11 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, {
+  useState, useRef, useCallback, useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components/macro';
 
-import useAPI from 'hooks/useAPI';
+// import useAPI from 'hooks/useAPI';
 
 import ContentStyle from 'styles/ContentStyle';
 
@@ -97,35 +99,45 @@ function Editor({
   ...props
 }) {
   const quillRef = useRef(null);
-  const [API] = useAPI();
+  // const [API] = useAPI();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [imagesFromModal, setImagesFromModal] = useState([]);
 
   const openModal = () => {
     setModalVisible(prev => !prev);
-    console.log(modalVisible);
   };
 
-  function imageHandler() {
-    const quill = quillRef.current.getEditor();
-    const range = quill.getSelection();
+  useEffect(() => {
+    if (imagesFromModal.length !== 0) {
+      const quill = quillRef.current.getEditor();
+      const range = quill.getSelection();
 
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.onchange = async () => {
-      const file = input.files[0];
-      const data = new FormData();
-      data.append('file', file);
-      try {
-        const response = await API.post(projectId).uploadContentImage(data);
-        quill.insertEmbed(range.index, 'image', response.data.url);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    input.click();
-  }
+      const url = imagesFromModal;
+      quill.insertEmbed(range.index, 'image', url);
+    }
+  }, [imagesFromModal]);
+
+  // function imageHandler() {
+  //   const quill = quillRef.current.getEditor();
+  //   const range = quill.getSelection();
+
+  //   const input = document.createElement('input');
+  //   input.setAttribute('type', 'file');
+  //   input.setAttribute('accept', 'image/*');
+  //   input.onchange = async () => {
+  //     const file = input.files[0];
+  //     const data = new FormData();
+  //     data.append('file', file);
+  //     try {
+  //       const response = await API.post(projectId).uploadContentImage(data);
+  //       quill.insertEmbed(range.index, 'image', response.data.url);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   input.click();
+  // }
 
   function linkHandler() {
     const quill = quillRef.current.getEditor();
@@ -165,7 +177,7 @@ function Editor({
       toolbar: {
         container: '#toolbar',
         handlers: {
-          image: useCallback(imageHandler, []),
+          image: useCallback(openModal, []),
           link: useCallback(linkHandler, []),
           video: useCallback(videoHandler, []),
         },
@@ -180,7 +192,7 @@ function Editor({
 
   return (
     <>
-      {modalVisible && <Styled.MultiImg />}
+      {modalVisible && <Styled.MultiImg showModal={setModalVisible} handleImages={setImagesFromModal} uploadImages={imagesFromModal} />}
       <Styled.Editor {...props}>
         <Styled.Toolbar id="toolbar">
           <Styled.Button className="ql-bold">
@@ -204,7 +216,7 @@ function Editor({
           <Styled.Button className="ql-align" value="right">
             <AlignRightIcon />
           </Styled.Button>
-          <Styled.Button onClick={openModal}>
+          <Styled.Button className="ql-image">
             <ImageIcon />
           </Styled.Button>
           <Styled.Button className="ql-video">

@@ -5,13 +5,12 @@ import styled from 'styled-components/macro';
 import { ReactComponent as deletemark } from 'images/ic-delete.svg';
 
 const Styled = {
-  Contain: styled.div`
+  Contain: styled.form`
     position: absolute;
     font-weight: 700;
     width: 820px;
     height: 666px;
     background-color: var(--White);
-    display: ${props => (props.visible ? 'visible' : 'none')};
   `,
   Head: styled.div`
     width: 100%;
@@ -52,7 +51,7 @@ const Styled = {
     position: relative;
     right: 0;
   `,
-  AddImgText: styled.div`
+  AddImgText: styled.label`
     top: 50%;
     left: 50%;
     width: 100%;
@@ -81,7 +80,7 @@ const Styled = {
     height: 144px;
     border: 1px solid gray;
     position: relative;
-    background: url(${props => props.back});
+    background: url(${props => props.preview});
     background-size: cover;
   `,
   Delete: styled(deletemark)`
@@ -125,7 +124,7 @@ const Styled = {
     color: var(--black);
     outline: none;
   `,
-  Confirm: styled.div`
+  Confirm: styled.button`
     text-align: center;
     width: 88px;
     height: 36px;
@@ -134,43 +133,58 @@ const Styled = {
     font-size: 14px;
     margin-right: 13px;
     color: var(--white);
+    outline: none;
   `,
   Input: styled.input`
-
+    display: none;
   `,
 };
 
-function MultiImage({ className }) {
-  const [visibleModal, setVisible] = useState(true);
-  const [imgBase64, setImgBase64] = useState(''); // 파일 base64
-  // const [imgFile, setImgFile] = useState(); // 파일
+function MultiImage({
+  className, handleImages, uploadImages, showModal,
+}) {
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
 
+  if (uploadImages === []) {
+    console.log(`코코 ${uploadImages}`);
+  }
   const handleChangeFile = (e) => {
     const reader = new FileReader();
+
+    // const { files } = e.target;
+    // [...files].map(file => reader.readAsDataURL(file),
+    //   reader.onloadend = () => {
+    //     setImgBase64(reader.result); // 파일 base64 상태 업데이트
+    //   });
+
     const file = e.target.files[0];
     reader.readAsDataURL(file);
-
     reader.onloadend = () => {
       setImgBase64(reader.result); // 파일 base64 상태 업데이트
-      // setImgFile(file);
     };
   };
 
   const closeModal = () => {
-    setVisible(!visibleModal);
+    showModal(false);
+  };
+
+  const formSubmit = (e) => {
+    e.preventDefault();
+    showModal(false);
+    handleImages(imgBase64);
   };
 
   return (
-    visibleModal ? (
-      <Styled.Contain className={className} visible={visibleModal}>
+    showModal ? (
+      <Styled.Contain className={className}>
         <Styled.Head>
           <Styled.Edit>그룹 이미지 편집</Styled.Edit>
           <Styled.UploadImg>
             <Styled.Wrap>
               <Styled.ImgText>이미지 하나 당 최대 5MB JPG 또는 PNG 파일</Styled.ImgText>
-              <Styled.AddImg>
-                <Styled.AddImgText>
-                  <Styled.Input type="file" name="imgFile" id="imgFile" onChange={handleChangeFile} multiple />
+              <Styled.AddImg type="button">
+                <Styled.AddImgText type="button">
+                  <Styled.Input type="file" accept="image/jpeg, image/png" onChange={handleChangeFile} multiple />
                   + 이미지 추가
                 </Styled.AddImgText>
               </Styled.AddImg>
@@ -179,14 +193,18 @@ function MultiImage({ className }) {
         </Styled.Head>
         <Styled.Body>
           <Styled.Content>
-            <Styled.Img back={imgBase64}>
+            <Styled.Img preview={imgBase64}>
               <Styled.Delete />
             </Styled.Img>
           </Styled.Content>
           <Styled.Choice>
             <Styled.ChoiceWrap>
-              <Styled.Cancel onClick={closeModal}><Styled.Text>취소</Styled.Text></Styled.Cancel>
-              <Styled.Confirm onClick={closeModal}><Styled.Text>편집 완료</Styled.Text></Styled.Confirm>
+              <Styled.Cancel onClick={closeModal}>
+                <Styled.Text>취소</Styled.Text>
+              </Styled.Cancel>
+              <Styled.Confirm onClick={formSubmit}>
+                <Styled.Text>편집 완료</Styled.Text>
+              </Styled.Confirm>
             </Styled.ChoiceWrap>
           </Styled.Choice>
         </Styled.Body>
@@ -197,6 +215,9 @@ function MultiImage({ className }) {
 
 MultiImage.propTypes = {
   className: PropTypes.string,
+  handleImages: PropTypes.any,
+  uploadImages: PropTypes.any,
+  showModal: PropTypes.any,
 };
 
 export default MultiImage;
