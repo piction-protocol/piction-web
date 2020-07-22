@@ -109,12 +109,10 @@ function Editor({
   };
 
   useEffect(() => {
-    if (imagesFromModal.length !== 0) {
+    if (imagesFromModal.length >= 1) {
       const quill = quillRef.current.getEditor();
-      const range = quill.getSelection();
-
-      const url = imagesFromModal;
-      quill.insertEmbed(range.index, 'image', url);
+      const urls = imagesFromModal;
+      urls.forEach((url, index) => quill.insertEmbed(index, 'image', url));
     }
   }, [imagesFromModal]);
 
@@ -192,7 +190,7 @@ function Editor({
 
   return (
     <>
-      {modalVisible && <Styled.MultiImg showModal={setModalVisible} handleImages={setImagesFromModal} uploadImages={imagesFromModal} />}
+      {modalVisible && <Styled.MultiImg showModal={setModalVisible} handleImages={setImagesFromModal} />}
       <Styled.Editor {...props}>
         <Styled.Toolbar id="toolbar">
           <Styled.Button className="ql-bold">

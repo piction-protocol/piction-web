@@ -141,27 +141,29 @@ const Styled = {
 };
 
 function MultiImage({
-  className, handleImages, uploadImages, showModal,
+  className, handleImages, showModal,
 }) {
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const muliti = (imagefile) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(imagefile);
+    reader.onloadend = () => {
+      setImgBase64(prev => [...prev, reader.result]);
+    };
+  };
 
-  if (uploadImages === []) {
-    console.log(`코코 ${uploadImages}`);
-  }
   const handleChangeFile = (e) => {
     const reader = new FileReader();
-
-    // const { files } = e.target;
-    // [...files].map(file => reader.readAsDataURL(file),
-    //   reader.onloadend = () => {
-    //     setImgBase64(reader.result); // 파일 base64 상태 업데이트
-    //   });
-
-    const file = e.target.files[0];
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgBase64(reader.result); // 파일 base64 상태 업데이트
-    };
+    const testfile = e.target.files;
+    if (testfile.length > 1) {
+      [...testfile].forEach.call(testfile, muliti);
+    } else {
+      const file = e.target.files[0];
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImgBase64(prev => [...prev, reader.result]); // 파일 base64 상태 업데이트
+      };
+    }
   };
 
   const closeModal = () => {
@@ -216,8 +218,7 @@ function MultiImage({
 MultiImage.propTypes = {
   className: PropTypes.string,
   handleImages: PropTypes.any,
-  uploadImages: PropTypes.any,
-  showModal: PropTypes.any,
+  showModal: PropTypes.bool,
 };
 
 export default MultiImage;
