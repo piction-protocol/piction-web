@@ -58,6 +58,7 @@ const Styled = {
     transform: translate(-50%, -50%);
     position: absolute;
     font-size: 14px;
+    cursor: pointer;
   `,
   Body: styled.div`
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
@@ -89,6 +90,7 @@ const Styled = {
     background-color: black;
     position: absolute;
     right: 0;
+    cursor: pointer;
   `,
   Choice: styled.div`
     width: 100%;
@@ -144,30 +146,25 @@ function MultiImage({
   className, handleImages, showModal,
 }) {
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
-  const muliti = (imagefile) => {
+  const muliti = (imageFile) => {
     const reader = new FileReader();
-    reader.readAsDataURL(imagefile);
+    reader.readAsDataURL(imageFile);
     reader.onloadend = () => {
       setImgBase64(prev => [...prev, reader.result]);
     };
   };
 
   const handleChangeFile = (e) => {
-    const reader = new FileReader();
-    const testfile = e.target.files;
-    if (testfile.length > 1) {
-      [...testfile].forEach.call(testfile, muliti);
-    } else {
-      const file = e.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setImgBase64(prev => [...prev, reader.result]); // 파일 base64 상태 업데이트
-      };
-    }
+    const uploadImg = e.target.files;
+    [...uploadImg].forEach.call(uploadImg, muliti);
   };
 
   const closeModal = () => {
     showModal(false);
+  };
+
+  const deleteImg = (index) => {
+    setImgBase64(imgBase64.filter(img => img !== imgBase64[index]));
   };
 
   const formSubmit = (e) => {
@@ -175,6 +172,7 @@ function MultiImage({
     showModal(false);
     handleImages(imgBase64);
   };
+
 
   return (
     showModal ? (
@@ -195,9 +193,11 @@ function MultiImage({
         </Styled.Head>
         <Styled.Body>
           <Styled.Content>
-            <Styled.Img preview={imgBase64}>
-              <Styled.Delete />
-            </Styled.Img>
+            {imgBase64.map((img, index) => (
+              <Styled.Img preview={img}>
+                <Styled.Delete onClick={() => deleteImg(index)} />
+              </Styled.Img>
+            ))}
           </Styled.Content>
           <Styled.Choice>
             <Styled.ChoiceWrap>
