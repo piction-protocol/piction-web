@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
-import { ReactComponent as deletemark } from 'images/ic-delete.svg';
+import MultiImageItem from 'components/molecules/MultiImageItem';
+
+import update from 'immutability-helper';
+
 
 const Styled = {
   Contain: styled.form`
@@ -73,24 +76,6 @@ const Styled = {
     align-content: flex-start;
     overflow-y: auto;
     overflow-x: none;
-  `,
-  Img: styled.div`
-    margin-top: 25px;
-    margin-left: 17px;
-    width: 144px;
-    height: 144px;
-    border: 1px solid gray;
-    position: relative;
-    background: url(${props => props.preview});
-    background-size: cover;
-  `,
-  Delete: styled(deletemark)`
-    width: 32px;
-    height: 32px;
-    background-color: black;
-    position: absolute;
-    right: 0;
-    cursor: pointer;
   `,
   Choice: styled.div`
     width: 100%;
@@ -163,16 +148,27 @@ function MultiImage({
     showModal(false);
   };
 
-  const deleteImg = (index) => {
-    setImgBase64(imgBase64.filter(img => img !== imgBase64[index]));
-  };
-
   const formSubmit = (e) => {
     e.preventDefault();
     showModal(false);
     handleImages(imgBase64);
   };
 
+  const findImg = (id) => {
+    console.log(id);
+    const card = imgBase64.find(c => c.indexOf(c[id]) === id);
+    return {
+      card,
+      index: imgBase64.indexOf(card),
+    };
+  };
+
+  const moveImg = (id, toIndex) => {
+    const { card, index } = findImg(id);
+    setImgBase64(update(imgBase64, {
+      $splice: [[index, 1], [toIndex, 0, card]],
+    }));
+  };
 
   return (
     showModal ? (
@@ -194,9 +190,7 @@ function MultiImage({
         <Styled.Body>
           <Styled.Content>
             {imgBase64.map((img, index) => (
-              <Styled.Img preview={img}>
-                <Styled.Delete onClick={() => deleteImg(index)} />
-              </Styled.Img>
+              <MultiImageItem previewImg={img} id={index} imgBase64={imgBase64} setImgBase64={setImgBase64} findImg={findImg} moveImg={moveImg} />
             ))}
           </Styled.Content>
           <Styled.Choice>
