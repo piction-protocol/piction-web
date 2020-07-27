@@ -142,7 +142,7 @@ function MultiImage({
   const handleChangeFile = (e) => {
     const uploadImg = e.target.files;
     [...uploadImg].forEach.call(uploadImg, muliti);
-    document.getElementById('imgFileUploder').value = '';
+    document.getElementById('imgFileUploader').value = '';
   };
 
   const closeModal = () => {
@@ -180,7 +180,7 @@ function MultiImage({
               <Styled.ImgText>이미지 하나 당 최대 5MB JPG 또는 PNG 파일</Styled.ImgText>
               <Styled.AddImg type="button">
                 <Styled.AddImgText type="button">
-                  <Styled.Input id="imgFileUploder" type="file" accept="image/jpeg, image/png" onChange={handleChangeFile} multiple />
+                  <Styled.Input id="imgFileUploader" type="file" accept="image/jpeg, image/png" onChange={handleChangeFile} multiple />
                   + 이미지 추가
                 </Styled.AddImgText>
               </Styled.AddImg>

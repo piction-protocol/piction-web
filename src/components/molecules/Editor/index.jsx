@@ -100,7 +100,7 @@ function Editor({
   const [modalVisible, setModalVisible] = useState(false);
   const [imagesFromModal, setImagesFromModal] = useState([]);
 
-  const openModal = () => {
+  const imageHandler = () => {
     setModalVisible(prev => !prev);
   };
 
@@ -150,7 +150,7 @@ function Editor({
       toolbar: {
         container: '#toolbar',
         handlers: {
-          image: useCallback(openModal, []),
+          image: useCallback(imageHandler, []),
           link: useCallback(linkHandler, []),
           video: useCallback(videoHandler, []),
         },
