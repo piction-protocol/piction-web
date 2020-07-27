@@ -130,12 +130,12 @@ const Styled = {
 function MultiImage({
   className, handleImages, showModal,
 }) {
-  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const [imgUrl, setImgUrl] = useState([]); // 파일 base64
   const muliti = (imageFile) => {
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
     reader.onloadend = () => {
-      setImgBase64(prev => [...prev, reader.result]);
+      setImgUrl(prev => [...prev, reader.result]);
     };
   };
 
@@ -151,21 +151,20 @@ function MultiImage({
   const formSubmit = (e) => {
     e.preventDefault();
     showModal(false);
-    handleImages(imgBase64);
+    handleImages(imgUrl);
   };
 
   const findImg = (id) => {
-    console.log(id);
-    const card = imgBase64.find(c => c.indexOf(c[id]) === id);
+    const card = imgUrl[id];
     return {
       card,
-      index: imgBase64.indexOf(card),
+      index: imgUrl.indexOf(card),
     };
   };
 
   const moveImg = (id, toIndex) => {
     const { card, index } = findImg(id);
-    setImgBase64(update(imgBase64, {
+    setImgUrl(update(imgUrl, {
       $splice: [[index, 1], [toIndex, 0, card]],
     }));
   };
@@ -189,8 +188,8 @@ function MultiImage({
         </Styled.Head>
         <Styled.Body>
           <Styled.Content>
-            {imgBase64.map((img, index) => (
-              <MultiImageItem previewImg={img} id={index} imgBase64={imgBase64} setImgBase64={setImgBase64} findImg={findImg} moveImg={moveImg} />
+            {imgUrl.map((img, index) => (
+              <MultiImageItem previewImg={img} id={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
             ))}
           </Styled.Content>
           <Styled.Choice>

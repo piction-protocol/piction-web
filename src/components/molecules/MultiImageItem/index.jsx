@@ -2,15 +2,16 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import PropTypes from 'prop-types';
 
-
 import { useDrag, useDrop } from 'react-dnd';
 
 import { ReactComponent as deletemark } from 'images/ic-delete.svg';
 
 const Styled = {
-  Img: styled.div`
+  ImgWrap: styled.div`
     margin-top: 25px;
     margin-left: 17px;
+  `,
+  Img: styled.div`
     width: 144px;
     height: 144px;
     border: 1px solid gray;
@@ -29,7 +30,7 @@ const Styled = {
 };
 
 function MultiImageItem({
-  previewImg, id, imgBase64, setImgBase64, findImg, moveImg,
+  previewImg, id, imgUrl, setImgUrl, findImg, moveImg,
 }) {
   const originalIndex = findImg(id).index;
   const [, drop] = useDrop({
@@ -50,29 +51,27 @@ function MultiImageItem({
   });
 
   const deleteImg = () => {
-    setImgBase64(imgBase64.filter(img => img !== imgBase64[id]));
+    imgUrl.splice(id, 1);
+    setImgUrl(imgUrl.filter(img => img !== imgUrl));
   };
 
   return (
-    <div
+    <Styled.ImgWrap
       ref={node => preview(drop(node))}
       style={{ opacity: isDragging ? 0 : 1 }}
     >
-      <Styled.Img
-        previewImg={previewImg}
-        ref={drag}
-      >
+      <Styled.Img ref={drag} previewImg={previewImg}>
         <Styled.Delete onClick={() => deleteImg(id)} />
       </Styled.Img>
-    </div>
+    </Styled.ImgWrap>
   );
 }
 
 MultiImageItem.propTypes = {
   previewImg: PropTypes.string,
   id: PropTypes.number,
-  imgBase64: PropTypes.string,
-  setImgBase64: PropTypes.string,
+  imgUrl: PropTypes.array,
+  setImgUrl: PropTypes.func,
   findImg: PropTypes.func,
   moveImg: PropTypes.func,
 };

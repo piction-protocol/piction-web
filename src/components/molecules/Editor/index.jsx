@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components/macro';
 
-// import useAPI from 'hooks/useAPI';
-
 import ContentStyle from 'styles/ContentStyle';
 
 import MultiImg from 'components/organisms/MultiImage';
@@ -88,18 +86,16 @@ const Styled = {
   `,
   MultiImg: styled(MultiImg)`
       z-index: 100;
-      /* display: ${props => (props.visible ? 'block' : 'none')}; */
  `,
 };
 
 function Editor({
   projectId,
-  value,
+  value = '',
   onChange,
   ...props
 }) {
   const quillRef = useRef(null);
-  // const [API] = useAPI();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [imagesFromModal, setImagesFromModal] = useState([]);
@@ -115,27 +111,6 @@ function Editor({
       urls.forEach((url, index) => quill.insertEmbed(index, 'image', url));
     }
   }, [imagesFromModal]);
-
-  // function imageHandler() {
-  //   const quill = quillRef.current.getEditor();
-  //   const range = quill.getSelection();
-
-  //   const input = document.createElement('input');
-  //   input.setAttribute('type', 'file');
-  //   input.setAttribute('accept', 'image/*');
-  //   input.onchange = async () => {
-  //     const file = input.files[0];
-  //     const data = new FormData();
-  //     data.append('file', file);
-  //     try {
-  //       const response = await API.post(projectId).uploadContentImage(data);
-  //       quill.insertEmbed(range.index, 'image', response.data.url);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   input.click();
-  // }
 
   function linkHandler() {
     const quill = quillRef.current.getEditor();
@@ -234,10 +209,6 @@ Editor.propTypes = {
   projectId: PropTypes.string.isRequired,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-};
-
-Editor.defaultProps = {
-  value: '',
 };
 
 export default Editor;
