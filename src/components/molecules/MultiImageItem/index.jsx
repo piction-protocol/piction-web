@@ -35,8 +35,8 @@ function MultiImageItem({
   const originalIndex = findImg(id).index;
   const [, drop] = useDrop({
     accept: 'image',
-    canDrop: () => false,
-    hover({ id: draggedId }) {
+    canDrop: () => true,
+    drop: ({ id: draggedId }) => {
       if (draggedId !== id) {
         const { index: hoverIndex } = findImg(id);
         moveImg(draggedId, hoverIndex);
