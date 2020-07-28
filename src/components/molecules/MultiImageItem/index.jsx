@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { useDrag, useDrop } from 'react-dnd';
 
-import { ReactComponent as deletemark } from 'images/ic-delete.svg';
+import { ReactComponent as deletemark } from 'images/ic-cancel.svg';
 
 const Styled = {
   ImgWrap: styled.div`
