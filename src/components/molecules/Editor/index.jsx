@@ -108,7 +108,7 @@ function Editor({
     if (imagesFromModal.length >= 1) {
       const quill = quillRef.current.getEditor();
       const urls = imagesFromModal;
-      urls.forEach((url, index) => quill.insertEmbed(index, 'image', url));
+      urls.forEach((url, index) => quill.insertEmbed(index, 'image', url.result));
     }
   }, [imagesFromModal]);
 

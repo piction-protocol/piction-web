@@ -133,23 +133,19 @@ function MultiImage({
 }) {
   const [API] = useAPI();
   const [imgUrl, setImgUrl] = useState([]); // 파일 base64
-  const [imgId, setImgId] = useState([]); // 파일 ID 값
-  const multi = (imageFile) => {
+  const multi = async (imageFile) => {
+    const data = new FormData();
+    data.append('file', imageFile);
+    const response = await API.post(projectId).uploadContentImage(data);
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
     reader.onloadend = () => {
-      setImgUrl(prev => [...prev, reader.result]);
+      setImgUrl(prev => [...prev, { id: response.data.id, result: reader.result }]);
     };
   };
 
   const handleChangeFile = (e) => {
     const uploadImg = e.target.files;
-    [...uploadImg].map(async (img) => {
-      const data = new FormData();
-      data.append('file', img);
-      const response = await API.post(projectId).uploadContentImage(data);
-      setImgId(prev => [...prev, response.data.id]);
-    });
     try {
       [...uploadImg].forEach.call(uploadImg, multi);
       document.getElementById('imgFileUploader').value = '';
@@ -166,11 +162,10 @@ function MultiImage({
     e.preventDefault();
     showModal(false);
     handleImages(imgUrl);
-    console.log(imgId);
   };
 
   const findImg = (id) => {
-    const card = imgUrl[id];
+    const card = imgUrl.find(data => `${data.id}` === id);
     return {
       card,
       index: imgUrl.indexOf(card),
@@ -178,7 +173,9 @@ function MultiImage({
   };
 
   const moveImg = (id, toIndex) => {
-    const { card, index } = findImg(id);
+    const {
+      card, index,
+    } = findImg(id);
     setImgUrl(update(imgUrl, {
       $splice: [[index, 1], [toIndex, 0, card]],
     }));
@@ -204,7 +201,7 @@ function MultiImage({
         <Styled.Body>
           <Styled.Content>
             {imgUrl.map((img, index) => (
-              <MultiImageItem previewImg={img} id2={imgId} id={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
+              <MultiImageItem previewImg={img.result} id={img.id} indexId={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
             ))}
           </Styled.Content>
           <Styled.Choice>
