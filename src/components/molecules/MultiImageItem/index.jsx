@@ -30,7 +30,7 @@ const Styled = {
 };
 
 function MultiImageItem({
-  previewImg, id, imgUrl, setImgUrl, findImg, moveImg,
+  previewImg, indexId, imgUrl, setImgUrl, findImg, moveImg, id,
 }) {
   const originalIndex = findImg(id).index;
   const [, drop] = useDrop({
@@ -50,7 +50,7 @@ function MultiImageItem({
   });
 
   const deleteImg = () => {
-    imgUrl.splice(id, 1);
+    imgUrl.splice(indexId, 1);
     setImgUrl(imgUrl.filter(img => img !== imgUrl));
   };
 
@@ -60,7 +60,7 @@ function MultiImageItem({
       style={{ opacity: isDragging ? 0 : 1 }}
     >
       <Styled.Img ref={drag} previewImg={previewImg}>
-        <Styled.Delete onClick={() => deleteImg(id)} />
+        <Styled.Delete onClick={() => deleteImg(indexId)} />
       </Styled.Img>
     </Styled.ImgWrap>
   );
@@ -68,7 +68,8 @@ function MultiImageItem({
 
 MultiImageItem.propTypes = {
   previewImg: PropTypes.string,
-  id: PropTypes.number,
+  indexId: PropTypes.number,
+  id: PropTypes.string,
   imgUrl: PropTypes.array,
   setImgUrl: PropTypes.func,
   findImg: PropTypes.func,

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import useAPI from 'hooks/useAPI';
 
 import MultiImageItem from 'components/molecules/MultiImageItem';
 
@@ -128,20 +129,24 @@ const Styled = {
 };
 
 function MultiImage({
-  className, handleImages, showModal,
+  className, handleImages, showModal, projectId,
 }) {
+  const [API] = useAPI();
   const [imgUrl, setImgUrl] = useState([]); // 파일 base64
-  const muliti = (imageFile) => {
+  const uploadMultiImg = async (imageFile) => {
+    const data = new FormData();
+    data.append('file', imageFile);
+    const response = await API.post(projectId).uploadContentImage(data);
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
     reader.onloadend = () => {
-      setImgUrl(prev => [...prev, reader.result]);
+      setImgUrl(prev => [...prev, { id: response.data.id, result: reader.result }]);
     };
   };
 
   const handleChangeFile = (e) => {
     const uploadImg = e.target.files;
-    [...uploadImg].forEach.call(uploadImg, muliti);
+    [...uploadImg].forEach.call(uploadImg, uploadMultiImg);
     document.getElementById('imgFileUploader').value = '';
   };
 
@@ -156,7 +161,7 @@ function MultiImage({
   };
 
   const findImg = (id) => {
-    const card = imgUrl[id];
+    const card = imgUrl.find(data => `${data.id}` === id);
     return {
       card,
       index: imgUrl.indexOf(card),
@@ -164,7 +169,9 @@ function MultiImage({
   };
 
   const moveImg = (id, toIndex) => {
-    const { card, index } = findImg(id);
+    const {
+      card, index,
+    } = findImg(id);
     setImgUrl(update(imgUrl, {
       $splice: [[index, 1], [toIndex, 0, card]],
     }));
@@ -190,7 +197,7 @@ function MultiImage({
         <Styled.Body>
           <Styled.Content>
             {imgUrl.map((img, index) => (
-              <MultiImageItem previewImg={img} id={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
+              <MultiImageItem previewImg={img.result} id={img.id} indexId={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
             ))}
           </Styled.Content>
           <Styled.Choice>
@@ -213,6 +220,7 @@ MultiImage.propTypes = {
   className: PropTypes.string,
   handleImages: PropTypes.any,
   showModal: PropTypes.bool,
+  projectId: PropTypes.number,
 };
 
 export default MultiImage;

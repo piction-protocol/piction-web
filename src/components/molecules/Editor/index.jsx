@@ -108,7 +108,7 @@ function Editor({
     if (imagesFromModal.length >= 1) {
       const quill = quillRef.current.getEditor();
       const urls = imagesFromModal;
-      urls.forEach((url, index) => quill.insertEmbed(index, 'image', url));
+      urls.forEach((url, index) => quill.insertEmbed(index, 'image', url.result));
     }
   }, [imagesFromModal]);
 
@@ -165,7 +165,7 @@ function Editor({
 
   return (
     <>
-      {modalVisible && <Styled.MultiImg showModal={setModalVisible} handleImages={setImagesFromModal} />}
+      {modalVisible && <Styled.MultiImg showModal={setModalVisible} handleImages={setImagesFromModal} projectId={projectId} />}
       <Styled.Editor {...props}>
         <Styled.Toolbar id="toolbar">
           <Styled.Button className="ql-bold">
