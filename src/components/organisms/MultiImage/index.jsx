@@ -133,7 +133,7 @@ function MultiImage({
 }) {
   const [API] = useAPI();
   const [imgUrl, setImgUrl] = useState([]); // 파일 base64
-  const multi = async (imageFile) => {
+  const uploadMultiImg = async (imageFile) => {
     const data = new FormData();
     data.append('file', imageFile);
     const response = await API.post(projectId).uploadContentImage(data);
@@ -146,12 +146,8 @@ function MultiImage({
 
   const handleChangeFile = (e) => {
     const uploadImg = e.target.files;
-    try {
-      [...uploadImg].forEach.call(uploadImg, multi);
-      document.getElementById('imgFileUploader').value = '';
-    } catch (error) {
-      console.log(error);
-    }
+    [...uploadImg].forEach.call(uploadImg, uploadMultiImg);
+    document.getElementById('imgFileUploader').value = '';
   };
 
   const closeModal = () => {
