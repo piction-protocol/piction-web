@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import useAPI from 'hooks/useAPI';
 
 import MultiImageItem from 'components/molecules/MultiImageItem';
 
@@ -128,10 +129,12 @@ const Styled = {
 };
 
 function MultiImage({
-  className, handleImages, showModal,
+  className, handleImages, showModal, projectId,
 }) {
+  const [API] = useAPI();
   const [imgUrl, setImgUrl] = useState([]); // 파일 base64
-  const muliti = (imageFile) => {
+  const [imgId, setImgId] = useState([]); // 파일 ID 값
+  const multi = (imageFile) => {
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
     reader.onloadend = () => {
@@ -141,8 +144,18 @@ function MultiImage({
 
   const handleChangeFile = (e) => {
     const uploadImg = e.target.files;
-    [...uploadImg].forEach.call(uploadImg, muliti);
-    document.getElementById('imgFileUploader').value = '';
+    [...uploadImg].map(async (img) => {
+      const data = new FormData();
+      data.append('file', img);
+      const response = await API.post(projectId).uploadContentImage(data);
+      setImgId(prev => [...prev, response.data.id]);
+    });
+    try {
+      [...uploadImg].forEach.call(uploadImg, multi);
+      document.getElementById('imgFileUploader').value = '';
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const closeModal = () => {
@@ -153,6 +166,7 @@ function MultiImage({
     e.preventDefault();
     showModal(false);
     handleImages(imgUrl);
+    console.log(imgId);
   };
 
   const findImg = (id) => {
@@ -190,7 +204,7 @@ function MultiImage({
         <Styled.Body>
           <Styled.Content>
             {imgUrl.map((img, index) => (
-              <MultiImageItem previewImg={img} id={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
+              <MultiImageItem previewImg={img} id2={imgId} id={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
             ))}
           </Styled.Content>
           <Styled.Choice>
@@ -213,6 +227,7 @@ MultiImage.propTypes = {
   className: PropTypes.string,
   handleImages: PropTypes.any,
   showModal: PropTypes.bool,
+  projectId: PropTypes.number,
 };
 
 export default MultiImage;

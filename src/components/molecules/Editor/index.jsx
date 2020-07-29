@@ -165,7 +165,7 @@ function Editor({
 
   return (
     <>
-      {modalVisible && <Styled.MultiImg showModal={setModalVisible} handleImages={setImagesFromModal} />}
+      {modalVisible && <Styled.MultiImg showModal={setModalVisible} handleImages={setImagesFromModal} projectId={projectId} />}
       <Styled.Editor {...props}>
         <Styled.Toolbar id="toolbar">
           <Styled.Button className="ql-bold">
