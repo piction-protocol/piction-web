@@ -169,9 +169,7 @@ function MultiImage({
   };
 
   const moveImg = (id, toIndex) => {
-    const {
-      card, index,
-    } = findImg(id);
+    const { card, index } = findImg(id);
     setImgUrl(update(imgUrl, {
       $splice: [[index, 1], [toIndex, 0, card]],
     }));
@@ -197,7 +195,7 @@ function MultiImage({
         <Styled.Body>
           <Styled.Content>
             {imgUrl.map((img, index) => (
-              <MultiImageItem previewImg={img.result} id={img.id} indexId={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
+              <MultiImageItem key={img.result} previewImg={img.result} id={img.id} indexId={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
             ))}
           </Styled.Content>
           <Styled.Choice>
