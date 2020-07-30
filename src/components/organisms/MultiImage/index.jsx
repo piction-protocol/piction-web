@@ -132,16 +132,12 @@ function MultiImage({
   className, handleImages, showModal, projectId,
 }) {
   const [API] = useAPI();
-  const [imgUrl, setImgUrl] = useState([]); // 파일 base64
+  const [imgUrl, setImgUrl] = useState([]);
   const uploadMultiImg = async (imageFile) => {
     const data = new FormData();
     data.append('file', imageFile);
     const response = await API.post(projectId).uploadContentImage(data);
-    const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
-    reader.onloadend = () => {
-      setImgUrl(prev => [...prev, { id: response.data.id, result: reader.result }]);
-    };
+    setImgUrl(prev => [...prev, { id: response.data.id, result: response.data.url }]);
   };
 
   const handleChangeFile = (e) => {
@@ -169,9 +165,7 @@ function MultiImage({
   };
 
   const moveImg = (id, toIndex) => {
-    const {
-      card, index,
-    } = findImg(id);
+    const { card, index } = findImg(id);
     setImgUrl(update(imgUrl, {
       $splice: [[index, 1], [toIndex, 0, card]],
     }));
@@ -197,7 +191,7 @@ function MultiImage({
         <Styled.Body>
           <Styled.Content>
             {imgUrl.map((img, index) => (
-              <MultiImageItem previewImg={img.result} id={img.id} indexId={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
+              <MultiImageItem key={img.id} previewImg={img.result} id={img.id} indexId={index} imgUrl={imgUrl} setImgUrl={setImgUrl} findImg={findImg} moveImg={moveImg} />
             ))}
           </Styled.Content>
           <Styled.Choice>
