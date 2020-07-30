@@ -111,6 +111,7 @@ const Styled = {
     margin-right: 16px;
     color: var(--black);
     outline: none;
+    cursor: pointer;
   `,
   Confirm: styled.button`
     text-align: center;
@@ -122,6 +123,7 @@ const Styled = {
     margin-right: 13px;
     color: var(--white);
     outline: none;
+    cursor: pointer;
   `,
   Input: styled.input`
     display: none;
