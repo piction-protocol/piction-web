@@ -22,6 +22,8 @@ import Checkbox from 'components/atoms/Checkbox';
 import Select from 'components/atoms/Select';
 import { PrimaryButton, SecondaryButton } from 'components/atoms/Button';
 
+import MultiImg from 'components/organisms/MultiImage';
+
 import dummyCoverImage from 'images/img-dummy-500x500.jpg';
 
 const Styled = {
@@ -85,10 +87,16 @@ const Styled = {
   Submit: styled(PrimaryButton)`
     margin-right: 16px;
   `,
+  MultiImg: styled(MultiImg)`
+    z-index: 100;
+    display: ${props => (props.visible ? 'block' : 'none')};
+  `,
 };
 
 // FIXME: SWR, react-hook-form을 사용하는 방향으로 리팩토링
-function PostForm({ title, projectId, postId = null }) {
+function PostForm({
+  title, projectId, postId = null,
+}) {
   const [formData, { setFormData, handleChange }] = useForm({
     title: '',
     content: '',
@@ -201,6 +209,7 @@ function PostForm({ title, projectId, postId = null }) {
 
   return (
     <>
+      <Styled.MultiImg />
       <Styled.Form onSubmit={handleSubmit}>
         <Heading>{title}</Heading>
         <Styled.Select
