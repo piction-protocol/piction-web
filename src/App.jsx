@@ -45,7 +45,8 @@ const Dashboard = React.lazy(() => import('Dashboard'));
 const Terms = React.lazy(() => importMDX('pages/Terms.mdx'));
 const Privacy = React.lazy(() => importMDX('pages/Privacy.mdx'));
 
-const Hongik = React.lazy(() => import('pages/Campaigns/Hongik'));
+const Hongik2019 = React.lazy(() => import('pages/Campaigns/Hongik2019'));
+const Hongik2020 = React.lazy(() => import('pages/Campaigns/Hongik2020'));
 const CPR = React.lazy(() => import('pages/Campaigns/CPR'));
 const DNFCreativeLeague = React.lazy(() => import('pages/Campaigns/DNFCreativeLeague'));
 
@@ -124,7 +125,8 @@ function App() {
 
                     <DNFCreativeLeague path="campaigns/dnfcreativeleague" />
                     <CPR path="campaigns/cpr_2019" />
-                    <Hongik path="campaigns/hongik_2019" />
+                    <Hongik2019 path="campaigns/hongik_2019" />
+                    <Hongik2020 path="campaigns/hongik_2020" />
 
                     <CreatorsGuide path="creatorsguide" />
 
