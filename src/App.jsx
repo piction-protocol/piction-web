@@ -18,11 +18,8 @@ import { LayoutProvider } from 'contexts/LayoutContext';
 import GlobalHeader from 'components/organisms/GlobalHeader';
 import GlobalFooter from 'components/organisms/GlobalFooter';
 import Spinner from 'components/atoms/Spinner';
-import Modal from 'components/externals/Modal';
-import { PrimaryButton } from 'components/atoms/Button';
 
 import TermsComponents from 'components/templates/TermsComponents';
-import moment from 'moment';
 
 const HomePage = React.lazy(() => import('pages/HomePage'));
 const LoginPage = React.lazy(() => import('pages/LoginPage'));
@@ -68,19 +65,6 @@ const swrConfig = {
   },
 };
 
-function usePopup(key) {
-  const [cookies, setCookie] = useCookies([key]);
-
-  const onClose = () => {
-    setCookie(key, true, { expires: moment().add(1, 'days').toDate(), path: '/' });
-  };
-
-  return {
-    show: cookies[key] !== 'true',
-    onClose,
-  };
-}
-
 function App() {
   const { accessToken, getCurrentUser } = useCurrentUser();
   const fetcher = createFetcher(accessToken);
@@ -104,37 +88,12 @@ function App() {
     }
   }), []);
 
-  const { show, onClose } = usePopup('update-210302');
-
   return (
     <div className="root">
       <Location>
         {locationContext => (
           <SWRConfig value={{ ...swrConfig, fetcher }}>
             <LayoutProvider>
-              {show && (
-                <Modal close={() => onClose()}>
-                  <h1>픽션 네트워크 서버 업데이트 공지</h1>
-                  <p>안녕하세요, 픽션 네트워크 팀입니다.</p>
-                  <br />
-                  <p>
-                    설 연휴 전후로 홈페이지 및 플랫폼 업데이트가 진행 중입니다.
-                    이에 따라 홈페이지 로그인 및 PXL 토큰 잔고에 오류가 있을 수
-                    있지만, 업데이트 이후로 정상적으로 반영될 예정입니다. 또한,
-                    픽션 초이스 기능도 업데이트 기간 동안 일시적으로 점검 중이니
-                    이용에 참고 부탁드립니다.
-                  </p>
-                  <br />
-                  <p>
-                    업데이트 완료 시점은 현재 3월 둘째 주로 계획하고 있으며,
-                    정상화시 커뮤니티 및 홈페이지를 통해 안내해 드리겠습니다.
-                  </p>
-                  <br />
-                  <p>감사합니다.</p>
-                  <br />
-                  <PrimaryButton onClick={() => onClose()}>확인</PrimaryButton>
-                </Modal>
-              )}
               <GlobalHeader />
               <Suspense fallback={<Spinner />}>
                 <ScrollContext location={locationContext.location}>
